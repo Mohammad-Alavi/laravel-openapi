@@ -54,7 +54,7 @@ jobs:
           php-version: 8.1
           extensions: dom, curl, libxml, mbstring, zip
           tools: composer:v2
-          coverage: xdebug
+          coverage: pcov
 
       - name: Setup Composer token
         run: composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
