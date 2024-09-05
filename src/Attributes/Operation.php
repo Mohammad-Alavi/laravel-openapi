@@ -29,29 +29,47 @@ class Operation
 
     private function validateSecurity(string|array|null $security): void
     {
-        if (empty($this->security)) {
+        if ($this->hasNoSecurity()) {
             return;
         }
 
         if (is_string($security)) {
-            $this->validateSecurityScheme($security);
-        } else {
-            foreach ($security as $securityItem) {
-                if (is_array($securityItem)) {
-                    foreach ($securityItem as $securityScheme) {
-                        $this->validateSecurityScheme($securityScheme);
-                    }
-                    continue;
-                }
-                $this->validateSecurityScheme($securityItem);
-            }
+            $this->validateSingleSecurityScheme($security);
+        }
+
+        if (is_array($security)) {
+            $this->validateMultiSecurityScheme($security);
         }
     }
 
-    private function validateSecurityScheme(string $securityScheme): void
+    private function hasNoSecurity(): bool
+    {
+        return '' === $this->security || [] === $this->security || is_null($this->security);
+    }
+
+    private function validateSingleSecurityScheme(string $securityScheme): void
     {
         if (!class_exists($securityScheme) || !is_a($securityScheme, SecuritySchemeFactory::class, true)) {
             throw new \InvalidArgumentException(sprintf('Security class is either not declared or is not an instance of %s', SecuritySchemeFactory::class));
+        }
+    }
+
+    /**
+     * Security schemes can "AND" or "OR" together
+     * e.g. [['BearerAuth', 'BasicAuth'], 'ApiKeyAuth', ['JWTAuth', BasicAuth]]
+     * This translates to:
+     * (BearerAuth AND BasicAuth) OR ApiKeyAuth OR (JWTAuth AND BasicAuth)
+     */
+    private function validateMultiSecurityScheme(array $securities): void
+    {
+        foreach ($securities as $security) {
+            if (is_array($security)) {
+                foreach ($security as $securityScheme) {
+                    $this->validateSingleSecurityScheme($securityScheme);
+                }
+                continue;
+            }
+            $this->validateSingleSecurityScheme($security);
         }
     }
 }
