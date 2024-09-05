@@ -11,7 +11,7 @@ class Operation
 {
     /**
      * @param class-string<TagFactory>|array<array-key, class-string<TagFactory>>|null $tags
-     * @param class-string<SecuritySchemeFactory>|array<array-key, class-string<SecuritySchemeFactory>>|array<array-key, array<array-key, class-string<SecuritySchemeFactory>>|null $security
+     * @param class-string<SecuritySchemeFactory>|array<array-key, class-string<SecuritySchemeFactory>>|array<array-key, array<array-key, class-string<SecuritySchemeFactory>>>|null $security
      * @param class-string<ServerFactory>|array<array-key, class-string<ServerFactory>>|null $servers
      */
     public function __construct(
