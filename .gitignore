@@ -9,3 +9,4 @@
 .env.*
 docs/.vitepress/cache
 .DS_Store
+*.log
