@@ -58,7 +58,7 @@ class Operation
      * Security schemes can "AND" or "OR" together
      * e.g. [['BearerAuth', 'BasicAuth'], 'ApiKeyAuth', ['JWTAuth', BasicAuth]]
      * This translates to:
-     * (BearerAuth AND BasicAuth) OR ApiKeyAuth OR (JWTAuth AND BasicAuth)
+     * (BearerAuth AND BasicAuth) OR ApiKeyAuth OR (JWTAuth AND BasicAuth).
      */
     private function validateMultiSecurityScheme(array $securities): void
     {
