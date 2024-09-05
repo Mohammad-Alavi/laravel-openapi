@@ -18,7 +18,7 @@ class Extension
             $this->factory = class_exists($factory) ? $factory : app()->getNamespace() . 'OpenApi\\Extensions\\' . $factory;
 
             if (!is_a($this->factory, ExtensionFactory::class, true)) {
-                //TODO: make Factory class name dynamic using class_basename and ClassName::class
+                // TODO: make Factory class name dynamic using class_basename and ClassName::class
                 throw new \InvalidArgumentException('Factory class must be an instance of ExtensionFactory');
             }
         }

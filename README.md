@@ -6,7 +6,7 @@
 </a>
 
 <a href="https://codecov.io/gh/Mohammad-Alavi/laravel-openapi" > 
- <img src="https://codecov.io/gh/Mohammad-Alavi/laravel-openapi/graph/badge.svg?token=WIPZZOJ3RQ" alt="code coverage"/> 
+ <img src="https://codecov.io/gh/Mohammad-Alavi/laravel-openapi/graph/badge.svg?token=BNDp0Zs68Q" alt="code coverage"/> 
 </a>
 
 <a href="https://packagist.org/packages/mohammad-alavi/laravel-openapi">
@@ -16,7 +16,7 @@
 <a href="https://packagist.org/packages/mohammad-alavi/laravel-openapi">
 <img src="https://img.shields.io/packagist/dt/mohammad-alavi/laravel-openapi" alt="total downloads">
 </a>
-<a href="https://github.com/apiato/apiato">
+<a href="https://github.com/Mohammad-Alavi/laravel-openapi">
 <img src="https://img.shields.io/github/license/mohammad-alavi/laravel-openapi" alt="license">
 </a>
 

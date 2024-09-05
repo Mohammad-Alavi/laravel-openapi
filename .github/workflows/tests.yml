@@ -3,9 +3,10 @@ name: Tests
 on:
   push:
     branches:
-      - master
+      - main
       - '*.x'
   pull_request:
+    types: [ opened, synchronize, reopened ]
 
 permissions:
   contents: read
@@ -16,7 +17,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ 8.1, 8.2 ]
+        php: [ 8.1, 8.2, 8.3 ]
     name: PHP ${{ matrix.php }}
     timeout-minutes: 10
     steps:
@@ -28,14 +29,14 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip
-          coverage: xdebug
           tools: composer:v2
+          coverage: xdebug
 
       - name: Setup Composer token
         run: composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress --optimize-autoloader
+        run: composer install --prefer-dist --no-interaction --optimize-autoloader
 
       - name: Execute tests
         run: ./vendor/bin/pest --ci --coverage-clover=coverage.xml
