@@ -22,8 +22,7 @@ class SecurityBuilderTest extends TestCase
     public static function operationSecuritySchemesDataProvider(): array
     {
         return [
-            // 0. No global security - no path security
-            [
+            'No global security - no path security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
@@ -43,8 +42,41 @@ class SecurityBuilderTest extends TestCase
                 [], // applied global security
                 null, // use default global securities
             ],
-            // 1. Use default global security - have single class string security
-            [
+            'Optional security requirement' => [
+                [
+                    'components' => [
+                        'securitySchemes' => [
+                            'JWT' => self::jwtSecuritySchemeProvider(),
+                            'ApiKey' => self::apiKeyAuthSecuritySchemeProvider(),
+                            'Bearer' => self::bearerAuthSecuritySchemeProvider(),
+                        ],
+                    ],
+                    'globalSecurity' => [
+                        [
+                            'ApiKey' => [],
+                        ],
+                    ],
+                    'pathSecurity' => [
+                        [
+                            [],
+                            'ApiKey' => [],
+                        ],
+                    ]
+                ],
+                [
+                    JwtSecurityScheme::class,
+                    ApiKeySecurityScheme::class,
+                    BearerSecurityScheme::class,
+                ],
+                [
+                    ApiKeySecurityScheme::class,
+                ],
+                [
+                    [],
+                    ApiKeySecurityScheme::class,
+                ],
+            ],
+            'Use default global security - have single class string security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
@@ -68,8 +100,7 @@ class SecurityBuilderTest extends TestCase
                 ],
                 null,
             ],
-            // 2. Use default global security - have multi-auth security
-            [
+            'Use default global security - have multi-auth security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
@@ -127,14 +158,13 @@ class SecurityBuilderTest extends TestCase
                     ],
                     [
                         // TODO: should this duplication be removed?
-                        // I don't think it is removed automatically.
+                        //  I don't think it is removed automatically.
                         ApiKeySecurityScheme::class,
                     ],
                 ],
                 null,
             ],
-            // 3. Override global security - disable global security
-            [
+            'Override global security - disable global security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
@@ -156,8 +186,7 @@ class SecurityBuilderTest extends TestCase
                 ],
                 [],
             ],
-            // 4. Override global security - with same security
-            [
+            'Override global security - with same security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
@@ -183,8 +212,7 @@ class SecurityBuilderTest extends TestCase
                 ],
                 JwtSecurityScheme::class, // security overrides
             ],
-            // 5. Override global security - single auth class string
-            [
+            'Override global security - single auth class string' => [
                 [
                     'components' => [
                         'securitySchemes' => [
@@ -212,8 +240,7 @@ class SecurityBuilderTest extends TestCase
                 ],
                 JwtSecurityScheme::class,
             ],
-            // 6. Override global security - single auth array
-            [
+            'Override global security - single auth array' => [
                 [
                     'components' => [
                         'securitySchemes' => [
@@ -243,8 +270,7 @@ class SecurityBuilderTest extends TestCase
                     ApiKeySecurityScheme::class,
                 ],
             ],
-            // 7. Override global security - multi-auth (and) - single auth global security
-            [
+            'Override global security - multi-auth (and) - single auth global security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
@@ -280,8 +306,7 @@ class SecurityBuilderTest extends TestCase
                     ],
                 ],
             ],
-            // 8. Override global security - multi-auth (and) - multi auth global security
-            [
+            'Override global security - multi-auth (and) - multi auth global security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
@@ -321,8 +346,7 @@ class SecurityBuilderTest extends TestCase
                     ],
                 ],
             ],
-            // 9. Override global security - multi-auth (or) - single auth global security
-            [
+            'Override global security - multi-auth (or) - single auth global security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
@@ -362,8 +386,7 @@ class SecurityBuilderTest extends TestCase
                     ],
                 ],
             ],
-            // 10. Override global security - multi-auth (or) - multi auth global security
-            [
+            'Override global security - multi-auth (or) - multi auth global security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
@@ -407,8 +430,7 @@ class SecurityBuilderTest extends TestCase
                     ],
                 ],
             ],
-            // 11. Override global security - multi-auth (and + or) - single auth global security
-            [
+            'Override global security - multi-auth (and + or) - single auth global security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
@@ -448,8 +470,7 @@ class SecurityBuilderTest extends TestCase
                     ],
                 ],
             ],
-            // 12. Override global security - multi-auth (and + or) - multi auth global security
-            [
+            'Override global security - multi-auth (and + or) - multi auth global security' => [
                 [
                     'components' => [
                         'securitySchemes' => [

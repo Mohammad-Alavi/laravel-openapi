@@ -9,9 +9,20 @@ use MohammadAlavi\LaravelOpenApi\Factories\TagFactory;
 #[\Attribute(\Attribute::TARGET_METHOD)]
 class Operation
 {
+    private const REMOVE_TOP_LEVEL_SECURITY = [];
+    private const USE_TOP_LEVEL_SECURITY = null;
+
     /**
      * @param class-string<TagFactory>|array<array-key, class-string<TagFactory>>|null $tags
      * @param class-string<SecuritySchemeFactory>|array<array-key, class-string<SecuritySchemeFactory>>|array<array-key, array<array-key, class-string<SecuritySchemeFactory>>>|null $security
+     *                                                                                                                                                                                         TODO: move this to docs
+     *                                                                                                                                                                                         Security requirements can "AND" or "OR" together.
+     *                                                                                                                                                                                         For example, [['BearerAuth', 'BasicAuth'], 'ApiKeyAuth', ['JWTAuth', BasicAuth]] translates to:
+     *                                                                                                                                                                                         (BearerAuth AND BasicAuth) OR ApiKeyAuth OR (JWTAuth AND BasicAuth).
+     *
+     * null -> use top level security
+     * [] -> remove top level security
+     * [[]] -> optional security
      * @param class-string<ServerFactory>|array<array-key, class-string<ServerFactory>>|null $servers
      */
     public function __construct(
@@ -24,52 +35,48 @@ class Operation
         public string|null $description = null,
         public bool|null $deprecated = null,
     ) {
-        $this->validateSecurity($this->security);
+        if (!$this->isValidSecurityScheme($security)) {
+            throw new \InvalidArgumentException(sprintf('Security class is either not declared or is not an instance of %s.', SecuritySchemeFactory::class));
+        }
     }
 
-    private function validateSecurity(string|array|null $security): void
+    private function isValidSecurityScheme(string|array|null $security): bool
     {
-        if ($this->hasNoSecurity()) {
-            return;
+        if (static::REMOVE_TOP_LEVEL_SECURITY === $security || static::USE_TOP_LEVEL_SECURITY === $security) {
+            return true;
         }
 
         if (is_string($security)) {
-            $this->validateSingleSecurityScheme($security);
+            return $this->isValidSingleSecurityScheme($security);
         }
 
         if (is_array($security)) {
-            $this->validateMultiSecurityScheme($security);
+            return $this->isValidMultiSecurityScheme($security);
         }
+
+        return false;
     }
 
-    private function hasNoSecurity(): bool
+    private function isValidSingleSecurityScheme(string|null $securityScheme): bool
     {
-        return '' === $this->security || [] === $this->security || is_null($this->security);
+        return !is_null($securityScheme) && '' !== $securityScheme && class_exists($securityScheme) && is_a($securityScheme, SecuritySchemeFactory::class, true);
     }
 
-    private function validateSingleSecurityScheme(string $securityScheme): void
+    private function isValidMultiSecurityScheme(array $securities): bool
     {
-        if (!class_exists($securityScheme) || !is_a($securityScheme, SecuritySchemeFactory::class, true)) {
-            throw new \InvalidArgumentException(sprintf('Security class is either not declared or is not an instance of %s', SecuritySchemeFactory::class));
-        }
-    }
-
-    /**
-     * Security schemes can "AND" or "OR" together
-     * e.g. [['BearerAuth', 'BasicAuth'], 'ApiKeyAuth', ['JWTAuth', BasicAuth]]
-     * This translates to:
-     * (BearerAuth AND BasicAuth) OR ApiKeyAuth OR (JWTAuth AND BasicAuth).
-     */
-    private function validateMultiSecurityScheme(array $securities): void
-    {
+        $isValid = true;
         foreach ($securities as $security) {
             if (is_array($security)) {
-                foreach ($security as $securityScheme) {
-                    $this->validateSingleSecurityScheme($securityScheme);
+                if (0 === count($security)) {
+                    return false;
                 }
-                continue;
+
+                return $this->isValidMultiSecurityScheme($security);
             }
-            $this->validateSingleSecurityScheme($security);
+
+            $isValid = $isValid && $this->isValidSingleSecurityScheme($security);
         }
+
+        return $isValid;
     }
 }

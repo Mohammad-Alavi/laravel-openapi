@@ -7,14 +7,14 @@ use Tests\Unit\Attributes\Stubs\SecuritySchemeFactoryStub;
 describe('Operation', function () {
     it('can be instantiated with no parameters', function () {
         $operation = new Operation();
-        expect($operation->id)->toBeNull();
-        expect($operation->tags)->toBeNull();
-        expect($operation->security)->toBeNull();
-        expect($operation->method)->toBeNull();
-        expect($operation->servers)->toBeNull();
-        expect($operation->summary)->toBeNull();
-        expect($operation->description)->toBeNull();
-        expect($operation->deprecated)->toBeNull();
+        expect($operation->id)->toBeNull()
+            ->and($operation->tags)->toBeNull()
+            ->and($operation->security)->toBeNull()
+            ->and($operation->method)->toBeNull()
+            ->and($operation->servers)->toBeNull()
+            ->and($operation->summary)->toBeNull()
+            ->and($operation->description)->toBeNull()
+            ->and($operation->deprecated)->toBeNull();
     });
 
     it('can can be instantiated properly', function () {
@@ -28,20 +28,85 @@ describe('Operation', function () {
             description: 'description',
             deprecated: true,
         );
-        expect($operation->id)->toBe('id');
-        expect($operation->tags)->toBe('tags');
-        expect($operation->security)->toBe(SecuritySchemeFactoryStub::class);
-        expect($operation->method)->toBe('method');
-        expect($operation->servers)->toBe('servers');
-        expect($operation->summary)->toBe('summary');
-        expect($operation->description)->toBe('description');
-        expect($operation->deprecated)->toBeTrue();
+        expect($operation->id)->toBe('id')
+            ->and($operation->tags)->toBe('tags')
+            ->and($operation->security)->toBe(SecuritySchemeFactoryStub::class)
+            ->and($operation->method)->toBe('method')
+            ->and($operation->servers)->toBe('servers')
+            ->and($operation->summary)->toBe('summary')
+            ->and($operation->description)->toBe('description')
+            ->and($operation->deprecated)->toBeTrue();
     });
 
-    it('can have no security', function () {
+    it('doesnt accept invalid security combinations', function (string|array $security) {
+        $this->expectException(InvalidArgumentException::class);
+        new Operation(security: $security);
+    })->with([
+        [
+            '',
+        ],
+        [
+            [[]],
+        ],
+        [
+            [''],
+        ],
+        [
+            [['']],
+        ],
+        [
+            ['', []],
+        ],
+        [
+            ['', ['']],
+        ],
+        [
+            ['invalid', 'input'],
+        ],
+        [
+            ['nested', ['invalid']],
+        ],
+        [
+            [null],
+        ],
+        [
+            [null, []],
+        ],
+        [
+            [null, '', []],
+        ],
+        [
+            ['non-empty', [null, '']],
+        ],
+        [
+            ['InvalidSecurity', SecuritySchemeFactoryStub::class],
+        ],
+    ]);
+
+    it('can remove top level security', function () {
+        $operation = new Operation(security: []);
+        expect($operation->security)->toBe([]);
+    });
+
+    it('can use top level security', function () {
+        $operation = new Operation(security: null);
+        expect($operation->security)->toBeNull();
+    });
+
+    it('uses top level security by default', function () {
         $operation = new Operation();
         expect($operation->security)->toBeNull();
     });
+
+    it('can make security optional', function ($security) {
+        $operation = new Operation(security: $security);
+        expect($operation->security)->toBe($security);
+    })->with([
+        [
+            [[], SecuritySchemeFactoryStub::class],
+            [SecuritySchemeFactoryStub::class, []],
+        ],
+    ]);
 
     it('can be instantiated with a class FQN security', function () {
         $operation = new Operation(security: SecuritySchemeFactoryStub::class);
@@ -71,11 +136,6 @@ describe('Operation', function () {
     it('throws an exception when an invalid security is passed in an array', function () {
         $this->expectException(InvalidArgumentException::class);
         new Operation(security: ['InvalidSecurity']);
-    });
-
-    it('throws an exception when an invalid security is mixed with valid ones', function () {
-        $this->expectException(InvalidArgumentException::class);
-        new Operation(security: ['InvalidSecurity', SecuritySchemeFactoryStub::class]);
     });
 
     it('throws an exception when security is not an instance of SecuritySchemeFactory', function () {
