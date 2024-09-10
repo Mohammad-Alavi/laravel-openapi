@@ -8,8 +8,8 @@ use MohammadAlavi\ObjectOrientedOAS\Utilities\Arr;
  * @property string|null $title
  * @property string|null $description
  * @property string|null $termsOfService
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Contact|null $contact
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\License|null $license
+ * @property Contact|null $contact
+ * @property License|null $license
  * @property string|null $version
  */
 class Info extends BaseObject
@@ -30,12 +30,12 @@ class Info extends BaseObject
     protected $termsOfService;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\Contact|null
+     * @var Contact|null
      */
     protected $contact;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\License|null
+     * @var License|null
      */
     protected $license;
 
@@ -45,10 +45,9 @@ class Info extends BaseObject
     protected $version;
 
     /**
-     * @param string|null $title
      * @return static
      */
-    public function title(?string $title): self
+    public function title(string|null $title): self
     {
         $instance = clone $this;
 
@@ -58,10 +57,9 @@ class Info extends BaseObject
     }
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -71,10 +69,9 @@ class Info extends BaseObject
     }
 
     /**
-     * @param string|null $termsOfService
      * @return static
      */
-    public function termsOfService(?string $termsOfService): self
+    public function termsOfService(string|null $termsOfService): self
     {
         $instance = clone $this;
 
@@ -84,10 +81,9 @@ class Info extends BaseObject
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Contact|null $contact
      * @return static
      */
-    public function contact(?Contact $contact): self
+    public function contact(Contact|null $contact): self
     {
         $instance = clone $this;
 
@@ -97,10 +93,9 @@ class Info extends BaseObject
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\License|null $license
      * @return static
      */
-    public function license(?License $license): self
+    public function license(License|null $license): self
     {
         $instance = clone $this;
 
@@ -110,10 +105,9 @@ class Info extends BaseObject
     }
 
     /**
-     * @param string|null $version
      * @return static
      */
-    public function version(?string $version): self
+    public function version(string|null $version): self
     {
         $instance = clone $this;
 
@@ -122,9 +116,6 @@ class Info extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         return Arr::filter([

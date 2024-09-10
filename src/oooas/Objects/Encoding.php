@@ -39,10 +39,9 @@ class Encoding extends BaseObject
     protected $allowReserved;
 
     /**
-     * @param string|null $contentType
      * @return static
      */
-    public function contentType(?string $contentType): self
+    public function contentType(string|null $contentType): self
     {
         $instance = clone $this;
 
@@ -53,6 +52,7 @@ class Encoding extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Header[] $headers
+     *
      * @return static
      */
     public function headers(Header ...$headers): self
@@ -65,10 +65,9 @@ class Encoding extends BaseObject
     }
 
     /**
-     * @param string|null $style
      * @return static
      */
-    public function style(?string $style): self
+    public function style(string|null $style): self
     {
         $instance = clone $this;
 
@@ -78,10 +77,9 @@ class Encoding extends BaseObject
     }
 
     /**
-     * @param bool|null $explode
      * @return static
      */
-    public function explode(?bool $explode = true): self
+    public function explode(bool|null $explode = true): self
     {
         $instance = clone $this;
 
@@ -91,10 +89,9 @@ class Encoding extends BaseObject
     }
 
     /**
-     * @param bool|null $allowReserved
      * @return static
      */
-    public function allowReserved(?bool $allowReserved = true): self
+    public function allowReserved(bool|null $allowReserved = true): self
     {
         $instance = clone $this;
 
@@ -103,9 +100,6 @@ class Encoding extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         $headers = [];

@@ -21,10 +21,9 @@ class License extends BaseObject
     protected $url;
 
     /**
-     * @param string|null $name
      * @return static
      */
-    public function name(?string $name): self
+    public function name(string|null $name): self
     {
         $instance = clone $this;
 
@@ -34,10 +33,9 @@ class License extends BaseObject
     }
 
     /**
-     * @param string|null $url
      * @return static
      */
-    public function url(?string $url): self
+    public function url(string|null $url): self
     {
         $instance = clone $this;
 
@@ -46,9 +44,6 @@ class License extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         return Arr::filter([

@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOAS\Exceptions\ExtensionDoesNotExistException;
 /**
  * @internal
  */
-class Extensions implements ArrayAccess
+class Extensions implements \ArrayAccess
 {
     public const X_EMPTY_VALUE = 'X_EMPTY_VALUE';
 
@@ -20,8 +20,8 @@ class Extensions implements ArrayAccess
     /**
      * Whether a offset exists.
      *
-     * @link https://php.net/manual/en/arrayaccess.offsetexists.php
-     * @param mixed $offset
+     * @see https://php.net/manual/en/arrayaccess.offsetexists.php
+     *
      * @return bool
      */
     #[\ReturnTypeWillChange]
@@ -33,10 +33,11 @@ class Extensions implements ArrayAccess
     /**
      * Offset to retrieve.
      *
-     * @link https://php.net/manual/en/arrayaccess.offsetget.php
-     * @param mixed $offset
-     * @throws \MohammadAlavi\ObjectOrientedOAS\Exceptions\ExtensionDoesNotExistException
+     * @see https://php.net/manual/en/arrayaccess.offsetget.php
+     *
      * @return mixed can return all value types
+     *
+     * @throws ExtensionDoesNotExistException
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
@@ -51,9 +52,7 @@ class Extensions implements ArrayAccess
     /**
      * Offset to set.
      *
-     * @link https://php.net/manual/en/arrayaccess.offsetset.php
-     * @param mixed $offset
-     * @param mixed $value
+     * @see https://php.net/manual/en/arrayaccess.offsetset.php
      */
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
@@ -70,8 +69,7 @@ class Extensions implements ArrayAccess
     /**
      * Offset to unset.
      *
-     * @link https://php.net/manual/en/arrayaccess.offsetunset.php
-     * @param mixed $offset
+     * @see https://php.net/manual/en/arrayaccess.offsetunset.php
      */
     #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
@@ -83,21 +81,17 @@ class Extensions implements ArrayAccess
         unset($this->items[$this->normalizeOffset($offset)]);
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return $this->items;
     }
 
     /**
-     * @param $offset
      * @return string
      */
     protected function normalizeOffset($offset)
     {
-        if (mb_strpos($offset, 'x-') === 0) {
+        if (0 === mb_strpos($offset, 'x-')) {
             return $offset;
         }
 

@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOAS\Utilities\Arr;
  * @property string|null $operationRef
  * @property string|null $operationId
  * @property string|null $description
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Server|null $server
+ * @property Server|null $server
  */
 class Link extends BaseObject
 {
@@ -28,15 +28,14 @@ class Link extends BaseObject
     protected $description;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\Server|null
+     * @var Server|null
      */
     protected $server;
 
     /**
-     * @param string|null $operationRef
      * @return static
      */
-    public function operationRef(?string $operationRef): self
+    public function operationRef(string|null $operationRef): self
     {
         $instance = clone $this;
 
@@ -46,10 +45,9 @@ class Link extends BaseObject
     }
 
     /**
-     * @param string|null $operationId
      * @return static
      */
-    public function operationId(?string $operationId): self
+    public function operationId(string|null $operationId): self
     {
         $instance = clone $this;
 
@@ -59,10 +57,9 @@ class Link extends BaseObject
     }
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -72,10 +69,9 @@ class Link extends BaseObject
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Server|null $server
      * @return static
      */
-    public function server(?Server $server): self
+    public function server(Server|null $server): self
     {
         $instance = clone $this;
 
@@ -84,9 +80,6 @@ class Link extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         return Arr::filter([

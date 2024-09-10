@@ -22,10 +22,9 @@ class Discriminator extends BaseObject
     protected $mapping;
 
     /**
-     * @param string|null $propertyName
      * @return static
      */
-    public function propertyName(?string $propertyName): self
+    public function propertyName(string|null $propertyName): self
     {
         $instance = clone $this;
 
@@ -35,9 +34,9 @@ class Discriminator extends BaseObject
     }
 
     /**
-     * @param array $mapping
-     * @throws \MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return static
+     *
+     * @throws InvalidArgumentException
      */
     public function mapping(array $mapping): self
     {
@@ -57,9 +56,6 @@ class Discriminator extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         return Arr::filter([

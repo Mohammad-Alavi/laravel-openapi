@@ -2,10 +2,10 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors\Paths\Operation;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\PathItem;
 use MohammadAlavi\LaravelOpenApi\Attributes\Callback as CallbackAttribute;
 use MohammadAlavi\LaravelOpenApi\Contracts\Reusable;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInformation;
+use MohammadAlavi\ObjectOrientedOAS\Objects\PathItem;
 
 class CallbackBuilder
 {

@@ -2,9 +2,9 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\Tag;
 use MohammadAlavi\LaravelOpenApi\Factories\TagFactory;
 use MohammadAlavi\LaravelOpenApi\Helpers\BuilderHelper;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Tag;
 
 class TagBuilder
 {

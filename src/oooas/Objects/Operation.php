@@ -10,10 +10,10 @@ use MohammadAlavi\ObjectOrientedOAS\Utilities\Arr;
  * @property string[]|null $tags
  * @property string|null $summary
  * @property string|null $description
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs|null $externalDocs
+ * @property ExternalDocs|null $externalDocs
  * @property string|null $operationId
  * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Parameter[]|null $parameters
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\RequestBody|null $requestBody
+ * @property RequestBody|null $requestBody
  * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Response[]|null $responses
  * @property bool|null $deprecated
  * @property \MohammadAlavi\ObjectOrientedOAS\Objects\SecurityRequirement[]|null $security
@@ -22,14 +22,14 @@ use MohammadAlavi\ObjectOrientedOAS\Utilities\Arr;
  */
 class Operation extends BaseObject
 {
-    const ACTION_GET = 'get';
-    const ACTION_PUT = 'put';
-    const ACTION_POST = 'post';
-    const ACTION_DELETE = 'delete';
-    const ACTION_OPTIONS = 'options';
-    const ACTION_HEAD = 'head';
-    const ACTION_PATCH = 'patch';
-    const ACTION_TRACE = 'trace';
+    public const ACTION_GET = 'get';
+    public const ACTION_PUT = 'put';
+    public const ACTION_POST = 'post';
+    public const ACTION_DELETE = 'delete';
+    public const ACTION_OPTIONS = 'options';
+    public const ACTION_HEAD = 'head';
+    public const ACTION_PATCH = 'patch';
+    public const ACTION_TRACE = 'trace';
 
     /**
      * @var string|null
@@ -52,7 +52,7 @@ class Operation extends BaseObject
     protected $description;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs|null
+     * @var ExternalDocs|null
      */
     protected $externalDocs;
 
@@ -67,7 +67,7 @@ class Operation extends BaseObject
     protected $parameters;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\RequestBody|null
+     * @var RequestBody|null
      */
     protected $requestBody;
 
@@ -102,73 +102,65 @@ class Operation extends BaseObject
     protected $callbacks;
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function get(string $objectId = null): self
+    public static function get(string|null $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_GET);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function put(string $objectId = null): self
+    public static function put(string|null $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_PUT);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function post(string $objectId = null): self
+    public static function post(string|null $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_POST);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function delete(string $objectId = null): self
+    public static function delete(string|null $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_DELETE);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function head(string $objectId = null): self
+    public static function head(string|null $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_HEAD);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function patch(string $objectId = null): self
+    public static function patch(string|null $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_PATCH);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function trace(string $objectId = null): self
+    public static function trace(string|null $objectId = null): self
     {
         return static::create($objectId)->action(static::ACTION_TRACE);
     }
 
     /**
-     * @param string|null $action
      * @return static
      */
-    public function action(?string $action): self
+    public function action(string|null $action): self
     {
         $instance = clone $this;
 
@@ -179,8 +171,10 @@ class Operation extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Tag[]|string[] $tags
-     * @throws \MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException
+     *
      * @return static
+     *
+     * @throws InvalidArgumentException
      */
     public function tags(...$tags): self
     {
@@ -196,12 +190,7 @@ class Operation extends BaseObject
                 continue;
             }
 
-            throw new InvalidArgumentException(
-                sprintf(
-                    'The tags must either be a string or an instance of [%s].',
-                    Tag::class
-                )
-            );
+            throw new InvalidArgumentException(sprintf('The tags must either be a string or an instance of [%s].', Tag::class));
         }
 
         $instance = clone $this;
@@ -212,10 +201,9 @@ class Operation extends BaseObject
     }
 
     /**
-     * @param string|null $summary
      * @return static
      */
-    public function summary(?string $summary): self
+    public function summary(string|null $summary): self
     {
         $instance = clone $this;
 
@@ -225,10 +213,9 @@ class Operation extends BaseObject
     }
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -238,10 +225,9 @@ class Operation extends BaseObject
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs|null $externalDocs
      * @return static
      */
-    public function externalDocs(?ExternalDocs $externalDocs): self
+    public function externalDocs(ExternalDocs|null $externalDocs): self
     {
         $instance = clone $this;
 
@@ -251,10 +237,9 @@ class Operation extends BaseObject
     }
 
     /**
-     * @param string|null $operationId
      * @return static
      */
-    public function operationId(?string $operationId): self
+    public function operationId(string|null $operationId): self
     {
         $instance = clone $this;
 
@@ -265,6 +250,7 @@ class Operation extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Parameter[] $parameters
+     *
      * @return static
      */
     public function parameters(Parameter ...$parameters): self
@@ -277,10 +263,9 @@ class Operation extends BaseObject
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\RequestBody|null $requestBody
      * @return static
      */
-    public function requestBody(?RequestBody $requestBody): self
+    public function requestBody(RequestBody|null $requestBody): self
     {
         $instance = clone $this;
 
@@ -291,6 +276,7 @@ class Operation extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Response[] $responses
+     *
      * @return static
      */
     public function responses(Response ...$responses): self
@@ -303,10 +289,9 @@ class Operation extends BaseObject
     }
 
     /**
-     * @param bool|null $deprecated
      * @return static
      */
-    public function deprecated(?bool $deprecated = true): self
+    public function deprecated(bool|null $deprecated = true): self
     {
         $instance = clone $this;
 
@@ -317,6 +302,7 @@ class Operation extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\SecurityRequirement[]|null $security
+     *
      * @return static
      */
     public function security(SecurityRequirement ...$security): self
@@ -330,10 +316,9 @@ class Operation extends BaseObject
     }
 
     /**
-     * @param bool|null $noSecurity
      * @return static
      */
-    public function noSecurity(?bool $noSecurity = true): self
+    public function noSecurity(bool|null $noSecurity = true): self
     {
         $instance = clone $this;
 
@@ -344,6 +329,7 @@ class Operation extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Server[] $servers
+     *
      * @return static
      */
     public function servers(Server ...$servers): self
@@ -357,6 +343,7 @@ class Operation extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\PathItem[] $callbacks
+     *
      * @return $this
      */
     public function callbacks(PathItem ...$callbacks): self
@@ -368,9 +355,6 @@ class Operation extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         $responses = [];

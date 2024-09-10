@@ -14,10 +14,10 @@ use MohammadAlavi\ObjectOrientedOAS\Utilities\Arr;
  */
 class OAuthFlow extends BaseObject
 {
-    const FLOW_IMPLICIT = 'implicit';
-    const FLOW_PASSWORD = 'password';
-    const FLOW_CLIENT_CREDENTIALS = 'clientCredentials';
-    const FLOW_AUTHORIZATION_CODE = 'authorizationCode';
+    public const FLOW_IMPLICIT = 'implicit';
+    public const FLOW_PASSWORD = 'password';
+    public const FLOW_CLIENT_CREDENTIALS = 'clientCredentials';
+    public const FLOW_AUTHORIZATION_CODE = 'authorizationCode';
 
     /**
      * @var string|null
@@ -45,10 +45,9 @@ class OAuthFlow extends BaseObject
     protected $scopes;
 
     /**
-     * @param string|null $flow
      * @return static
      */
-    public function flow(?string $flow): self
+    public function flow(string|null $flow): self
     {
         $instance = clone $this;
 
@@ -58,10 +57,9 @@ class OAuthFlow extends BaseObject
     }
 
     /**
-     * @param string|null $authorizationUrl
      * @return static
      */
-    public function authorizationUrl(?string $authorizationUrl): self
+    public function authorizationUrl(string|null $authorizationUrl): self
     {
         $instance = clone $this;
 
@@ -71,10 +69,9 @@ class OAuthFlow extends BaseObject
     }
 
     /**
-     * @param string|null $tokenUrl
      * @return static
      */
-    public function tokenUrl(?string $tokenUrl): self
+    public function tokenUrl(string|null $tokenUrl): self
     {
         $instance = clone $this;
 
@@ -84,10 +81,9 @@ class OAuthFlow extends BaseObject
     }
 
     /**
-     * @param string|null $refreshUrl
      * @return static
      */
-    public function refreshUrl(?string $refreshUrl): self
+    public function refreshUrl(string|null $refreshUrl): self
     {
         $instance = clone $this;
 
@@ -97,11 +93,11 @@ class OAuthFlow extends BaseObject
     }
 
     /**
-     * @param array|null $scopes
-     * @throws \MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException
      * @return static
+     *
+     * @throws InvalidArgumentException
      */
-    public function scopes(?array $scopes): self
+    public function scopes(array|null $scopes): self
     {
         // Ensure the scopes are string => string.
         foreach ($scopes as $key => $value) {
@@ -119,9 +115,6 @@ class OAuthFlow extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         return Arr::filter([

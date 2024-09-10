@@ -39,10 +39,9 @@ class Xml extends BaseObject
     protected $wrapped;
 
     /**
-     * @param string|null $name
      * @return static
      */
-    public function name(?string $name): self
+    public function name(string|null $name): self
     {
         $instance = clone $this;
 
@@ -52,10 +51,9 @@ class Xml extends BaseObject
     }
 
     /**
-     * @param string|null $namespace
      * @return static
      */
-    public function namespace(?string $namespace): self
+    public function namespace(string|null $namespace): self
     {
         $instance = clone $this;
 
@@ -65,10 +63,9 @@ class Xml extends BaseObject
     }
 
     /**
-     * @param string|null $prefix
      * @return static
      */
-    public function prefix(?string $prefix): self
+    public function prefix(string|null $prefix): self
     {
         $instance = clone $this;
 
@@ -78,10 +75,9 @@ class Xml extends BaseObject
     }
 
     /**
-     * @param bool|null $attribute
      * @return static
      */
-    public function attribute(?bool $attribute = true): self
+    public function attribute(bool|null $attribute = true): self
     {
         $instance = clone $this;
 
@@ -91,10 +87,9 @@ class Xml extends BaseObject
     }
 
     /**
-     * @param bool|null $wrapped
      * @return static
      */
-    public function wrapped(?bool $wrapped = true): self
+    public function wrapped(bool|null $wrapped = true): self
     {
         $instance = clone $this;
 
@@ -103,9 +98,6 @@ class Xml extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         return Arr::filter([

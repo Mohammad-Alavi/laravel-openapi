@@ -27,10 +27,9 @@ class RequestBody extends BaseObject
     protected $required;
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -41,6 +40,7 @@ class RequestBody extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\MediaType[] $content
+     *
      * @return static
      */
     public function content(MediaType ...$content): self
@@ -53,10 +53,9 @@ class RequestBody extends BaseObject
     }
 
     /**
-     * @param bool|null $required
      * @return static
      */
-    public function required(?bool $required = true): self
+    public function required(bool|null $required = true): self
     {
         $instance = clone $this;
 
@@ -65,9 +64,6 @@ class RequestBody extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         $content = [];

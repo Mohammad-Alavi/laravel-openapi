@@ -2,10 +2,10 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors\Paths\Operation;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\Response;
 use MohammadAlavi\LaravelOpenApi\Attributes\Response as ResponseAttribute;
 use MohammadAlavi\LaravelOpenApi\Contracts\Reusable;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInformation;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Response;
 
 class ResponseBuilder
 {

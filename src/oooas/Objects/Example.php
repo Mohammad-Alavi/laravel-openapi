@@ -33,10 +33,9 @@ class Example extends BaseObject
     protected $externalValue;
 
     /**
-     * @param string|null $summary
      * @return static
      */
-    public function summary(?string $summary): self
+    public function summary(string|null $summary): self
     {
         $instance = clone $this;
 
@@ -46,10 +45,9 @@ class Example extends BaseObject
     }
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -60,6 +58,7 @@ class Example extends BaseObject
 
     /**
      * @param mixed|null $value
+     *
      * @return static
      */
     public function value($value): self
@@ -72,10 +71,9 @@ class Example extends BaseObject
     }
 
     /**
-     * @param string|null $externalValue
      * @return static
      */
-    public function externalValue(?string $externalValue): self
+    public function externalValue(string|null $externalValue): self
     {
         $instance = clone $this;
 
@@ -84,9 +82,6 @@ class Example extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         return Arr::filter([

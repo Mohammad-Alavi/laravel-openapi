@@ -2,12 +2,12 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors;
 
-use MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException;
-use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityScheme;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\SecuritySchemeFactory;
 use MohammadAlavi\LaravelOpenApi\Objects\SecurityRequirement;
 use MohammadAlavi\LaravelOpenApi\SecuritySchemes\DefaultSecurityScheme;
 use MohammadAlavi\LaravelOpenApi\SecuritySchemes\PublicSecurityScheme;
+use MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException;
+use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityScheme;
 
 class SecurityRequirementBuilder
 {

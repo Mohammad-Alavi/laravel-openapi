@@ -2,9 +2,9 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Objects;
 
+use Illuminate\Support\Collection;
 use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityRequirement as ParentSecurityRequirement;
 use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityScheme;
-use Illuminate\Support\Collection;
 
 class SecurityRequirement extends ParentSecurityRequirement
 {

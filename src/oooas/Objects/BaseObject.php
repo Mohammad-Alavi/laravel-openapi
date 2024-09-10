@@ -4,14 +4,13 @@ namespace MohammadAlavi\ObjectOrientedOAS\Objects;
 
 use MohammadAlavi\ObjectOrientedOAS\Exceptions\PropertyDoesNotExistException;
 use MohammadAlavi\ObjectOrientedOAS\Utilities\Extensions;
-use JsonSerializable;
 
 /**
  * @property string|null $objectId
  * @property string|null $ref
  * @property array|null $x
  */
-abstract class BaseObject implements JsonSerializable
+abstract class BaseObject implements \JsonSerializable
 {
     /**
      * @var string|null
@@ -24,36 +23,31 @@ abstract class BaseObject implements JsonSerializable
     protected $ref;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Utilities\Extensions
+     * @var Extensions
      */
     protected $extensions;
 
     /**
      * BaseObject constructor.
-     *
-     * @param string|null $objectId
      */
-    public function __construct(string $objectId = null)
+    public function __construct(string|null $objectId = null)
     {
         $this->objectId = $objectId;
         $this->extensions = new Extensions();
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function create(string $objectId = null): self
+    public static function create(string|null $objectId = null): self
     {
         return new static($objectId);
     }
 
     /**
-     * @param string $ref
-     * @param string|null $objectId
      * @return static
      */
-    public static function ref(string $ref, string $objectId = null): self
+    public static function ref(string $ref, string|null $objectId = null): self
     {
         $instance = new static($objectId);
 
@@ -63,10 +57,9 @@ abstract class BaseObject implements JsonSerializable
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public function objectId(?string $objectId): self
+    public function objectId(string|null $objectId): self
     {
         $instance = clone $this;
 
@@ -76,15 +69,13 @@ abstract class BaseObject implements JsonSerializable
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
      * @return $this
      */
     public function x(string $key, $value = Extensions::X_EMPTY_VALUE): self
     {
         $instance = clone $this;
 
-        if (mb_strpos($key, 'x-') === 0) {
+        if (0 === mb_strpos($key, 'x-')) {
             $key = mb_substr($key, 2);
         }
 
@@ -93,29 +84,22 @@ abstract class BaseObject implements JsonSerializable
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     abstract protected function generate(): array;
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
-        if ($this->ref !== null) {
+        if (null !== $this->ref) {
             return ['$ref' => $this->ref];
         }
 
         return array_merge(
             $this->generate(),
-            $this->extensions->toArray()
+            $this->extensions->toArray(),
         );
     }
 
     /**
      * @param int $options
-     * @return string
      */
     public function toJson($options = 0): string
     {
@@ -124,8 +108,6 @@ abstract class BaseObject implements JsonSerializable
 
     /**
      * Specify data which should be serialized to JSON.
-     *
-     * @return array
      */
     public function jsonSerialize(): array
     {
@@ -133,9 +115,7 @@ abstract class BaseObject implements JsonSerializable
     }
 
     /**
-     * @param string $name
-     * @throws \MohammadAlavi\ObjectOrientedOAS\Exceptions\PropertyDoesNotExistException
-     * @return mixed
+     * @throws PropertyDoesNotExistException
      */
     public function __get(string $name)
     {
@@ -144,12 +124,12 @@ abstract class BaseObject implements JsonSerializable
         }
 
         // Get all extensions.
-        if ($name === 'x') {
+        if ('x' === $name) {
             return $this->extensions->toArray();
         }
 
         // Get a single extension.
-        if (mb_strpos($name, 'x-') === 0) {
+        if (0 === mb_strpos($name, 'x-')) {
             $key = mb_strtolower(substr_replace($name, '', 0, 2));
 
             if (isset($this->extensions[$key])) {

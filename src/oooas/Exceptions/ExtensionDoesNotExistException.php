@@ -2,9 +2,6 @@
 
 namespace MohammadAlavi\ObjectOrientedOAS\Exceptions;
 
-use Exception;
-
-class ExtensionDoesNotExistException extends Exception
+class ExtensionDoesNotExistException extends \Exception
 {
-    //
 }

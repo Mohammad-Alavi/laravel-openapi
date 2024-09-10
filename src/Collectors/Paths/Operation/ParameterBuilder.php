@@ -2,13 +2,13 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors\Paths\Operation;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\Parameter;
-use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Parameter as ParameterAttribute;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\ParameterFactory;
 use MohammadAlavi\LaravelOpenApi\Helpers\SchemaHelper;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInformation;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Parameter;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
 
 class ParameterBuilder
 {

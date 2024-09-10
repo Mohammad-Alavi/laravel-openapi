@@ -64,6 +64,7 @@ class Components extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Contracts\SchemaContract[] $schemas
+     *
      * @return static
      */
     public function schemas(SchemaContract ...$schemas): self
@@ -77,6 +78,7 @@ class Components extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Response[] $responses
+     *
      * @return static
      */
     public function responses(Response ...$responses): self
@@ -90,6 +92,7 @@ class Components extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Parameter[] $parameters
+     *
      * @return static
      */
     public function parameters(Parameter ...$parameters): self
@@ -103,6 +106,7 @@ class Components extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Example[] $examples
+     *
      * @return static
      */
     public function examples(Example ...$examples): self
@@ -116,6 +120,7 @@ class Components extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\RequestBody[] $requestBodies
+     *
      * @return static
      */
     public function requestBodies(RequestBody ...$requestBodies): self
@@ -129,6 +134,7 @@ class Components extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Header[] $headers
+     *
      * @return static
      */
     public function headers(Header ...$headers): self
@@ -142,6 +148,7 @@ class Components extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\SecurityScheme[] $securitySchemes
+     *
      * @return static
      */
     public function securitySchemes(SecurityScheme ...$securitySchemes): self
@@ -155,6 +162,7 @@ class Components extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Link[] $links
+     *
      * @return static
      */
     public function links(Link ...$links): self
@@ -168,6 +176,7 @@ class Components extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\PathItem[] $callbacks
+     *
      * @return static
      */
     public function callbacks(PathItem ...$callbacks): self
@@ -179,9 +188,6 @@ class Components extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         $schemas = [];

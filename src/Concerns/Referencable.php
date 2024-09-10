@@ -2,7 +2,6 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Concerns;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
 use MohammadAlavi\LaravelOpenApi\Contracts\Reusable;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\CallbackFactory;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\ParameterFactory;
@@ -10,6 +9,7 @@ use MohammadAlavi\LaravelOpenApi\Factories\Component\RequestBodyFactory;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\ResponseFactory;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\SchemaFactory;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\SecuritySchemeFactory;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
 
 trait Referencable
 {

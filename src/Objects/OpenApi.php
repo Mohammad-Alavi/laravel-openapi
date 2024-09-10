@@ -2,10 +2,10 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Objects;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityRequirement;
-use MohammadAlavi\ObjectOrientedOAS\OpenApi as ParentOpenApi;
 use MohammadAlavi\LaravelOpenApi\Collectors\SecurityRequirementBuilder;
 use MohammadAlavi\LaravelOpenApi\SecuritySchemes\PublicSecurityScheme;
+use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityRequirement;
+use MohammadAlavi\ObjectOrientedOAS\OpenApi as ParentOpenApi;
 
 class OpenApi extends ParentOpenApi
 {

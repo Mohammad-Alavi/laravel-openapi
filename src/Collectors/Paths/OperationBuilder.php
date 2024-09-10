@@ -2,7 +2,6 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors\Paths;
 
-use MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -17,6 +16,7 @@ use MohammadAlavi\LaravelOpenApi\Collectors\Paths\Operation\ServerBuilder;
 use MohammadAlavi\LaravelOpenApi\Collectors\Paths\Operation\TagBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\Operation;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInformation;
+use MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException;
 
 class OperationBuilder
 {

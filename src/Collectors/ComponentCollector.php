@@ -2,13 +2,13 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\Components;
 use MohammadAlavi\LaravelOpenApi\Collectors\Component\CallbackCollector;
 use MohammadAlavi\LaravelOpenApi\Collectors\Component\RequestBodyCollector;
 use MohammadAlavi\LaravelOpenApi\Collectors\Component\ResponseCollector;
 use MohammadAlavi\LaravelOpenApi\Collectors\Component\SchemaCollector;
 use MohammadAlavi\LaravelOpenApi\Collectors\Component\SecuritySchemeCollector;
 use MohammadAlavi\LaravelOpenApi\Generator;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Components;
 
 final class ComponentCollector
 {

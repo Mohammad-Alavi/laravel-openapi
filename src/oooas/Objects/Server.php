@@ -27,10 +27,9 @@ class Server extends BaseObject
     protected $variables;
 
     /**
-     * @param string|null $url
      * @return static
      */
-    public function url(?string $url): self
+    public function url(string|null $url): self
     {
         $instance = clone $this;
 
@@ -40,10 +39,9 @@ class Server extends BaseObject
     }
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -54,6 +52,7 @@ class Server extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\ServerVariable[] $variables
+     *
      * @return static
      */
     public function variables(ServerVariable ...$variables): self
@@ -65,9 +64,6 @@ class Server extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         $variables = [];

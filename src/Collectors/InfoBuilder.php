@@ -2,10 +2,10 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors;
 
+use Illuminate\Support\Arr;
 use MohammadAlavi\ObjectOrientedOAS\Objects\Contact;
 use MohammadAlavi\ObjectOrientedOAS\Objects\Info;
 use MohammadAlavi\ObjectOrientedOAS\Objects\License;
-use Illuminate\Support\Arr;
 
 class InfoBuilder
 {

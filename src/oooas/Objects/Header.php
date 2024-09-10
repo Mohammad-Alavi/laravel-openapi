@@ -13,20 +13,20 @@ use MohammadAlavi\ObjectOrientedOAS\Utilities\Arr;
  * @property string|null $style
  * @property bool|null $explode
  * @property bool|null $allowReserved
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Schema|null $schema
+ * @property Schema|null $schema
  * @property mixed|null $example
  * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Example[]|null $examples
  * @property \MohammadAlavi\ObjectOrientedOAS\Objects\MediaType[]|null $content
  */
 class Header extends BaseObject
 {
-    const STYLE_MATRIX = 'matrix';
-    const STYLE_LABEL = 'label';
-    const STYLE_FORM = 'form';
-    const STYLE_SIMPLE = 'simple';
-    const STYLE_SPACE_DELIMITED = 'spaceDelimited';
-    const STYLE_PIPE_DELIMITED = 'pipeDelimited';
-    const STYLE_DEEP_OBJECT = 'deepObject';
+    public const STYLE_MATRIX = 'matrix';
+    public const STYLE_LABEL = 'label';
+    public const STYLE_FORM = 'form';
+    public const STYLE_SIMPLE = 'simple';
+    public const STYLE_SPACE_DELIMITED = 'spaceDelimited';
+    public const STYLE_PIPE_DELIMITED = 'pipeDelimited';
+    public const STYLE_DEEP_OBJECT = 'deepObject';
 
     /**
      * @var string|null
@@ -64,7 +64,7 @@ class Header extends BaseObject
     protected $allowReserved;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\Schema|null
+     * @var Schema|null
      */
     protected $schema;
 
@@ -84,10 +84,9 @@ class Header extends BaseObject
     protected $content;
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -97,10 +96,9 @@ class Header extends BaseObject
     }
 
     /**
-     * @param bool|null $required
      * @return static
      */
-    public function required(?bool $required = true): self
+    public function required(bool|null $required = true): self
     {
         $instance = clone $this;
 
@@ -110,10 +108,9 @@ class Header extends BaseObject
     }
 
     /**
-     * @param bool|null $deprecated
      * @return static
      */
-    public function deprecated(?bool $deprecated = true): self
+    public function deprecated(bool|null $deprecated = true): self
     {
         $instance = clone $this;
 
@@ -123,10 +120,9 @@ class Header extends BaseObject
     }
 
     /**
-     * @param bool|null $allowEmptyValue
      * @return static
      */
-    public function allowEmptyValue(?bool $allowEmptyValue = true): self
+    public function allowEmptyValue(bool|null $allowEmptyValue = true): self
     {
         $instance = clone $this;
 
@@ -136,10 +132,9 @@ class Header extends BaseObject
     }
 
     /**
-     * @param string|null $style
      * @return static
      */
-    public function style(?string $style): self
+    public function style(string|null $style): self
     {
         $instance = clone $this;
 
@@ -149,10 +144,9 @@ class Header extends BaseObject
     }
 
     /**
-     * @param bool|null $explode
      * @return static
      */
-    public function explode(?bool $explode = true): self
+    public function explode(bool|null $explode = true): self
     {
         $instance = clone $this;
 
@@ -162,10 +156,9 @@ class Header extends BaseObject
     }
 
     /**
-     * @param bool|null $allowReserved
      * @return static
      */
-    public function allowReserved(?bool $allowReserved = true): self
+    public function allowReserved(bool|null $allowReserved = true): self
     {
         $instance = clone $this;
 
@@ -175,10 +168,9 @@ class Header extends BaseObject
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Contracts\SchemaContract|null $schema
      * @return static
      */
-    public function schema(?SchemaContract $schema): self
+    public function schema(SchemaContract|null $schema): self
     {
         $instance = clone $this;
 
@@ -189,6 +181,7 @@ class Header extends BaseObject
 
     /**
      * @param mixed|null $example
+     *
      * @return static
      */
     public function example($example): self
@@ -202,6 +195,7 @@ class Header extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Example[] $examples
+     *
      * @return static
      */
     public function examples(Example ...$examples): self
@@ -215,6 +209,7 @@ class Header extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\MediaType[] $content
+     *
      * @return static
      */
     public function content(MediaType ...$content): self
@@ -226,9 +221,6 @@ class Header extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         $examples = [];

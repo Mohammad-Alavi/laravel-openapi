@@ -2,8 +2,6 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors;
 
-use MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException;
-use MohammadAlavi\ObjectOrientedOAS\Objects\PathItem;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
@@ -13,6 +11,8 @@ use MohammadAlavi\LaravelOpenApi\Collectors\Paths\OperationBuilder;
 use MohammadAlavi\LaravelOpenApi\Contracts\PathMiddleware;
 use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInformation;
+use MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException;
+use MohammadAlavi\ObjectOrientedOAS\Objects\PathItem;
 
 class PathBuilder
 {

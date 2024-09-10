@@ -22,9 +22,11 @@ class SecurityRequirement extends BaseObject
     protected $scopes;
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\SecurityScheme|string|null $securityScheme
-     * @throws \MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException
+     * @param SecurityScheme|string|null $securityScheme
+     *
      * @return static
+     *
+     * @throws InvalidArgumentException
      */
     public function securityScheme($securityScheme): self
     {
@@ -35,12 +37,7 @@ class SecurityRequirement extends BaseObject
 
         // If the $securityScheme is not a string or null then thrown an exception.
         if (!is_string($securityScheme) && !is_null($securityScheme)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'The security scheme must either be an instance of [%s], a string or null.',
-                    SecurityScheme::class
-                )
-            );
+            throw new InvalidArgumentException(sprintf('The security scheme must either be an instance of [%s], a string or null.', SecurityScheme::class));
         }
 
         $instance = clone $this;
@@ -52,6 +49,7 @@ class SecurityRequirement extends BaseObject
 
     /**
      * @param string[] $scopes
+     *
      * @return static
      */
     public function scopes(string ...$scopes): self
@@ -63,9 +61,6 @@ class SecurityRequirement extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         return Arr::filter([

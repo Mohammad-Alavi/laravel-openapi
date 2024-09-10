@@ -27,37 +27,37 @@ use MohammadAlavi\ObjectOrientedOAS\Utilities\Arr;
  * @property int|float|null $multipleOf
  * @property string[]|null $required
  * @property \MohammadAlavi\ObjectOrientedOAS\Contracts\SchemaContract[]|null $properties
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Schema|null $additionalProperties
+ * @property Schema|null $additionalProperties
  * @property int|null $maxProperties
  * @property int|null $minProperties
  * @property bool|null $nullable
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Discriminator|null $discriminator
+ * @property Discriminator|null $discriminator
  * @property bool|null $readOnly
  * @property bool|null $writeOnly
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Xml|null $xml
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs|null $externalDocs
+ * @property Xml|null $xml
+ * @property ExternalDocs|null $externalDocs
  * @property mixed|null $example
  * @property bool|null $deprecated
  */
 class Schema extends BaseObject implements SchemaContract
 {
-    const TYPE_ARRAY = 'array';
-    const TYPE_BOOLEAN = 'boolean';
-    const TYPE_INTEGER = 'integer';
-    const TYPE_NUMBER = 'number';
-    const TYPE_OBJECT = 'object';
-    const TYPE_STRING = 'string';
+    public const TYPE_ARRAY = 'array';
+    public const TYPE_BOOLEAN = 'boolean';
+    public const TYPE_INTEGER = 'integer';
+    public const TYPE_NUMBER = 'number';
+    public const TYPE_OBJECT = 'object';
+    public const TYPE_STRING = 'string';
 
-    const FORMAT_INT32 = 'int32';
-    const FORMAT_INT64 = 'int64';
-    const FORMAT_FLOAT = 'float';
-    const FORMAT_DOUBLE = 'double';
-    const FORMAT_BYTE = 'byte';
-    const FORMAT_BINARY = 'binary';
-    const FORMAT_DATE = 'date';
-    const FORMAT_DATE_TIME = 'date-time';
-    const FORMAT_PASSWORD = 'password';
-    const FORMAT_UUID = 'uuid';
+    public const FORMAT_INT32 = 'int32';
+    public const FORMAT_INT64 = 'int64';
+    public const FORMAT_FLOAT = 'float';
+    public const FORMAT_DOUBLE = 'double';
+    public const FORMAT_BYTE = 'byte';
+    public const FORMAT_BINARY = 'binary';
+    public const FORMAT_DATE = 'date';
+    public const FORMAT_DATE_TIME = 'date-time';
+    public const FORMAT_PASSWORD = 'password';
+    public const FORMAT_UUID = 'uuid';
 
     /**
      * @var string|null
@@ -90,7 +90,7 @@ class Schema extends BaseObject implements SchemaContract
     protected $type;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\Schema|null
+     * @var Schema|null
      */
     protected $items;
 
@@ -160,7 +160,7 @@ class Schema extends BaseObject implements SchemaContract
     protected $properties;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\Schema|null
+     * @var Schema|null
      */
     protected $additionalProperties;
 
@@ -180,7 +180,7 @@ class Schema extends BaseObject implements SchemaContract
     protected $nullable;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\Discriminator|null
+     * @var Discriminator|null
      */
     protected $discriminator;
 
@@ -195,12 +195,12 @@ class Schema extends BaseObject implements SchemaContract
     protected $writeOnly;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\Xml|null
+     * @var Xml|null
      */
     protected $xml;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs|null
+     * @var ExternalDocs|null
      */
     protected $externalDocs;
 
@@ -215,64 +215,57 @@ class Schema extends BaseObject implements SchemaContract
     protected $deprecated;
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function array(string $objectId = null): self
+    public static function array(string|null $objectId = null): self
     {
         return static::create($objectId)->type(static::TYPE_ARRAY);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function boolean(string $objectId = null): self
+    public static function boolean(string|null $objectId = null): self
     {
         return static::create($objectId)->type(static::TYPE_BOOLEAN);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function integer(string $objectId = null): self
+    public static function integer(string|null $objectId = null): self
     {
         return static::create($objectId)->type(static::TYPE_INTEGER);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function number(string $objectId = null): self
+    public static function number(string|null $objectId = null): self
     {
         return static::create($objectId)->type(static::TYPE_NUMBER);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function object(string $objectId = null): self
+    public static function object(string|null $objectId = null): self
     {
         return static::create($objectId)->type(static::TYPE_OBJECT);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function string(string $objectId = null): self
+    public static function string(string|null $objectId = null): self
     {
         return static::create($objectId)->type(static::TYPE_STRING);
     }
 
     /**
-     * @param string|null $title
      * @return static
      */
-    public function title(?string $title): self
+    public function title(string|null $title): self
     {
         $instance = clone $this;
 
@@ -282,10 +275,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -296,6 +288,7 @@ class Schema extends BaseObject implements SchemaContract
 
     /**
      * @param mixed[] $enum
+     *
      * @return static
      */
     public function enum(...$enum): self
@@ -309,6 +302,7 @@ class Schema extends BaseObject implements SchemaContract
 
     /**
      * @param mixed|null $default
+     *
      * @return static
      */
     public function default($default): self
@@ -321,10 +315,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param string|null $format
      * @return static
      */
-    public function format(?string $format): self
+    public function format(string|null $format): self
     {
         $instance = clone $this;
 
@@ -334,10 +327,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param string|null $type
      * @return static
      */
-    public function type(?string $type): self
+    public function type(string|null $type): self
     {
         $instance = clone $this;
 
@@ -347,7 +339,6 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Contracts\SchemaContract $items
      * @return static
      */
     public function items(SchemaContract $items): self
@@ -360,10 +351,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param int|null $maxItems
      * @return static
      */
-    public function maxItems(?int $maxItems): self
+    public function maxItems(int|null $maxItems): self
     {
         $instance = clone $this;
 
@@ -373,10 +363,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param int|null $minItems
      * @return static
      */
-    public function minItems(?int $minItems): self
+    public function minItems(int|null $minItems): self
     {
         $instance = clone $this;
 
@@ -386,10 +375,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param bool|null $uniqueItems
      * @return static
      */
-    public function uniqueItems(?bool $uniqueItems = true): self
+    public function uniqueItems(bool|null $uniqueItems = true): self
     {
         $instance = clone $this;
 
@@ -399,10 +387,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param string|null $pattern
      * @return static
      */
-    public function pattern(?string $pattern): self
+    public function pattern(string|null $pattern): self
     {
         $instance = clone $this;
 
@@ -412,10 +399,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param int|null $maxLength
      * @return static
      */
-    public function maxLength(?int $maxLength): self
+    public function maxLength(int|null $maxLength): self
     {
         $instance = clone $this;
 
@@ -425,10 +411,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param int|null $minLength
      * @return static
      */
-    public function minLength(?int $minLength): self
+    public function minLength(int|null $minLength): self
     {
         $instance = clone $this;
 
@@ -439,8 +424,10 @@ class Schema extends BaseObject implements SchemaContract
 
     /**
      * @param int|float|null $maximum
-     * @throws \MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException
+     *
      * @return static
+     *
+     * @throws InvalidArgumentException
      */
     public function maximum($maximum): self
     {
@@ -461,8 +448,10 @@ class Schema extends BaseObject implements SchemaContract
 
     /**
      * @param int|float|null $exclusiveMaximum
-     * @throws \MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException
+     *
      * @return static
+     *
+     * @throws InvalidArgumentException
      */
     public function exclusiveMaximum($exclusiveMaximum): self
     {
@@ -483,8 +472,10 @@ class Schema extends BaseObject implements SchemaContract
 
     /**
      * @param int|float|null $minimum
-     * @throws \MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException
+     *
      * @return static
+     *
+     * @throws InvalidArgumentException
      */
     public function minimum($minimum): self
     {
@@ -505,8 +496,10 @@ class Schema extends BaseObject implements SchemaContract
 
     /**
      * @param int|float|null $exclusiveMinimum
-     * @throws \MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException
+     *
      * @return static
+     *
+     * @throws InvalidArgumentException
      */
     public function exclusiveMinimum($exclusiveMinimum): self
     {
@@ -527,8 +520,10 @@ class Schema extends BaseObject implements SchemaContract
 
     /**
      * @param int|float|null $multipleOf
-     * @throws \MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException
+     *
      * @return static
+     *
+     * @throws InvalidArgumentException
      */
     public function multipleOf($multipleOf): self
     {
@@ -549,8 +544,10 @@ class Schema extends BaseObject implements SchemaContract
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Schema[]|string[] $required
-     * @throws \MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException
+     *
      * @return static
+     *
+     * @throws InvalidArgumentException
      */
     public function required(...$required): self
     {
@@ -566,12 +563,7 @@ class Schema extends BaseObject implements SchemaContract
                 continue;
             }
 
-            throw new InvalidArgumentException(
-                sprintf(
-                    'The required must either be an instance of [%s] or a string.',
-                    Schema::class
-                )
-            );
+            throw new InvalidArgumentException(sprintf('The required must either be an instance of [%s] or a string.', Schema::class));
         }
 
         $instance = clone $this;
@@ -583,6 +575,7 @@ class Schema extends BaseObject implements SchemaContract
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Contracts\SchemaContract[] $properties
+     *
      * @return static
      */
     public function properties(SchemaContract ...$properties): self
@@ -595,10 +588,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Schema|null $additionalProperties
      * @return static
      */
-    public function additionalProperties(?Schema $additionalProperties): self
+    public function additionalProperties(Schema|null $additionalProperties): self
     {
         $instance = clone $this;
 
@@ -608,10 +600,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param int|null $maxProperties
      * @return static
      */
-    public function maxProperties(?int $maxProperties): self
+    public function maxProperties(int|null $maxProperties): self
     {
         $instance = clone $this;
 
@@ -621,10 +612,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param int|null $minProperties
      * @return static
      */
-    public function minProperties(?int $minProperties): self
+    public function minProperties(int|null $minProperties): self
     {
         $instance = clone $this;
 
@@ -634,10 +624,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param bool|null $nullable
      * @return static
      */
-    public function nullable(?bool $nullable = true): self
+    public function nullable(bool|null $nullable = true): self
     {
         $instance = clone $this;
 
@@ -647,10 +636,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Discriminator|null $discriminator
      * @return static
      */
-    public function discriminator(?Discriminator $discriminator): self
+    public function discriminator(Discriminator|null $discriminator): self
     {
         $instance = clone $this;
 
@@ -660,10 +648,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param bool|null $readOnly
      * @return static
      */
-    public function readOnly(?bool $readOnly = true): self
+    public function readOnly(bool|null $readOnly = true): self
     {
         $instance = clone $this;
 
@@ -673,10 +660,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param bool|null $writeOnly
      * @return static
      */
-    public function writeOnly(?bool $writeOnly = true): self
+    public function writeOnly(bool|null $writeOnly = true): self
     {
         $instance = clone $this;
 
@@ -686,10 +672,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Xml|null $xml
      * @return static
      */
-    public function xml(?Xml $xml): self
+    public function xml(Xml|null $xml): self
     {
         $instance = clone $this;
 
@@ -699,10 +684,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs|null $externalDocs
      * @return static
      */
-    public function externalDocs(?ExternalDocs $externalDocs): self
+    public function externalDocs(ExternalDocs|null $externalDocs): self
     {
         $instance = clone $this;
 
@@ -713,6 +697,7 @@ class Schema extends BaseObject implements SchemaContract
 
     /**
      * @param mixed|null $example
+     *
      * @return static
      */
     public function example($example): self
@@ -725,10 +710,9 @@ class Schema extends BaseObject implements SchemaContract
     }
 
     /**
-     * @param bool|null $deprecated
      * @return static
      */
-    public function deprecated(?bool $deprecated = true): self
+    public function deprecated(bool|null $deprecated = true): self
     {
         $instance = clone $this;
 
@@ -737,9 +721,6 @@ class Schema extends BaseObject implements SchemaContract
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         $properties = [];

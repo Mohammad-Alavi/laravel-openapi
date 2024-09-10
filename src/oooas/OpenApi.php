@@ -2,6 +2,8 @@
 
 namespace MohammadAlavi\ObjectOrientedOAS;
 
+use JsonSchema\Constraints\BaseConstraint;
+use JsonSchema\Validator;
 use MohammadAlavi\ObjectOrientedOAS\Exceptions\ValidationException;
 use MohammadAlavi\ObjectOrientedOAS\Objects\BaseObject;
 use MohammadAlavi\ObjectOrientedOAS\Objects\Components;
@@ -12,24 +14,22 @@ use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityRequirement;
 use MohammadAlavi\ObjectOrientedOAS\Objects\Server;
 use MohammadAlavi\ObjectOrientedOAS\Objects\Tag;
 use MohammadAlavi\ObjectOrientedOAS\Utilities\Arr;
-use JsonSchema\Constraints\BaseConstraint;
-use JsonSchema\Validator;
 
 /**
  * @property string|null $openapi
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Info|null $info
+ * @property Info|null $info
  * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Server[]|null $servers
  * @property \MohammadAlavi\ObjectOrientedOAS\Objects\PathItem[]|null $paths
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Components|null $components
+ * @property Components|null $components
  * @property \MohammadAlavi\ObjectOrientedOAS\Objects\SecurityRequirement[]|null $security
  * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Tag[]|null $tags
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs|null $externalDocs
+ * @property ExternalDocs|null $externalDocs
  */
 class OpenApi extends BaseObject
 {
-    const OPENAPI_3_0_0 = '3.0.0';
-    const OPENAPI_3_0_1 = '3.0.1';
-    const OPENAPI_3_0_2 = '3.0.2';
+    public const OPENAPI_3_0_0 = '3.0.0';
+    public const OPENAPI_3_0_1 = '3.0.1';
+    public const OPENAPI_3_0_2 = '3.0.2';
 
     /**
      * @var string|null
@@ -37,7 +37,7 @@ class OpenApi extends BaseObject
     protected $openapi;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\Info|null
+     * @var Info|null
      */
     protected $info;
 
@@ -52,7 +52,7 @@ class OpenApi extends BaseObject
     protected $paths;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\Components|null
+     * @var Components|null
      */
     protected $components;
 
@@ -67,15 +67,14 @@ class OpenApi extends BaseObject
     protected $tags;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs|null
+     * @var ExternalDocs|null
      */
     protected $externalDocs;
 
     /**
-     * @param string|null $openapi
      * @return static
      */
-    public function openapi(?string $openapi): self
+    public function openapi(string|null $openapi): self
     {
         $instance = clone $this;
 
@@ -85,10 +84,9 @@ class OpenApi extends BaseObject
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Info|null $info
      * @return static
      */
-    public function info(?Info $info): self
+    public function info(Info|null $info): self
     {
         $instance = clone $this;
 
@@ -99,6 +97,7 @@ class OpenApi extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Server[] $servers
+     *
      * @return static
      */
     public function servers(Server ...$servers): self
@@ -112,6 +111,7 @@ class OpenApi extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\PathItem[] $paths
+     *
      * @return static
      */
     public function paths(PathItem ...$paths): self
@@ -124,10 +124,9 @@ class OpenApi extends BaseObject
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Components|null $components
      * @return static
      */
-    public function components(?Components $components): self
+    public function components(Components|null $components): self
     {
         $instance = clone $this;
 
@@ -138,6 +137,7 @@ class OpenApi extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\SecurityRequirement[] $security
+     *
      * @return static
      */
     public function security(SecurityRequirement ...$security): self
@@ -151,6 +151,7 @@ class OpenApi extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Tag[] $tags
+     *
      * @return static
      */
     public function tags(Tag ...$tags): self
@@ -163,10 +164,9 @@ class OpenApi extends BaseObject
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs|null $externalDocs
      * @return static
      */
-    public function externalDocs(?ExternalDocs $externalDocs): self
+    public function externalDocs(ExternalDocs|null $externalDocs): self
     {
         $instance = clone $this;
 
@@ -176,7 +176,7 @@ class OpenApi extends BaseObject
     }
 
     /**
-     * @throws \MohammadAlavi\ObjectOrientedOAS\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function validate(): void
     {
@@ -187,7 +187,7 @@ class OpenApi extends BaseObject
         $data = BaseConstraint::arrayToObjectRecursive($this->generate());
 
         $schema = file_get_contents(
-            realpath(__DIR__ . '/schemas/v3.0.json')
+            realpath(__DIR__ . '/schemas/v3.0.json'),
         );
         $schema = json_decode($schema);
 
@@ -199,9 +199,6 @@ class OpenApi extends BaseObject
         }
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         $paths = [];

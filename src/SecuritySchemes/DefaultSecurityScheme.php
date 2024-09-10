@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\LaravelOpenApi\SecuritySchemes;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityScheme;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\SecuritySchemeFactory;
+use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityScheme;
 
 class DefaultSecurityScheme extends SecuritySchemeFactory
 {

@@ -2,9 +2,9 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\Server;
 use MohammadAlavi\LaravelOpenApi\Factories\ServerFactory;
 use MohammadAlavi\LaravelOpenApi\Helpers\BuilderHelper;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Server;
 
 class ServerBuilder
 {

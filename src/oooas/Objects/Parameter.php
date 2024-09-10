@@ -15,25 +15,25 @@ use MohammadAlavi\ObjectOrientedOAS\Utilities\Arr;
  * @property string|null $style
  * @property bool|null $explode
  * @property bool|null $allowReserved
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Schema|null $schema
+ * @property Schema|null $schema
  * @property mixed|null $example
  * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Example[]|null $examples
  * @property \MohammadAlavi\ObjectOrientedOAS\Objects\MediaType[]|null $content
  */
 class Parameter extends BaseObject
 {
-    const IN_QUERY = 'query';
-    const IN_HEADER = 'header';
-    const IN_PATH = 'path';
-    const IN_COOKIE = 'cookie';
+    public const IN_QUERY = 'query';
+    public const IN_HEADER = 'header';
+    public const IN_PATH = 'path';
+    public const IN_COOKIE = 'cookie';
 
-    const STYLE_MATRIX = 'matrix';
-    const STYLE_LABEL = 'label';
-    const STYLE_FORM = 'form';
-    const STYLE_SIMPLE = 'simple';
-    const STYLE_SPACE_DELIMITED = 'spaceDelimited';
-    const STYLE_PIPE_DELIMITED = 'pipeDelimited';
-    const STYLE_DEEP_OBJECT = 'deepObject';
+    public const STYLE_MATRIX = 'matrix';
+    public const STYLE_LABEL = 'label';
+    public const STYLE_FORM = 'form';
+    public const STYLE_SIMPLE = 'simple';
+    public const STYLE_SPACE_DELIMITED = 'spaceDelimited';
+    public const STYLE_PIPE_DELIMITED = 'pipeDelimited';
+    public const STYLE_DEEP_OBJECT = 'deepObject';
 
     /**
      * @var string|null
@@ -81,7 +81,7 @@ class Parameter extends BaseObject
     protected $allowReserved;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\Schema|null
+     * @var Schema|null
      */
     protected $schema;
 
@@ -101,46 +101,41 @@ class Parameter extends BaseObject
     protected $content;
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function query(string $objectId = null): self
+    public static function query(string|null $objectId = null): self
     {
         return static::create($objectId)->in(static::IN_QUERY);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function header(string $objectId = null): self
+    public static function header(string|null $objectId = null): self
     {
         return static::create($objectId)->in(static::IN_HEADER);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function path(string $objectId = null): self
+    public static function path(string|null $objectId = null): self
     {
         return static::create($objectId)->in(static::IN_PATH);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function cookie(string $objectId = null): self
+    public static function cookie(string|null $objectId = null): self
     {
         return static::create($objectId)->in(static::IN_COOKIE);
     }
 
     /**
-     * @param string|null $name
      * @return static
      */
-    public function name(?string $name): self
+    public function name(string|null $name): self
     {
         $instance = clone $this;
 
@@ -150,10 +145,9 @@ class Parameter extends BaseObject
     }
 
     /**
-     * @param string|null $in
      * @return static
      */
-    public function in(?string $in): self
+    public function in(string|null $in): self
     {
         $instance = clone $this;
 
@@ -163,10 +157,9 @@ class Parameter extends BaseObject
     }
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -176,10 +169,9 @@ class Parameter extends BaseObject
     }
 
     /**
-     * @param bool|null $required
      * @return static
      */
-    public function required(?bool $required = true): self
+    public function required(bool|null $required = true): self
     {
         $instance = clone $this;
 
@@ -189,10 +181,9 @@ class Parameter extends BaseObject
     }
 
     /**
-     * @param bool|null $deprecated
      * @return static
      */
-    public function deprecated(?bool $deprecated = true): self
+    public function deprecated(bool|null $deprecated = true): self
     {
         $instance = clone $this;
 
@@ -202,10 +193,9 @@ class Parameter extends BaseObject
     }
 
     /**
-     * @param bool|null $allowEmptyValue
      * @return static
      */
-    public function allowEmptyValue(?bool $allowEmptyValue = true): self
+    public function allowEmptyValue(bool|null $allowEmptyValue = true): self
     {
         $instance = clone $this;
 
@@ -215,10 +205,9 @@ class Parameter extends BaseObject
     }
 
     /**
-     * @param string|null $style
      * @return static
      */
-    public function style(?string $style): self
+    public function style(string|null $style): self
     {
         $instance = clone $this;
 
@@ -228,10 +217,9 @@ class Parameter extends BaseObject
     }
 
     /**
-     * @param bool|null $explode
      * @return static
      */
-    public function explode(?bool $explode = true): self
+    public function explode(bool|null $explode = true): self
     {
         $instance = clone $this;
 
@@ -241,10 +229,9 @@ class Parameter extends BaseObject
     }
 
     /**
-     * @param bool|null $allowReserved
      * @return static
      */
-    public function allowReserved(?bool $allowReserved = true): self
+    public function allowReserved(bool|null $allowReserved = true): self
     {
         $instance = clone $this;
 
@@ -254,10 +241,9 @@ class Parameter extends BaseObject
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Contracts\SchemaContract|null $schema
      * @return static
      */
-    public function schema(?SchemaContract $schema): self
+    public function schema(SchemaContract|null $schema): self
     {
         $instance = clone $this;
 
@@ -268,6 +254,7 @@ class Parameter extends BaseObject
 
     /**
      * @param mixed|null $example
+     *
      * @return static
      */
     public function example($example): self
@@ -281,6 +268,7 @@ class Parameter extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Example[]|null $examples
+     *
      * @return static
      */
     public function examples(Example ...$examples): self
@@ -294,6 +282,7 @@ class Parameter extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\MediaType[] $content
+     *
      * @return static
      */
     public function content(MediaType ...$content): self
@@ -305,9 +294,6 @@ class Parameter extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         $examples = [];

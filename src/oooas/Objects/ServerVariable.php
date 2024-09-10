@@ -28,6 +28,7 @@ class ServerVariable extends BaseObject
 
     /**
      * @param string[] $enum
+     *
      * @return static
      */
     public function enum(string ...$enum): self
@@ -40,10 +41,9 @@ class ServerVariable extends BaseObject
     }
 
     /**
-     * @param string|null $default
      * @return static
      */
-    public function default(?string $default): self
+    public function default(string|null $default): self
     {
         $instance = clone $this;
 
@@ -53,10 +53,9 @@ class ServerVariable extends BaseObject
     }
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -65,9 +64,6 @@ class ServerVariable extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         return Arr::filter([

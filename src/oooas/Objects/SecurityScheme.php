@@ -16,14 +16,14 @@ use MohammadAlavi\ObjectOrientedOAS\Utilities\Arr;
  */
 class SecurityScheme extends BaseObject
 {
-    const TYPE_API_KEY = 'apiKey';
-    const TYPE_HTTP = 'http';
-    const TYPE_OAUTH2 = 'oauth2';
-    const TYPE_OPEN_ID_CONNECT = 'openIdConnect';
+    public const TYPE_API_KEY = 'apiKey';
+    public const TYPE_HTTP = 'http';
+    public const TYPE_OAUTH2 = 'oauth2';
+    public const TYPE_OPEN_ID_CONNECT = 'openIdConnect';
 
-    const IN_QUERY = 'query';
-    const IN_HEADER = 'header';
-    const IN_COOKIE = 'cookie';
+    public const IN_QUERY = 'query';
+    public const IN_HEADER = 'header';
+    public const IN_COOKIE = 'cookie';
 
     /**
      * @var string|null
@@ -66,19 +66,17 @@ class SecurityScheme extends BaseObject
     protected $openIdConnectUrl;
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function oauth2(string $objectId = null): self
+    public static function oauth2(string|null $objectId = null): self
     {
         return static::create($objectId)->type(static::TYPE_OAUTH2);
     }
 
     /**
-     * @param string|null $type
      * @return static
      */
-    public function type(?string $type): self
+    public function type(string|null $type): self
     {
         $instance = clone $this;
 
@@ -88,10 +86,9 @@ class SecurityScheme extends BaseObject
     }
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -101,10 +98,9 @@ class SecurityScheme extends BaseObject
     }
 
     /**
-     * @param string|null $name
      * @return static
      */
-    public function name(?string $name): self
+    public function name(string|null $name): self
     {
         $instance = clone $this;
 
@@ -114,10 +110,9 @@ class SecurityScheme extends BaseObject
     }
 
     /**
-     * @param string|null $in
      * @return static
      */
-    public function in(?string $in): self
+    public function in(string|null $in): self
     {
         $instance = clone $this;
 
@@ -127,10 +122,9 @@ class SecurityScheme extends BaseObject
     }
 
     /**
-     * @param string|null $scheme
      * @return static
      */
-    public function scheme(?string $scheme): self
+    public function scheme(string|null $scheme): self
     {
         $instance = clone $this;
 
@@ -140,10 +134,9 @@ class SecurityScheme extends BaseObject
     }
 
     /**
-     * @param string|null $bearerFormat
      * @return static
      */
-    public function bearerFormat(?string $bearerFormat): self
+    public function bearerFormat(string|null $bearerFormat): self
     {
         $instance = clone $this;
 
@@ -154,6 +147,7 @@ class SecurityScheme extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\OAuthFlow[] $flows
+     *
      * @return static
      */
     public function flows(OAuthFlow ...$flows): self
@@ -166,10 +160,9 @@ class SecurityScheme extends BaseObject
     }
 
     /**
-     * @param string|null $openIdConnectUrl
      * @return static
      */
-    public function openIdConnectUrl(?string $openIdConnectUrl): self
+    public function openIdConnectUrl(string|null $openIdConnectUrl): self
     {
         $instance = clone $this;
 
@@ -178,9 +171,6 @@ class SecurityScheme extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         $flows = [];

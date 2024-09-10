@@ -6,20 +6,19 @@ use MohammadAlavi\ObjectOrientedOAS\Contracts\SchemaContract;
 use MohammadAlavi\ObjectOrientedOAS\Utilities\Arr;
 
 /**
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Schema|null $schema
+ * @property Schema|null $schema
  */
 class Not extends BaseObject implements SchemaContract
 {
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\Schema|null
+     * @var Schema|null
      */
     protected $schema;
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Schema|null $schema
      * @return static
      */
-    public function schema(?Schema $schema): self
+    public function schema(Schema|null $schema): self
     {
         $instance = clone $this;
 
@@ -28,9 +27,6 @@ class Not extends BaseObject implements SchemaContract
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         return Arr::filter([

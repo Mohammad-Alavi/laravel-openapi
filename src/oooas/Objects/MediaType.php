@@ -7,21 +7,21 @@ use MohammadAlavi\ObjectOrientedOAS\Utilities\Arr;
 
 /**
  * @property string|null $mediaType
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Schema|null $schema
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Example|null $example
+ * @property Schema|null $schema
+ * @property Example|null $example
  * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Example[]|null $examples
  * @property \MohammadAlavi\ObjectOrientedOAS\Objects\Encoding[]|null $encoding
  */
 class MediaType extends BaseObject
 {
-    const MEDIA_TYPE_APPLICATION_JSON = 'application/json';
-    const MEDIA_TYPE_APPLICATION_PDF = 'application/pdf';
-    const MEDIA_TYPE_IMAGE_JPEG = 'image/jpeg';
-    const MEDIA_TYPE_IMAGE_PNG = 'image/png';
-    const MEDIA_TYPE_TEXT_CALENDAR = 'text/calendar';
-    const MEDIA_TYPE_TEXT_PLAIN = 'text/plain';
-    const MEDIA_TYPE_TEXT_XML = 'text/xml';
-    const MEDIA_TYPE_APPLICATION_X_WWW_FORM_URLENCODED = 'application/x-www-form-urlencoded';
+    public const MEDIA_TYPE_APPLICATION_JSON = 'application/json';
+    public const MEDIA_TYPE_APPLICATION_PDF = 'application/pdf';
+    public const MEDIA_TYPE_IMAGE_JPEG = 'image/jpeg';
+    public const MEDIA_TYPE_IMAGE_PNG = 'image/png';
+    public const MEDIA_TYPE_TEXT_CALENDAR = 'text/calendar';
+    public const MEDIA_TYPE_TEXT_PLAIN = 'text/plain';
+    public const MEDIA_TYPE_TEXT_XML = 'text/xml';
+    public const MEDIA_TYPE_APPLICATION_X_WWW_FORM_URLENCODED = 'application/x-www-form-urlencoded';
 
     /**
      * @var string|null
@@ -29,12 +29,12 @@ class MediaType extends BaseObject
     protected $mediaType;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\Schema|null
+     * @var Schema|null
      */
     protected $schema;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\Example|null
+     * @var Example|null
      */
     protected $example;
 
@@ -49,90 +49,81 @@ class MediaType extends BaseObject
     protected $encoding;
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function json(string $objectId = null): self
+    public static function json(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_APPLICATION_JSON);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function pdf(string $objectId = null): self
+    public static function pdf(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_APPLICATION_PDF);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function jpeg(string $objectId = null): self
+    public static function jpeg(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_IMAGE_JPEG);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function png(string $objectId = null): self
+    public static function png(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_IMAGE_PNG);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function calendar(string $objectId = null): self
+    public static function calendar(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_TEXT_CALENDAR);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function plainText(string $objectId = null): self
+    public static function plainText(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_TEXT_PLAIN);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function xml(string $objectId = null): self
+    public static function xml(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_TEXT_XML);
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function formUrlEncoded(string $objectId = null): self
+    public static function formUrlEncoded(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_APPLICATION_X_WWW_FORM_URLENCODED);
     }
 
     /**
-     * @param string|null $mediaType
      * @return static
      */
-    public function mediaType(?string $mediaType): self
+    public function mediaType(string|null $mediaType): self
     {
         $instance = clone $this;
 
@@ -142,10 +133,9 @@ class MediaType extends BaseObject
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Contracts\SchemaContract|null $schema
      * @return static
      */
-    public function schema(?SchemaContract $schema): self
+    public function schema(SchemaContract|null $schema): self
     {
         $instance = clone $this;
 
@@ -155,10 +145,9 @@ class MediaType extends BaseObject
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Example|null $example
      * @return static
      */
-    public function example(?Example $example): self
+    public function example(Example|null $example): self
     {
         $instance = clone $this;
 
@@ -169,6 +158,7 @@ class MediaType extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Example[]|null $examples
+     *
      * @return static
      */
     public function examples(Example ...$examples): self
@@ -182,6 +172,7 @@ class MediaType extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Encoding[] $encoding
+     *
      * @return static
      */
     public function encoding(Encoding ...$encoding): self
@@ -193,9 +184,6 @@ class MediaType extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         $examples = [];

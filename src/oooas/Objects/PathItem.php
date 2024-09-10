@@ -45,10 +45,9 @@ class PathItem extends BaseObject
     protected $parameters;
 
     /**
-     * @param string|null $route
      * @return static
      */
-    public function route(?string $route): self
+    public function route(string|null $route): self
     {
         $instance = clone $this;
 
@@ -58,10 +57,9 @@ class PathItem extends BaseObject
     }
 
     /**
-     * @param string|null $summary
      * @return static
      */
-    public function summary(?string $summary): self
+    public function summary(string|null $summary): self
     {
         $instance = clone $this;
 
@@ -71,10 +69,9 @@ class PathItem extends BaseObject
     }
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -85,6 +82,7 @@ class PathItem extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Operation[] $operations
+     *
      * @return static
      */
     public function operations(Operation ...$operations): self
@@ -98,6 +96,7 @@ class PathItem extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Server[] $servers
+     *
      * @return static
      */
     public function servers(Server ...$servers): self
@@ -111,6 +110,7 @@ class PathItem extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Parameter[] $parameters
+     *
      * @return static
      */
     public function parameters(Parameter ...$parameters): self
@@ -122,9 +122,6 @@ class PathItem extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         $operations = [];
@@ -138,7 +135,7 @@ class PathItem extends BaseObject
                 'description' => $this->description,
                 'servers' => $this->servers,
                 'parameters' => $this->parameters,
-            ])
+            ]),
         );
     }
 }

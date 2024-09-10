@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedOAS\Utilities\Arr;
 /**
  * @property string|null $name
  * @property string|null $description
- * @property \MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs|null $externalDocs
+ * @property ExternalDocs|null $externalDocs
  */
 class Tag extends BaseObject
 {
@@ -22,15 +22,14 @@ class Tag extends BaseObject
     protected $description;
 
     /**
-     * @var \MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs|null
+     * @var ExternalDocs|null
      */
     protected $externalDocs;
 
     /**
-     * @param string|null $name
      * @return static
      */
-    public function name(?string $name): self
+    public function name(string|null $name): self
     {
         $instance = clone $this;
 
@@ -40,10 +39,9 @@ class Tag extends BaseObject
     }
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -53,10 +51,9 @@ class Tag extends BaseObject
     }
 
     /**
-     * @param \MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs|null $externalDocs
      * @return static
      */
-    public function externalDocs(?ExternalDocs $externalDocs): self
+    public function externalDocs(ExternalDocs|null $externalDocs): self
     {
         $instance = clone $this;
 
@@ -65,9 +62,6 @@ class Tag extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         return Arr::filter([

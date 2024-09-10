@@ -9,10 +9,6 @@ use MohammadAlavi\ObjectOrientedOAS\Objects\BaseObject;
  */
 class Arr
 {
-    /**
-     * @param array $array
-     * @return array
-     */
     public static function filter(array $array): array
     {
         foreach ($array as $index => &$value) {
@@ -29,12 +25,12 @@ class Arr
 
             // If the value is a specification extension, then skip the null
             // check below.
-            if (is_string($index) && mb_strpos($index, 'x-') === 0) {
+            if (is_string($index) && 0 === mb_strpos($index, 'x-')) {
                 continue;
             }
 
             // If the value is null then remove it.
-            if ($value === null) {
+            if (null === $value) {
                 unset($array[$index]);
                 continue;
             }

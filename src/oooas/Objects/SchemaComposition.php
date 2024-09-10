@@ -17,6 +17,7 @@ abstract class SchemaComposition extends BaseObject implements SchemaContract
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Schema[] $schemas
+     *
      * @return static
      */
     public function schemas(Schema ...$schemas): self
@@ -28,14 +29,8 @@ abstract class SchemaComposition extends BaseObject implements SchemaContract
         return $instance;
     }
 
-    /**
-     * @return string
-     */
     abstract protected function compositionType(): string;
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         return Arr::filter([

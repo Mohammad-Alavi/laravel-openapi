@@ -39,10 +39,9 @@ class Response extends BaseObject
     protected $links;
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function ok(string $objectId = null): self
+    public static function ok(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(200)
@@ -50,10 +49,9 @@ class Response extends BaseObject
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function created(string $objectId = null): self
+    public static function created(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(201)
@@ -61,10 +59,9 @@ class Response extends BaseObject
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function movedPermanently(string $objectId = null): self
+    public static function movedPermanently(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(301)
@@ -72,10 +69,9 @@ class Response extends BaseObject
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function movedTemporarily(string $objectId = null): self
+    public static function movedTemporarily(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(302)
@@ -83,10 +79,9 @@ class Response extends BaseObject
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function badRequest(string $objectId = null): self
+    public static function badRequest(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(400)
@@ -94,10 +89,9 @@ class Response extends BaseObject
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function unauthorized(string $objectId = null): self
+    public static function unauthorized(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(401)
@@ -105,10 +99,9 @@ class Response extends BaseObject
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function forbidden(string $objectId = null): self
+    public static function forbidden(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(403)
@@ -116,10 +109,9 @@ class Response extends BaseObject
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function notFound(string $objectId = null): self
+    public static function notFound(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(404)
@@ -127,10 +119,9 @@ class Response extends BaseObject
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function unprocessableEntity(string $objectId = null): self
+    public static function unprocessableEntity(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(422)
@@ -138,10 +129,9 @@ class Response extends BaseObject
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function tooManyRequests(string $objectId = null): self
+    public static function tooManyRequests(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(429)
@@ -149,10 +139,9 @@ class Response extends BaseObject
     }
 
     /**
-     * @param string|null $objectId
      * @return static
      */
-    public static function internalServerError(string $objectId = null): self
+    public static function internalServerError(string|null $objectId = null): self
     {
         return static::create($objectId)
             ->statusCode(500)
@@ -160,10 +149,9 @@ class Response extends BaseObject
     }
 
     /**
-     * @param int|null $statusCode
      * @return static
      */
-    public function statusCode(?int $statusCode): self
+    public function statusCode(int|null $statusCode): self
     {
         $instance = clone $this;
 
@@ -173,10 +161,9 @@ class Response extends BaseObject
     }
 
     /**
-     * @param string|null $description
      * @return static
      */
-    public function description(?string $description): self
+    public function description(string|null $description): self
     {
         $instance = clone $this;
 
@@ -187,6 +174,7 @@ class Response extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Header[] $headers
+     *
      * @return static
      */
     public function headers(Header ...$headers): self
@@ -200,6 +188,7 @@ class Response extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\MediaType[] $content
+     *
      * @return static
      */
     public function content(MediaType ...$content): self
@@ -213,6 +202,7 @@ class Response extends BaseObject
 
     /**
      * @param \MohammadAlavi\ObjectOrientedOAS\Objects\Link[] $links
+     *
      * @return static
      */
     public function links(Link ...$links): self
@@ -224,9 +214,6 @@ class Response extends BaseObject
         return $instance;
     }
 
-    /**
-     * @return array
-     */
     protected function generate(): array
     {
         $headers = [];
