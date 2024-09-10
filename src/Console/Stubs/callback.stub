@@ -2,12 +2,12 @@
 
 namespace DummyNamespace;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
+use MohammadAlavi\ObjectOrientedOAS\Objects\MediaType;
 use Vyuldashev\LaravelOpenApi\Objects\Operation;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\PathItem;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\RequestBody;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+use MohammadAlavi\ObjectOrientedOAS\Objects\PathItem;
+use MohammadAlavi\ObjectOrientedOAS\Objects\RequestBody;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Response;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
 use Vyuldashev\LaravelOpenApi\Factories\CallbackFactory;
 
 class DummyClass extends CallbackFactory

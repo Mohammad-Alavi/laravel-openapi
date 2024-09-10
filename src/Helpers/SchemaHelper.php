@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Helpers;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
 
 class SchemaHelper
 {

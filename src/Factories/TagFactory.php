@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Factories;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Tag;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Tag;
 
 abstract class TagFactory
 {

@@ -2,8 +2,8 @@
 
 namespace Examples\Petstore\OpenApi\SecuritySchemes;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\OAuthFlow;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOAS\Objects\OAuthFlow;
+use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityScheme;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\SecuritySchemeFactory;
 
 class OAuth2PasswordGrantSecurityScheme extends SecuritySchemeFactory

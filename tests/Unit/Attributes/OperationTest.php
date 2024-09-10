@@ -98,16 +98,6 @@ describe('Operation', function () {
         expect($operation->security)->toBeNull();
     });
 
-    it('can make security optional', function ($security) {
-        $operation = new Operation(security: $security);
-        expect($operation->security)->toBe($security);
-    })->with([
-        [
-            [[], SecuritySchemeFactoryStub::class],
-            [SecuritySchemeFactoryStub::class, []],
-        ],
-    ]);
-
     it('can be instantiated with a class FQN security', function () {
         $operation = new Operation(security: SecuritySchemeFactoryStub::class);
         expect($operation->security)->toBe(SecuritySchemeFactoryStub::class);

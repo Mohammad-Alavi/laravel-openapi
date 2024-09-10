@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Attributes\Stubs;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityScheme;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\SecuritySchemeFactory;
 
 class SecuritySchemeFactoryStub extends SecuritySchemeFactory

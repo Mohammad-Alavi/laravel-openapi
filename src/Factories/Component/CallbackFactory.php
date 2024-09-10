@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Factories\Component;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\PathItem;
+use MohammadAlavi\ObjectOrientedOAS\Objects\PathItem;
 
 abstract class CallbackFactory
 {

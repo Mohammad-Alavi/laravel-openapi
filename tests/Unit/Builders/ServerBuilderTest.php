@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tests\Unit\Builders;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Server;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\ServerVariable;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Server;
+use MohammadAlavi\ObjectOrientedOAS\Objects\ServerVariable;
 use MohammadAlavi\LaravelOpenApi\Collectors\ServerBuilder;
 use MohammadAlavi\LaravelOpenApi\Factories\ServerFactory;
 use PHPUnit\Framework\Attributes\CoversClass;

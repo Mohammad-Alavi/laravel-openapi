@@ -2,9 +2,9 @@
 
 namespace Examples\Petstore\OpenApi\Responses;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+use MohammadAlavi\ObjectOrientedOAS\Objects\MediaType;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Response;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
 use MohammadAlavi\LaravelOpenApi\Contracts\Reusable;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\ResponseFactory;
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tests\Unit\Builders;
 
 use MohammadAlavi\LaravelOpenApi\Collectors\InfoBuilder;

@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors\Paths\Operation;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Parameter;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Parameter;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Parameter as ParameterAttribute;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\ParameterFactory;

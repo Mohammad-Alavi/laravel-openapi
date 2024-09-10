@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Contracts;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Components;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Components;
 
 interface ComponentMiddleware
 {

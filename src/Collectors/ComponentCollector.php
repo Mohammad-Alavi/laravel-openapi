@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Components;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Components;
 use MohammadAlavi\LaravelOpenApi\Collectors\Component\CallbackCollector;
 use MohammadAlavi\LaravelOpenApi\Collectors\Component\RequestBodyCollector;
 use MohammadAlavi\LaravelOpenApi\Collectors\Component\ResponseCollector;

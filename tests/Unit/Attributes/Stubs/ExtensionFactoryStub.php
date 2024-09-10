@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Attributes\Stubs;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
 use MohammadAlavi\LaravelOpenApi\Factories\ExtensionFactory;
 
 class ExtensionFactoryStub extends ExtensionFactory

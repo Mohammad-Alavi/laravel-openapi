@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Server;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Server;
 use MohammadAlavi\LaravelOpenApi\Factories\ServerFactory;
 use MohammadAlavi\LaravelOpenApi\Helpers\BuilderHelper;
 

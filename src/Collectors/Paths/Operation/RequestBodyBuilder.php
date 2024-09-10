@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors\Paths\Operation;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\RequestBody;
+use MohammadAlavi\ObjectOrientedOAS\Objects\RequestBody;
 use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody as RequestBodyAttribute;
 use MohammadAlavi\LaravelOpenApi\Contracts\Reusable;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\RequestBodyFactory;

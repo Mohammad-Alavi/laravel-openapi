@@ -2,12 +2,12 @@
 
 namespace DummyNamespace;
 
-use GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\AllOf;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\AnyOf;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Not;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\OneOf;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+use MohammadAlavi\ObjectOrientedOAS\Contracts\SchemaContract;
+use MohammadAlavi\ObjectOrientedOAS\Objects\AllOf;
+use MohammadAlavi\ObjectOrientedOAS\Objects\AnyOf;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Not;
+use MohammadAlavi\ObjectOrientedOAS\Objects\OneOf;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
 use Vyuldashev\LaravelOpenApi\Factories\SchemaFactory;
 
 class DummyClass extends SchemaFactory

@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\BaseObject;
+use MohammadAlavi\ObjectOrientedOAS\Objects\BaseObject;
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Extension as ExtensionAttribute;
 use MohammadAlavi\LaravelOpenApi\Factories\ExtensionFactory;

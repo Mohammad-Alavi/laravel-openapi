@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors\Paths\Operation;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\PathItem;
+use MohammadAlavi\ObjectOrientedOAS\Objects\PathItem;
 use MohammadAlavi\LaravelOpenApi\Attributes\Callback as CallbackAttribute;
 use MohammadAlavi\LaravelOpenApi\Contracts\Reusable;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInformation;

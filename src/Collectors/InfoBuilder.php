@@ -2,9 +2,9 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Contact;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Info;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\License;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Contact;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Info;
+use MohammadAlavi\ObjectOrientedOAS\Objects\License;
 use Illuminate\Support\Arr;
 
 class InfoBuilder

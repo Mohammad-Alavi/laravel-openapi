@@ -2,7 +2,7 @@
 
 namespace Examples\Petstore\OpenApi\SecuritySchemes;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityScheme;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\SecuritySchemeFactory;
 
 class BearerTokenSecurityScheme extends SecuritySchemeFactory

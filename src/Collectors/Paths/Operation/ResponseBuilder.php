@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors\Paths\Operation;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Response;
 use MohammadAlavi\LaravelOpenApi\Attributes\Response as ResponseAttribute;
 use MohammadAlavi\LaravelOpenApi\Contracts\Reusable;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInformation;

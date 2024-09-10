@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors\Paths\Operation;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Tag;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Tag;
 
 class TagBuilder
 {

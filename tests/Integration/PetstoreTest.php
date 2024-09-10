@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Integration;
 
 use Examples\Petstore\PetController;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Tests\FeatureTestCase;
+use Tests\IntegrationTestCase;
 use Tests\Unit\Builders\ServerWithMultipleVariableFormatting;
 use Tests\Unit\Builders\ServerWithoutVariables;
 use Tests\Unit\Builders\ServerWithVariables;
@@ -16,7 +16,7 @@ use Tests\Unit\Builders\ServerWithVariables;
  * @see https://github.com/OAI/OpenAPI-Specification/blob/master/examples/v3.0/petstore.yaml
  */
 #[CoversClass(PetController::class)]
-class PetstoreTest extends FeatureTestCase
+class PetstoreTest extends IntegrationTestCase
 {
     public static function expectationProvider(): array
     {

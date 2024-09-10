@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Builders;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Components;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\PathItem;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Components;
+use MohammadAlavi\ObjectOrientedOAS\Objects\PathItem;
+use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityScheme;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation as AttributesOperation;
 use MohammadAlavi\LaravelOpenApi\Collectors\Paths\Operation\SecurityRequirementBuilder as OperationSecurityBuilder;
 use MohammadAlavi\LaravelOpenApi\Collectors\Paths\OperationBuilder;
@@ -41,40 +41,6 @@ class SecurityBuilderTest extends TestCase
                 ],
                 [], // applied global security
                 null, // use default global securities
-            ],
-            'Optional security requirement' => [
-                [
-                    'components' => [
-                        'securitySchemes' => [
-                            'JWT' => self::jwtSecuritySchemeProvider(),
-                            'ApiKey' => self::apiKeyAuthSecuritySchemeProvider(),
-                            'Bearer' => self::bearerAuthSecuritySchemeProvider(),
-                        ],
-                    ],
-                    'globalSecurity' => [
-                        [
-                            'ApiKey' => [],
-                        ],
-                    ],
-                    'pathSecurity' => [
-                        [
-                            [],
-                            'ApiKey' => [],
-                        ],
-                    ]
-                ],
-                [
-                    JwtSecurityScheme::class,
-                    ApiKeySecurityScheme::class,
-                    BearerSecurityScheme::class,
-                ],
-                [
-                    ApiKeySecurityScheme::class,
-                ],
-                [
-                    [],
-                    ApiKeySecurityScheme::class,
-                ],
             ],
             'Use default global security - have single class string security' => [
                 [

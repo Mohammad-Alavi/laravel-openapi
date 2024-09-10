@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Objects;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement;
-use GoldSpecDigital\ObjectOrientedOAS\OpenApi as ParentOpenApi;
+use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityRequirement;
+use MohammadAlavi\ObjectOrientedOAS\OpenApi as ParentOpenApi;
 use MohammadAlavi\LaravelOpenApi\Collectors\SecurityRequirementBuilder;
 use MohammadAlavi\LaravelOpenApi\SecuritySchemes\PublicSecurityScheme;
 

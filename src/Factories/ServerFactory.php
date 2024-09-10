@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Factories;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Server;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Server;
 
 abstract class ServerFactory
 {

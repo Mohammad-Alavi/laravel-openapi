@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tests\Unit\Builders;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\ExternalDocs;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Tag;
+use MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Tag;
 use InvalidArgumentException;
 use MohammadAlavi\LaravelOpenApi\Collectors\TagBuilder;
 use MohammadAlavi\LaravelOpenApi\Factories\TagFactory;

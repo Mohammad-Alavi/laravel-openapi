@@ -2,8 +2,8 @@
 
 namespace Examples\Petstore\OpenApi\Tags;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\ExternalDocs;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Tag;
+use MohammadAlavi\ObjectOrientedOAS\Objects\ExternalDocs;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Tag;
 use MohammadAlavi\LaravelOpenApi\Factories\TagFactory;
 
 class PetTag extends TagFactory

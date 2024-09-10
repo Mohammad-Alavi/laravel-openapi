@@ -2,8 +2,8 @@
 
 namespace Examples\Petstore\OpenApi\Parameters;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Parameter;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Parameter;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
 use MohammadAlavi\LaravelOpenApi\Factories\Component\ParameterFactory;
 
 class ListPetsParameter extends ParameterFactory

@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collectors\Paths\Operation;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Server;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Server;
 
 class ServerBuilder
 {

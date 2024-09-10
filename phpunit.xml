@@ -12,11 +12,8 @@
          failOnWarning="true"
 >
     <testsuites>
-        <testsuite name="Feature">
-            <directory>./tests/Feature</directory>
-        </testsuite>
-        <testsuite name="Unit">
-            <directory>./tests/Unit</directory>
+        <testsuite name="Tests">
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
     <source restrictNotices="true" restrictWarnings="true">

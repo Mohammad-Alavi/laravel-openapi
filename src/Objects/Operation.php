@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Objects;
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Operation as ParentOperation;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement;
+use MohammadAlavi\ObjectOrientedOAS\Objects\Operation as ParentOperation;
+use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityRequirement;
 use MohammadAlavi\LaravelOpenApi\SecuritySchemes\DefaultSecurityScheme;
 use MohammadAlavi\LaravelOpenApi\SecuritySchemes\PublicSecurityScheme;
 

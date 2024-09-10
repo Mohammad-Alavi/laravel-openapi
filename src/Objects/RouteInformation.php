@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace MohammadAlavi\LaravelOpenApi\Objects;
 
 use Illuminate\Routing\Controller;

@@ -11,8 +11,8 @@
 |
 */
 
-uses(Tests\FeatureTestCase::class)->in('Feature');
-uses(Tests\UnitTestCase::class)->in('Unit');
+uses(Tests\IntegrationTestCase::class)->in('Integration', 'oooas/Integration');
+uses(Tests\UnitTestCase::class)->in('Unit', 'oooas/Unit');
 
 /*
 |--------------------------------------------------------------------------
