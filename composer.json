@@ -25,26 +25,35 @@
     ],
     "require": {
         "php": "^8.2",
-        "ext-json": "*",
         "doctrine/dbal": "^2.6|^3.0",
-        "laravel/framework": "^11.0",
-        "myclabs/deep-copy": "^1.12",
-        "roave/security-advisories": "dev-latest"
+        "laravel/framework": "^10.0|^11.0|^12.0",
+        "myclabs/deep-copy": "^1.12"
     },
     "require-dev": {
+        "fakerphp/faker": "^1.19.1",
         "friendsofphp/php-cs-fixer": "^3.8.0",
         "jetbrains/phpstorm-attributes": "^1.0",
         "justinrainbow/json-schema": "^6.0",
         "mockery/mockery": "^1.6",
-        "orchestra/testbench": "^8.0|^9.0",
+        "orchestra/testbench": "^8.0|^9.0|^10.0",
         "pestphp/pest": "^3.2",
         "pestphp/pest-plugin-faker": "^3.0",
         "pestphp/pest-plugin-laravel": "^3.0",
         "pestphp/pest-plugin-type-coverage": "^3.0",
+        "php-standard-library/psalm-plugin": "^2.3",
         "phpmd/phpmd": "@stable",
-        "rector/rector": "^1.2",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "psalm/plugin-laravel": "^3.0",
+        "psalm/plugin-mockery": "^1.2",
+        "psalm/plugin-phpunit": "^0.19.2",
+        "rector/rector": "^2.0",
+        "roave/security-advisories": "dev-latest",
         "slevomat/coding-standard": "^8.15",
-        "squizlabs/php_codesniffer": "*"
+        "squizlabs/php_codesniffer": "*",
+        "thecodingmachine/phpstan-safe-rule": "^1.4",
+        "vimeo/psalm": "^6.0.0"
     },
     "autoload": {
         "psr-4": {
@@ -66,8 +75,9 @@
             "https"
         ],
         "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "mohammad-alavi/config-sync": true,
+            "pestphp/pest-plugin": true
         }
     },
     "extra": {
@@ -80,7 +90,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "scripts": {
-        "cs-fix": [
+        "fixer": [
             "php ./vendor/bin/php-cs-fixer fix"
         ],
         "cs": [
