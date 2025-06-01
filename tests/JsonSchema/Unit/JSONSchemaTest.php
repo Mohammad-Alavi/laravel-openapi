@@ -14,10 +14,10 @@ describe(class_basename(SchemaBuilder::class), function (): void {
                 Schema::integer()->format(IntegerFormat::INT64)->comment('Format test'),
             );
             jsonDD(
-                Schema::enum('sag', 'ga')->comment('This is a enum'),
+                Schema::enumerator('sag', 'ga')->comment('This is a enum'),
             );
             jsonDD(
-                Schema::const('sag')->comment('This is a const'),
+                Schema::constant('sag')->comment('This is a const'),
             );
             jsonDD(
                 Schema::object()

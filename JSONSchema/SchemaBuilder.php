@@ -55,7 +55,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\UniqueItems;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Vocabulary\Vocab;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Vocabulary\Vocabulary;
 
-final class SchemaBuilder implements Builder
+class SchemaBuilder implements Builder
 {
     private Anchor|null $anchor = null;
     private Comment|null $comment = null;
@@ -103,13 +103,13 @@ final class SchemaBuilder implements Builder
     private Constant|null $constant = null;
     private Enum|null $enum = null;
 
-    public static function create(): static
+    final public static function create(): static
     {
-        return (new self())
+        return (new static())
             ->schema('http://json-schema.org/draft-2020-12/schema');
     }
 
-    public function schema(string $uri): static
+    final public function schema(string $uri): static
     {
         $clone = clone $this;
 
@@ -118,7 +118,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function anchor(string $value): static
+    final public function anchor(string $value): static
     {
         $clone = clone $this;
 
@@ -127,7 +127,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function comment(string $value): static
+    final public function comment(string $value): static
     {
         $clone = clone $this;
 
@@ -136,7 +136,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function defs(Def ...$def): static
+    final public function defs(Def ...$def): static
     {
         $clone = clone $this;
 
@@ -145,7 +145,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function dynamicAnchor(string $value): static
+    final public function dynamicAnchor(string $value): static
     {
         $clone = clone $this;
 
@@ -154,7 +154,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function dynamicRef(string $uri): static
+    final public function dynamicRef(string $uri): static
     {
         $clone = clone $this;
 
@@ -163,7 +163,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function exclusiveMaximum(float $value): static
+    final public function exclusiveMaximum(float $value): static
     {
         $clone = clone $this;
 
@@ -172,7 +172,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function exclusiveMinimum(float $value): static
+    final public function exclusiveMinimum(float $value): static
     {
         $clone = clone $this;
 
@@ -181,7 +181,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function format(DefinedFormat $definedFormat): static
+    final public function format(DefinedFormat $definedFormat): static
     {
         $clone = clone $this;
 
@@ -190,7 +190,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function id(string $uri): static
+    final public function id(string $uri): static
     {
         $clone = clone $this;
 
@@ -199,7 +199,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function maximum(float $value): static
+    final public function maximum(float $value): static
     {
         $clone = clone $this;
 
@@ -208,7 +208,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function maxLength(int $value): static
+    final public function maxLength(int $value): static
     {
         $clone = clone $this;
 
@@ -217,7 +217,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function minimum(float $value): static
+    final public function minimum(float $value): static
     {
         $clone = clone $this;
 
@@ -226,7 +226,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function minLength(int $value): static
+    final public function minLength(int $value): static
     {
         $clone = clone $this;
 
@@ -235,7 +235,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function multipleOf(float $value): static
+    final public function multipleOf(float $value): static
     {
         $clone = clone $this;
 
@@ -244,7 +244,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function pattern(string $value): static
+    final public function pattern(string $value): static
     {
         $clone = clone $this;
 
@@ -260,7 +260,7 @@ final class SchemaBuilder implements Builder
      * @see https://www.learnjsonschema.com/2020-12/core/ref/
      * @see https://json-schema.org/understanding-json-schema/structuring
      */
-    public function ref(string $uri): static
+    final public function ref(string $uri): static
     {
         $clone = clone $this;
 
@@ -269,7 +269,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function type(Type|string ...$type): static
+    final public function type(Type|string ...$type): static
     {
         $clone = clone $this;
 
@@ -278,7 +278,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function vocabulary(Vocab ...$vocab): static
+    final public function vocabulary(Vocab ...$vocab): static
     {
         $clone = clone $this;
 
@@ -287,7 +287,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function unevaluatedItems(Builder $builder): static
+    final public function unevaluatedItems(Builder $builder): static
     {
         $clone = clone $this;
 
@@ -296,7 +296,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function unevaluatedProperties(Builder $builder): static
+    final public function unevaluatedProperties(Builder $builder): static
     {
         $clone = clone $this;
 
@@ -305,7 +305,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function maxContains(int $value): static
+    final public function maxContains(int $value): static
     {
         $clone = clone $this;
 
@@ -314,7 +314,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function minContains(int $value): static
+    final public function minContains(int $value): static
     {
         $clone = clone $this;
 
@@ -323,7 +323,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function maxItems(int $value): static
+    final public function maxItems(int $value): static
     {
         $clone = clone $this;
 
@@ -332,7 +332,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function minItems(int $value): static
+    final public function minItems(int $value): static
     {
         $clone = clone $this;
 
@@ -341,7 +341,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function uniqueItems(bool $value = true): static
+    final public function uniqueItems(bool $value = true): static
     {
         $clone = clone $this;
 
@@ -350,7 +350,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function items(Builder $builder): static
+    final public function items(Builder $builder): static
     {
         $clone = clone $this;
 
@@ -359,7 +359,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function allOf(Builder ...$builder): static
+    final public function allOf(Builder ...$builder): static
     {
         $clone = clone $this;
 
@@ -368,7 +368,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function anyOf(Builder ...$builder): static
+    final public function anyOf(Builder ...$builder): static
     {
         $clone = clone $this;
 
@@ -377,7 +377,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function oneOf(Builder ...$builder): static
+    final public function oneOf(Builder ...$builder): static
     {
         $clone = clone $this;
 
@@ -386,7 +386,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function additionalProperties(Builder|bool $schema): static
+    final public function additionalProperties(Builder|bool $schema): static
     {
         $clone = clone $this;
 
@@ -395,7 +395,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function properties(Property ...$property): static
+    final public function properties(Property ...$property): static
     {
         $clone = clone $this;
 
@@ -404,7 +404,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function dependentRequired(Dependency ...$dependency): static
+    final public function dependentRequired(Dependency ...$dependency): static
     {
         $clone = clone $this;
 
@@ -413,7 +413,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function maxProperties(int $value): static
+    final public function maxProperties(int $value): static
     {
         $clone = clone $this;
 
@@ -422,7 +422,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function minProperties(int $value): static
+    final public function minProperties(int $value): static
     {
         $clone = clone $this;
 
@@ -431,7 +431,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function required(string ...$property): static
+    final public function required(string ...$property): static
     {
         $clone = clone $this;
 
@@ -440,7 +440,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function default(mixed $value): static
+    final public function default(mixed $value): static
     {
         $clone = clone $this;
 
@@ -449,7 +449,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function deprecated(bool $value): static
+    final public function deprecated(bool $value): static
     {
         $clone = clone $this;
 
@@ -458,7 +458,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function description(string $value): static
+    final public function description(string $value): static
     {
         $clone = clone $this;
 
@@ -467,7 +467,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function examples(mixed ...$example): static
+    final public function examples(mixed ...$example): static
     {
         $clone = clone $this;
 
@@ -476,7 +476,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function readOnly(bool $value): static
+    final public function readOnly(bool $value): static
     {
         $clone = clone $this;
 
@@ -485,7 +485,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function writeOnly(bool $value): static
+    final public function writeOnly(bool $value): static
     {
         $clone = clone $this;
 
@@ -494,7 +494,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function title(string $value): static
+    final public function title(string $value): static
     {
         $clone = clone $this;
 
@@ -503,7 +503,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function const(mixed $value): static
+    final public function const(mixed $value): static
     {
         $clone = clone $this;
 
@@ -512,7 +512,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function enum(...$value): static
+    final public function enum(...$value): static
     {
         $clone = clone $this;
 
@@ -521,7 +521,7 @@ final class SchemaBuilder implements Builder
         return $clone;
     }
 
-    public function jsonSerialize(): array
+    final public function jsonSerialize(): array
     {
         $keywords = [];
         if ($this->schema instanceof Schema) {

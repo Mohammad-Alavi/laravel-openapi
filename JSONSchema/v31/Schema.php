@@ -2,6 +2,8 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\v31;
 
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Type;
+use MohammadAlavi\ObjectOrientedJSONSchema\SchemaBuilder;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Interface\Builder\Fluent\Methods\ArrayBuilder;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Interface\Builder\Fluent\Methods\BooleanBuilder;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Interface\Builder\Fluent\Methods\ConstantBuilder;
@@ -12,50 +14,50 @@ use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Interface\Builder\Fluen
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Interface\Builder\Fluent\Methods\ObjectBuilder;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Interface\Builder\Fluent\Methods\StringBuilder;
 
-final readonly class Schema
+final class Schema extends SchemaBuilder implements NullBuilder, BooleanBuilder, StringBuilder, IntegerBuilder, NumberBuilder, ObjectBuilder, ArrayBuilder, ConstantBuilder, EnumBuilder
 {
     public static function null(): NullBuilder
     {
-        return FluentSchemaBuilder::create()->null();
+        return parent::create()->type(Type::null());
     }
 
     public static function boolean(): BooleanBuilder
     {
-        return FluentSchemaBuilder::create()->boolean();
+        return parent::create()->type(Type::boolean());
     }
 
     public static function string(): StringBuilder
     {
-        return FluentSchemaBuilder::create()->string();
+        return parent::create()->type(Type::string());
     }
 
     public static function integer(): IntegerBuilder
     {
-        return FluentSchemaBuilder::create()->integer();
+        return parent::create()->type(Type::integer());
     }
 
     public static function number(): NumberBuilder
     {
-        return FluentSchemaBuilder::create()->number();
+        return parent::create()->type(Type::number());
     }
 
     public static function object(): ObjectBuilder
     {
-        return FluentSchemaBuilder::create()->object();
+        return parent::create()->type(Type::object());
     }
 
     public static function array(): ArrayBuilder
     {
-        return FluentSchemaBuilder::create()->array();
+        return parent::create()->type(Type::array());
     }
 
-    public static function const(mixed $value): ConstantBuilder
+    public static function constant(mixed $value): ConstantBuilder
     {
-        return FluentSchemaBuilder::create()->constant($value);
+        return parent::create()->const($value);
     }
 
-    public static function enum(mixed ...$value): EnumBuilder
+    public static function enumerator(mixed ...$value): EnumBuilder
     {
-        return FluentSchemaBuilder::create()->enumerator(...$value);
+        return parent::create()->enum(...$value);
     }
 }

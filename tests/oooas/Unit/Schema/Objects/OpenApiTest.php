@@ -92,7 +92,7 @@ describe(class_basename(OpenApi::class), function (): void {
             ));
 
         $stringBuilder = Schema::string()->format(StringFormat::UUID);
-        $enumBuilder = Schema::enum('json', 'ics');
+        $enumBuilder = Schema::enumerator('json', 'ics');
 
         $readAudit = Operation::get()
             ->responses(Responses::create($expectedResponse))
