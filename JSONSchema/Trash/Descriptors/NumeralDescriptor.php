@@ -2,12 +2,12 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptors;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\ExclusiveMaximum;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\ExclusiveMinimum;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Maximum;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Minimum;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MultipleOf;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Type;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ExclusiveMaximum;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ExclusiveMinimum;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Maximum;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Minimum;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MultipleOf;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\HasTypeTrait;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\TypeAware;

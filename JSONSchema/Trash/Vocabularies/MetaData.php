@@ -2,13 +2,13 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\Vocabularies;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\DefaultValue;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Deprecated;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Description;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Examples;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\IsReadOnly;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\IsWriteOnly;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Title;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DefaultValue;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Deprecated;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Description;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Examples;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IsReadOnly;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IsWriteOnly;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
 

@@ -2,9 +2,9 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\Vocabularies;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\AllOf;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\AnyOf;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\OneOf;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AllOf;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AnyOf;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\OneOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;

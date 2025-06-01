@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\Vocabularies;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Formats\DefinedFormat;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Format;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\DefinedFormat;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Format;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
 

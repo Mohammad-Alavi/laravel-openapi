@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptors;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Keyword;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\TypeAware;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Vocabularies\Applicator;

@@ -2,16 +2,16 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Methods\Implementations;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Builder;
-use MohammadAlavi\ObjectOrientedJSONSchema\Dialect\Draft202012;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\UnevaluatedProperties as UnevaluatedPropertiesKeyword;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Dialect\Draft202012;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\UnevaluatedProperties as UnevaluatedPropertiesKeyword;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
 
 trait UnevaluatedProperties
 {
     private UnevaluatedPropertiesKeyword|null $unevaluatedProperties = null;
 
-    public function unevaluatedProperties(Descriptor $descriptor): Builder
+    public function unevaluatedProperties(Descriptor $descriptor): Descriptor
     {
         $clone = clone $this;
 

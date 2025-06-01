@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\v31\Formats;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Formats\DefinedFormat;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\DefinedFormat;
 
 enum NumberFormat: string implements DefinedFormat
 {

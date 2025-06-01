@@ -2,9 +2,9 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Keyword;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Id;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Schema;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Id;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Schema;
 
 interface Vocabulary
 {

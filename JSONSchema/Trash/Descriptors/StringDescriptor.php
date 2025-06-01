@@ -2,12 +2,12 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptors;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Formats\StringFormat;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Format;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MaxLength;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MinLength;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Pattern;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Type;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Format;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MaxLength;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinLength;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Pattern;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\HasTypeTrait;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\TypeAware;

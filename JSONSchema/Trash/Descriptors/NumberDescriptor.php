@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptors;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Format;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Format;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Formats\NumberFormat;
 
 final class NumberDescriptor extends NumeralDescriptor

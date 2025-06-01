@@ -2,14 +2,14 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Methods\Implementations;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Builder;
-use MohammadAlavi\ObjectOrientedJSONSchema\Dialect\Draft202012;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Dialect\Draft202012;
 
 trait Id
 {
-    private \MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Id|null $id = null;
+    private \MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Id|null $id = null;
 
-    public function id(string $uri): Builder
+    public function id(string $uri): Descriptor
     {
         $clone = clone $this;
 

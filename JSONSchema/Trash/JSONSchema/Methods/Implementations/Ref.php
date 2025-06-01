@@ -2,12 +2,12 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Methods\Implementations;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Builder;
-use MohammadAlavi\ObjectOrientedJSONSchema\Dialect\Draft202012;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Dialect\Draft202012;
 
 trait Ref
 {
-    private \MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Ref|null $ref = null;
+    private \MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Ref|null $ref = null;
 
     /**
      * Set a static reference to another <a href="https://json-schema.org/learn/glossary#schema">schema</a>.
@@ -16,7 +16,7 @@ trait Ref
      * @see https://www.learnjsonschema.com/2020-12/core/ref/
      * @see https://json-schema.org/understanding-json-schema/structuring
      */
-    public function ref(string $uri): Builder
+    public function ref(string $uri): Descriptor
     {
         $clone = clone $this;
 

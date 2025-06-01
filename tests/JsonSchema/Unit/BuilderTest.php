@@ -1,10 +1,10 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedJSONSchema\SchemaBuilder;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Descriptor;
 
-describe(class_basename(SchemaBuilder::class), function (): void {
+describe(class_basename(Descriptor::class), function (): void {
     it('should return constant value as is', function (mixed $value): void {
-        $schemaBuilder = SchemaBuilder::create()->const($value);
+        $schemaBuilder = Descriptor::create()->const($value);
 
         expect($schemaBuilder->jsonSerialize())->toBe([
             '$schema' => 'http://json-schema.org/draft-2020-12/schema',
@@ -17,4 +17,4 @@ describe(class_basename(SchemaBuilder::class), function (): void {
         null,
         false,
     ]);
-})->covers(SchemaBuilder::class);
+})->covers(Descriptor::class);

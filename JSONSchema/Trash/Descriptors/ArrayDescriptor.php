@@ -2,13 +2,13 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptors;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Items;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MaxContains;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MaxItems;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MinContains;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MinItems;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Type;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\UniqueItems;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Items;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MaxContains;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MaxItems;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinContains;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinItems;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\UniqueItems;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\HasTypeTrait;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\TypeAware;

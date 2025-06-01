@@ -2,14 +2,14 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Methods\Implementations;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Builder;
-use MohammadAlavi\ObjectOrientedJSONSchema\Dialect\Draft202012;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Dialect\Draft202012;
 
 trait DynamicAnchor
 {
-    private \MohammadAlavi\ObjectOrientedJSONSchema\Keywords\DynamicAnchor|null $dynamicAnchor = null;
+    private \MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DynamicAnchor|null $dynamicAnchor = null;
 
-    public function dynamicAnchor(string $value): Builder
+    public function dynamicAnchor(string $value): Descriptor
     {
         $clone = clone $this;
 

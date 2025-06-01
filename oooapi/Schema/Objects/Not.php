@@ -17,9 +17,9 @@ class Not extends ExtensibleObject implements JsonSchema
 {
     use SimpleCreatorTrait;
 
-    protected \MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Interface\JSONSchema|null $schema = null;
+    protected \MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\JSONSchema|null $schema = null;
 
-    public function schema(\MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Interface\JSONSchema|null $schema): static
+    public function schema(\MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\JSONSchema|null $schema): static
     {
         $clone = clone $this;
 

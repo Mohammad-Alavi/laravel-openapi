@@ -2,15 +2,15 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Methods\Implementations;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Builder;
-use MohammadAlavi\ObjectOrientedJSONSchema\Dialect\Draft202012;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Vocabulary\Vocab;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Dialect\Draft202012;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Vocabulary\Vocab;
 
 trait Vocabulary
 {
-    private \MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Vocabulary\Vocabulary|null $vocabulary = null;
+    private \MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Vocabulary\Vocabulary|null $vocabulary = null;
 
-    public function vocabulary(Vocab ...$vocab): Builder
+    public function vocabulary(Vocab ...$vocab): Descriptor
     {
         $clone = clone $this;
 

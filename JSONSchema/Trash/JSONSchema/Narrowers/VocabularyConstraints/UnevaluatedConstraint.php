@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\VocabularyConstraints;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\UnevaluatedItems;
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\UnevaluatedProperties;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Methods\UnevaluatedItems;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Methods\UnevaluatedProperties;
 
 interface UnevaluatedConstraint extends UnevaluatedItems, UnevaluatedProperties
 {

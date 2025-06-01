@@ -2,14 +2,14 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Methods\Implementations;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Builder;
-use MohammadAlavi\ObjectOrientedJSONSchema\Dialect\Draft202012;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Dialect\Draft202012;
 
 trait Maximum
 {
-    private \MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Maximum|null $maximum = null;
+    private \MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Maximum|null $maximum = null;
 
-    public function maximum(float $value): Builder
+    public function maximum(float $value): Descriptor
     {
         $clone = clone $this;
 

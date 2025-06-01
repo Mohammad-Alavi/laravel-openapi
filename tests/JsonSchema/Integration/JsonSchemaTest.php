@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Keyword;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\AvailableVocabulary;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\Draft202012Constrained;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\MetaSchema\MetaSchema;

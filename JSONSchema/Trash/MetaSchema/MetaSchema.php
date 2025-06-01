@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\MetaSchema;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Keyword;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 
 final readonly class MetaSchema implements MetaSchemaInterface
 {
