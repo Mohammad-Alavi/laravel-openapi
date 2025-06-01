@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ 8.2, 8.3 ]
+        php: [ 8.2, 8.3, 8.4 ]
     name: PHP ${{ matrix.php }}
     timeout-minutes: 10
     steps:
@@ -66,7 +66,7 @@ jobs:
         run: ./vendor/bin/pest --ci --coverage-clover=coverage.xml
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
