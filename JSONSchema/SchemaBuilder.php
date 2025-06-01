@@ -55,7 +55,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\UniqueItems;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Vocabulary\Vocab;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Vocabulary\Vocabulary;
 
-// TODO: this feels like an unnecessary abstraction. Can we just use the Draft202012 class directly?
 final class SchemaBuilder implements Builder
 {
     private Anchor|null $anchor = null;
