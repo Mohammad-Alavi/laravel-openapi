@@ -76,7 +76,6 @@
         ],
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "mohammad-alavi/config-sync": true,
             "pestphp/pest-plugin": true
         }
     },
