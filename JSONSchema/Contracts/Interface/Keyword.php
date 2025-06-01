@@ -10,5 +10,6 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface;
 interface Keyword
 {
     public static function name(): string;
+
     public function value(): mixed;
 }

@@ -9,6 +9,8 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\TypeConstr
 interface TypeNarrower
 {
     public function string(): StringConstraint;
+
     public function integer(): IntegerConstraint;
+
     public function number(): NumberConstraint;
 }

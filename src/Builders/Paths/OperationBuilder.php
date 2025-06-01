@@ -2,11 +2,10 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Builders\Paths;
 
-use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
-use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
+use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
 use MohammadAlavi\LaravelOpenApi\Builders\ExtensionBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\CallbackBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\ParametersBuilder;
@@ -17,6 +16,7 @@ use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\ServerBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\TagBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 
 final readonly class OperationBuilder
 {

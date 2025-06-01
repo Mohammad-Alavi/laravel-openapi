@@ -2,16 +2,16 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptors;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Vocabularies\Applicator;
-use MohammadAlavi\ObjectOrientedJSONSchema\Trash\TypeAware;
-use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Formats\StringFormat;
-use MohammadAlavi\ObjectOrientedJSONSchema\Trash\HasTypeTrait;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Format;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MaxLength;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MinLength;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Pattern;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Type;
+use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Trash\HasTypeTrait;
+use MohammadAlavi\ObjectOrientedJSONSchema\Trash\TypeAware;
+use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Vocabularies\Applicator;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Vocabularies\MetaData;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;

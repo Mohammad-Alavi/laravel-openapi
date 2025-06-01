@@ -73,7 +73,7 @@ class TagBuilderTest extends TestCase
     public static function invalidTagProvider(): \Iterator
     {
         yield 'tag without name' => [
-            fn (): TagFactory => new class () extends TagFactory {
+            fn (): TagFactory => new class extends TagFactory {
                 public function build(): Tag
                 {
                     return Tag::create()->description('Post Tag');
@@ -81,7 +81,7 @@ class TagBuilderTest extends TestCase
             },
         ];
         yield 'tag with empty string name' => [
-            fn (): TagFactory => new class () extends TagFactory {
+            fn (): TagFactory => new class extends TagFactory {
                 public function build(): Tag
                 {
                     return Tag::create()->name('')->description('Post Tag');
@@ -89,7 +89,7 @@ class TagBuilderTest extends TestCase
             },
         ];
         yield 'tag with null name' => [
-            fn (): TagFactory => new class () extends TagFactory {
+            fn (): TagFactory => new class extends TagFactory {
                 public function build(): Tag
                 {
                     return Tag::create()->name(null)->description('Post Tag');

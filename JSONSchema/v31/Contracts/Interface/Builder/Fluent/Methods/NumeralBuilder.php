@@ -9,13 +9,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\M
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\Minimum;
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\MultipleOf;
 
-interface NumeralBuilder extends
-    SharedBuilder,
-    ExclusiveMaximum,
-    ExclusiveMinimum,
-    Maximum,
-    Minimum,
-    MultipleOf,
-    Format
+interface NumeralBuilder extends SharedBuilder, ExclusiveMaximum, ExclusiveMinimum, Maximum, Minimum, MultipleOf, Format
 {
 }

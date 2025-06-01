@@ -23,26 +23,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\T
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\Vocabulary;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Interface\JSONSchema;
 
-interface SharedBuilder extends
-    JSONSchema,
-    Anchor,
-    Comment,
-    Defs,
-    DynamicAnchor,
-    DynamicRef,
-    Id,
-    Ref,
-    Schema,
-    Vocabulary,
-    AllOf,
-    AnyOf,
-    OneOf,
-    DefaultValue,
-    Deprecated,
-    Description,
-    Examples,
-    IsReadOnly,
-    IsWriteOnly,
-    Title
+interface SharedBuilder extends JSONSchema, Anchor, Comment, Defs, DynamicAnchor, DynamicRef, Id, Ref, Schema, Vocabulary, AllOf, AnyOf, OneOf, DefaultValue, Deprecated, Description, Examples, IsReadOnly, IsWriteOnly, Title
 {
 }

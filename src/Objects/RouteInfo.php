@@ -53,7 +53,6 @@ class RouteInfo
         );
 
         return tap(new static(), static function (self $instance) use ($route, $method): void {
-
             preg_match_all('/{(.*?)}/', $route->uri, $parameters);
             $parameters = collect($parameters[1]);
 

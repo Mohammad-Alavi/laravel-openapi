@@ -2,6 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Methods;
 
+use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Builder;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\TypeConstraints\IntegerConstraint;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\TypeConstraints\NumberConstraint;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\TypeConstraints\StringConstraint;
@@ -14,7 +15,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\Vocabulary
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\VocabularyConstraints\UnevaluatedConstraint;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\VocabularyConstraints\ValidationConstraint;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\VocabularyNarrower;
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Builder;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Narrowable;
 
 // TODO: Separate each method into a single trait like the way it is done for Keywords
@@ -84,6 +84,7 @@ trait Constraints
     {
         return $this;
     }
+
     public function unevaluated(): UnevaluatedConstraint
     {
         return $this;

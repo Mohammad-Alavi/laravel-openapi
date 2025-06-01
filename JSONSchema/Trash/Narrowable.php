@@ -8,5 +8,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Methods\HasConstrain
 interface Narrowable
 {
     public function all(): Builder;
+
     public function groupedBy(): HasConstraint;
 }

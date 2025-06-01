@@ -4,56 +4,56 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Builder;
 use MohammadAlavi\ObjectOrientedJSONSchema\Dialect\Draft202012;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Constant;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\DependentRequired\Dependency;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\DependentRequired\DependentRequired;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Enum;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MaxProperties;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MinProperties;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Required;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\AdditionalProperties;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Properties\Properties;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Properties\Property;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\AllOf;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\AnyOf;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\OneOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Formats\DefinedFormat;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Items;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\AdditionalProperties;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\AllOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Anchor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\AnyOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Comment;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Constant;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\DefaultValue;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Defs\Def;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Defs\Defs;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\DependentRequired\Dependency;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\DependentRequired\DependentRequired;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Deprecated;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Description;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\DynamicAnchor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\DynamicRef;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Enum;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Examples;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\ExclusiveMaximum;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\ExclusiveMinimum;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Format;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Id;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\IsReadOnly;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\IsWriteOnly;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Items;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MaxContains;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Maximum;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MaxItems;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MaxLength;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MaxProperties;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MinContains;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Minimum;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MinItems;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MinLength;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MinProperties;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MultipleOf;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\OneOf;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Pattern;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Properties\Properties;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Ref;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Required;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Schema;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Title;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Type;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\UnevaluatedItems;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\UnevaluatedProperties;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\UniqueItems;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Vocabulary\Vocab;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Vocabulary\Vocabulary;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Format;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\UnevaluatedItems;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\UnevaluatedProperties;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\ExclusiveMaximum;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\ExclusiveMinimum;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Maximum;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MaxLength;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Minimum;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MinLength;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\MultipleOf;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Pattern;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Type;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\DefaultValue;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Deprecated;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Description;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Examples;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\IsReadOnly;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\IsWriteOnly;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Title;
 
 // TODO: this feels like an unnecessary abstraction. Can we just use the Draft202012 class directly?
 final class SchemaBuilder implements Builder
@@ -660,6 +660,7 @@ final class SchemaBuilder implements Builder
         if ($this->defs instanceof Defs) {
             $keywords[$this->defs::name()] = $this->defs->value();
         }
+
         return $keywords;
     }
 }

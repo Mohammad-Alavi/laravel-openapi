@@ -2,14 +2,14 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Abstract;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\SchemaBuilder;
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Builder;
 use MohammadAlavi\ObjectOrientedJSONSchema\Formats\DefinedFormat;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Defs\Def;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\DependentRequired\Dependency;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Properties\Property;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Defs\Def;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Vocabulary\Vocab;
+use MohammadAlavi\ObjectOrientedJSONSchema\SchemaBuilder;
 
 abstract class SchemaBuilderDecorator implements Builder
 {

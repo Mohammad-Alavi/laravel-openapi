@@ -1,8 +1,8 @@
 <?php
 
-use Pest\Arch\Contracts\ArchExpectation;
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Services\ComponentCollector;
+use Pest\Arch\Contracts\ArchExpectation;
 use Pest\Expectation;
 
 describe(class_basename(ComponentCollector::class), function (): void {

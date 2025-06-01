@@ -1,8 +1,8 @@
 <?php
 
+use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Keyword;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\AvailableVocabulary;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\Draft202012Constrained;
-use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Keyword;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\MetaSchema\MetaSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Vocabulary;
@@ -11,7 +11,7 @@ describe(class_basename(Schema::class), function (): void {
     it(
         'can create a keyword',
         function (): void {
-            $keyword = new class () implements Keyword {
+            $keyword = new class implements Keyword {
                 public static function name(): string
                 {
                     return 'keyword';
@@ -29,7 +29,7 @@ describe(class_basename(Schema::class), function (): void {
 
     dataset('keywords', [
         [
-            fn (): Keyword => new class () implements Keyword {
+            fn (): Keyword => new class implements Keyword {
                 public static function name(): string
                 {
                     return 'keywordA';
@@ -40,7 +40,7 @@ describe(class_basename(Schema::class), function (): void {
                     return 'valueA';
                 }
             },
-            fn (): Keyword => new class () implements Keyword {
+            fn (): Keyword => new class implements Keyword {
                 public static function name(): string
                 {
                     return 'keywordB';
@@ -51,7 +51,7 @@ describe(class_basename(Schema::class), function (): void {
                     return ['x' => 'y'];
                 }
             },
-            fn (): Keyword => new class () implements Keyword {
+            fn (): Keyword => new class implements Keyword {
                 public static function name(): string
                 {
                     return 'keywordC';
@@ -80,8 +80,8 @@ describe(class_basename(Schema::class), function (): void {
         function (Keyword $keywordA, Keyword $keywordB, Keyword $keywordC): void {
             $vocabA = new Vocabulary('vocab-a', $keywordA);
             $vocabB = new Vocabulary('vocab-b', $keywordB, $keywordC);
-            $vocabsA =  new AvailableVocabulary($vocabA, true);
-            $vocabsB =  new AvailableVocabulary($vocabB, false);
+            $vocabsA = new AvailableVocabulary($vocabA, true);
+            $vocabsB = new AvailableVocabulary($vocabB, false);
             $metaSchema = new MetaSchema('meta-schema-id', 'meta-schema-schema', $vocabsA, $vocabsB);
 
             expect($metaSchema->id())->toBe('meta-schema-id')
@@ -105,8 +105,8 @@ describe(class_basename(Schema::class), function (): void {
         function (Keyword $keywordA, Keyword $keywordB, Keyword $keywordC): void {
             $vocabA = new Vocabulary('vocab-a', $keywordA, $keywordB, $keywordC);
             $vocabB = new Vocabulary('vocab-b', $keywordC, $keywordA);
-            $vocabsA =  new AvailableVocabulary($vocabA, false);
-            $vocabsB =  new AvailableVocabulary($vocabB, true);
+            $vocabsA = new AvailableVocabulary($vocabA, false);
+            $vocabsB = new AvailableVocabulary($vocabB, true);
 
             expect(function () use ($vocabsA, $vocabsB): void {
                 new MetaSchema('meta-schema-id', 'meta-schema-schema', $vocabsA, $vocabsB);
@@ -128,10 +128,10 @@ describe(class_basename(Schema::class), function (): void {
         function (Keyword $keywordA, Keyword $keywordB, Keyword $keywordC): void {
             $vocabA = new Vocabulary('vocab-a', $keywordA);
             $vocabB = new Vocabulary('vocab-b', $keywordB, $keywordC);
-            $vocabsA =  new AvailableVocabulary($vocabA, true);
-            $vocabsB =  new AvailableVocabulary($vocabB, false);
+            $vocabsA = new AvailableVocabulary($vocabA, true);
+            $vocabsB = new AvailableVocabulary($vocabB, false);
             $metaSchema = new MetaSchema('meta-schema-id', 'meta-schema-schema', $vocabsA, $vocabsB);
-            $dialect = new class ($metaSchema) implements Draft202012Constrained {
+            $dialect = new class($metaSchema) implements Draft202012Constrained {
                 public function __construct(private readonly MetaSchema $metaSchema)
                 {
                 }
@@ -157,10 +157,10 @@ describe(class_basename(Schema::class), function (): void {
         function (Keyword $keywordA, Keyword $keywordB, Keyword $keywordC): void {
             $vocabA = new Vocabulary('vocab-a', $keywordA);
             $vocabB = new Vocabulary('vocab-b', $keywordB, $keywordC);
-            $vocabsA =  new AvailableVocabulary($vocabA, true);
-            $vocabsB =  new AvailableVocabulary($vocabB, false);
+            $vocabsA = new AvailableVocabulary($vocabA, true);
+            $vocabsB = new AvailableVocabulary($vocabB, false);
             $metaSchema = new MetaSchema('meta-schema-id', 'meta-schema-schema', $vocabsA, $vocabsB);
-            $dialect = new class ($metaSchema) implements Draft202012Constrained {
+            $dialect = new class($metaSchema) implements Draft202012Constrained {
                 public function __construct(private readonly MetaSchema $metaSchema)
                 {
                 }

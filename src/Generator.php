@@ -2,7 +2,6 @@
 
 namespace MohammadAlavi\LaravelOpenApi;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use Illuminate\Support\Arr;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\ComponentsBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\InfoBuilder;
@@ -13,6 +12,7 @@ use MohammadAlavi\LaravelOpenApi\Builders\TagBuilder;
 use MohammadAlavi\LaravelOpenApi\Services\RouteCollector;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenApi;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 
 final readonly class Generator
 {

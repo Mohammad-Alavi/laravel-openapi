@@ -4,7 +4,6 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\Voca
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\Format;
 
-interface FormatAnnotationConstraint extends
-    Format
+interface FormatAnnotationConstraint extends Format
 {
 }

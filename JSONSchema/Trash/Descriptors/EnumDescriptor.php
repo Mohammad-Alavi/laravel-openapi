@@ -2,10 +2,10 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptors;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Vocabularies\Applicator;
-use MohammadAlavi\ObjectOrientedJSONSchema\Trash\TypeAware;
-use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Keyword;
+use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Trash\TypeAware;
+use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Vocabularies\Applicator;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Vocabularies\MetaData;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
 

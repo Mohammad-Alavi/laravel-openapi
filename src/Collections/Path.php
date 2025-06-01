@@ -20,6 +20,7 @@ final readonly class Path
 
         return $instance;
     }
+
     public function path(): string
     {
         return $this->path;

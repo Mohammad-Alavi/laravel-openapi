@@ -8,5 +8,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\Vocabulary
 interface HasConstraint
 {
     public function vocabularies(): VocabularyNarrower;
+
     public function typeConstraint(): TypeNarrower;
 }

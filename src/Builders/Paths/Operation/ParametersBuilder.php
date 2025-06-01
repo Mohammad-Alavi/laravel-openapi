@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation;
 
-use MohammadAlavi\LaravelOpenApi\Attributes\Parameters;
 use Illuminate\Support\Collection;
+use MohammadAlavi\LaravelOpenApi\Attributes\Parameters;
 use MohammadAlavi\LaravelOpenApi\Collections\ParameterCollection;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\Collections\ParameterCollectionFactory;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;

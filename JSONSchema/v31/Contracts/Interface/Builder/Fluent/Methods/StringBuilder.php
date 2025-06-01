@@ -7,11 +7,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\M
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\MinLength;
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\Pattern;
 
-interface StringBuilder extends
-    SharedBuilder,
-    Format,
-    MaxLength,
-    MinLength,
-    Pattern
+interface StringBuilder extends SharedBuilder, Format, MaxLength, MinLength, Pattern
 {
 }

@@ -16,19 +16,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\R
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\Schema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\Vocabulary;
 
-interface StringConstraint extends
-    Anchor,
-    Comment,
-    Defs,
-    DynamicAnchor,
-    DynamicRef,
-    Id,
-    Ref,
-    Schema,
-    Vocabulary,
-    Format,
-    MaxLength,
-    MinLength,
-    Pattern
+interface StringConstraint extends Anchor, Comment, Defs, DynamicAnchor, DynamicRef, Id, Ref, Schema, Vocabulary, Format, MaxLength, MinLength, Pattern
 {
 }

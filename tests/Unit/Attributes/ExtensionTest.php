@@ -1,8 +1,8 @@
 <?php
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Extension;
-use Tests\Doubles\Stubs\Attributes\ExtensionFactoryInvalid;
 use Tests\Doubles\Stubs\Attributes\ExtensionFactory;
+use Tests\Doubles\Stubs\Attributes\ExtensionFactoryInvalid;
 
 describe('Extension', function (): void {
     it('can handle null factory', function (): void {

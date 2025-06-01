@@ -120,7 +120,7 @@ class ServerBuilderTest extends TestCase
     public static function invalidServerProvider(): \Iterator
     {
         yield 'server with empty string url' => [
-            fn (): ServerWithVariables => new class () extends ServerWithVariables {
+            fn (): ServerWithVariables => new class extends ServerWithVariables {
                 public function build(): Server
                 {
                     return Server::create()->url('')->description('sample_description');
@@ -128,7 +128,7 @@ class ServerBuilderTest extends TestCase
             },
         ];
         yield 'server with null url' => [
-            fn (): ServerWithVariables => new class () extends ServerWithVariables {
+            fn (): ServerWithVariables => new class extends ServerWithVariables {
                 public function build(): Server
                 {
                     return Server::create()->url(null)->description('sample_description');

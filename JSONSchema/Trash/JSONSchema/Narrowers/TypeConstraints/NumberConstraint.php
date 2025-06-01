@@ -2,7 +2,6 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\TypeConstraints;
 
-interface NumberConstraint extends
-    NumeralConstraint
+interface NumberConstraint extends NumeralConstraint
 {
 }

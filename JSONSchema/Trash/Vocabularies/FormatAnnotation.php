@@ -23,6 +23,7 @@ final class FormatAnnotation extends Generatable
 
         return $clone;
     }
+
     public static function create(): self
     {
         return new self();

@@ -1,8 +1,8 @@
 <?php
 
+use MohammadAlavi\ObjectOrientedOpenAPI\Exceptions\PropertyDoesNotExistException;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Exceptions\PropertyDoesNotExistException;
 use Tests\oooas\Doubles\Fakes\ExtensibleObjectFake;
 
 describe('ExtensibleObject', function (): void {

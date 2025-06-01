@@ -1,8 +1,8 @@
 <?php
 
-use Webmozart\Assert\InvalidArgumentException;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extensions;
+use Webmozart\Assert\InvalidArgumentException;
 
 describe('Extensions', function (): void {
     it('checks if extension exists', function (): void {

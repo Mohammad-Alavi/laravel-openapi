@@ -13,10 +13,16 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\Vocabulary
 interface VocabularyNarrower
 {
     public function applicator(): ApplicatorConstraint;
+
     public function content(): ContentConstraint;
+
     public function core(): CoreConstraint;
+
     public function formatAnnotation(): FormatAnnotationConstraint;
+
     public function metaData(): MetaDataConstraint;
+
     public function unevaluated(): UnevaluatedConstraint;
+
     public function validation(): ValidationConstraint;
 }

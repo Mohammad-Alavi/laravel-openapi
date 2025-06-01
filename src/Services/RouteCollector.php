@@ -2,12 +2,12 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Services;
 
-use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
-use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection as CollectionAttribute;
+use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
+use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
 use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 

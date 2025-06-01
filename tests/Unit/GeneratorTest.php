@@ -23,7 +23,7 @@ beforeEach(function (): void {
                     ],
                 ],
                 'servers' => [
-                    (new class () extends ServerFactory {
+                    (new class extends ServerFactory {
                         public function build(): Server
                         {
                             return Server::create()
@@ -32,7 +32,7 @@ beforeEach(function (): void {
                     })::class,
                 ],
                 'tags' => [
-                    (new class () extends TagFactory {
+                    (new class extends TagFactory {
                         public function build(): Tag
                         {
                             return Tag::create()
@@ -52,14 +52,14 @@ beforeEach(function (): void {
                     ],
                 ],
                 'servers' => [
-                    (new class () extends ServerFactory {
+                    (new class extends ServerFactory {
                         public function build(): Server
                         {
                             return Server::create()
                                 ->url('https://test.com');
                         }
                     })::class,
-                    (new class () extends ServerFactory {
+                    (new class extends ServerFactory {
                         public function build(): Server
                         {
                             return Server::create()
@@ -68,7 +68,7 @@ beforeEach(function (): void {
                     })::class,
                 ],
                 'tags' => [
-                    (new class () extends TagFactory {
+                    (new class extends TagFactory {
                         public function build(): Tag
                         {
                             return Tag::create()

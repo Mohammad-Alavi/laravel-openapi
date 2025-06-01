@@ -1,10 +1,10 @@
 <?php
 
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\DependentRequired\Dependency;
+use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\SchemaBuilder;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Formats\IntegerFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\DependentRequired\Dependency;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Properties\Property;
 
 describe(class_basename(SchemaBuilder::class), function (): void {
     it(
@@ -24,14 +24,15 @@ describe(class_basename(SchemaBuilder::class), function (): void {
                         ->comment('This is an object')
                     ->properties(
                         Property::create('name', Schema::string()->comment('This is a name')),
-                    )->writeOnly()
-                        ->oneOf(
-                            Schema::string(),
-                            Schema::number(),
-                        )->dependentRequired(
-                            Dependency::create('name', 'name'),
-                            Dependency::create('sag', 'dick', 'wat'),
-                        )->required('name'),
+                    )
+                    ->writeOnly()
+                    ->oneOf(
+                        Schema::string(),
+                        Schema::number(),
+                    )->dependentRequired(
+                        Dependency::create('name', 'name'),
+                        Dependency::create('sag', 'dick', 'wat'),
+                    )->required('name'),
             );
             jsonDD(
                 Schema::array()

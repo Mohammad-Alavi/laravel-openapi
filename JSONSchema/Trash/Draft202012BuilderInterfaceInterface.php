@@ -18,22 +18,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\Vocabulary
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\VocabularyConstraints\ValidationConstraint;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\VocabularyNarrower;
 
-interface Draft202012BuilderInterfaceInterface extends
-    Draft202012Constrained,
-    Narrowable,
-    Builder,
-    HasConstraint,
-    TypeNarrower,
-    StringConstraint,
-    IntegerConstraint,
-    NumberConstraint,
-    VocabularyNarrower,
-    ApplicatorConstraint,
-    ContentConstraint,
-    CoreConstraint,
-    FormatAnnotationConstraint,
-    MetaDataConstraint,
-    UnevaluatedConstraint,
-    ValidationConstraint
+interface Draft202012BuilderInterfaceInterface extends Draft202012Constrained, Narrowable, Builder, HasConstraint, TypeNarrower, StringConstraint, IntegerConstraint, NumberConstraint, VocabularyNarrower, ApplicatorConstraint, ContentConstraint, CoreConstraint, FormatAnnotationConstraint, MetaDataConstraint, UnevaluatedConstraint, ValidationConstraint
 {
 }

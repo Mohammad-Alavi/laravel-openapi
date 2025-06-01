@@ -4,9 +4,9 @@ namespace Tests\Doubles\Stubs\Petstore\Responses\Response;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableResponseFactory;
 use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Properties\Property;
+use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
 
 class ReusableComponentErrorValidationResponse extends ReusableResponseFactory
 {

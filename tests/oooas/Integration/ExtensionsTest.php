@@ -34,12 +34,12 @@ describe('Extensions', function (): void {
         [
             fn (): PathItem => PathItem::create(), $expectations],
         [
-            fn (): Response => Response::ok(), $expectations  + [
+            fn (): Response => Response::ok(), $expectations + [
                 'description' => 'OK',
             ],
         ],
         [
-            fn (): JSONSchema => Schema::object(), $expectations  + [
+            fn (): JSONSchema => Schema::object(), $expectations + [
                 'type' => 'object',
             ],
         ],

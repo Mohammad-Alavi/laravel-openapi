@@ -9,7 +9,6 @@ trait Ref
 {
     private \MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Ref|null $ref = null;
 
-
     /**
      * Set a static reference to another <a href="https://json-schema.org/learn/glossary#schema">schema</a>.
      * This is useful for avoiding code duplication and promoting modularity when describing complex data structures.

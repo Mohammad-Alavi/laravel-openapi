@@ -9,13 +9,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\M
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\Properties;
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\Required;
 
-interface ObjectBuilder extends
-    SharedBuilder,
-    AdditionalProperties,
-    Properties,
-    DependentRequired,
-    MaxProperties,
-    MinProperties,
-    Required
+interface ObjectBuilder extends SharedBuilder, AdditionalProperties, Properties, DependentRequired, MaxProperties, MinProperties, Required
 {
 }

@@ -9,13 +9,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\M
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\MinItems;
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\UniqueItems;
 
-interface ArrayBuilder extends
-    SharedBuilder,
-    MaxContains,
-    MinContains,
-    UniqueItems,
-    MaxItems,
-    MinItems,
-    Items
+interface ArrayBuilder extends SharedBuilder, MaxContains, MinContains, UniqueItems, MaxItems, MinItems, Items
 {
 }

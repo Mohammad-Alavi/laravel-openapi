@@ -12,15 +12,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\M
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\Pattern;
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Interface\Builder\Methods\Type;
 
-interface ValidationConstraint extends
-    ExclusiveMaximum,
-    ExclusiveMinimum,
-    Maximum,
-    MaxLength,
-    Minimum,
-    MinLength,
-    MultipleOf,
-    Pattern,
-    Type
+interface ValidationConstraint extends ExclusiveMaximum, ExclusiveMinimum, Maximum, MaxLength, Minimum, MinLength, MultipleOf, Pattern, Type
 {
 }

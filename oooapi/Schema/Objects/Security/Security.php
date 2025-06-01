@@ -2,10 +2,10 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\ReadonlyGenerator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuth\SecurityRequirementFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\ReadonlyGenerator;
 
 final class Security extends Generatable
 {
