@@ -103,7 +103,7 @@ class Descriptor implements DescriptorContract
     private Constant|null $constant = null;
     private Enum|null $enum = null;
 
-    final public function __construct()
+    final private function __construct()
     {
     }
 
