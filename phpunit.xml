@@ -6,10 +6,10 @@
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          executionOrder="depends,defects"
          requireCoverageMetadata="true"
-         beStrictAboutCoverageMetadata="false"
          beStrictAboutOutputDuringTests="true"
          failOnRisky="true"
          failOnWarning="true"
+         cacheDirectory="./temp/phpunit_cache"
 >
     <testsuites>
         <testsuite name="Tests">
@@ -19,6 +19,7 @@
     <source restrictNotices="true" restrictWarnings="true">
         <include>
             <directory>./src</directory>
+            <directory>./JSONSchema</directory>
             <directory>./oooapi</directory>
         </include>
         <exclude>
