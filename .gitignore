@@ -5,6 +5,7 @@
 .bash_aliases
 .php-cs-fixer.cache
 /psalm_cache
+/temp
 .env
 .env.*
 docs/.vitepress/cache
