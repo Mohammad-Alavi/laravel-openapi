@@ -18,46 +18,46 @@ final class Schema extends Descriptor implements NullDescriptor, BooleanDescript
 {
     public static function null(): NullDescriptor
     {
-        return parent::create()->type(Type::null());
+        return parent::withoutSchema()->type(Type::null());
     }
 
     public static function boolean(): BooleanDescriptor
     {
-        return parent::create()->type(Type::boolean());
+        return parent::withoutSchema()->type(Type::boolean());
     }
 
     public static function string(): StringDescriptor
     {
-        return parent::create()->type(Type::string());
+        return parent::withoutSchema()->type(Type::string());
     }
 
     public static function integer(): IntegerDescriptor
     {
-        return parent::create()->type(Type::integer());
+        return parent::withoutSchema()->type(Type::integer());
     }
 
     public static function number(): NumberDescriptor
     {
-        return parent::create()->type(Type::number());
+        return parent::withoutSchema()->type(Type::number());
     }
 
     public static function object(): ObjectDescriptor
     {
-        return parent::create()->type(Type::object());
+        return parent::withoutSchema()->type(Type::object());
     }
 
     public static function array(): ArrayDescriptor
     {
-        return parent::create()->type(Type::array());
+        return parent::withoutSchema()->type(Type::array());
     }
 
     public static function constant(mixed $value): ConstantDescriptor
     {
-        return parent::create()->const($value);
+        return parent::withoutSchema()->const($value);
     }
 
     public static function enumerator(mixed ...$value): EnumDescriptor
     {
-        return parent::create()->enum(...$value);
+        return parent::withoutSchema()->enum(...$value);
     }
 }
