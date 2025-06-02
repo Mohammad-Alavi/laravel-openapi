@@ -103,14 +103,25 @@ class Descriptor implements DescriptorContract
     private Constant|null $constant = null;
     private Enum|null $enum = null;
 
-    final private function __construct()
+    final private function __construct(string|null $schema = null)
     {
+        $this->schema = $schema ? Dialect::schema($schema) : null;
     }
 
-    final public static function create(): static
+    /**
+     * Create a new instance of the Descriptor without any schema.
+     */
+    final public static function withoutSchema(): static
     {
-        return (new static())
-            ->schema('https://json-schema.org/draft-2020-12/schema');
+        return new static(null);
+    }
+
+    /**
+     * Create a new instance of the Descriptor with a schema.
+     */
+    final public static function create(string|null $schema = 'https://json-schema.org/draft-2020-12/schema'): static
+    {
+        return new static($schema);
     }
 
     final public function schema(string $uri): static
