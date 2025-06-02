@@ -11,7 +11,7 @@ use MohammadAlavi\LaravelOpenApi\Builders\ServerBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\TagBuilder;
 use MohammadAlavi\LaravelOpenApi\Services\RouteCollector;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenApi;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 
 final readonly class Generator
@@ -30,7 +30,7 @@ final readonly class Generator
     ) {
     }
 
-    public function generate(string $collection = self::COLLECTION_DEFAULT): OpenApi
+    public function generate(string $collection = self::COLLECTION_DEFAULT): OpenAPI
     {
         $info = $this->infoBuilder->build($this->getConfigFor('info', $collection));
         $servers = $this->serverBuilder->build($this->getConfigFor('servers', $collection));
@@ -43,12 +43,11 @@ final readonly class Generator
         $components = $this->componentsBuilder->build($collection);
         $tags = $this->tagBuilder->build($this->getConfigFor('tags', $collection));
 
-        $openApi = OpenApi::create()
-            ->info($info)
+        $openApi = OpenAPI::v311($info)
             ->servers(...$servers)
             ->paths($paths)
-            ->components($components)
             ->tags(...$tags);
+        $openApi = $components ? $openApi->components($components) : $openApi;
 
         $openApi = $security instanceof Security ? $openApi->security($security) : $openApi;
         foreach ($extensions as $key => $value) {

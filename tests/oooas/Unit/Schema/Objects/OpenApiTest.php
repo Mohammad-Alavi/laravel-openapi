@@ -5,13 +5,13 @@ use MohammadAlavi\LaravelOpenApi\Collections\Path;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Enums\OASVersion;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenApi;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
@@ -25,7 +25,7 @@ use Tests\Doubles\Stubs\Petstore\Security\ExampleComplexMultiSecurityRequirement
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleHTTPBearerSecurityScheme;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleOAuth2PasswordSecurityScheme;
 
-describe(class_basename(OpenApi::class), function (): void {
+describe(class_basename(OpenAPI::class), function (): void {
     it('can be created and validated', function (): void {
         $tag = Tag::create()
             ->name('Audits')
@@ -141,9 +141,7 @@ describe(class_basename(OpenApi::class), function (): void {
             ->url('https://example.com')
             ->description('Example');
 
-        $openApi = OpenApi::create()
-            ->openapi(OASVersion::V_3_1_0)
-            ->info($info)
+        $openApi = OpenAPI::v311($info)
             ->paths($paths)
             ->servers(...$servers)
             ->components($components)
@@ -154,7 +152,7 @@ describe(class_basename(OpenApi::class), function (): void {
         $result = $openApi->asArray();
 
         expect($result)->toBe([
-            'openapi' => OASVersion::V_3_1_0->value,
+            'openapi' => '3.1.1',
             'info' => [
                 'title' => 'API Specification',
                 'description' => 'For using the Example App API',
@@ -165,6 +163,7 @@ describe(class_basename(OpenApi::class), function (): void {
                 ],
                 'version' => 'v1',
             ],
+            'jsonSchemaDialect' => JsonSchemaDialect::v31()->value(),
             'servers' => [
                 ['url' => 'https://api.example.com/v1'],
                 ['url' => 'https://api.example.com/v2'],
@@ -384,4 +383,4 @@ describe(class_basename(OpenApi::class), function (): void {
             ],
         ]);
     });
-})->covers(OpenApi::class);
+})->covers(OpenAPI::class);

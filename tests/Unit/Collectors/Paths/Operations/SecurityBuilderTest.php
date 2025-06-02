@@ -8,9 +8,10 @@ use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\SecurityBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder;
 use MohammadAlavi\LaravelOpenApi\Collections\Path;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
-use MohammadAlavi\ObjectOrientedOpenAPI\Enums\OASVersion;
+use MohammadAlavi\ObjectOrientedOpenAPI\Enums\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenApi;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
@@ -69,9 +70,8 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         ]);
         $operation = app(OperationBuilder::class)->build($routeInformation);
 
-        $openApi = OpenApi::create()
+        $openApi = OpenAPI::v311(Info::create())
             ->components($components)
-            ->nestedSecurity($globalSecurity)
             ->paths(
                 Paths::create(
                     Path::create(
@@ -98,7 +98,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         }
 
         $this->assertSame([
-            'openapi' => OASVersion::V_3_1_0->value,
+            'openapi' => Version::V_3_1_0->value,
             'paths' => [
                 $route => $actionData,
             ], ...$collectionData,
@@ -584,8 +584,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         $operation = Operation::create()
             ->action('get');
 
-        $openApi = OpenApi::create()
-            ->nestedSecurity($globalSecurity)
+        $openApi = OpenAPI::v311(Info::create())
             ->components($components)
             ->paths(
                 Paths::create(
@@ -599,7 +598,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
 
         // Assert that the generated JSON matches the expected JSON for this scenario
         $expected = [
-            'openapi' => OASVersion::V_3_1_0->value,
+            'openapi' => Version::V_3_1_0->value,
             'paths' => [
                 '/foo' => [
                     'get' => [
@@ -779,7 +778,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 ),
             );
 
-        $openApi = OpenApi::create()
+        $openApi = OpenAPI::v311(Info::create())
             ->security((new ExampleSingleSecurityRequirementSecurity())->build())
             ->components($components)
             ->paths(
@@ -793,7 +792,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             );
 
         $expected = [
-            'openapi' => OASVersion::V_3_1_0->value,
+            'openapi' => Version::V_3_1_0->value,
             'paths' => [
                 '/foo' => [
                     'get' => [
@@ -840,7 +839,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             )
             ->security($securityBuilder->build($routeInformation->operationAttribute()->security));
 
-        $openApi = OpenApi::create()
+        $openApi = OpenAPI::v311(Info::create())
             ->components($components)
             ->paths(
                 Paths::create(
@@ -853,7 +852,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             );
 
         $expected = [
-            'openapi' => OASVersion::V_3_1_0->value,
+            'openapi' => Version::V_3_1_0->value,
             'paths' => [
                 '/foo' => [
                     'get' => [

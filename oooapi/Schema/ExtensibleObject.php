@@ -14,40 +14,36 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
 //   Or it is just generated for all objects! Like a global thing!
 abstract class ExtensibleObject extends Generatable
 {
-    private readonly Extensions $extensions;
-
-    final protected function __construct()
-    {
-        $this->extensions = Extensions::create();
-    }
+    private Extensions|null $extensions = null;
 
     public function addExtension(Extension ...$extension): static
     {
-        $clone = clone $this;
+        $this->extensionsInstance()->add(...$extension);
 
-        $clone->extensions->add(...$extension);
+        return $this;
+    }
 
-        return $clone;
+    private function extensionsInstance(): Extensions
+    {
+        return $this->extensions ??= Extensions::create();
     }
 
     public function removeExtension(string $name): static
     {
-        $clone = clone $this;
+        $this->extensionsInstance()->remove($name);
 
-        $clone->extensions->remove($name);
-
-        return $clone;
+        return $this;
     }
 
     public function getExtension(string $name): Extension
     {
-        return $this->extensions->get($name);
+        return $this->extensionsInstance()->get($name);
     }
 
     /** @return Extension[] */
     public function extensions(): array
     {
-        return $this->extensions->all();
+        return $this->extensionsInstance()->all();
     }
 
     // TODO: remove this and use methods instead
@@ -62,13 +58,13 @@ abstract class ExtensibleObject extends Generatable
 
     public function jsonSerialize(): array
     {
-        if ($this->extensions->isEmpty()) {
+        if ($this->extensionsInstance()->isEmpty()) {
             return parent::jsonSerialize();
         }
 
         return Arr::filter([
             ...$this->toArray(),
-            ...$this->extensions->jsonSerialize(),
+            ...$this->extensionsInstance()->jsonSerialize(),
         ]);
     }
 }

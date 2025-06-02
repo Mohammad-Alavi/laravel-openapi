@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Config;
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ServerFactory;
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\TagFactory;
 use MohammadAlavi\LaravelOpenApi\Generator;
-use MohammadAlavi\ObjectOrientedOpenAPI\Enums\OASVersion;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleComplexMultiSecurityRequirementSecurity;
@@ -120,7 +120,7 @@ describe('Generator', function (): void {
         'test collection' => [
             'collection' => 'test',
             'expectation' => [
-                'openapi' => OASVersion::V_3_1_0->value,
+                'openapi' => '3.1.1',
                 'info' => [
                     'title' => 'Test API',
                     'description' => 'Test API description',
@@ -203,12 +203,13 @@ describe('Generator', function (): void {
                     ],
                 ],
                 'paths' => [],
+                'jsonSchemaDialect' => JsonSchemaDialect::v31()->value(),
             ],
         ],
         'default collection' => [
             'collection' => Generator::COLLECTION_DEFAULT,
             'expectation' => [
-                'openapi' => OASVersion::V_3_1_0->value,
+                'openapi' => '3.1.1',
                 'info' => [
                     'title' => 'Test Default API',
                     'description' => 'Test Default API description',
@@ -271,6 +272,7 @@ describe('Generator', function (): void {
                     ],
                 ],
                 'paths' => [],
+                'jsonSchemaDialect' => JsonSchemaDialect::v31()->value(),
             ],
         ],
     ]);

@@ -17,6 +17,11 @@ class Server extends ExtensibleObject implements SimpleCreator
     /** @var ServerVariable[]|null */
     protected array|null $variables = null;
 
+    public static function default(): static
+    {
+        return (new self())->url('/');
+    }
+
     public function url(string|null $url): static
     {
         $clone = clone $this;
