@@ -110,7 +110,7 @@ class Descriptor implements DescriptorContract
     final public static function create(): static
     {
         return (new static())
-            ->schema('http://json-schema.org/draft-2020-12/schema');
+            ->schema('https://json-schema.org/draft-2020-12/schema');
     }
 
     final public function schema(string $uri): static
