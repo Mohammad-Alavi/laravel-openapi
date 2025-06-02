@@ -7,7 +7,7 @@ describe(class_basename(Descriptor::class), function (): void {
         $schemaBuilder = Descriptor::create()->const($value);
 
         expect($schemaBuilder->jsonSerialize())->toBe([
-            '$schema' => 'http://json-schema.org/draft-2020-12/schema',
+            '$schema' => 'https://json-schema.org/draft-2020-12/schema',
             'const' => $value,
         ]);
     })->with([
