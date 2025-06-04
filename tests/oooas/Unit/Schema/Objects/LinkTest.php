@@ -1,7 +1,7 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 
 describe('Link', function (): void {
     it('can be created with no parameters', function (): void {
@@ -11,7 +11,7 @@ describe('Link', function (): void {
     });
 
     it('can be created with all parameters', function (): void {
-        $server = Server::create();
+        $server = Server::default();
         $link = Link::create('test')
             ->operationRef('testRef')
             ->operationId('testId')

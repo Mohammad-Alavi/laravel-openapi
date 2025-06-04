@@ -9,7 +9,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 
 describe(class_basename(PathItem::class), function (): void {
     it('can be created with all parameters', function (): void {
@@ -27,7 +28,7 @@ describe(class_basename(PathItem::class), function (): void {
                             ),
                         ),
                 )
-                ->servers(Server::create()->url('https://example.com'))
+                ->servers(Server::create(URL::create('https://example.com')))
                 ->parameters(
                     Parameter::create()->name('Test parameter'),
                 ),

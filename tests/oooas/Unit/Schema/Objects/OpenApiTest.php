@@ -25,7 +25,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL as ServerURL;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleComplexMultiSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleHTTPBearerSecurityScheme;
@@ -132,8 +133,8 @@ describe(class_basename(OpenAPI::class), function (): void {
         );
 
         $servers = [
-            Server::create()->url('https://api.example.com/v1'),
-            Server::create()->url('https://api.example.com/v2'),
+            Server::create(ServerURL::create('https://api.example.com/v1')),
+            Server::create(ServerURL::create('https://api.example.com/v2')),
         ];
 
         $security = (new ExampleComplexMultiSecurityRequirementSecurity())->build();

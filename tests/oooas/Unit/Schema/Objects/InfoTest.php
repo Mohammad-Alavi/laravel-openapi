@@ -9,6 +9,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\TermsOfServic
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 
 describe(class_basename(Info::class), function (): void {
@@ -20,7 +21,7 @@ describe(class_basename(Info::class), function (): void {
             ->description(Description::create('A pretend API'))
             ->termsOfService(TermsOfService::create('https://example.com'))
             ->contact(Contact::create())
-            ->license(License::create());
+            ->license(License::create(Name::create('MIT')));
 
         expect($info->asArray())->toBe([
             'title' => 'Pretend API',
@@ -28,7 +29,9 @@ describe(class_basename(Info::class), function (): void {
             'description' => 'A pretend API',
             'termsOfService' => 'https://example.com',
             'contact' => [],
-            'license' => [],
+            'license' => [
+                'name' => 'MIT',
+            ],
             'version' => 'v1',
         ]);
     });

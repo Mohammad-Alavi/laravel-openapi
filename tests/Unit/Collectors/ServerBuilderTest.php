@@ -3,7 +3,7 @@
 namespace Tests\Unit\Collectors;
 
 use MohammadAlavi\LaravelOpenApi\Builders\ServerBuilder;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Doubles\Stubs\Servers\ServerWithEnum;
@@ -34,7 +34,7 @@ class ServerBuilderTest extends TestCase
                     'description' => 'sample_description',
                     'variables' => [
                         'variable_name' => [
-                            'default' => 'variable_defalut',
+                            'default' => 'variable_default',
                             'description' => 'variable_description',
                         ],
                     ],
@@ -49,7 +49,7 @@ class ServerBuilderTest extends TestCase
                     'description' => 'sample_description',
                     'variables' => [
                         'variable_name' => [
-                            'default' => 'variable_defalut',
+                            'default' => 'B',
                             'description' => 'variable_description',
                             'enum' => [
                                 'A',
@@ -69,13 +69,13 @@ class ServerBuilderTest extends TestCase
                     'description' => 'sample_description',
                     'variables' => [
                         'ServerVariableA' => [
-                            'default' => 'variable_defalut',
+                            'default' => 'B',
                             'description' => 'variable_description',
                             'enum' => ['A', 'B'],
                         ],
                         'ServerVariableB' => [
                             'default' => 'sample',
-                            'description' => 'sample',
+                            'description' => 'sample_description',
                         ],
                     ],
                 ],
@@ -93,7 +93,7 @@ class ServerBuilderTest extends TestCase
                     'description' => 'sample_description',
                     'variables' => [
                         'variable_name' => [
-                            'default' => 'variable_defalut',
+                            'default' => 'variable_default',
                             'description' => 'variable_description',
                         ],
                     ],
@@ -104,36 +104,16 @@ class ServerBuilderTest extends TestCase
                     'variables' => [
                         'ServerVariableA' => [
                             'enum' => ['A', 'B'],
-                            'default' => 'variable_defalut',
+                            'default' => 'B',
                             'description' => 'variable_description',
                         ],
                         'ServerVariableB' => [
                             'default' => 'sample',
-                            'description' => 'sample',
+                            'description' => 'sample_description',
                         ],
                     ],
                 ],
             ],
-        ];
-    }
-
-    public static function invalidServerProvider(): \Iterator
-    {
-        yield 'server with empty string url' => [
-            fn (): ServerWithVariables => new class extends ServerWithVariables {
-                public function build(): Server
-                {
-                    return Server::create()->url('')->description('sample_description');
-                }
-            },
-        ];
-        yield 'server with null url' => [
-            fn (): ServerWithVariables => new class extends ServerWithVariables {
-                public function build(): Server
-                {
-                    return Server::create()->url(null)->description('sample_description');
-                }
-            },
         ];
     }
 
@@ -181,14 +161,5 @@ class ServerBuilderTest extends TestCase
                 static fn (Server $server): array => $server->asArray(),
             )->toArray(),
         );
-    }
-
-    #[DataProvider('invalidServerProvider')]
-    public function testGivenNameNotProvidedCanProduceCorrectException(\Closure $factory): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $serverBuilder = app(ServerBuilder::class);
-        $serverBuilder->build([$factory()::class]);
     }
 }

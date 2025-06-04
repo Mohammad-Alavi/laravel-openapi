@@ -9,7 +9,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleSingleSecurityRequirementSecurity;
 
@@ -36,7 +36,7 @@ describe('Operation', function (): void {
                         Operation::$actionMethod()
                             ->requestBody(
                                 RequestBody::create()
-                                ->description('something happened'),
+                                    ->description('something happened'),
                             )->responses(
                                 Responses::create(
                                     Response::unauthorized(),
@@ -61,7 +61,7 @@ describe('Operation', function (): void {
             )
             ->deprecated()
             ->security((new ExampleSingleSecurityRequirementSecurity())->build())
-            ->servers(Server::create())
+            ->servers(Server::default())
             ->callbacks($callback);
 
         expect($operation->asArray())->toBe([
@@ -83,7 +83,11 @@ describe('Operation', function (): void {
                     'ExampleHTTPBearerSecurityScheme' => [],
                 ],
             ],
-            'servers' => [[]],
+            'servers' => [
+                [
+                    'url' => '/',
+                ],
+            ],
             'callbacks' => [
                 'MyEvent' => [
                     '{$request.query.callbackUrl}' => [

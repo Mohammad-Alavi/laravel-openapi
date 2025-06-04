@@ -5,7 +5,8 @@ use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ServerFactory;
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\TagFactory;
 use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleComplexMultiSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleNoSecurityRequirementSecurity;
@@ -26,8 +27,7 @@ beforeEach(function (): void {
                     (new class extends ServerFactory {
                         public function build(): Server
                         {
-                            return Server::create()
-                                ->url('https://example.com');
+                            return Server::create(URL::create('https://example.com'));
                         }
                     })::class,
                 ],
@@ -55,15 +55,13 @@ beforeEach(function (): void {
                     (new class extends ServerFactory {
                         public function build(): Server
                         {
-                            return Server::create()
-                                ->url('https://test.com');
+                            return Server::create(URL::create('https://test.com'));
                         }
                     })::class,
                     (new class extends ServerFactory {
                         public function build(): Server
                         {
-                            return Server::create()
-                                ->url('https://local.com');
+                            return Server::create(URL::create('https://local.com'));
                         }
                     })::class,
                 ],

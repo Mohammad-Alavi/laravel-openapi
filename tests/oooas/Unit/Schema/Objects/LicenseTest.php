@@ -5,6 +5,8 @@ namespace Tests\oooas\Unit\Schema\Objects;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Identifier;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\UnitTestCase;
@@ -14,9 +16,10 @@ class LicenseTest extends UnitTestCase
 {
     public function testCreateWithAllParametersWorks(): void
     {
-        $license = License::create()
-            ->name('MIT')
-            ->url('https://example.com');
+        $license = License::create(
+            Name::create('MIT'),
+            Identifier::create('MIT'),
+        );
 
         $info = Info::create(
             Title::create('Example Api'),
@@ -27,7 +30,7 @@ class LicenseTest extends UnitTestCase
             'title' => 'Example Api',
             'license' => [
                 'name' => 'MIT',
-                'url' => 'https://example.com',
+                'identifier' => 'MIT',
             ],
             'version' => 'v1',
         ], $info->asArray());

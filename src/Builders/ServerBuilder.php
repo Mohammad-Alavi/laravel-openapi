@@ -3,8 +3,7 @@
 namespace MohammadAlavi\LaravelOpenApi\Builders;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ServerFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server;
-use Webmozart\Assert\Assert;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 
 class ServerBuilder
 {
@@ -20,8 +19,6 @@ class ServerBuilder
             ->map(static function (string $serverFactory): Server {
                 /** @var Server $server */
                 $server = app($serverFactory)->build();
-                // TODO: this can be moved to Serve Constructor I think
-                Assert::stringNotEmpty($server->url);
 
                 return $server;
             })

@@ -12,6 +12,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Name as LicenseName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\URL as LicenseURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 
 class InfoBuilder
@@ -61,8 +63,9 @@ class InfoBuilder
 
     protected function buildLicense(array $config): License
     {
-        return License::create()
-            ->name(Arr::get($config, 'name'))
-            ->url(Arr::get($config, 'url'));
+        return License::create(
+            LicenseName::create(Arr::get($config, 'name')),
+            optional(Arr::get($config, 'url'), static fn (string|null $value) => LicenseURL::create($value)),
+        );
     }
 }

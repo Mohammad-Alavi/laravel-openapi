@@ -20,6 +20,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\TermsOfServic
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Name as LicenseName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\URL as LicenseURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
@@ -30,7 +32,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL as ServerURL;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use Tests\oooas\Doubles\Stubs\ReusableSchemaStub;
 
 describe('PetStoreTest', function (): void {
@@ -40,18 +43,19 @@ describe('PetStoreTest', function (): void {
             ->email(Email::create('apiteam@swagger.io'))
             ->url(URL::create('https://swagger.io'));
 
-        $license = License::create()
-            ->name('Apache 2.0')
-            ->url('https://www.apache.org/licenses/LICENSE-2.0.html');
+        $license = License::create(LicenseName::create('Apache 2.0'))
+            ->url(LicenseURL::create('https://www.apache.org/licenses/LICENSE-2.0.html'));
 
-        $server = Server::create()
-            ->url('https://petstore.swagger.io/api');
+        $server = Server::create(ServerURL::create('https://petstore.swagger.io/api'));
 
         $info = Info::create(
             Title::create('Swagger Petstore'),
             Version::create('1.0.0'),
-        )->description(Description::create('A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification'))
-            ->termsOfService(TermsOfService::create('https://swagger.io/terms/'))
+        )->description(
+            Description::create(
+                'A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification',
+            ),
+        )->termsOfService(TermsOfService::create('https://swagger.io/terms/'))
             ->contact($contact)
             ->license($license);
 

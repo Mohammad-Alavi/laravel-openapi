@@ -3,24 +3,40 @@
 namespace Tests\Doubles\Stubs\Servers;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ServerFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Variable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Variables;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\DefaultValue;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\Description as ServerVarDescription;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\Enum;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\ServerVariable;
 
 class ServerWithMultipleVariableFormatting extends ServerFactory
 {
     public function build(): Server
     {
-        return Server::create()
-            ->url('https://example.com')
-            ->description('sample_description')
+        return Server::create(URL::create('https://example.com'))
+            ->description(Description::create('sample_description'))
             ->variables(
-                ServerVariable::create('ServerVariableA')
-                    ->default('variable_defalut')
-                    ->description('variable_description')
-                    ->enum('A', 'B'),
-                ServerVariable::create('ServerVariableB')
-                    ->default('sample')
-                    ->description('sample'),
+                Variables::create(
+                    Variable::create(
+                        'ServerVariableA',
+                        ServerVariable::create(
+                            DefaultValue::create('B'),
+                        )->description(ServerVarDescription::create('variable_description'))
+                            ->enum(Enum::create('A', 'B')),
+                    ),
+                    Variable::create(
+                        'ServerVariableB',
+                        ServerVariable::create(
+                            DefaultValue::create('sample'),
+                        )->description(
+                            ServerVarDescription::create('sample_description'),
+                        ),
+                    ),
+                ),
             );
     }
 }

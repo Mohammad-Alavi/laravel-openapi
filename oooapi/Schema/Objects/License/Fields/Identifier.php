@@ -9,7 +9,7 @@ final readonly class Identifier extends StringField
     private function __construct(
         private string $value,
     ) {
-        // TODO: Add validation for the identifier format.
+        // TODO: Add validation.
     }
 
     public static function create(string $value): self

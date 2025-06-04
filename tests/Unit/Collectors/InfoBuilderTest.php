@@ -24,7 +24,7 @@ class InfoBuilderTest extends TestCase
                 'url' => 'https://example.com',
             ], 'license' => [
                 'name' => 'sample_license_name',
-                'url' => 'sample_license_url',
+                'url' => 'https://example.com',
             ]],
             [...$common, 'contact' => [
                 'name' => 'sample_contact_name',
@@ -32,7 +32,7 @@ class InfoBuilderTest extends TestCase
                 'url' => 'https://example.com',
             ], 'license' => [
                 'name' => 'sample_license_name',
-                'url' => 'sample_license_url',
+                'url' => 'https://example.com',
             ]],
         ];
         yield 'If Contact.name does not exist, the correct json can be output.' => [
@@ -41,14 +41,14 @@ class InfoBuilderTest extends TestCase
                 'url' => 'https://example.com',
             ], 'license' => [
                 'name' => 'sample_license_name',
-                'url' => 'sample_license_url',
+                'url' => 'https://example.com',
             ]],
             [...$common, 'contact' => [
                 'email' => 'email@example.com',
                 'url' => 'https://example.com',
             ], 'license' => [
                 'name' => 'sample_license_name',
-                'url' => 'sample_license_url',
+                'url' => 'https://example.com',
             ]],
         ];
         yield 'If Contact.email does not exist, the correct json can be output.' => [
@@ -57,14 +57,14 @@ class InfoBuilderTest extends TestCase
                 'url' => 'https://example.com',
             ], 'license' => [
                 'name' => 'sample_license_name',
-                'url' => 'sample_license_url',
+                'url' => 'https://example.com',
             ]],
             [...$common, 'contact' => [
                 'name' => 'sample_contact_name',
                 'url' => 'https://example.com',
             ], 'license' => [
                 'name' => 'sample_license_name',
-                'url' => 'sample_license_url',
+                'url' => 'https://example.com',
             ]],
         ];
         yield 'If Contact.url does not exist, the correct json can be output.' => [
@@ -73,34 +73,34 @@ class InfoBuilderTest extends TestCase
                 'email' => 'email@example.com',
             ], 'license' => [
                 'name' => 'sample_license_name',
-                'url' => 'sample_license_url',
+                'url' => 'https://example.com',
             ]],
             [...$common, 'contact' => [
                 'name' => 'sample_contact_name',
                 'email' => 'email@example.com',
             ], 'license' => [
                 'name' => 'sample_license_name',
-                'url' => 'sample_license_url',
+                'url' => 'https://example.com',
             ]],
         ];
         yield 'If Contact does not exist, the correct json can be output.' => [
             [...$common, 'license' => [
                 'name' => 'sample_license_name',
-                'url' => 'sample_license_url',
+                'url' => 'https://example.com',
             ]],
             [...$common, 'license' => [
                 'name' => 'sample_license_name',
-                'url' => 'sample_license_url',
+                'url' => 'https://example.com',
             ]],
         ];
         yield 'If Contact.* does not exist, the correct json can be output.' => [
             [...$common, 'contact' => [], 'license' => [
                 'name' => 'sample_license_name',
-                'url' => 'sample_license_url',
+                'url' => 'https://example.com',
             ]],
             [...$common, 'license' => [
                 'name' => 'sample_license_name',
-                'url' => 'sample_license_url',
+                'url' => 'https://example.com',
             ]],
         ];
         yield 'If License.name does not exist, the correct json can be output.' => [
@@ -109,7 +109,7 @@ class InfoBuilderTest extends TestCase
                 'email' => 'email@example.com',
                 'url' => 'https://example.com',
             ], 'license' => [
-                'url' => 'sample_license_url',
+                'url' => 'https://example.com',
             ]],
             [...$common, 'contact' => [
                 'name' => 'sample_contact_name',

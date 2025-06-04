@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
 

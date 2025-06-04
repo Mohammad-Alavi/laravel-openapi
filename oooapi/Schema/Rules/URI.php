@@ -11,7 +11,7 @@ final readonly class URI implements Rule
     ) {
         Assert::true(
             false !== filter_var($this->value, FILTER_VALIDATE_URL),
-            'The value "%s" is not a valid URI.'
+            "The value $this->value is not a valid URI.",
         );
     }
 

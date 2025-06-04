@@ -139,7 +139,7 @@ describe('PetStore', function (): void {
                         'description' => 'sample_description',
                         'variables' => [
                             'variable_name' => [
-                                'default' => 'variable_defalut',
+                                'default' => 'variable_default',
                                 'description' => 'variable_description',
                             ],
                         ],
@@ -194,12 +194,12 @@ describe('PetStore', function (): void {
                         'variables' => [
                             'ServerVariableA' => [
                                 'enum' => ['A', 'B'],
-                                'default' => 'variable_defalut',
+                                'default' => 'B',
                                 'description' => 'variable_description',
                             ],
                             'ServerVariableB' => [
                                 'default' => 'sample',
-                                'description' => 'sample',
+                                'description' => 'sample_description',
                             ],
                         ],
                     ],
@@ -279,7 +279,7 @@ describe('PetStore', function (): void {
                         'description' => 'sample_description',
                         'variables' => [
                             'variable_name' => [
-                                'default' => 'variable_defalut',
+                                'default' => 'variable_default',
                                 'description' => 'variable_description',
                             ],
                         ],
@@ -290,12 +290,12 @@ describe('PetStore', function (): void {
                         'variables' => [
                             'ServerVariableA' => [
                                 'enum' => ['A', 'B'],
-                                'default' => 'variable_defalut',
+                                'default' => 'B',
                                 'description' => 'variable_description',
                             ],
                             'ServerVariableB' => [
                                 'default' => 'sample',
-                                'description' => 'sample',
+                                'description' => 'sample_description',
                             ],
                         ],
                     ],

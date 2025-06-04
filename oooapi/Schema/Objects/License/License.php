@@ -25,12 +25,12 @@ final class License extends ExtensibleObject
         }
     }
 
-    public static function create(Name $name, Identifier|URL|null $license): self
+    public static function create(Name $name, Identifier|URL|null $license = null): self
     {
         return new self($name, $license);
     }
 
-    public function name(Name|null $name): self
+    public function name(Name $name): self
     {
         $clone = clone $this;
 
