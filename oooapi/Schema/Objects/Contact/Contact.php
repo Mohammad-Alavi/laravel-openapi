@@ -2,21 +2,22 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
-final class Contact extends ExtensibleObject implements SimpleCreator
+final class Contact extends ExtensibleObject
 {
-    use SimpleCreatorTrait;
-
     protected Name|null $name = null;
     protected URL|null $url = null;
     protected Email|null $email = null;
+
+    public static function create(): self
+    {
+        return new self();
+    }
 
     public function name(Name|null $name): self
     {
