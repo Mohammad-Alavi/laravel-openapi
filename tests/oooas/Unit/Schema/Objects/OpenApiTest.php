@@ -8,7 +8,10 @@ use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
@@ -36,10 +39,10 @@ describe(class_basename(OpenAPI::class), function (): void {
             ->url('https://example.com')
             ->email('hello@example.com');
 
-        $info = Info::create()
-            ->title('API Specification')
-            ->version('v1')
-            ->description('For using the Example App API')
+        $info = Info::create(
+            Title::create('API Specification'),
+            Version::create('v1'),
+        )->description(Description::create('For using the Example App API'))
             ->contact($contact);
 
         // TODO: Allow creating a Schema without a key.
@@ -65,9 +68,9 @@ describe(class_basename(OpenAPI::class), function (): void {
                 Property::create(
                     'data',
                     Schema::array()
-                    ->items(
-                        Schema::string()->format(StringFormat::UUID),
-                    ),
+                        ->items(
+                            Schema::string()->format(StringFormat::UUID),
+                        ),
                 ),
             )->required('id', 'created_at');
 
@@ -163,7 +166,7 @@ describe(class_basename(OpenAPI::class), function (): void {
                 ],
                 'version' => 'v1',
             ],
-            'jsonSchemaDialect' => JsonSchemaDialect::v31()->value(),
+            'jsonSchemaDialect' => JsonSchemaDialect::v31x()->value(),
             'servers' => [
                 ['url' => 'https://api.example.com/v1'],
                 ['url' => 'https://api.example.com/v2'],

@@ -5,7 +5,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\OpenAPI as OpenAPIField;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
@@ -27,10 +27,16 @@ final class OpenAPI extends ExtensibleObject
     private ExternalDocs|null $externalDocs = null;
 
     private function __construct(
-        private readonly OpenAPIField $openapi,
-        private readonly Info $info,
+        private OpenAPIField $openapi,
+        private Info $info,
     ) {
-        $this->jsonSchemaDialect = JsonSchemaDialect::v31();
+        $this->jsonSchemaDialect = JsonSchemaDialect::v31x();
+    }
+
+    public static function v311(
+        Info $info,
+    ): self {
+        return self::create(OpenAPIField::v311(), $info);
     }
 
     public static function create(
@@ -40,10 +46,22 @@ final class OpenAPI extends ExtensibleObject
         return new self($openapi, $info);
     }
 
-    public static function v311(
-        Info $info,
-    ): self {
-        return self::create(OpenAPIField::v311(), $info);
+    public function openapi(OpenAPIField $openapi): self
+    {
+        $clone = clone $this;
+
+        $clone->openapi = $openapi;
+
+        return $clone;
+    }
+
+    public function info(Info $info): self
+    {
+        $clone = clone $this;
+
+        $clone->info = $info;
+
+        return $clone;
     }
 
     public function jsonSchemaDialect(JsonSchemaDialect $jsonSchemaDialect): self

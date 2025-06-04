@@ -2,7 +2,9 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\UnitTestCase;
@@ -16,14 +18,18 @@ class LicenseTest extends UnitTestCase
             ->name('MIT')
             ->url('https://example.com');
 
-        $info = Info::create()
-            ->license($license);
+        $info = Info::create(
+            Title::create('Example Api'),
+            Version::create('v1'),
+        )->license($license);
 
         $this->assertSame([
+            'title' => 'Example Api',
             'license' => [
                 'name' => 'MIT',
                 'url' => 'https://example.com',
             ],
+            'version' => 'v1',
         ], $info->asArray());
     }
 }

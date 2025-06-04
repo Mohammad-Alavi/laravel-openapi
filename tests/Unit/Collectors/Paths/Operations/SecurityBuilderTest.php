@@ -10,7 +10,8 @@ use MohammadAlavi\LaravelOpenApi\Collections\Path;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 use MohammadAlavi\ObjectOrientedOpenAPI\Enums\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
@@ -70,8 +71,12 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         ]);
         $operation = app(OperationBuilder::class)->build($routeInformation);
 
-        $openApi = OpenAPI::v311(Info::create())
-            ->components($components)
+        $openApi = OpenAPI::v311(
+            Info::create(
+                Title::create('Example API'),
+                \MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version::create('1.0'),
+            ),
+        )->components($components)
             ->paths(
                 Paths::create(
                     Path::create(
@@ -584,8 +589,12 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         $operation = Operation::create()
             ->action('get');
 
-        $openApi = OpenAPI::v311(Info::create())
-            ->components($components)
+        $openApi = OpenAPI::v311(
+            Info::create(
+                Title::create('Example API'),
+                \MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version::create('1.0'),
+            ),
+        )->components($components)
             ->paths(
                 Paths::create(
                     Path::create(
@@ -778,8 +787,12 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 ),
             );
 
-        $openApi = OpenAPI::v311(Info::create())
-            ->security((new ExampleSingleSecurityRequirementSecurity())->build())
+        $openApi = OpenAPI::v311(
+            Info::create(
+                Title::create('Example API'),
+                \MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version::create('1.0'),
+            ),
+        )->security((new ExampleSingleSecurityRequirementSecurity())->build())
             ->components($components)
             ->paths(
                 Paths::create(
@@ -839,8 +852,12 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             )
             ->security($securityBuilder->build($routeInformation->operationAttribute()->security));
 
-        $openApi = OpenAPI::v311(Info::create())
-            ->components($components)
+        $openApi = OpenAPI::v311(
+            Info::create(
+                Title::create('Example API'),
+                \MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version::create('1.0'),
+            ),
+        )->components($components)
             ->paths(
                 Paths::create(
                     Path::create(

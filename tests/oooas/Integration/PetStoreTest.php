@@ -6,18 +6,20 @@ use Illuminate\Support\Facades\File;
 use MohammadAlavi\LaravelOpenApi\Collections\ParameterCollection;
 use MohammadAlavi\LaravelOpenApi\Collections\Path;
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Interface\JSONSchema;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
+use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Formats\IntegerFormat;
-use MohammadAlavi\ObjectOrientedJSONSchema\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Enums\OASVersion;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\AllOf;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\TermsOfService;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenApi;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
@@ -42,11 +44,11 @@ describe('PetStoreTest', function (): void {
         $server = Server::create()
             ->url('https://petstore.swagger.io/api');
 
-        $info = Info::create()
-            ->version('1.0.0')
-            ->title('Swagger Petstore')
-            ->description('A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification')
-            ->termsOfService('https://swagger.io/terms/')
+        $info = Info::create(
+            Title::create('Swagger Petstore'),
+            Version::create('1.0.0'),
+        )->description(Description::create('A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification'))
+            ->termsOfService(TermsOfService::create('https://swagger.io/terms/'))
             ->contact($contact)
             ->license($license);
 
@@ -69,18 +71,6 @@ describe('PetStoreTest', function (): void {
                 Schema::integer()->format(IntegerFormat::INT32),
             );
 
-        $allOfSag = AllOf::create('Pet')
-            ->schemas(
-                ReusableSchemaStub::create(),
-                Schema::object()
-                    ->required('id')
-                    ->properties(
-                        Property::create(
-                            'id',
-                            Schema::integer()->format(IntegerFormat::INT64),
-                        ),
-                    ),
-            );
         $allOf = Schema::object()
             ->allOf(
                 ReusableSchemaStub::create()->build(),
@@ -94,7 +84,7 @@ describe('PetStoreTest', function (): void {
                     ),
             );
 
-        $newPetSchema = new class () extends ReusableSchemaFactory {
+        $newPetSchema = new class extends ReusableSchemaFactory {
             public function build(): JSONSchema
             {
                 return Schema::object()
@@ -117,7 +107,7 @@ describe('PetStoreTest', function (): void {
             }
         };
 
-        $errorSchema = new class () extends ReusableSchemaFactory {
+        $errorSchema = new class extends ReusableSchemaFactory {
             public function build(): JSONSchema
             {
                 return Schema::object()
@@ -188,7 +178,7 @@ describe('PetStoreTest', function (): void {
         $path = Path::create(
             '/pets',
             PathItem::create()
-            ->operations($operation, $addPet),
+                ->operations($operation, $addPet),
         );
 
         $petIdParameter = Parameter::path()
@@ -219,9 +209,7 @@ describe('PetStoreTest', function (): void {
                 ->operations($findPetById, $deletePetById),
         );
 
-        $openApi = OpenApi::create()
-            ->openapi(OASVersion::V_3_1_0)
-            ->info($info)
+        $openApi = OpenAPI::v311($info)
             ->servers($server)
             ->paths(Paths::create($path, $petNested))
             ->components($components);

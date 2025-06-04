@@ -203,7 +203,7 @@ describe('Generator', function (): void {
                     ],
                 ],
                 'paths' => [],
-                'jsonSchemaDialect' => JsonSchemaDialect::v31()->value(),
+                'jsonSchemaDialect' => JsonSchemaDialect::v31x()->value(),
             ],
         ],
         'default collection' => [
@@ -272,7 +272,7 @@ describe('Generator', function (): void {
                     ],
                 ],
                 'paths' => [],
-                'jsonSchemaDialect' => JsonSchemaDialect::v31()->value(),
+                'jsonSchemaDialect' => JsonSchemaDialect::v31x()->value(),
             ],
         ],
     ]);

@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields;
 
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Rules\URI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
-use Webmozart\Assert\Assert;
 
 /**
  * Represents the `jsonSchemaDialect` field in OpenAPI 3.1.
@@ -15,13 +15,10 @@ use Webmozart\Assert\Assert;
  */
 final readonly class JsonSchemaDialect extends StringField
 {
-    private function __construct(
+    public function __construct(
         private string $value,
     ) {
-        Assert::true(
-            false !== filter_var($this->value, FILTER_VALIDATE_URL),
-            'The value of jsonSchemaDialect must be a valid URI.',
-        );
+        URI::validate($this->value);
     }
 
     public static function create(string $value): self
@@ -29,7 +26,7 @@ final readonly class JsonSchemaDialect extends StringField
         return new self($value);
     }
 
-    public static function v31(): self
+    public static function v31x(): self
     {
         return new self('https://spec.openapis.org/oas/3.1/dialect/base');
     }

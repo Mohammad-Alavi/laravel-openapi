@@ -9,7 +9,10 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\AllOf;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
@@ -34,10 +37,10 @@ describe('OpenApi', function (): void {
             ->name('Example')
             ->url('https://example.com')
             ->email('hello@example.com');
-        $info = Info::create()
-            ->title('API Specification')
-            ->version('v1')
-            ->description('For using the Example App API')
+        $info = Info::create(
+            Title::create('API Specification'),
+            Version::create('v1'),
+        )->description(Description::create('For using the Example App API'))
             ->contact($contact);
         $objectBuilder = Schema::object()
             ->properties(

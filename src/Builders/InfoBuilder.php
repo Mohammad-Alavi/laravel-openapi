@@ -5,17 +5,24 @@ namespace MohammadAlavi\LaravelOpenApi\Builders;
 use Illuminate\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License;
 
 class InfoBuilder
 {
     public function build(array $config): Info
     {
-        $info = Info::create()
-            ->title(Arr::get($config, 'title'))
-            ->description(Arr::get($config, 'description'))
-            ->version(Arr::get($config, 'version'));
+        $info = Info::create(
+            Title::create(Arr::get($config, 'title')),
+            Version::create(Arr::get($config, 'version')),
+        )->description(
+            Arr::get($config, 'description')
+                ? Description::create(Arr::get($config, 'description'))
+                : null,
+        );
 
         if (
             Arr::has($config, 'contact')
