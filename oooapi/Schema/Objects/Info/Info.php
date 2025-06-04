@@ -9,16 +9,16 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\TermsOfService;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
 final class Info extends ExtensibleObject
 {
-    protected Summary|null $summary = null;
-    protected Description|null $description = null;
-    protected TermsOfService|null $termsOfService = null;
-    protected Contact|null $contact = null;
-    protected License|null $license = null;
+    private Summary|null $summary = null;
+    private Description|null $description = null;
+    private TermsOfService|null $termsOfService = null;
+    private Contact|null $contact = null;
+    private License|null $license = null;
 
     private function __construct(
         private Title $title,

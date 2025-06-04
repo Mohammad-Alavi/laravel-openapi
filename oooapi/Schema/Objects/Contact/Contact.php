@@ -10,9 +10,13 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
 final class Contact extends ExtensibleObject
 {
-    protected Name|null $name = null;
-    protected URL|null $url = null;
-    protected Email|null $email = null;
+    private Name|null $name = null;
+    private URL|null $url = null;
+    private Email|null $email = null;
+
+    private function __construct()
+    {
+    }
 
     public static function create(): self
     {
