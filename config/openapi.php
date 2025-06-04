@@ -8,7 +8,11 @@ return [
                 'title' => config('app.name'),
                 'description' => null,
                 'version' => '1.0.0',
-                'contact' => [],
+                'contact' => [
+                    'name' => null,
+                    'email' => null,
+                    'url' => null,
+                ],
             ],
 
             'servers' => [

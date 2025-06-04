@@ -1,21 +1,24 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
-class Contact extends ExtensibleObject implements SimpleCreator
+final class Contact extends ExtensibleObject implements SimpleCreator
 {
     use SimpleCreatorTrait;
 
-    protected string|null $name = null;
-    protected string|null $url = null;
-    protected string|null $email = null;
+    protected Name|null $name = null;
+    protected URL|null $url = null;
+    protected Email|null $email = null;
 
-    public function name(string|null $name): static
+    public function name(Name|null $name): self
     {
         $clone = clone $this;
 
@@ -24,7 +27,7 @@ class Contact extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function url(string|null $url): static
+    public function url(URL|null $url): self
     {
         $clone = clone $this;
 
@@ -33,7 +36,7 @@ class Contact extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function email(string|null $email): static
+    public function email(Email|null $email): self
     {
         $clone = clone $this;
 

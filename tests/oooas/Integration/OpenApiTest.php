@@ -7,7 +7,10 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Prope
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\AllOf;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
@@ -34,9 +37,9 @@ describe('OpenApi', function (): void {
             ->name('Audits')
             ->description('All the audits');
         $contact = Contact::create()
-            ->name('Example')
-            ->url('https://example.com')
-            ->email('hello@example.com');
+            ->name(Name::create('Example'))
+            ->url(URL::create('https://example.com'))
+            ->email(Email::create('hello@example.com'));
         $info = Info::create(
             Title::create('API Specification'),
             Version::create('v1'),

@@ -2,7 +2,7 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\TermsOfService;

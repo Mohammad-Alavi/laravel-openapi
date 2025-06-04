@@ -4,7 +4,10 @@ namespace MohammadAlavi\LaravelOpenApi\Builders;
 
 use Illuminate\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
@@ -51,9 +54,9 @@ class InfoBuilder
     protected function buildContact(array $config): Contact
     {
         return Contact::create()
-            ->name(Arr::get($config, 'name'))
-            ->email(Arr::get($config, 'email'))
-            ->url(Arr::get($config, 'url'));
+            ->name(optional(Arr::get($config, 'name'), static fn (string|null $value) => Name::create($value)))
+            ->email(optional(Arr::get($config, 'email'), static fn (string|null $value) => Email::create($value)))
+            ->url(optional(Arr::get($config, 'url'), static fn (string|null $value) => URL::create($value)));
     }
 
     protected function buildLicense(array $config): License

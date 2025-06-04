@@ -11,7 +11,10 @@ use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Formats\IntegerFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\TermsOfService;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
@@ -33,9 +36,9 @@ use Tests\oooas\Doubles\Stubs\ReusableSchemaStub;
 describe('PetStoreTest', function (): void {
     test('PetStore Example', function (): void {
         $contact = Contact::create()
-            ->name('Swagger API Team')
-            ->email('apiteam@swagger.io')
-            ->url('https://swagger.io');
+            ->name(Name::create('Swagger API Team'))
+            ->email(Email::create('apiteam@swagger.io'))
+            ->url(URL::create('https://swagger.io'));
 
         $license = License::create()
             ->name('Apache 2.0')
