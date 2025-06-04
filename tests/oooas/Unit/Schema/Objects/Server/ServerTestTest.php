@@ -4,7 +4,7 @@ namespace Tests\oooas\Unit\Schema\Objects\Server;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Variable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Entry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Variables;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\DefaultValue;
@@ -23,7 +23,7 @@ class ServerTestTest extends UnitTestCase
             ->description(Description::create('Core API'))
             ->variables(
                 Variables::create(
-                    Variable::create('ServerVariableName', $serverVariable),
+                    Entry::create('ServerVariableName', $serverVariable),
                 ),
             );
 
@@ -45,7 +45,7 @@ class ServerTestTest extends UnitTestCase
         $server = Server::create(URL::create('https://api.example.con/v1'))
             ->variables(
                 Variables::create(
-                    Variable::create('username', $serverVariable),
+                    Entry::create('username', $serverVariable),
                 ),
             );
 

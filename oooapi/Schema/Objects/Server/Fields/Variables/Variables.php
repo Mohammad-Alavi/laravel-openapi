@@ -11,13 +11,13 @@ final readonly class Variables implements \JsonSerializable
     ) {
     }
 
-    public static function create(Variable ...$map): self
+    public static function create(Entry ...$entry): self
     {
-        return new self($map);
+        return new self($entry);
     }
 
     /**
-     * @return array<string, ServerVariable>|null $variables
+     * @return array<string, ServerVariable>|null
      */
     public function jsonSerialize(): array|null
     {
@@ -27,8 +27,8 @@ final readonly class Variables implements \JsonSerializable
 
         return array_reduce(
             $this->variables,
-            static function (array $carry, Variable $variableMap) {
-                return array_merge($carry, $variableMap->value());
+            static function (array $carry, Entry $entry) {
+                return array_merge($carry, $entry->value());
             },
             [],
         );

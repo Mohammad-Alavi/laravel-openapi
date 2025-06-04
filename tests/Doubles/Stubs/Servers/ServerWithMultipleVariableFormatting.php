@@ -5,7 +5,7 @@ namespace Tests\Doubles\Stubs\Servers;
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ServerFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Variable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Entry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Variables;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\DefaultValue;
@@ -21,14 +21,14 @@ class ServerWithMultipleVariableFormatting extends ServerFactory
             ->description(Description::create('sample_description'))
             ->variables(
                 Variables::create(
-                    Variable::create(
+                    Entry::create(
                         'ServerVariableA',
                         ServerVariable::create(
                             DefaultValue::create('B'),
                         )->description(ServerVarDescription::create('variable_description'))
                             ->enum(Enum::create('A', 'B')),
                     ),
-                    Variable::create(
+                    Entry::create(
                         'ServerVariableB',
                         ServerVariable::create(
                             DefaultValue::create('sample'),

@@ -4,7 +4,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Varia
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\ServerVariable;
 
-final readonly class Variable
+final readonly class Entry
 {
     private function __construct(
         private string $name,
