@@ -105,7 +105,7 @@ class Descriptor implements DescriptorContract
 
     final private function __construct(string|null $schema = null)
     {
-        $this->schema = $schema ? Dialect::schema($schema) : null;
+        $this->schema = is_null($schema) ? null : Dialect::schema($schema);
     }
 
     /**
