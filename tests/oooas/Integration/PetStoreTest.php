@@ -7,9 +7,9 @@ use MohammadAlavi\LaravelOpenApi\Collections\ParameterCollection;
 use MohammadAlavi\LaravelOpenApi\Collections\Path;
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\JSONSchema;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Formats\IntegerFormat;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\JSONSchema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Formats\IntegerFormat;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
@@ -62,20 +62,20 @@ describe('PetStoreTest', function (): void {
             ->contact($contact)
             ->license($license);
 
-        $tagsParameter = Parameter::create(ParamName::create('tags'), In::query())
-            ->description(Description::create('tags to filter by'))
-            ->style(Parameter::STYLE_FORM)
-            ->schema(
-                Schema::array()->items(
-                    Schema::string(),
-                ),
-            );
+        $tagsParameter = Parameter::schema(
+            ParamName::create('tags'),
+            In::query(),
+            Schema::array()->items(
+                Schema::string(),
+            ),
+        )->description(Description::create('tags to filter by'))
+            ->style(Parameter::STYLE_FORM);
 
-        $limitParameter = Parameter::create(ParamName::create('limit'), In::query())
-            ->description(Description::create('maximum number of results to return'))
-            ->schema(
-                Schema::integer()->format(IntegerFormat::INT32),
-            );
+        $limitParameter = Parameter::schema(
+            ParamName::create('limit'),
+            In::query(),
+            Schema::integer()->format(IntegerFormat::INT32),
+        )->description(Description::create('maximum number of results to return'));
 
         $allOf = Schema::object()
             ->allOf(
@@ -187,12 +187,12 @@ describe('PetStoreTest', function (): void {
                 ->operations($operation, $addPet),
         );
 
-        $petIdParameter = Parameter::create(ParamName::create('id'), In::path())
-            ->description(Description::create('ID of pet to fetch'))
-            ->required()
-            ->schema(
-                Schema::integer()->format(IntegerFormat::INT64),
-            );
+        $petIdParameter = Parameter::schema(
+            ParamName::create('id'),
+            In::path(),
+            Schema::integer()->format(IntegerFormat::INT64),
+        )->description(Description::create('ID of pet to fetch'))
+            ->required();
 
         $findPetById = Operation::get()
             ->description('Returns a user based on a single ID, if the user does not have access to the pet')

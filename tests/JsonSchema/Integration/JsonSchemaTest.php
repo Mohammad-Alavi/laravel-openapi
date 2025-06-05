@@ -4,7 +4,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\AvailableVocabulary;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\Draft202012Constrained;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\MetaSchema\MetaSchema;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Vocabulary;
 
 describe(class_basename(Schema::class), function (): void {

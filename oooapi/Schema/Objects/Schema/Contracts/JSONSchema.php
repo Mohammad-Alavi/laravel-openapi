@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts;
 
 // TODO: address dependency chain
 interface JSONSchema extends \JsonSerializable

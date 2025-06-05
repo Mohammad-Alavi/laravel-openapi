@@ -3,7 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptors;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Format;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Formats\NumberFormat;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Formats\NumberFormat;
 
 final class NumberDescriptor extends NumeralDescriptor
 {

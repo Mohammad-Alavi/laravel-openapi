@@ -4,8 +4,8 @@ namespace Tests\Doubles\Stubs;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ExtensionFactory;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\JSONSchema;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\JSONSchema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 class FakeExtension extends ExtensionFactory
 {

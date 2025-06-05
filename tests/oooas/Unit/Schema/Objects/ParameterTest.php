@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Description;
@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 
 describe('Parameter', function (): void {
     it('can be created with all parameters', function (): void {
-        $parameter = Parameter::create(Name::create('user'), In::path())
+        $parameter = Parameter::schema(Name::create('user'), In::path(), Schema::string())
             ->description(Description::create('User ID'))
             ->required()
             ->deprecated()
@@ -18,7 +18,6 @@ describe('Parameter', function (): void {
             ->style(Parameter::STYLE_SIMPLE)
             ->explode()
             ->allowReserved()
-            ->schema(Schema::string())
             ->example(Example::create('example_test'))
             ->examples(Example::create('ExampleName'))
             ->content(MediaType::json());

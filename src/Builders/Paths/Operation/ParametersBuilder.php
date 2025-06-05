@@ -7,8 +7,8 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Parameters;
 use MohammadAlavi\LaravelOpenApi\Collections\ParameterCollection;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\Collections\ParameterCollectionFactory;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\JSONSchema;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\JSONSchema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In\In;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
@@ -51,9 +51,8 @@ class ParametersBuilder
                     );
                 }
 
-                return Parameter::create(Name::create($parameter['name']), In::path())
-                    ->required()
-                    ->schema($schema);
+                return Parameter::schema(Name::create($parameter['name']), In::path(), $schema)
+                    ->required();
             });
         $parameters = $parameters->filter(static fn (Parameter|null $parameter): bool => !is_null($parameter));
 

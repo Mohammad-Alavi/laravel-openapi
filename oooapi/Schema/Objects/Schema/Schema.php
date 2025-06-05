@@ -1,18 +1,18 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedJSONSchema\v31;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Descriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Descriptors\ArrayDescriptor;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Descriptors\BooleanDescriptor;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Descriptors\ConstantDescriptor;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Descriptors\EnumDescriptor;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Descriptors\IntegerDescriptor;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Descriptors\NullDescriptor;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Descriptors\NumberDescriptor;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Descriptors\ObjectDescriptor;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\Descriptors\StringDescriptor;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\ArrayDescriptor;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\BooleanDescriptor;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\ConstantDescriptor;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\EnumDescriptor;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\IntegerDescriptor;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\NullDescriptor;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\NumberDescriptor;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\ObjectDescriptor;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\StringDescriptor;
 
 final class Schema extends Descriptor implements NullDescriptor, BooleanDescriptor, StringDescriptor, IntegerDescriptor, NumberDescriptor, ObjectDescriptor, ArrayDescriptor, ConstantDescriptor, EnumDescriptor
 {

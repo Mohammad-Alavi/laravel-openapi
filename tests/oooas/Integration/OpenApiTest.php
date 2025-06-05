@@ -4,7 +4,7 @@ use MohammadAlavi\LaravelOpenApi\Collections\ParameterCollection;
 use MohammadAlavi\LaravelOpenApi\Collections\Path;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\AllOf;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
@@ -86,11 +86,9 @@ describe('OpenApi', function (): void {
             ->operationId('audits.show')
             ->parameters(
                 ParameterCollection::create(
-                    Parameter::create(ParamName::create('audit'), In::path())
-                        ->schema($stringBuilder)
+                    Parameter::schema(ParamName::create('audit'), In::path(), $stringBuilder)
                         ->required(),
-                    Parameter::create(ParamName::create('format'), In::query())
-                        ->schema($enumBuilder)
+                    Parameter::schema(ParamName::create('format'), In::query(), $enumBuilder)
                         ->description(Description::create('The format of the appointments')),
                 ),
             );

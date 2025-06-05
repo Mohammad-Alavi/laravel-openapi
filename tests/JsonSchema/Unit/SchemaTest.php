@@ -1,7 +1,7 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 describe(class_basename(Schema::class), function (): void {
     it(

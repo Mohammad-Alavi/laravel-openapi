@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedJSONSchema\v31\Formats;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Formats;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\DefinedFormat;
 

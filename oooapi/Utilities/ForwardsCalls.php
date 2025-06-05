@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedJSONSchema;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Utilities;
 
 trait ForwardsCalls
 {
