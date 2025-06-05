@@ -6,7 +6,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Meth
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Methods\MaxLength;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Methods\MinLength;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Methods\Pattern;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\SharedDescriptor;
 
 interface StringDescriptor extends SharedDescriptor, Format, MaxLength, MinLength, Pattern
 {

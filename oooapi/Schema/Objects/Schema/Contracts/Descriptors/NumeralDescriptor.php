@@ -8,7 +8,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Meth
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Methods\Maximum;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Methods\Minimum;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Methods\MultipleOf;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\SharedDescriptor;
 
 interface NumeralDescriptor extends SharedDescriptor, ExclusiveMaximum, ExclusiveMinimum, Maximum, Minimum, MultipleOf, Format
 {
