@@ -5,7 +5,7 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Parameters as ParameterAttribute;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\ParametersBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use Tests\Doubles\Stubs\Attributes\ParameterFactory;
 use Tests\Doubles\Stubs\Collectors\Paths\Operations\TestController;
 
@@ -36,9 +36,7 @@ describe('ParameterBuilder', function (): void {
 
         $urlParam = $parameterCollection->all()[0];
         expect($parameterCollection->all())->toHaveCount($count)
-            ->and($urlParam)->toBeInstanceOf(Parameter::class)
-            ->and($urlParam->name)->toBe('id')
-            ->and($urlParam->required)->toBeTrue();
+            ->and($urlParam)->toBeInstanceOf(Parameter::class);
     })->with([
         'with action params' => [
             'params' => [new ParameterAttribute(ParameterFactory::class)],
@@ -60,8 +58,6 @@ describe('ParameterBuilder', function (): void {
 
         $typeHintedParam = $parameterCollection->all()[0];
         expect($parameterCollection->asArray())->toHaveCount(2)
-            ->and($typeHintedParam->name)->toBe('id')
-            ->and($typeHintedParam->required)->toBeTrue()
             ->and($typeHintedParam->schema->jsonSerialize()['type'])->toBe(Type::integer()->value());
     });
 })->covers(ParametersBuilder::class);

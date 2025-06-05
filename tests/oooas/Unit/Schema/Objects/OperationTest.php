@@ -4,7 +4,9 @@ use MohammadAlavi\LaravelOpenApi\Collections\ParameterCollection;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In\In;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name as ParamName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
@@ -52,7 +54,7 @@ describe('Operation', function (): void {
             ->description('Dolar sit amet')
             ->externalDocs(ExternalDocs::create())
             ->operationId('users.show')
-            ->parameters(ParameterCollection::create(Parameter::create()))
+            ->parameters(ParameterCollection::create(Parameter::create(ParamName::create('id'), In::query())))
             ->requestBody(RequestBody::create())
             ->responses(
                 Responses::create(
@@ -70,7 +72,12 @@ describe('Operation', function (): void {
             'description' => 'Dolar sit amet',
             'externalDocs' => [],
             'operationId' => 'users.show',
-            'parameters' => [[]],
+            'parameters' => [
+                [
+                    'name' => 'id',
+                    'in' => 'query',
+                ],
+            ],
             'requestBody' => [],
             'responses' => [
                 '200' => [

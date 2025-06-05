@@ -9,7 +9,9 @@ use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\Collections\Param
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In\In;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 
 class ParametersBuilder
 {
@@ -49,7 +51,7 @@ class ParametersBuilder
                     );
                 }
 
-                return Parameter::path()->name($parameter['name'])
+                return Parameter::create(Name::create($parameter['name']), In::path())
                     ->required()
                     ->schema($schema);
             });

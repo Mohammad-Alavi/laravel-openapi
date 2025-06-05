@@ -15,7 +15,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description as InfoDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\TermsOfService;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
@@ -26,7 +26,10 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In\In;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name as ParamName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
@@ -52,17 +55,15 @@ describe('PetStoreTest', function (): void {
             Title::create('Swagger Petstore'),
             Version::create('1.0.0'),
         )->description(
-            Description::create(
+            InfoDescription::create(
                 'A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification',
             ),
         )->termsOfService(TermsOfService::create('https://swagger.io/terms/'))
             ->contact($contact)
             ->license($license);
 
-        $tagsParameter = Parameter::query()
-            ->name('tags')
-            ->description('tags to filter by')
-            ->required(false)
+        $tagsParameter = Parameter::create(ParamName::create('tags'), In::query())
+            ->description(Description::create('tags to filter by'))
             ->style(Parameter::STYLE_FORM)
             ->schema(
                 Schema::array()->items(
@@ -70,10 +71,8 @@ describe('PetStoreTest', function (): void {
                 ),
             );
 
-        $limitParameter = Parameter::query()
-            ->name('limit')
-            ->description('maximum number of results to return')
-            ->required(false)
+        $limitParameter = Parameter::create(ParamName::create('limit'), In::query())
+            ->description(Description::create('maximum number of results to return'))
             ->schema(
                 Schema::integer()->format(IntegerFormat::INT32),
             );
@@ -188,9 +187,8 @@ describe('PetStoreTest', function (): void {
                 ->operations($operation, $addPet),
         );
 
-        $petIdParameter = Parameter::path()
-            ->name('id')
-            ->description('ID of pet to fetch')
+        $petIdParameter = Parameter::create(ParamName::create('id'), In::path())
+            ->description(Description::create('ID of pet to fetch'))
             ->required()
             ->schema(
                 Schema::integer()->format(IntegerFormat::INT64),
@@ -207,7 +205,7 @@ describe('PetStoreTest', function (): void {
         $deletePetById = Operation::delete()
             ->description('deletes a single pet based on the ID supplied')
             ->operationId('deletePet')
-            ->parameters(ParameterCollection::create($petIdParameter->description('ID of pet to delete')))
+            ->parameters(ParameterCollection::create($petIdParameter->description(Description::create('ID of pet to delete'))))
             ->responses(Responses::create($petDeletedResponse, $defaultErrorResponse));
 
         $petNested = Path::create(

@@ -12,10 +12,12 @@ use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In\In;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
@@ -40,7 +42,7 @@ describe(class_basename(Components::class), function (): void {
         $parameter->allows('key')
             ->andReturn('Page');
         $parameter->expects('build')
-            ->andReturn(Parameter::query()->name('page'));
+            ->andReturn(Parameter::create(Name::create('page'), In::query()));
 
         $example = Example::create('Page')
             ->value(5);

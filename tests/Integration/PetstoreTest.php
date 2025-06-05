@@ -115,7 +115,6 @@ describe('PetStore', function (): void {
                         'name' => 'limit',
                         'in' => 'query',
                         'description' => 'How many items to return at one time (max 100)',
-                        'required' => false,
                         'schema' => [
                             'type' => 'integer',
                             'format' => 'int32',
@@ -161,7 +160,6 @@ describe('PetStore', function (): void {
                         'name' => 'limit',
                         'in' => 'query',
                         'description' => 'How many items to return at one time (max 100)',
-                        'required' => false,
                         'schema' => [
                             'type' => 'integer',
                             'format' => 'int32',
@@ -219,7 +217,6 @@ describe('PetStore', function (): void {
                         'name' => 'limit',
                         'in' => 'query',
                         'description' => 'How many items to return at one time (max 100)',
-                        'required' => false,
                         'schema' => [
                             'type' => 'integer',
                             'format' => 'int32',

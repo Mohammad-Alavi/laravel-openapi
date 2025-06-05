@@ -1,42 +1,50 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\JSONSchema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleKeyCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleKeyCreatorTrait;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\AllowEmptyValue;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Deprecated;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Required;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Location\Location;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
-class Header extends ExtensibleObject implements SimpleKeyCreator
+final class Parameter extends ExtensibleObject
 {
-    use SimpleKeyCreatorTrait;
-
-    public const STYLE_MATRIX = 'matrix';
-    public const STYLE_LABEL = 'label';
     public const STYLE_FORM = 'form';
     public const STYLE_SIMPLE = 'simple';
-    public const STYLE_SPACE_DELIMITED = 'spaceDelimited';
-    public const STYLE_PIPE_DELIMITED = 'pipeDelimited';
-    public const STYLE_DEEP_OBJECT = 'deepObject';
+    public JSONSchema|null $schema = null;
 
-    protected string|null $description = null;
-    protected bool|null $required = null;
-    protected bool|null $deprecated = null;
-    protected bool|null $allowEmptyValue = null;
-    protected string|null $style = null;
-    protected bool|null $explode = null;
-    protected bool|null $allowReserved = null;
-    protected JSONSchema|null $schema = null;
-    protected mixed $example = null;
-
+    private Required|null $required = null;
+    private Description|null $description = null;
+    private Deprecated|null $deprecated = null;
+    private AllowEmptyValue|null $allowEmptyValue = null;
+    private string|null $style = null;
+    private bool|null $explode = null;
+    private bool|null $allowReserved = null;
+    private mixed $example = null;
     /** @var Example[]|null */
-    protected array|null $examples = null;
-
+    private array|null $examples = null;
     /** @var MediaType[]|null */
-    protected array|null $content = null;
+    private array|null $content = null;
 
-    public function description(string|null $description): static
+    private function __construct(
+        private readonly Name $name,
+        private readonly Location $in,
+    ) {
+    }
+
+    public static function create(Name $name, Location $in): self
+    {
+        return new self($name, $in);
+    }
+
+    public function description(Description|null $description): self
     {
         $clone = clone $this;
 
@@ -45,34 +53,34 @@ class Header extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function required(bool|null $required = true): static
+    public function required(): self
     {
         $clone = clone $this;
 
-        $clone->required = $required;
+        $clone->required = Required::yes();
 
         return $clone;
     }
 
-    public function deprecated(bool|null $deprecated = true): static
+    public function deprecated(): self
     {
         $clone = clone $this;
 
-        $clone->deprecated = $deprecated;
+        $clone->deprecated = Deprecated::yes();
 
         return $clone;
     }
 
-    public function allowEmptyValue(bool|null $allowEmptyValue = true): static
+    public function allowEmptyValue(): self
     {
         $clone = clone $this;
 
-        $clone->allowEmptyValue = $allowEmptyValue;
+        $clone->allowEmptyValue = AllowEmptyValue::yes();
 
         return $clone;
     }
 
-    public function style(string|null $style): static
+    public function style(string|null $style): self
     {
         $clone = clone $this;
 
@@ -81,7 +89,7 @@ class Header extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function explode(bool|null $explode = true): static
+    public function explode(bool|null $explode = true): self
     {
         $clone = clone $this;
 
@@ -90,7 +98,7 @@ class Header extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function allowReserved(bool|null $allowReserved = true): static
+    public function allowReserved(bool|null $allowReserved = true): self
     {
         $clone = clone $this;
 
@@ -99,7 +107,7 @@ class Header extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function schema(JSONSchema|null $schema): static
+    public function schema(JSONSchema|null $schema): self
     {
         $clone = clone $this;
 
@@ -108,7 +116,7 @@ class Header extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function example(mixed $example): static
+    public function example(mixed $example): self
     {
         $clone = clone $this;
 
@@ -117,7 +125,7 @@ class Header extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function examples(Example ...$example): static
+    public function examples(Example ...$example): self
     {
         $clone = clone $this;
 
@@ -126,7 +134,7 @@ class Header extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function content(MediaType ...$mediaType): static
+    public function content(MediaType ...$mediaType): self
     {
         $clone = clone $this;
 
@@ -148,6 +156,8 @@ class Header extends ExtensibleObject implements SimpleKeyCreator
         }
 
         return Arr::filter([
+            'name' => $this->name,
+            'in' => $this->in,
             'description' => $this->description,
             'required' => $this->required,
             'deprecated' => $this->deprecated,

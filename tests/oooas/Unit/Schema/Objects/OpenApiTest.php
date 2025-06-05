@@ -19,7 +19,10 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Description as ParamDescription;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In\In;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name as ParamName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
@@ -108,14 +111,12 @@ describe(class_basename(OpenAPI::class), function (): void {
             ->operationId('audits.show')
             ->parameters(
                 ParameterCollection::create(
-                    Parameter::path()
-                        ->name('audit')
+                    Parameter::create(ParamName::create('audit'), In::path())
                         ->schema($stringBuilder)
                         ->required(),
-                    Parameter::query()
-                        ->name('format')
+                    Parameter::create(ParamName::create('format'), In::query())
                         ->schema($enumBuilder)
-                        ->description('The format of the appointments'),
+                        ->description(ParamDescription::create('The format of the appointments')),
                 ),
             );
 

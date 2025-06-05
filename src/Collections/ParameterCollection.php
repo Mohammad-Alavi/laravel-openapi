@@ -3,7 +3,7 @@
 namespace MohammadAlavi\LaravelOpenApi\Collections;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableParameterFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
 

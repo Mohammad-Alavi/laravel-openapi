@@ -5,7 +5,7 @@ namespace Tests\oooas\Unit\Schema\Objects;
 use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 
 describe(class_basename(Encoding::class), function (): void {
@@ -14,10 +14,6 @@ describe(class_basename(Encoding::class), function (): void {
             ->description('Lorem ipsum')
             ->required()
             ->deprecated()
-            ->allowEmptyValue()
-            ->style(Header::STYLE_SIMPLE)
-            ->explode()
-            ->allowReserved()
             ->schema(Schema::string())
             ->example('Example String')
             ->examples(
@@ -45,10 +41,8 @@ describe(class_basename(Encoding::class), function (): void {
                             'description' => 'Lorem ipsum',
                             'required' => true,
                             'deprecated' => true,
-                            'allowEmptyValue' => true,
                             'style' => 'simple',
                             'explode' => true,
-                            'allowReserved' => true,
                             'schema' => [
                                 'type' => 'string',
                             ],

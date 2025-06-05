@@ -4,6 +4,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\HasKey;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 use Webmozart\Assert\Assert;
 

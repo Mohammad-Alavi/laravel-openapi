@@ -12,14 +12,17 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description as InfoDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In\In;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name as ParamName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
@@ -44,7 +47,7 @@ describe('OpenApi', function (): void {
         $info = Info::create(
             Title::create('API Specification'),
             Version::create('v1'),
-        )->description(Description::create('For using the Example App API'))
+        )->description(InfoDescription::create('For using the Example App API'))
             ->contact($contact);
         $objectBuilder = Schema::object()
             ->properties(
@@ -83,14 +86,12 @@ describe('OpenApi', function (): void {
             ->operationId('audits.show')
             ->parameters(
                 ParameterCollection::create(
-                    Parameter::path()
-                        ->name('audit')
+                    Parameter::create(ParamName::create('audit'), In::path())
                         ->schema($stringBuilder)
                         ->required(),
-                    Parameter::query()
-                        ->name('format')
+                    Parameter::create(ParamName::create('format'), In::query())
                         ->schema($enumBuilder)
-                        ->description('The format of the appointments'),
+                        ->description(Description::create('The format of the appointments')),
                 ),
             );
         $paths = Paths::create(
