@@ -42,7 +42,7 @@ describe(class_basename(Components::class), function (): void {
         $parameter->allows('key')
             ->andReturn('Page');
         $parameter->expects('build')
-            ->andReturn(Parameter::create(Name::create('page'), In::query()));
+            ->andReturn(Parameter::schema(Name::create('page'), In::query(), Schema::create()));
 
         $example = Example::create('Page')
             ->value(5);

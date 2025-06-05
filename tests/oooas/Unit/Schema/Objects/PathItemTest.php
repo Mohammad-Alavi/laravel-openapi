@@ -11,6 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 
@@ -32,7 +33,7 @@ describe(class_basename(PathItem::class), function (): void {
                 )
                 ->servers(Server::create(URL::create('https://example.com')))
                 ->parameters(
-                    Parameter::create(Name::create('test_parameter'), In::query()),
+                    Parameter::schema(Name::create('test_parameter'), In::query(), Schema::create()),
                 ),
             ),
         );

@@ -11,6 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleSingleSecurityRequirementSecurity;
@@ -54,8 +55,15 @@ describe('Operation', function (): void {
             ->description('Dolar sit amet')
             ->externalDocs(ExternalDocs::create())
             ->operationId('users.show')
-            ->parameters(ParameterCollection::create(Parameter::create(ParamName::create('id'), In::query())))
-            ->requestBody(RequestBody::create())
+            ->parameters(
+                ParameterCollection::create(
+                    Parameter::schema(
+                        ParamName::create('id'),
+                        In::query(),
+                        Schema::create(),
+                    ),
+                ),
+            )->requestBody(RequestBody::create())
             ->responses(
                 Responses::create(
                     Response::ok(),
