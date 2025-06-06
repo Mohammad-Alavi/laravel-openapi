@@ -58,6 +58,6 @@ describe('ParameterBuilder', function (): void {
 
         $typeHintedParam = $parameterCollection->all()[0];
         expect($parameterCollection->asArray())->toHaveCount(2)
-            ->and($typeHintedParam->schema->jsonSerialize()['type'])->toBe(Type::integer()->value());
+            ->and($typeHintedParam->asArray()['schema']['type'])->toBe(Type::integer()->value());
     });
 })->covers(ParametersBuilder::class);

@@ -18,9 +18,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In\In;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name as ParamName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\In\In;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
@@ -86,9 +86,11 @@ describe('OpenApi', function (): void {
             ->operationId('audits.show')
             ->parameters(
                 ParameterCollection::create(
-                    Parameter::schema(ParamName::create('audit'), In::path(), $stringBuilder)
+                    Parameter::path(ParamName::create('audit'))
+                        ->schema($stringBuilder)
                         ->required(),
-                    Parameter::schema(ParamName::create('format'), In::query(), $enumBuilder)
+                    Parameter::query(ParamName::create('format'))
+                        ->schema($enumBuilder)
                         ->description(Description::create('The format of the appointments')),
                 ),
             );

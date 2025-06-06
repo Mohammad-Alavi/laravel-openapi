@@ -14,6 +14,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descript
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\ObjectDescriptor;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\StringDescriptor;
 
+// TODO: dont allow user to call Create and withoutSchema. Hide it.
+//  also rename constant and enumerator methods to const and enum.
 final class Schema extends Descriptor implements NullDescriptor, BooleanDescriptor, StringDescriptor, IntegerDescriptor, NumberDescriptor, ObjectDescriptor, ArrayDescriptor, ConstantDescriptor, EnumDescriptor
 {
     public static function null(): NullDescriptor

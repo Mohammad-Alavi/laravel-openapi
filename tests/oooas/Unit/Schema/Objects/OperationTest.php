@@ -4,8 +4,7 @@ use MohammadAlavi\LaravelOpenApi\Collections\ParameterCollection;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In\In;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name as ParamName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
@@ -57,10 +56,10 @@ describe('Operation', function (): void {
             ->operationId('users.show')
             ->parameters(
                 ParameterCollection::create(
-                    Parameter::schema(
+                    Parameter::query(
                         ParamName::create('id'),
-                        In::query(),
-                        Schema::create(),
+                    )->schema(
+                        Schema::string(),
                     ),
                 ),
             )->requestBody(RequestBody::create())
@@ -84,6 +83,9 @@ describe('Operation', function (): void {
                 [
                     'name' => 'id',
                     'in' => 'query',
+                    'schema' => [
+                        'type' => 'string',
+                    ],
                 ],
             ],
             'requestBody' => [],

@@ -14,8 +14,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In\In;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
@@ -42,7 +41,7 @@ describe(class_basename(Components::class), function (): void {
         $parameter->allows('key')
             ->andReturn('Page');
         $parameter->expects('build')
-            ->andReturn(Parameter::schema(Name::create('page'), In::query(), Schema::create()));
+            ->andReturn(Parameter::query(Name::create('page'))->schema(Schema::string()));
 
         $example = Example::create('Page')
             ->value(5);
@@ -112,6 +111,9 @@ describe(class_basename(Components::class), function (): void {
                 'Page' => [
                     'name' => 'page',
                     'in' => 'query',
+                    'schema' => [
+                        'type' => 'string',
+                    ],
                 ],
             ],
             'examples' => [

@@ -2,32 +2,42 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\v31\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\AllowEmptyValue;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Deprecated;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Required;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\AllowEmptyValue;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Deprecated;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\In\In;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Required;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Location\Location;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SchemaFields\Style\Styles\DeepObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SchemaFields\Style\Styles\Form;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SchemaFields\Style\Styles\Label;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SchemaFields\Style\Styles\Matrix;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SchemaFields\Style\Styles\PipeDelimited;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SchemaFields\Style\Styles\Simple;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SchemaFields\Style\Styles\SpaceDelimited;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\ContentRule;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\Schema\Cookie\SchemaCookieRule;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\Schema\Header\SchemaHeaderRule;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\Schema\Path\SchemaPathRule;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\Schema\Query\SchemaQueryRule;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use Webmozart\Assert\Assert;
 
-final class Parameter extends ExtensibleObject
+final class Parameter extends ExtensibleObject implements ParameterBuilder
 {
-    public const STYLE_FORM = 'form';
-    public const STYLE_SIMPLE = 'simple';
-    public JSONSchema|null $schema = null;
+    private JSONSchema|null $schema = null;
 
     private Required|null $required = null;
     private Description|null $description = null;
     private Deprecated|null $deprecated = null;
     private AllowEmptyValue|null $allowEmptyValue = null;
-    private string|null $style = null;
-    private bool|null $explode = null;
-    private bool|null $allowReserved = null;
-    private mixed $example = null;
+    private DeepObject|Form|Label|Matrix|PipeDelimited|Simple|SpaceDelimited|null $style = null;
+    private Example|null $example = null;
     /** @var Example[]|null */
     private array|null $examples = null;
     /** @var MediaType[]|null */
@@ -39,12 +49,49 @@ final class Parameter extends ExtensibleObject
     ) {
     }
 
-    public static function create(Name $name, Location $in): self
+    public static function cookie(Name $name): ContentRule&SchemaCookieRule
     {
-        return new self($name, $in);
+        return new self($name, In::cookie());
     }
 
-    public function description(Description|null $description): self
+    public static function header(Name $name): ContentRule&SchemaHeaderRule
+    {
+        return new self($name, In::header());
+    }
+
+    public static function path(Name $name): ContentRule&SchemaPathRule
+    {
+        return new self($name, In::path());
+    }
+
+    public static function query(Name $name): ContentRule&SchemaQueryRule
+    {
+        return new self($name, In::query());
+    }
+
+    public function schema(JSONSchema $schema): static
+    {
+        Assert::null($this->content, 'Parameter object cannot have both content and schema fields.');
+
+        $clone = clone $this;
+
+        $clone->schema = $schema;
+
+        return $clone;
+    }
+
+    public function content(MediaType ...$mediaType): CommonFields
+    {
+        Assert::null($this->schema, 'Parameter object cannot have both content and schema fields.');
+
+        $clone = clone $this;
+
+        $clone->content = [] !== $mediaType ? $mediaType : null;
+
+        return $clone;
+    }
+
+    public function description(Description|null $description): static
     {
         $clone = clone $this;
 
@@ -53,7 +100,7 @@ final class Parameter extends ExtensibleObject
         return $clone;
     }
 
-    public function required(): self
+    public function required(): static
     {
         $clone = clone $this;
 
@@ -62,7 +109,7 @@ final class Parameter extends ExtensibleObject
         return $clone;
     }
 
-    public function deprecated(): self
+    public function deprecated(): static
     {
         $clone = clone $this;
 
@@ -71,7 +118,7 @@ final class Parameter extends ExtensibleObject
         return $clone;
     }
 
-    public function allowEmptyValue(): self
+    public function allowEmptyValue(): static
     {
         $clone = clone $this;
 
@@ -80,7 +127,7 @@ final class Parameter extends ExtensibleObject
         return $clone;
     }
 
-    public function style(string|null $style): self
+    public function style(DeepObject|Form|Label|Matrix|PipeDelimited|Simple|SpaceDelimited $style): static
     {
         $clone = clone $this;
 
@@ -89,34 +136,7 @@ final class Parameter extends ExtensibleObject
         return $clone;
     }
 
-    public function explode(bool|null $explode = true): self
-    {
-        $clone = clone $this;
-
-        $clone->explode = $explode;
-
-        return $clone;
-    }
-
-    public function allowReserved(bool|null $allowReserved = true): self
-    {
-        $clone = clone $this;
-
-        $clone->allowReserved = $allowReserved;
-
-        return $clone;
-    }
-
-    public function schema(JSONSchema|null $schema): self
-    {
-        $clone = clone $this;
-
-        $clone->schema = $schema;
-
-        return $clone;
-    }
-
-    public function example(mixed $example): self
+    public function example(Example $example): static
     {
         $clone = clone $this;
 
@@ -125,7 +145,7 @@ final class Parameter extends ExtensibleObject
         return $clone;
     }
 
-    public function examples(Example ...$example): self
+    public function examples(Example ...$example): static
     {
         $clone = clone $this;
 
@@ -134,17 +154,13 @@ final class Parameter extends ExtensibleObject
         return $clone;
     }
 
-    public function content(MediaType ...$mediaType): self
-    {
-        $clone = clone $this;
-
-        $clone->content = [] !== $mediaType ? $mediaType : null;
-
-        return $clone;
-    }
-
     protected function toArray(): array
     {
+        Assert::notNull(
+            $this->content ?? $this->schema,
+            'Parameter object must have either a content or a schema field.',
+        );
+
         $examples = [];
         foreach ($this->examples ?? [] as $example) {
             $examples[$example->key()] = $example;
@@ -162,9 +178,7 @@ final class Parameter extends ExtensibleObject
             'required' => $this->required,
             'deprecated' => $this->deprecated,
             'allowEmptyValue' => $this->allowEmptyValue,
-            'style' => $this->style,
-            'explode' => $this->explode,
-            'allowReserved' => $this->allowReserved,
+            ...($this->style?->toArray() ?? []),
             'schema' => $this->schema,
             'example' => $this->example,
             'examples' => [] !== $examples ? $examples : null,

@@ -4,8 +4,7 @@ namespace Tests\oooas\Unit\Schema\Objects;
 
 use MohammadAlavi\LaravelOpenApi\Collections\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In\In;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
@@ -33,7 +32,8 @@ describe(class_basename(PathItem::class), function (): void {
                 )
                 ->servers(Server::create(URL::create('https://example.com')))
                 ->parameters(
-                    Parameter::schema(Name::create('test_parameter'), In::query(), Schema::create()),
+                    Parameter::query(Name::create('test_parameter'))
+                    ->schema(Schema::string()),
                 ),
             ),
         );
@@ -56,6 +56,9 @@ describe(class_basename(PathItem::class), function (): void {
                     [
                         'name' => 'test_parameter',
                         'in' => 'query',
+                        'schema' => [
+                            'type' => 'string',
+                        ],
                     ],
                 ],
             ],

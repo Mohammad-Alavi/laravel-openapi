@@ -23,10 +23,10 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In\In;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Name as ParamName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SchemaFields\Style\Styles\Form;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
@@ -62,18 +62,18 @@ describe('PetStoreTest', function (): void {
             ->contact($contact)
             ->license($license);
 
-        $tagsParameter = Parameter::schema(
+        $tagsParameter = Parameter::query(
             ParamName::create('tags'),
-            In::query(),
+        )->schema(
             Schema::array()->items(
                 Schema::string(),
             ),
         )->description(Description::create('tags to filter by'))
-            ->style(Parameter::STYLE_FORM);
+            ->style(Form::create());
 
-        $limitParameter = Parameter::schema(
+        $limitParameter = Parameter::query(
             ParamName::create('limit'),
-            In::query(),
+        )->schema(
             Schema::integer()->format(IntegerFormat::INT32),
         )->description(Description::create('maximum number of results to return'));
 
@@ -187,9 +187,9 @@ describe('PetStoreTest', function (): void {
                 ->operations($operation, $addPet),
         );
 
-        $petIdParameter = Parameter::schema(
+        $petIdParameter = Parameter::path(
             ParamName::create('id'),
-            In::path(),
+        )->schema(
             Schema::integer()->format(IntegerFormat::INT64),
         )->description(Description::create('ID of pet to fetch'))
             ->required();

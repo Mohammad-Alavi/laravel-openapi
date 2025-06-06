@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Trash;
 
 // TODO: remove this interface
 // I think this interface is not necessary

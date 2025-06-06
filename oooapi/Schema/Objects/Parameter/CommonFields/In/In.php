@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\In;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Location\Cookie;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Location\Header;

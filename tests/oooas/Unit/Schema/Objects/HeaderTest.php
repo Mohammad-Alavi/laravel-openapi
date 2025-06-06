@@ -3,6 +3,7 @@
 namespace Tests\oooas\Unit\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
@@ -10,10 +11,12 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 describe(class_basename(Header::class), function (): void {
     it('can be created with all parameters', function (): void {
         $header = Header::create('HeaderName')
-            ->description('Lorem ipsum')
+            ->description(Description::create('Lorem ipsum'))
             ->required()
             ->deprecated()
             ->schema(Schema::object())
+            ->style('simple')
+            ->explode()
             ->example('Example value')
             ->examples(Example::create('ExampleName'))
             ->content(MediaType::json());
