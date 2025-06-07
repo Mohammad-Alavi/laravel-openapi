@@ -2,7 +2,7 @@
 
 namespace Tests\oooas\Unit\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\SecurityRequirementOld;
+use MohammadAlavi\ObjectOrientedOpenAPI\Trash\SecurityRequirementOld;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\SecurityScheme;
 
 describe('SecurityRequirement', function (): void {

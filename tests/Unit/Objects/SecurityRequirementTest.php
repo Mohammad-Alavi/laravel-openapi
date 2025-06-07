@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\SecurityRequirementOld;
+use MohammadAlavi\ObjectOrientedOpenAPI\Trash\SecurityRequirementOld;
 use Tests\Doubles\Stubs\SecuritySchemes\ApiKeySecuritySchemeFactory;
 use Tests\Doubles\Stubs\SecuritySchemes\BearerSecuritySchemeFactory;
 use Tests\Doubles\Stubs\SecuritySchemes\JwtSecuritySchemeFactory;
