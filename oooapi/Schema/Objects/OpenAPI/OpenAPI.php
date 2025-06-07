@@ -27,7 +27,7 @@ final class OpenAPI extends ExtensibleObject
     private ExternalDocs|null $externalDocs = null;
 
     private function __construct(
-        private OpenAPIField $openapi,
+        private OpenAPIField $openAPIField,
         private Info $info,
     ) {
         $this->jsonSchemaDialect = JsonSchemaDialect::v31x();
@@ -40,17 +40,17 @@ final class OpenAPI extends ExtensibleObject
     }
 
     public static function create(
-        OpenAPIField $openapi,
+        OpenAPIField $openAPIField,
         Info $info,
     ): self {
-        return new self($openapi, $info);
+        return new self($openAPIField, $info);
     }
 
-    public function openapi(OpenAPIField $openapi): self
+    public function openapi(OpenAPIField $openAPIField): self
     {
         $clone = clone $this;
 
-        $clone->openapi = $openapi;
+        $clone->openAPIField = $openAPIField;
 
         return $clone;
     }
@@ -130,7 +130,7 @@ final class OpenAPI extends ExtensibleObject
     protected function toArray(): array
     {
         return Arr::filter([
-            'openapi' => $this->openapi,
+            'openapi' => $this->openAPIField,
             'info' => $this->info,
             'jsonSchemaDialect' => $this->jsonSchemaDialect,
             'servers' => $this->serversOrDefault(),

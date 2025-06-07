@@ -8,13 +8,13 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 final readonly class IfKeyword implements Keyword
 {
     private function __construct(
-        private Descriptor $builder,
+        private Descriptor $descriptor,
     ) {
     }
 
-    public static function create(Descriptor $builder): self
+    public static function create(Descriptor $descriptor): self
     {
-        return new self($builder);
+        return new self($descriptor);
     }
 
     public static function name(): string
@@ -24,6 +24,6 @@ final readonly class IfKeyword implements Keyword
 
     public function value(): Descriptor
     {
-        return $this->builder;
+        return $this->descriptor;
     }
 }

@@ -30,6 +30,7 @@ describe('ParameterBuilder', function (): void {
             Route::get('/example/{id}', [TestController::class, 'actionWithTypeHintedParams']),
         );
         $routeInformation->actionAttributes = collect($params);
+
         $builder = new ParametersBuilder();
 
         $parameterCollection = $builder->build($routeInformation);

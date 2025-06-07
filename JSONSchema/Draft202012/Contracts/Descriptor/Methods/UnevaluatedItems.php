@@ -6,5 +6,5 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Desc
 
 interface UnevaluatedItems
 {
-    public function unevaluatedItems(Descriptor $builder): static;
+    public function unevaluatedItems(Descriptor $descriptor): static;
 }

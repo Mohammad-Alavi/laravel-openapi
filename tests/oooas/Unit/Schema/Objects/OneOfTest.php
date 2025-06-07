@@ -7,11 +7,11 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 describe(class_basename(OneOf::class), function (): void {
     it('can be created with all parameters', function (): void {
-        $stringBuilder = Schema::string();
-        $integerBuilder = Schema::integer();
+        $stringDescriptor = Schema::string();
+        $integerDescriptor = Schema::integer();
 
         $oneOf = OneOf::create('test')
-            ->schemas($stringBuilder, $integerBuilder);
+            ->schemas($stringDescriptor, $integerDescriptor);
 
         expect($oneOf->asArray())->toBe([
             'oneOf' => [

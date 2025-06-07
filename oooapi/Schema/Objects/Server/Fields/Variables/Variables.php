@@ -16,20 +16,16 @@ final readonly class Variables implements \JsonSerializable
         return new self($entry);
     }
 
-    /**
-     * @return array<string, ServerVariable>|null
-     */
+    /** @return array<string, ServerVariable>|null */
     public function jsonSerialize(): array|null
     {
-        if (empty($this->variables)) {
+        if ([] === $this->variables) {
             return null;
         }
 
         return array_reduce(
             $this->variables,
-            static function (array $carry, Entry $entry) {
-                return array_merge($carry, $entry->value());
-            },
+            static fn (array $carry, Entry $entry): array => array_merge($carry, $entry->value()),
             [],
         );
     }

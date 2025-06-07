@@ -33,9 +33,9 @@ trait ForwardsCalls
             $pattern = '~^Call to undefined method (?P<class>[^:]+)::(?P<method>[^\(]+)\(\)$~';
 
             if (
-                !preg_match($pattern, $e->getMessage(), $matches)
+                in_array(preg_match($pattern, $e->getMessage(), $matches), [0, false], true)
                 || $matches['method'] !== $method
-                || $matches['class'] !== get_class($object)
+                || $matches['class'] !== $object::class
             ) {
                 throw $e;
             }

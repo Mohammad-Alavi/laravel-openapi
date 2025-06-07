@@ -1,24 +1,28 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\In\In;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\In\In;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\Simple;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SchemaFields\Style\Styles\Simple;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 describe('Parameter', function (): void {
     it('can be created with all parameters', function (): void {
-        $parameter = Parameter::path(Name::create('user'))
-            ->schema(Schema::string())
-            ->description(Description::create('User ID'))
+        $parameter = Parameter::path(
+            Name::create('user'),
+            SchemaSerializedPath::create(
+                Schema::string(),
+                Simple::create()->explode(),
+                Example::create('example_test'),
+                Example::create('ExampleName'),
+            ),
+        )->description(Description::create('User ID'))
             ->required()
             ->deprecated()
-            ->allowEmptyValue()
-            ->style(Simple::create()->explode())
-            ->example(Example::create('example_test'))
-            ->examples(Example::create('ExampleName'));
+            ->allowEmptyValue();
 
         expect($parameter->asArray())->toBe([
             'name' => 'user',
@@ -27,11 +31,11 @@ describe('Parameter', function (): void {
             'required' => true,
             'deprecated' => true,
             'allowEmptyValue' => true,
-            'style' => 'simple',
-            'explode' => true,
             'schema' => [
                 'type' => 'string',
             ],
+            'style' => 'simple',
+            'explode' => true,
             'example' => [],
             'examples' => [
                 'ExampleName' => [],

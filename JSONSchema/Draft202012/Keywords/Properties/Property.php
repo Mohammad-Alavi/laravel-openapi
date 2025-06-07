@@ -8,13 +8,13 @@ final readonly class Property
 {
     private function __construct(
         private string $name,
-        private Descriptor $builder,
+        private Descriptor $descriptor,
     ) {
     }
 
-    public static function create(string $name, Descriptor $builder): self
+    public static function create(string $name, Descriptor $descriptor): self
     {
-        return new self($name, $builder);
+        return new self($name, $descriptor);
     }
 
     public function name(): string
@@ -24,6 +24,6 @@ final readonly class Property
 
     public function schema(): Descriptor
     {
-        return $this->builder;
+        return $this->descriptor;
     }
 }

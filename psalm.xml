@@ -8,6 +8,7 @@
     cacheDirectory="./temp/psalm_cache"
 >
     <projectFiles>
+        <directory name="config"/>
         <directory name="src"/>
         <directory name="JSONSchema"/>
         <directory name="oooapi"/>

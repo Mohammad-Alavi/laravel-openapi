@@ -17,7 +17,7 @@ return RectorConfig::configure()
         __DIR__ . '/tests',
     ])
     ->withImportNames(importShortClasses: false)
-     ->withPhpSets()
+     ->withPhpSets(php82: true)
     ->withSets([
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
@@ -29,7 +29,7 @@ return RectorConfig::configure()
         SetList::EARLY_RETURN,
         SetList::INSTANCEOF,
         SetList::CARBON,
-        PHPUnitSetList::PHPUNIT_100,
+        PHPUnitSetList::PHPUNIT_110,
         PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
     ])

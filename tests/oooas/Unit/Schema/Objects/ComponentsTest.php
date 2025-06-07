@@ -14,8 +14,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
@@ -41,7 +42,12 @@ describe(class_basename(Components::class), function (): void {
         $parameter->allows('key')
             ->andReturn('Page');
         $parameter->expects('build')
-            ->andReturn(Parameter::query(Name::create('page'))->schema(Schema::string()));
+            ->andReturn(
+                Parameter::query(
+                    Name::create('page'),
+                    SchemaSerializedQuery::create(Schema::string()),
+                ),
+            );
 
         $example = Example::create('Page')
             ->value(5);

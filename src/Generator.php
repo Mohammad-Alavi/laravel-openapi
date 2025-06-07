@@ -11,6 +11,7 @@ use MohammadAlavi\LaravelOpenApi\Builders\ServerBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\TagBuilder;
 use MohammadAlavi\LaravelOpenApi\Services\RouteCollector;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 
@@ -47,7 +48,7 @@ final readonly class Generator
             ->servers(...$servers)
             ->paths($paths)
             ->tags(...$tags);
-        $openApi = $components ? $openApi->components($components) : $openApi;
+        $openApi = $components instanceof Components ? $openApi->components($components) : $openApi;
 
         $openApi = $security instanceof Security ? $openApi->security($security) : $openApi;
         foreach ($extensions as $key => $value) {

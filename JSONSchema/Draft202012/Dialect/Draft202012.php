@@ -101,14 +101,14 @@ final readonly class Draft202012
         return Vocabulary::create(...$vocab);
     }
 
-    public static function unevaluatedProperties(Descriptor $builder): UnevaluatedProperties
+    public static function unevaluatedProperties(Descriptor $descriptor): UnevaluatedProperties
     {
-        return UnevaluatedProperties::create($builder);
+        return UnevaluatedProperties::create($descriptor);
     }
 
-    public static function unevaluatedItems(Descriptor $builder): UnevaluatedItems
+    public static function unevaluatedItems(Descriptor $descriptor): UnevaluatedItems
     {
-        return UnevaluatedItems::create($builder);
+        return UnevaluatedItems::create($descriptor);
     }
 
     public static function format(DefinedFormat $definedFormat): Format
@@ -186,9 +186,9 @@ final readonly class Draft202012
         return UniqueItems::create($value);
     }
 
-    public static function items(Descriptor $builder): Items
+    public static function items(Descriptor $descriptor): Items
     {
-        return Items::create($builder);
+        return Items::create($descriptor);
     }
 
     public static function allOf(Descriptor ...$builder): AllOf

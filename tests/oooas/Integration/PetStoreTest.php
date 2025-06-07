@@ -23,10 +23,11 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Name as ParamName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name as ParamName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\Form;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SchemaFields\Style\Styles\Form;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
@@ -64,17 +65,19 @@ describe('PetStoreTest', function (): void {
 
         $tagsParameter = Parameter::query(
             ParamName::create('tags'),
-        )->schema(
-            Schema::array()->items(
-                Schema::string(),
+            SchemaSerializedQuery::create(
+                Schema::array()->items(
+                    Schema::string(),
+                ),
+                Form::create(),
             ),
-        )->description(Description::create('tags to filter by'))
-            ->style(Form::create());
+        )->description(Description::create('tags to filter by'));
 
         $limitParameter = Parameter::query(
             ParamName::create('limit'),
-        )->schema(
-            Schema::integer()->format(IntegerFormat::INT32),
+            SchemaSerializedQuery::create(
+                Schema::integer()->format(IntegerFormat::INT32),
+            ),
         )->description(Description::create('maximum number of results to return'));
 
         $allOf = Schema::object()

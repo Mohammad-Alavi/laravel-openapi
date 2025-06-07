@@ -15,20 +15,20 @@ final class ServerVariable extends ExtensibleObject
     private Description|null $description = null;
 
     private function __construct(
-        private DefaultValue $default,
+        private DefaultValue $defaultValue,
     ) {
     }
 
-    public static function create(DefaultValue $default): self
+    public static function create(DefaultValue $defaultValue): self
     {
-        return new self($default);
+        return new self($defaultValue);
     }
 
-    public function default(DefaultValue $default): self
+    public function default(DefaultValue $defaultValue): self
     {
         $clone = clone $this;
 
-        $clone->default = $default;
+        $clone->defaultValue = $defaultValue;
 
         return $clone;
     }
@@ -36,7 +36,7 @@ final class ServerVariable extends ExtensibleObject
     public function enum(Enum|null $enum): self
     {
         Assert::true(
-            is_null($enum) || in_array($this->default->value(), $enum->values(), true),
+            is_null($enum) || in_array($this->defaultValue->value(), $enum->values(), true),
             'The default value must exist in the enum’s values.',
         );
 
@@ -60,7 +60,7 @@ final class ServerVariable extends ExtensibleObject
     {
         return Arr::filter([
             'enum' => $this->enum,
-            'default' => $this->default,
+            'default' => $this->defaultValue,
             'description' => $this->description,
         ]);
     }

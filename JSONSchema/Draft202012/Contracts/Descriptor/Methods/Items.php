@@ -6,5 +6,5 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Desc
 
 interface Items
 {
-    public function items(Descriptor $builder): static;
+    public function items(Descriptor $descriptor): static;
 }

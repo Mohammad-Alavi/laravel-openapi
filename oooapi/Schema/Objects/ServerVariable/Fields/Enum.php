@@ -17,17 +17,13 @@ final readonly class Enum implements \JsonSerializable
         return new self($value);
     }
 
-    /**
-     * @return string[] $values
-     */
+    /** @return string[] $values */
     public function values(): array
     {
         return $this->values;
     }
 
-    /**
-     * @return string[] $values
-     */
+    /** @return string[] $values */
     public function jsonSerialize(): array
     {
         return $this->values;

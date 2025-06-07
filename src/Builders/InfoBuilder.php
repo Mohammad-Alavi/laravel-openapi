@@ -56,16 +56,16 @@ class InfoBuilder
     protected function buildContact(array $config): Contact
     {
         return Contact::create()
-            ->name(optional(Arr::get($config, 'name'), static fn (string|null $value) => Name::create($value)))
-            ->email(optional(Arr::get($config, 'email'), static fn (string|null $value) => Email::create($value)))
-            ->url(optional(Arr::get($config, 'url'), static fn (string|null $value) => URL::create($value)));
+            ->name(optional(Arr::get($config, 'name'), static fn (string|null $value): Name => Name::create($value)))
+            ->email(optional(Arr::get($config, 'email'), static fn (string|null $value): Email => Email::create($value)))
+            ->url(optional(Arr::get($config, 'url'), static fn (string|null $value): URL => URL::create($value)));
     }
 
     protected function buildLicense(array $config): License
     {
         return License::create(
             LicenseName::create(Arr::get($config, 'name')),
-            optional(Arr::get($config, 'url'), static fn (string|null $value) => LicenseURL::create($value)),
+            optional(Arr::get($config, 'url'), static fn (string|null $value): LicenseURL => LicenseURL::create($value)),
         );
     }
 }

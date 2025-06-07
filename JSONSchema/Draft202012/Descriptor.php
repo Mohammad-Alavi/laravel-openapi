@@ -302,20 +302,20 @@ class Descriptor implements DescriptorContract
         return $clone;
     }
 
-    final public function unevaluatedItems(DescriptorContract $builder): static
+    final public function unevaluatedItems(DescriptorContract $descriptorContract): static
     {
         $clone = clone $this;
 
-        $clone->unevaluatedItems = Dialect::unevaluatedItems($builder);
+        $clone->unevaluatedItems = Dialect::unevaluatedItems($descriptorContract);
 
         return $clone;
     }
 
-    final public function unevaluatedProperties(DescriptorContract $builder): static
+    final public function unevaluatedProperties(DescriptorContract $descriptorContract): static
     {
         $clone = clone $this;
 
-        $clone->unevaluatedProperties = Dialect::unevaluatedProperties($builder);
+        $clone->unevaluatedProperties = Dialect::unevaluatedProperties($descriptorContract);
 
         return $clone;
     }
@@ -365,11 +365,11 @@ class Descriptor implements DescriptorContract
         return $clone;
     }
 
-    final public function items(DescriptorContract $builder): static
+    final public function items(DescriptorContract $descriptorContract): static
     {
         $clone = clone $this;
 
-        $clone->items = Dialect::items($builder);
+        $clone->items = Dialect::items($descriptorContract);
 
         return $clone;
     }

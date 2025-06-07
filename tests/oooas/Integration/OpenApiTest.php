@@ -18,10 +18,12 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\In\In;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Name as ParamName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\In\In;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
@@ -49,7 +51,7 @@ describe('OpenApi', function (): void {
             Version::create('v1'),
         )->description(InfoDescription::create('For using the Example App API'))
             ->contact($contact);
-        $objectBuilder = Schema::object()
+        $objectDescriptor = Schema::object()
             ->properties(
                 Property::create('id', Schema::string()->format(StringFormat::UUID)),
                 Property::create('created_at', Schema::string()->format(StringFormat::DATE_TIME)),
@@ -64,7 +66,7 @@ describe('OpenApi', function (): void {
                 ),
             )->required('id', 'created_at');
         $expectedResponse = Response::ok()
-            ->content(MediaType::json()->schema($objectBuilder));
+            ->content(MediaType::json()->schema($objectDescriptor));
         $operationIndex = Operation::get()
             ->responses(Responses::create($expectedResponse))
             ->tags($tag)
@@ -75,9 +77,9 @@ describe('OpenApi', function (): void {
             ->tags($tag)
             ->summary('Create an audit')
             ->operationId('audits.store')
-            ->requestBody(RequestBody::create()->content(MediaType::json()->schema($objectBuilder)));
-        $stringBuilder = Schema::string()->format(StringFormat::UUID);
-        $enumBuilder = Schema::enumerator('json', 'ics')
+            ->requestBody(RequestBody::create()->content(MediaType::json()->schema($objectDescriptor)));
+        $stringDescriptor = Schema::string()->format(StringFormat::UUID);
+        $enumDescriptor = Schema::enumerator('json', 'ics')
             ->default('json');
         $operationGet = Operation::get()
             ->responses(Responses::create($expectedResponse))
@@ -86,12 +88,14 @@ describe('OpenApi', function (): void {
             ->operationId('audits.show')
             ->parameters(
                 ParameterCollection::create(
-                    Parameter::path(ParamName::create('audit'))
-                        ->schema($stringBuilder)
-                        ->required(),
-                    Parameter::query(ParamName::create('format'))
-                        ->schema($enumBuilder)
-                        ->description(Description::create('The format of the appointments')),
+                    Parameter::path(
+                        ParamName::create('audit'),
+                        SchemaSerializedPath::create($stringDescriptor),
+                    )->required(),
+                    Parameter::query(
+                        ParamName::create('format'),
+                        SchemaSerializedQuery::create($enumDescriptor),
+                    )->description(Description::create('The format of the appointments')),
                 ),
             );
         $paths = Paths::create(

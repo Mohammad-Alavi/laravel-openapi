@@ -18,10 +18,12 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Description as ParamDescription;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\In\In;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\CommonFields\Name as ParamName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Description as ParamDescription;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\In\In;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
@@ -67,7 +69,7 @@ describe(class_basename(OpenAPI::class), function (): void {
         //  These contracts define the create method and either accept the key or not.
         // Then we accept the proper Contract when needed!
         // For example here for response we can accept the UnnamedSchema contract!
-        $objectBuilder = Schema::object()
+        $objectDescriptor = Schema::object()
             ->properties(
                 Property::create('id', Schema::string()->format(StringFormat::UUID)),
                 Property::create('created_at', Schema::string()->format(StringFormat::DATE_TIME)),
@@ -83,7 +85,7 @@ describe(class_basename(OpenAPI::class), function (): void {
 
         $expectedResponse = Response::ok()
             ->content(
-                MediaType::json()->schema($objectBuilder),
+                MediaType::json()->schema($objectDescriptor),
             );
 
         $operation = Operation::get()
@@ -98,11 +100,11 @@ describe(class_basename(OpenAPI::class), function (): void {
             ->summary('Create an audit')
             ->operationId('audits.store')
             ->requestBody(RequestBody::create()->content(
-                MediaType::json()->schema($objectBuilder),
+                MediaType::json()->schema($objectDescriptor),
             ));
 
-        $stringBuilder = Schema::string()->format(StringFormat::UUID);
-        $enumBuilder = Schema::enumerator('json', 'ics');
+        $stringDescriptor = Schema::string()->format(StringFormat::UUID);
+        $enumDescriptor = Schema::enumerator('json', 'ics');
 
         $readAudit = Operation::get()
             ->responses(Responses::create($expectedResponse))
@@ -111,12 +113,14 @@ describe(class_basename(OpenAPI::class), function (): void {
             ->operationId('audits.show')
             ->parameters(
                 ParameterCollection::create(
-                    Parameter::path(ParamName::create('audit'))
-                        ->schema($stringBuilder)
-                        ->required(),
-                    Parameter::query(ParamName::create('format'))
-                        ->schema($enumBuilder)
-                        ->description(ParamDescription::create('The format of the appointments')),
+                    Parameter::path(
+                        ParamName::create('audit'),
+                        SchemaSerializedPath::create($stringDescriptor),
+                    )->required(),
+                    Parameter::query(
+                        ParamName::create('format'),
+                        SchemaSerializedQuery::create($enumDescriptor),
+                    )->description(ParamDescription::create('The format of the appointments')),
                 ),
             );
 

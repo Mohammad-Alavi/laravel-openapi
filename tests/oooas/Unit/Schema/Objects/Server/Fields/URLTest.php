@@ -29,10 +29,10 @@ describe(class_basename(URL::class), function (): void {
     ]);
 
     it('should throw an exception for an invalid URL', function (): void {
-        expect(static fn () => URL::create('invalid-url'))->toThrow(InvalidArgumentException::class);
+        expect(static fn (): URL => URL::create('invalid-url'))->toThrow(InvalidArgumentException::class);
     });
 
     it('should throw an exception for an empty URL', function (): void {
-        expect(static fn () => URL::create(''))->toThrow(InvalidArgumentException::class);
+        expect(static fn (): URL => URL::create(''))->toThrow(InvalidArgumentException::class);
     });
 })->covers(URL::class);

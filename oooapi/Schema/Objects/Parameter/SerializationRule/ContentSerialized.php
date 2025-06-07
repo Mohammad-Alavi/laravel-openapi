@@ -1,0 +1,25 @@
+<?php
+
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule;
+
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Content\Entry;
+
+final readonly class ContentSerialized implements SerializationRule
+{
+    private function __construct(
+        private Entry $entry,
+    ) {
+    }
+
+    public static function create(Entry $entry): self
+    {
+        return new self($entry);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'content' => $this->entry,
+        ];
+    }
+}

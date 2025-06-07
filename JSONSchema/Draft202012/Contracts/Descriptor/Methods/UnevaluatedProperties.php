@@ -6,5 +6,5 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Desc
 
 interface UnevaluatedProperties
 {
-    public function unevaluatedProperties(Descriptor $builder): static;
+    public function unevaluatedProperties(Descriptor $descriptor): static;
 }
