@@ -1,6 +1,8 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\Description as ExtDescription;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
@@ -10,13 +12,19 @@ describe('Tag', function (): void {
         $tag = Tag::create(
             Name::create('Users'),
             Description::create('All user endpoints'),
-            ExternalDocs::create(),
+            ExternalDocumentation::create(
+                URL::create('https://example.com/docs/users'),
+                ExtDescription::create('User API documentation'),
+            ),
         );
 
         expect($tag->asArray())->toBe([
             'name' => 'Users',
             'description' => 'All user endpoints',
-            'externalDocs' => [],
+            'externalDocs' => [
+                'url' => 'https://example.com/docs/users',
+                'description' => 'User API documentation',
+            ],
         ]);
     });
 

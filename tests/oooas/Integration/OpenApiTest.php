@@ -10,7 +10,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\Description as ExtDescription;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\URL as ExtURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description as InfoDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
@@ -118,9 +120,10 @@ describe('OpenApi', function (): void {
         ];
         $components = Components::create()->securitySchemes(ExampleHTTPBearerSecurityScheme::create());
         $security = Security::create(ExampleSingleBearerSecurityRequirement::create());
-        $externalDocs = ExternalDocs::create()
-            ->url('https://example.com')
-            ->description('Example');
+        $externalDocs = ExternalDocumentation::create(
+            ExtURL::create('https://example.com/docs'),
+            ExtDescription::create('Example'),
+        );
         $openApi = OpenAPI::v311($info)
             ->paths($paths)
             ->servers(...$servers)

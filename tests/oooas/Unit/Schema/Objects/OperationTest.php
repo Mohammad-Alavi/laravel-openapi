@@ -2,7 +2,8 @@
 
 use MohammadAlavi\LaravelOpenApi\Collections\ParameterCollection;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\URL as ExtURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
@@ -59,7 +60,7 @@ describe('Operation', function (): void {
                 ),
             )->summary('Lorem ipsum')
             ->description('Dolar sit amet')
-            ->externalDocs(ExternalDocs::create())
+            ->externalDocs(ExternalDocumentation::create(ExtURL::create('https://example.com/docs')))
             ->operationId('users.show')
             ->parameters(
                 ParameterCollection::create(
@@ -83,7 +84,9 @@ describe('Operation', function (): void {
             'tags' => ['Users'],
             'summary' => 'Lorem ipsum',
             'description' => 'Dolar sit amet',
-            'externalDocs' => [],
+            'externalDocs' => [
+                'url' => 'https://example.com/docs',
+            ],
             'operationId' => 'users.show',
             'parameters' => [
                 [

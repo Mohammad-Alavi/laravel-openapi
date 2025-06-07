@@ -43,8 +43,8 @@ class TagBuilderTest extends TestCase
                     'name' => 'PostWithExternalObjectDoc',
                     'description' => 'Post Tag',
                     'externalDocs' => [
-                        'description' => 'External API documentation',
                         'url' => 'https://example.com/external-docs',
+                        'description' => 'External API documentation',
                     ],
                 ],
             ],
@@ -64,8 +64,8 @@ class TagBuilderTest extends TestCase
                     'name' => 'PostWithExternalObjectDoc',
                     'description' => 'Post Tag',
                     'externalDocs' => [
-                        'description' => 'External API documentation',
                         'url' => 'https://example.com/external-docs',
+                        'description' => 'External API documentation',
                     ],
                 ],
             ],

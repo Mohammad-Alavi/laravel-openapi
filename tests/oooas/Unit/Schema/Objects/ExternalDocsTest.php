@@ -2,17 +2,20 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\URL;
 
-describe(class_basename(ExternalDocs::class), function (): void {
+describe(class_basename(ExternalDocumentation::class), function (): void {
     it('can be created with all parameters', function (): void {
-        $externalDocs = ExternalDocs::create()
-            ->description('GitHub Repo')
-            ->url('https://example.com');
+        $externalDocs = ExternalDocumentation::create(
+            URL::create('https://example.com'),
+            Description::create('example Repo'),
+        );
 
         expect($externalDocs->asArray())->toBe([
-            'description' => 'GitHub Repo',
             'url' => 'https://example.com',
+            'description' => 'example Repo',
         ]);
     });
-})->covers(ExternalDocs::class);
+})->covers(ExternalDocumentation::class);

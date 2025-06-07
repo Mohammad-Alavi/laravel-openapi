@@ -6,7 +6,7 @@ use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\Reusabl
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleKeyCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Discriminator;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\SchemaComposition;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Xml;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleKeyCreatorTrait;
@@ -72,7 +72,7 @@ class Schema extends ExtensibleObject implements JsonSchema, SimpleKeyCreator
     protected bool|null $readOnly = null;
     protected bool|null $writeOnly = null;
     protected Xml|null $xml = null;
-    protected ExternalDocs|null $externalDocs = null;
+    protected ExternalDocumentation|null $externalDocs = null;
     protected mixed $example = null;
     protected bool|null $deprecated = null;
 
@@ -365,7 +365,7 @@ class Schema extends ExtensibleObject implements JsonSchema, SimpleKeyCreator
         return $clone;
     }
 
-    public function externalDocs(ExternalDocs|null $externalDocs): static
+    public function externalDocs(ExternalDocumentation|null $externalDocs): static
     {
         $clone = clone $this;
 

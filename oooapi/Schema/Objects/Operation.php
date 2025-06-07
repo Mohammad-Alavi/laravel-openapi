@@ -5,6 +5,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
 use MohammadAlavi\LaravelOpenApi\Collections\ParameterCollection;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
@@ -32,7 +33,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
 
     protected string|null $summary = null;
     protected string|null $description = null;
-    protected ExternalDocs|null $externalDocs = null;
+    protected ExternalDocumentation|null $externalDocs = null;
     protected string|null $operationId = null;
     protected ParameterCollection|null $parameterCollection = null;
     protected RequestBody|Reference|null $requestBody = null;
@@ -136,7 +137,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function externalDocs(ExternalDocs|null $externalDocs): static
+    public function externalDocs(ExternalDocumentation|null $externalDocs): static
     {
         $clone = clone $this;
 

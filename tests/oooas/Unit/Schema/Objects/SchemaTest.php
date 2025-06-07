@@ -3,7 +3,7 @@
 // use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
 // use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
 // use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Discriminator;
-// use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
+// use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs\ExternalDocs;
 // use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
 // use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Xml;
 //

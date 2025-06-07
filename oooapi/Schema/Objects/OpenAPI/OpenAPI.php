@@ -4,7 +4,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\OpenAPI as OpenAPIField;
@@ -24,7 +24,7 @@ final class OpenAPI extends ExtensibleObject
     private array $servers = [];
     /** @var Tag[]|null */
     private array|null $tags = null;
-    private ExternalDocs|null $externalDocs = null;
+    private ExternalDocumentation|null $externalDocs = null;
 
     private function __construct(
         private OpenAPIField $openAPIField,
@@ -118,7 +118,7 @@ final class OpenAPI extends ExtensibleObject
         return $clone;
     }
 
-    public function externalDocs(ExternalDocs $externalDocs): self
+    public function externalDocs(ExternalDocumentation $externalDocs): self
     {
         $clone = clone $this;
 
