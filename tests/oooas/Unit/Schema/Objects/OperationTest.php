@@ -13,7 +13,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleSingleSecurityRequirementSecurity;
 
 describe('Operation', function (): void {
@@ -50,8 +52,12 @@ describe('Operation', function (): void {
 
         $operation = Operation::create()
             ->action(Operation::ACTION_GET)
-            ->tags(Tag::create()->name('Users'))
-            ->summary('Lorem ipsum')
+            ->tags(
+                Tag::create(
+                    Name::create('Users'),
+                    Description::create('Lorem ipsum'),
+                ),
+            )->summary('Lorem ipsum')
             ->description('Dolar sit amet')
             ->externalDocs(ExternalDocs::create())
             ->operationId('users.show')
@@ -162,8 +168,8 @@ describe('Operation', function (): void {
     })->with([
         'one string tag' => [['Users'], ['Users']],
         'multiple string tags' => [['Users', 'Admins'], ['Users', 'Admins']],
-        'one object tag' => [[Tag::create()->name('Users')], ['Users']],
-        'multiple object tags' => [[Tag::create()->name('Users'), Tag::create()->name('Admins')], ['Users', 'Admins']],
-        'mixed tags' => [['Users', Tag::create()->name('Admins')], ['Users', 'Admins']],
+        'one object tag' => [[Tag::create(Name::create('Users'))], ['Users']],
+        'multiple object tags' => [[Tag::create(Name::create('Users')), Tag::create(Name::create('Admins'))], ['Users', 'Admins']],
+        'mixed tags' => [['Users', Tag::create(Name::create('Admins'))], ['Users', 'Admins']],
     ]);
 })->covers(Operation::class);

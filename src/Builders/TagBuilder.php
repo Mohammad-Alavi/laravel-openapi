@@ -3,8 +3,7 @@
 namespace MohammadAlavi\LaravelOpenApi\Builders;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\TagFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag;
-use Webmozart\Assert\Assert;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 
 class TagBuilder
 {
@@ -20,12 +19,8 @@ class TagBuilder
             ->map(static function (string $tagFactory): Tag {
                 /** @var TagFactory $tagFactoryInstance */
                 $tagFactoryInstance = app($tagFactory);
-                $tag = $tagFactoryInstance->build();
-                // TODO: this can be moved to Serve Constructor I think
-                Assert::stringNotEmpty($tag->name);
 
-                return $tag;
-            })
-            ->toArray();
+                return $tagFactoryInstance->build();
+            })->toArray();
     }
 }

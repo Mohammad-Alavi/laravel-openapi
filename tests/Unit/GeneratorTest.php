@@ -7,7 +7,8 @@ use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleComplexMultiSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleNoSecurityRequirementSecurity;
 
@@ -35,8 +36,7 @@ beforeEach(function (): void {
                     (new class extends TagFactory {
                         public function build(): Tag
                         {
-                            return Tag::create()
-                                ->name('test');
+                            return Tag::create(Name::create('test'));
                         }
                     })::class,
                 ],
@@ -69,8 +69,7 @@ beforeEach(function (): void {
                     (new class extends TagFactory {
                         public function build(): Tag
                         {
-                            return Tag::create()
-                                ->name('test');
+                            return Tag::create(Name::create('test'));
                         }
                     })::class,
                 ],

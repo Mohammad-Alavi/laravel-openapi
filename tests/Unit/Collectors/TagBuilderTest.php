@@ -4,7 +4,9 @@ namespace Tests\Unit\Collectors;
 
 use MohammadAlavi\LaravelOpenApi\Builders\TagBuilder;
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\TagFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Doubles\Stubs\Tags\TagWithExternalObjectDoc;
@@ -70,34 +72,6 @@ class TagBuilderTest extends TestCase
         ];
     }
 
-    public static function invalidTagProvider(): \Iterator
-    {
-        yield 'tag without name' => [
-            fn (): TagFactory => new class extends TagFactory {
-                public function build(): Tag
-                {
-                    return Tag::create()->description('Post Tag');
-                }
-            },
-        ];
-        yield 'tag with empty string name' => [
-            fn (): TagFactory => new class extends TagFactory {
-                public function build(): Tag
-                {
-                    return Tag::create()->name('')->description('Post Tag');
-                }
-            },
-        ];
-        yield 'tag with null name' => [
-            fn (): TagFactory => new class extends TagFactory {
-                public function build(): Tag
-                {
-                    return Tag::create()->name(null)->description('Post Tag');
-                }
-            },
-        ];
-    }
-
     #[DataProvider('singleTagProvider')]
     public function testCanBuildTag(array $factories, array $expected): void
     {
@@ -144,12 +118,19 @@ class TagBuilderTest extends TestCase
         );
     }
 
-    #[DataProvider('invalidTagProvider')]
-    public function testGivenNameNotProvidedCanProduceCorrectException(\Closure $factory): void
+    public function testGivenInvalidNameProvidedCanProduceCorrectException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         $tagBuilder = app(TagBuilder::class);
-        $tagBuilder->build([$factory()::class]);
+        $tagBuilder->build([(new class extends TagFactory {
+            public function build(): Tag
+            {
+                return Tag::create(
+                    Name::create(''),
+                    Description::create('Post Tag'),
+                );
+            }
+        })::class]);
     }
 }

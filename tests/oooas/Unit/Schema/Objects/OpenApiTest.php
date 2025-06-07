@@ -31,16 +31,19 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL as ServerURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description as TagDescription;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name as TagName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleComplexMultiSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleHTTPBearerSecurityScheme;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleOAuth2PasswordSecurityScheme;
 
 describe(class_basename(OpenAPI::class), function (): void {
     it('can be created and validated', function (): void {
-        $tag = Tag::create()
-            ->name('Audits')
-            ->description('All the audits');
+        $tag = Tag::create(
+            TagName::create('Audits'),
+            TagDescription::create('All the audits'),
+        );
 
         $contact = Contact::create()
             ->name(Name::create('Example'))
