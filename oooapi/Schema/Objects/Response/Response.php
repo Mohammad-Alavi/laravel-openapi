@@ -1,11 +1,12 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\HasKey;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\Links;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Links\Links;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 use Webmozart\Assert\Assert;
 

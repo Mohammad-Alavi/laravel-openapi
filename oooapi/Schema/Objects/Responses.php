@@ -4,6 +4,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableResponseFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
 final class Responses extends ExtensibleObject
