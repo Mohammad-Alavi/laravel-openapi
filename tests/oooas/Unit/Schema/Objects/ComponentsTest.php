@@ -10,9 +10,11 @@ use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\Reusabl
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\Entry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\Links;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
@@ -68,7 +70,7 @@ describe(class_basename(Components::class), function (): void {
                 Http::basic(),
             );
 
-        $link = Link::create('LinkExample');
+        $link = Link::create();
 
         $callback = \Mockery::mock(ReusableCallbackFactory::class);
         $callback->allows('key')
@@ -99,7 +101,7 @@ describe(class_basename(Components::class), function (): void {
             ->requestBodies($requestBody)
             ->headers($header)
             ->securitySchemes($securityScheme)
-            ->links($link)
+            ->links(Links::create(Entry::create('LinkExample', $link)))
             ->callbacks($callback);
 
         expect($components->asArray())->toBe([

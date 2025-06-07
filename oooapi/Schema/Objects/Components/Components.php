@@ -9,9 +9,9 @@ use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\Reusabl
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\Links;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\SchemaComposition;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
@@ -38,8 +38,7 @@ final class Components extends ExtensibleObject
     /** @var SecuritySchemeFactory[]|null */
     private array|null $securitySchemes = null;
 
-    /** @var Link[]|null */
-    private array|null $links = null;
+    private Links|null $links = null;
 
     /** @var ReusableCallbackFactory[]|null */
     private array|null $callbackFactories = null;
@@ -116,11 +115,11 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
-    public function links(Link ...$link): self
+    public function links(Links $links): self
     {
         $clone = clone $this;
 
-        $clone->links = [] !== $link ? $link : null;
+        $clone->links = $links;
 
         return $clone;
     }
@@ -176,11 +175,6 @@ final class Components extends ExtensibleObject
             $securitySchemes[$securityScheme::key()] = $securityScheme->build();
         }
 
-        $links = [];
-        foreach ($this->links ?? [] as $link) {
-            $links[$link->key()] = $link;
-        }
-
         $callbacks = [];
         foreach ($this->callbackFactories ?? [] as $factory) {
             $callback = $factory->build();
@@ -195,7 +189,7 @@ final class Components extends ExtensibleObject
             'requestBodies' => [] !== $requestBodies ? $requestBodies : null,
             'headers' => [] !== $headers ? $headers : null,
             'securitySchemes' => [] !== $securitySchemes ? $securitySchemes : null,
-            'links' => [] !== $links ? $links : null,
+            'links' => $this->links,
             'callbacks' => [] !== $callbacks ? $callbacks : null,
             // TODO: add extensions
         ]);

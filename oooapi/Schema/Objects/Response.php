@@ -4,6 +4,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\HasKey;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\Links;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 use Webmozart\Assert\Assert;
@@ -18,8 +19,7 @@ class Response extends ExtensibleObject implements HasKey
     /** @var MediaType[]|null */
     private array|null $content = null;
 
-    /** @var Link[]|null */
-    private array|null $links = null;
+    private Links|null $links = null;
 
     private readonly int|string $statusCode;
     private readonly string $description;
@@ -136,11 +136,11 @@ class Response extends ExtensibleObject implements HasKey
         return $clone;
     }
 
-    public function links(Link ...$link): static
+    public function links(Links $links): static
     {
         $clone = clone $this;
 
-        $clone->links = [] !== $link ? $link : null;
+        $clone->links = $links;
 
         return $clone;
     }
@@ -157,16 +157,11 @@ class Response extends ExtensibleObject implements HasKey
             $content[$contentItem->key()] = $contentItem;
         }
 
-        $links = [];
-        foreach ($this->links ?? [] as $link) {
-            $links[$link->key()] = $link;
-        }
-
         return Arr::filter([
             'description' => $this->description,
             'headers' => [] !== $headers ? $headers : null,
             'content' => [] !== $content ? $content : null,
-            'links' => [] !== $links ? $links : null,
+            'links' => $this->links,
         ]);
     }
 

@@ -1,9 +1,11 @@
 <?php
 
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\Entry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\Links;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
@@ -22,12 +24,12 @@ describe('Response', function (): void {
             )
             ->content(MediaType::json());
 
-        $link = Link::create('MyLink');
+        $link = Link::create();
 
         $response = Response::ok()
             ->headers($header)
             ->content(MediaType::json())
-            ->links($link);
+            ->links(Links::create(Entry::create('MyLink', $link)));
 
         expect($response->asArray())->toBe([
             'description' => 'OK',

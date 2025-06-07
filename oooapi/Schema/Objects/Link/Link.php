@@ -1,23 +1,31 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleKeyCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Fields\OperationId;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Fields\OperationRef;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleKeyCreatorTrait;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
-class Link extends ExtensibleObject implements SimpleKeyCreator
+final class Link extends ExtensibleObject
 {
-    use SimpleKeyCreatorTrait;
+    private function __construct()
+    {
+    }
 
-    protected string|null $operationRef = null;
-    protected string|null $operationId = null;
-    protected string|null $description = null;
+    public static function create(): self
+    {
+        return new self();
+    }
+
+    protected OperationRef|null $operationRef = null;
+    protected OperationId|null $operationId = null;
+    protected Description|null $description = null;
     protected Server|null $server = null;
 
-    public function operationRef(string|null $operationRef): static
+    public function operationRef(OperationRef|null $operationRef): self
     {
         $clone = clone $this;
 
@@ -26,7 +34,7 @@ class Link extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function operationId(string|null $operationId): static
+    public function operationId(OperationId|null $operationId): self
     {
         $clone = clone $this;
 
@@ -35,7 +43,7 @@ class Link extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function description(string|null $description): static
+    public function description(Description|null $description): self
     {
         $clone = clone $this;
 
@@ -44,7 +52,7 @@ class Link extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function server(Server|null $server): static
+    public function server(Server|null $server): self
     {
         $clone = clone $this;
 
