@@ -22,31 +22,31 @@ class Components extends ExtensibleObject implements SimpleCreator
     use SimpleCreatorTrait;
 
     /** @var ReusableSchemaFactory[]|SchemaComposition[]|null */
-    protected array|null $schemas = null;
+    private array|null $schemas = null;
 
     /** @var ReusableResponseFactory[]|null */
-    protected array|null $responses = null;
+    private array|null $responses = null;
 
     /** @var ReusableParameterFactory[]|null */
-    protected array|null $parameters = null;
+    private array|null $parameters = null;
 
     /** @var Example[]|null */
-    protected array|null $examples = null;
+    private array|null $examples = null;
 
     /** @var ReusableRequestBodyFactory[]|null */
-    protected array|null $requestBodies = null;
+    private array|null $requestBodies = null;
 
     /** @var Header[]|null */
-    protected array|null $headers = null;
+    private array|null $headers = null;
 
     /** @var SecuritySchemeFactory[]|null */
-    protected array|null $securitySchemes = null;
+    private array|null $securitySchemes = null;
 
     /** @var Link[]|null */
-    protected array|null $links = null;
+    private array|null $links = null;
 
     /** @var ReusableCallbackFactory[]|null */
-    protected array|null $callbackFactories = null;
+    private array|null $callbackFactories = null;
 
     public function schemas(ReusableSchemaFactory|SchemaComposition ...$schema): static
     {
