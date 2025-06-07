@@ -21,7 +21,8 @@ describe('Extensions', function (): void {
     ];
     dataset('extensibleObjectSet', [
         [
-            fn (): Components => Components::create(), $expectations],
+            fn (): Components => Components::create(), $expectations,
+        ],
         [
             fn (): Operation => Operation::create(), $expectations + [
                 'responses' => [
@@ -32,7 +33,8 @@ describe('Extensions', function (): void {
             ],
         ],
         [
-            fn (): PathItem => PathItem::create(), $expectations],
+            fn (): PathItem => PathItem::create(), $expectations,
+        ],
         [
             fn (): Response => Response::ok(), $expectations + [
                 'description' => 'OK',
@@ -90,9 +92,9 @@ describe('Extensions', function (): void {
 
     it('gets all extensions', function (ExtensibleObject $extensibleObject): void {
         expect($extensibleObject->extensions())->toBeArray()
-        ->each(function ($extension): void {
-            expect($extension)->toBeInstanceOf(Extension::class);
-        });
+            ->each(function ($extension): void {
+                expect($extension)->toBeInstanceOf(Extension::class);
+            });
 
         $extension1 = Extension::create('x-key', 'value');
         $extension2 = Extension::create('x-foo', 'bar');
