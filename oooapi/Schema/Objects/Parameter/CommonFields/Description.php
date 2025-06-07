@@ -12,13 +12,13 @@ final readonly class Description extends StringField
         // TODO: Add validation.
     }
 
-    public static function create(string $value): self
-    {
-        return new self($value);
-    }
-
     public function value(): string
     {
         return $this->value;
+    }
+
+    public static function create(string $value): self
+    {
+        return new self($value);
     }
 }

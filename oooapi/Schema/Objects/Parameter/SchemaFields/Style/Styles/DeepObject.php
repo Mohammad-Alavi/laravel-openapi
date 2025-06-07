@@ -5,7 +5,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SchemaFie
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SchemaFields\InQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SchemaFields\QueryApplicable;
 
-final class DeepObject extends Style implements QueryApplicable
+final class DeepObject extends Base implements QueryApplicable
 {
     use InQuery;
 
