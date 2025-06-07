@@ -42,7 +42,7 @@ describe('OpenApi', function (): void {
     it('can generate valid OpenAPI v3.1.0 docs', function (): void {
         $tag = Tag::create(
             TagName::create('Audits'),
-            TagDescription::create('All the audits')
+            TagDescription::create('All the audits'),
         );
         $contact = Contact::create()
             ->name(Name::create('Example'))

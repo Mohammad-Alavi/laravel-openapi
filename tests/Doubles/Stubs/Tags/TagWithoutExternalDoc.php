@@ -13,7 +13,7 @@ class TagWithoutExternalDoc extends TagFactory
     {
         return Tag::create(
             Name::create('PostWithoutExternalDoc'),
-            Description::create('Post Tag')
+            Description::create('Post Tag'),
         );
     }
 }
