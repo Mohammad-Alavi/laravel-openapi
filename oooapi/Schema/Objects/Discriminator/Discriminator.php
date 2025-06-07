@@ -2,46 +2,24 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
-use MohammadAlavi\ObjectOrientedOpenAPI\Exceptions\InvalidArgumentException;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\Mapping;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\PropertyName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
-class Discriminator extends ExtensibleObject implements SimpleCreator
+final class Discriminator extends ExtensibleObject
 {
-    use SimpleCreatorTrait;
-
-    protected string|null $propertyName = null;
-    protected array|null $mapping = null;
-
-    public function propertyName(string|null $propertyName): static
-    {
-        $clone = clone $this;
-
-        $clone->propertyName = $propertyName;
-
-        return $clone;
+    private function __construct(
+        private readonly PropertyName $propertyName,
+        private readonly Mapping|null $mapping = null,
+    ) {
     }
 
-    /**
-     * @param array<string, string> $mapping
-     *
-     * @throws InvalidArgumentException
-     */
-    public function mapping(array $mapping): static
-    {
-        foreach ($mapping as $key => $value) {
-            if (!is_string($key) || !is_string($value)) {
-                throw new InvalidArgumentException('Each mapping must have a string key and a string value.');
-            }
-        }
-
-        $clone = clone $this;
-
-        $clone->mapping = [] !== $mapping ? $mapping : null;
-
-        return $clone;
+    final public static function create(
+        PropertyName $propertyName,
+        Mapping|null $mapping = null,
+    ): self {
+        return new self($propertyName, $mapping);
     }
 
     protected function toArray(): array
