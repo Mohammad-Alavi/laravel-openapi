@@ -1,7 +1,7 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Exceptions\InvalidArgumentException;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Discriminator;
 
 describe('Discriminator', function (): void {
     it('can be created with no parameters', function (): void {
