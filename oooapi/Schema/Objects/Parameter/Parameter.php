@@ -6,10 +6,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\AllowEmptyValue;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Deprecated;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\In\In;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\In;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Required;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Location\Location;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\ContentSerialized;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedCookie;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedHeader;
@@ -27,7 +26,7 @@ final class Parameter extends ExtensibleObject
 
     private function __construct(
         private readonly Name $name,
-        private readonly Location $location,
+        private readonly In $in,
         private readonly SerializationRule $serializationRule,
     ) {
     }
@@ -100,7 +99,7 @@ final class Parameter extends ExtensibleObject
     {
         return Arr::filter([
             'name' => $this->name,
-            'in' => $this->location,
+            'in' => $this->in,
             'description' => $this->description,
             'required' => $this->required,
             'deprecated' => $this->deprecated,
