@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Collections;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use Webmozart\Assert\Assert;
 
 final readonly class Path

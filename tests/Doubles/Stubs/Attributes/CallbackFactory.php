@@ -4,7 +4,7 @@ namespace Tests\Doubles\Stubs\Attributes;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\Components\CallbackFactory as CallbackFactoryContract;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 
 class CallbackFactory implements CallbackFactoryContract
 {

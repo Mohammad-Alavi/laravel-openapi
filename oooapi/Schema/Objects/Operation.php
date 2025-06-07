@@ -52,7 +52,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return static::create()->action(static::ACTION_GET);
     }
 
-    public function action(string|null $action): static
+    public function action(string $action): static
     {
         $clone = clone $this;
 
@@ -94,6 +94,11 @@ class Operation extends ExtensibleObject implements SimpleCreator
     public static function trace(): static
     {
         return static::create()->action(static::ACTION_TRACE);
+    }
+
+    public function method(): string
+    {
+        return $this->method;
     }
 
     public function tags(Tag|string ...$tags): static

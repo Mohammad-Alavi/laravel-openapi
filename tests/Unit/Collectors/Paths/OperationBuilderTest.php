@@ -18,6 +18,7 @@ use Tests\Doubles\Stubs\Attributes\ResponsesFactory;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleSingleSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Servers\ServerWithMultipleVariableFormatting;
 use Tests\Doubles\Stubs\Tags\TagWithExternalObjectDoc;
+use Tests\Doubles\Stubs\Tags\TagWithoutExternalDoc;
 
 describe('OperationBuilder', function (): void {
     it('can be created in many combinations', function (RouteInfo $routeInfo, array $expected): void {
@@ -25,19 +26,7 @@ describe('OperationBuilder', function (): void {
 
         $operation = $operationBuilder->build($routeInfo);
 
-        expect($operation->method)->toBe($expected['action'])
-            ->and($operation->tags)->toBe($expected['tags'])
-            ->and($operation->summary)->toBe($expected['summary'])
-            ->and($operation->description)->toBe($expected['description'])
-            ->and($operation->externalDocs)->toBe($expected['externalDocs'])
-            ->and($operation->operationId)->toBe($expected['operationId'])
-            ->and($operation->parameterCollection)->toEqual($expected['parameters'])
-            ->and($operation->requestBody)->toEqual($expected['requestBody'])
-            ->and($operation->responses)->toEqual($expected['responses'])
-            ->and($operation->deprecated)->toBe($expected['deprecated'])
-            ->and($operation->security)->toEqual($expected['security'])
-            ->and($operation->servers)->toEqual($expected['servers'])
-            ->and($operation->callbacks)->toEqual($expected['callbacks']);
+        expect($operation->asArray())->toBe($expected);
     })->with(
         [
             function (): array {
@@ -63,16 +52,12 @@ describe('OperationBuilder', function (): void {
                         'summary' => '',
                         'description' => '',
                         'operationId' => 'test',
+                        'responses' => [
+                            'default' => [
+                                'description' => 'Default Response',
+                            ],
+                        ],
                         'deprecated' => false,
-                        'security' => null,
-                        'action' => 'get',
-                        'servers' => null,
-                        'tags' => null,
-                        'parameters' => null,
-                        'requestBody' => null,
-                        'responses' => null,
-                        'callbacks' => null,
-                        'externalDocs' => null,
                     ],
                 ];
             },
@@ -83,7 +68,7 @@ describe('OperationBuilder', function (): void {
                 $routeInformation->actionAttributes = collect([
                     new OperationAttribute(
                         id: 'test',
-                        tags: ['test'],
+                        tags: [TagWithoutExternalDoc::class],
                         security: null,
                         method: 'post',
                         servers: [],
@@ -96,19 +81,16 @@ describe('OperationBuilder', function (): void {
                 return [
                     'routes' => $routeInformation,
                     'expected' => [
+                        'tags' => ['PostWithoutExternalDoc'],
                         'summary' => 'summary',
                         'description' => 'description',
                         'operationId' => 'test',
+                        'responses' => [
+                            'default' => [
+                                'description' => 'Default Response',
+                            ],
+                        ],
                         'deprecated' => true,
-                        'security' => null,
-                        'action' => 'post',
-                        'servers' => null,
-                        'tags' => null,
-                        'parameters' => null,
-                        'requestBody' => null,
-                        'responses' => null,
-                        'callbacks' => null,
-                        'externalDocs' => null,
                     ],
                 ];
             },
@@ -138,22 +120,76 @@ describe('OperationBuilder', function (): void {
                 return [
                     'routes' => $routeInformation,
                     'expected' => [
+                        'tags' => ['PostWithExternalObjectDoc'],
                         'summary' => 'summary',
                         'description' => 'description',
                         'operationId' => 'test',
+                        'parameters' => [
+                            [
+                                'name' => 'param_a',
+                                'in' => 'header',
+                                'schema' => [
+                                    'type' => 'string',
+                                ],
+                            ],
+                            [
+                                'name' => 'param_b',
+                                'in' => 'path',
+                                'schema' => [
+                                    'type' => 'string',
+                                ],
+                            ],
+                            [
+                                '$ref' => '#/components/parameters/TestReusableParameter',
+                            ],
+                            [
+                                'name' => 'param_c',
+                                'in' => 'cookie',
+                                'schema' => [
+                                    'type' => 'string',
+                                ],
+                            ],
+                        ],
+                        'requestBody' => [],
+                        'responses' => [
+                            200 => [
+                                'description' => 'OK',
+                            ],
+                        ],
                         'deprecated' => true,
-                        // TODO: docs: it seems SecurityScheme object id is mandatory and if we dont set it,
-                        //  it will be null in the SecurityRequirement object $securityScheme field
-                        //  Based on OAS spec security requirement cant not have a name
-                        'security' => (new ExampleSingleSecurityRequirementSecurity())->build(),
-                        'action' => 'get',
-                        'servers' => [(new ServerWithMultipleVariableFormatting())->build()],
-                        'tags' => ['PostWithExternalObjectDoc'],
-                        'parameters' => (new ParameterFactory())->build(),
-                        'requestBody' => (new RequestBodyFactory())->build(),
-                        'responses' => (new ResponsesFactory())->build(),
-                        'callbacks' => [(new CallbackFactory())->build()],
-                        'externalDocs' => null,
+                        /*
+                         * TODO: docs: it seems SecurityScheme object id is mandatory and if we dont set it,
+                         *  it will be null in the SecurityRequirement object $securityScheme field
+                         *  Based on OAS spec security requirement cant not have a name
+                         */
+                        'security' => [
+                            [
+                                'ExampleHTTPBearerSecurityScheme' => [],
+                            ],
+                        ],
+                        'servers' => [
+                            [
+                                'url' => 'https://example.com',
+                                'description' => 'sample_description',
+                                'variables' => [
+                                    'ServerVariableA' => [
+                                        'enum' => ['A', 'B'],
+                                        'default' => 'B',
+                                        'description' => 'variable_description',
+                                    ],
+                                    'ServerVariableB' => [
+                                        'default' => 'sample',
+                                        'description' => 'sample_description',
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'callbacks' => [
+                            'CallbackFactory' => [
+                                '/' => [],
+                            ],
+                        ],
+                        'x-key' => 'value',
                     ],
                 ];
             },

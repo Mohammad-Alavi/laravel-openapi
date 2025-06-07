@@ -12,6 +12,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
 //  I mean, I don't even know the the extension supposed to work!
 //  I have to read the docs! Also, check if the Extension can be created per object as the docs seems to suggest.
 //   Or it is just generated for all objects! Like a global thing!
+//  - Also, can we make this and all it's driven classes immutable/readonly?
 abstract class ExtensibleObject extends Generatable
 {
     private Extensions|null $extensions = null;

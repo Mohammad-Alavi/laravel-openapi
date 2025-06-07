@@ -1,31 +1,36 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
-class PathItem extends ExtensibleObject implements SimpleCreator
+final class PathItem extends ExtensibleObject
 {
-    use SimpleCreatorTrait;
-
-    protected string|null $summary = null;
-    protected string|null $description = null;
-
+    private Summary|null $summary = null;
+    private Description|null $description = null;
     /** @var Operation[]|null */
-    protected array|null $operations = null;
-
+    private array|null $operations = null;
     /** @var Server[]|null */
-    protected array|null $servers = null;
-
+    private array|null $servers = null;
     /** @var Parameter[]|null */
-    protected array|null $parameters = null;
+    private array|null $parameters = null;
 
-    public function summary(string|null $summary): static
+    private function __construct()
+    {
+    }
+
+    public static function create(): self
+    {
+        return new self();
+    }
+
+    public function summary(Summary $summary): self
     {
         $clone = clone $this;
 
@@ -34,7 +39,7 @@ class PathItem extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function description(string|null $description): static
+    public function description(Description $description): self
     {
         $clone = clone $this;
 
@@ -43,7 +48,7 @@ class PathItem extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function operations(Operation ...$operation): static
+    public function operations(Operation ...$operation): self
     {
         $clone = clone $this;
 
@@ -52,7 +57,7 @@ class PathItem extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function servers(Server ...$server): static
+    public function servers(Server ...$server): self
     {
         $clone = clone $this;
 
@@ -62,7 +67,7 @@ class PathItem extends ExtensibleObject implements SimpleCreator
     }
 
     // TODO: change this to use Parameters object instead of an array of Parameters
-    public function parameters(Parameter ...$parameter): static
+    public function parameters(Parameter ...$parameter): self
     {
         $clone = clone $this;
 
@@ -75,7 +80,7 @@ class PathItem extends ExtensibleObject implements SimpleCreator
     {
         $operations = [];
         foreach ($this->operations ?? [] as $operation) {
-            $operations[$operation->method] = $operation;
+            $operations[$operation->method()] = $operation;
         }
 
         return Arr::filter(
