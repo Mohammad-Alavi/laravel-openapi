@@ -5,7 +5,7 @@
 // use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator;
 // use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs;
 // use MohammadAlavi\ObjectOrientedJSONSchema\v31\Schema;
-// use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Xml;
+// use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Xml;
 //
 // describe(class_basename(Schema::class), function (): void {
 //    it('can create array schema with all parameters', function (): void {
