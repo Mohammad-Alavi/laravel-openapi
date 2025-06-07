@@ -78,7 +78,7 @@ describe('OpenApi', function (): void {
             ->operationId('audits.store')
             ->requestBody(RequestBody::create()->content(MediaType::json()->schema($objectDescriptor)));
         $stringDescriptor = Schema::string()->format(StringFormat::UUID);
-        $enumDescriptor = Schema::enumerator('json', 'ics')
+        $enumDescriptor = Schema::enum('json', 'ics')
             ->default('json');
         $operationGet = Operation::get()
             ->responses(Responses::create($expectedResponse))
