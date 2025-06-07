@@ -8,19 +8,15 @@ use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\Reusabl
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableResponseFactory;
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\SchemaComposition;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
-class Components extends ExtensibleObject implements SimpleCreator
+final class Components extends ExtensibleObject
 {
-    use SimpleCreatorTrait;
-
     /** @var ReusableSchemaFactory[]|SchemaComposition[]|null */
     private array|null $schemas = null;
 
@@ -48,7 +44,16 @@ class Components extends ExtensibleObject implements SimpleCreator
     /** @var ReusableCallbackFactory[]|null */
     private array|null $callbackFactories = null;
 
-    public function schemas(ReusableSchemaFactory|SchemaComposition ...$schema): static
+    private function __construct()
+    {
+    }
+
+    public static function create(): self
+    {
+        return new self();
+    }
+
+    public function schemas(ReusableSchemaFactory|SchemaComposition ...$schema): self
     {
         $clone = clone $this;
 
@@ -57,7 +62,7 @@ class Components extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function responses(ReusableResponseFactory ...$reusableResponseFactory): static
+    public function responses(ReusableResponseFactory ...$reusableResponseFactory): self
     {
         $clone = clone $this;
 
@@ -66,7 +71,7 @@ class Components extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function parameters(ReusableParameterFactory ...$reusableParameterFactory): static
+    public function parameters(ReusableParameterFactory ...$reusableParameterFactory): self
     {
         $clone = clone $this;
 
@@ -75,7 +80,7 @@ class Components extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function examples(Example ...$example): static
+    public function examples(Example ...$example): self
     {
         $clone = clone $this;
 
@@ -84,7 +89,7 @@ class Components extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function requestBodies(ReusableRequestBodyFactory ...$reusableRequestBodyFactory): static
+    public function requestBodies(ReusableRequestBodyFactory ...$reusableRequestBodyFactory): self
     {
         $clone = clone $this;
 
@@ -93,7 +98,7 @@ class Components extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function headers(Header ...$header): static
+    public function headers(Header ...$header): self
     {
         $clone = clone $this;
 
@@ -102,7 +107,7 @@ class Components extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function securitySchemes(SecuritySchemeFactory ...$securitySchemeFactory): static
+    public function securitySchemes(SecuritySchemeFactory ...$securitySchemeFactory): self
     {
         $clone = clone $this;
 
@@ -111,7 +116,7 @@ class Components extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function links(Link ...$link): static
+    public function links(Link ...$link): self
     {
         $clone = clone $this;
 
@@ -120,7 +125,7 @@ class Components extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function callbacks(ReusableCallbackFactory ...$reusableCallbackFactory): static
+    public function callbacks(ReusableCallbackFactory ...$reusableCallbackFactory): self
     {
         $clone = clone $this;
 
