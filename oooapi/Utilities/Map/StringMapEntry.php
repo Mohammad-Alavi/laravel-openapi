@@ -10,7 +10,6 @@ use Webmozart\Assert\Assert;
 abstract readonly class StringMapEntry
 {
     /**
-     * @param string $key
      * @param TValue $value
      */
     final protected function __construct(
