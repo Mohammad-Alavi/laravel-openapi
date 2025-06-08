@@ -6,7 +6,7 @@ use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ResponsesFactory;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 final class SingleResponses extends ResponsesFactory

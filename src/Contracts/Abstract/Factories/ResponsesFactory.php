@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 
 abstract class ResponsesFactory
 {

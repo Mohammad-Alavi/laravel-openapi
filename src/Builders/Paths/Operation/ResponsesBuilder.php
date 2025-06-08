@@ -4,7 +4,7 @@ namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation;
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses as ResponsesAttribute;
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ResponsesFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 
 class ResponsesBuilder
 {
