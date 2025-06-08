@@ -3,6 +3,8 @@
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Discriminator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\Entry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\Mapping;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\SchemaName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\SchemaURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\PropertyName;
 
 describe('Discriminator', function (): void {
@@ -10,14 +12,16 @@ describe('Discriminator', function (): void {
         $discriminator = Discriminator::create(
             PropertyName::create('Discriminator Name'),
             Mapping::create(
-                Entry::create('key', 'value'),
+                Entry::create('cat', SchemaName::create('value')),
+                Entry::create('dog', SchemaURL::create('https://example.com/dog')),
             ),
         );
 
         expect($discriminator->asArray())->toBe([
             'propertyName' => 'Discriminator Name',
             'mapping' => [
-                'key' => 'value',
+                'cat' => 'value',
+                'dog' => 'https://example.com/dog',
             ],
         ]);
     });

@@ -2,21 +2,15 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping;
 
-final readonly class Entry
+use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMapEntry;
+
+/**
+ * @extends StringMapEntry<SchemaName|SchemaURL>
+ */
+final readonly class Entry extends StringMapEntry
 {
-    private function __construct(
-        private string $payloadValue,
-        private string $schemaName,
-    ) {
-    }
-
-    public static function create(string $payloadValue, string $schemaName): self
+    public static function create(string $payloadValue, SchemaName|SchemaURL $nameOrUrl): self
     {
-        return new self($payloadValue, $schemaName);
-    }
-
-    public function value(): array
-    {
-        return [$this->payloadValue => $this->schemaName];
+        return new self($payloadValue, $nameOrUrl);
     }
 }

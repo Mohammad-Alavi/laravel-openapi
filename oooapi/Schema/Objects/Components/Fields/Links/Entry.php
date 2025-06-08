@@ -3,22 +3,15 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
+use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMapEntry;
 
-final readonly class Entry
+/**
+ * @extends StringMapEntry<Link>
+ */
+final readonly class Entry extends StringMapEntry
 {
-    private function __construct(
-        private string $key,
-        private Link $link,
-    ) {
-    }
-
     public static function create(string $name, Link $link): self
     {
         return new self($name, $link);
-    }
-
-    public function value(): array
-    {
-        return [$this->key => $this->link];
     }
 }

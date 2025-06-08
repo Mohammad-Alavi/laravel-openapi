@@ -2,8 +2,8 @@
 
 namespace Tests\oooas\Unit\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Trash\SecurityRequirementOld;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOpenAPI\Trash\SecurityRequirementOld;
 
 describe('SecurityRequirement', function (): void {
     it('can be created with no parameters', function (): void {
