@@ -6,6 +6,7 @@ use MohammadAlavi\LaravelOpenApi\Collections\ParameterCollection;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;

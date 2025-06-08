@@ -5,7 +5,7 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Callback as CallbackAttribute;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\CallbackBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use Tests\Doubles\Stubs\Attributes\CallbackFactory;
 use Tests\Doubles\Stubs\Collectors\Paths\Operations\ReusableComponentCallbackFactory;
 
@@ -43,9 +43,11 @@ describe(class_basename(CallbackBuilder::class), function (): void {
         expect($result)->toHaveCount(2)
             ->and($pathItem)->toBeInstanceOf(Callback::class)
             ->and($reusablePathItem)->toBeInstanceOf(Reference::class)
-            ->and($reusablePathItem->ref())
+            ->and($reusablePathItem->asArray())
             ->toBe(
-                '#/components/callbacks/ReusableComponentCallbackFactory',
+                [
+                    '$ref' => '#/components/callbacks/ReusableComponentCallbackFactory',
+                ],
             );
     });
 })->covers(CallbackBuilder::class);

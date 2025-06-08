@@ -3,12 +3,13 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Reusable;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\ReusableRefObj as ReusableRefObjContract;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields\Ref;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 
 abstract class ReusableComponent extends Reusable implements ReusableRefObjContract
 {
     final public static function ref(): Reference
     {
-        return Reference::create(self::path());
+        return Reference::create(Ref::create(self::path()));
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody as RequestBodyAttribute;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\RequestBodyBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use Tests\Doubles\Stubs\Attributes\RequestBodyFactory;
 use Tests\Doubles\Stubs\Collectors\Paths\Operations\TestReusableRequestBodyFactory;
@@ -36,8 +36,10 @@ describe('RequestBodyBuilder', function (): void {
         $result = $builder->build($routeInformation->requestBodyAttribute());
 
         expect($result)->toBeInstanceOf(Reference::class)
-            ->and($result->ref())->toBe(
-                '#/components/requestBodies/TestReusableRequestBodyFactory',
+            ->and($result->asArray())->toBe(
+                [
+                    '$ref' => '#/components/requestBodies/TestReusableRequestBodyFactory',
+                ],
             );
     });
 })->covers(RequestBodyBuilder::class);

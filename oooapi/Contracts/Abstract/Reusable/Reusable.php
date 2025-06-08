@@ -3,7 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Reusable;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Reusable as ReusableContract;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
 use Webmozart\Assert\Assert;
 

@@ -1,8 +1,11 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\NonExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields\Ref;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
 final class Reference extends NonExtensibleObject
@@ -11,30 +14,15 @@ final class Reference extends NonExtensibleObject
     // This is not possible with the current implementation.
     // This is specially importance for the Response object.
     private function __construct(
-        private readonly string $ref,
-        private readonly string|null $summary,
-        private readonly string|null $description,
+        private readonly Ref $ref,
+        private readonly Summary|null $summary,
+        private readonly Description|null $description,
     ) {
     }
 
-    public static function create(string $ref, string|null $summary = null, string|null $description = null): self
+    public static function create(Ref $ref, Summary|null $summary = null, Description|null $description = null): self
     {
         return new self($ref, $summary, $description);
-    }
-
-    public function ref(): string
-    {
-        return $this->ref;
-    }
-
-    public function summary(): string|null
-    {
-        return $this->summary;
-    }
-
-    public function description(): string|null
-    {
-        return $this->description;
     }
 
     protected function toArray(): array

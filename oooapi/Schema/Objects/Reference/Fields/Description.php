@@ -1,16 +1,15 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Validator;
 
-final readonly class URL extends StringField
+final readonly class Description extends StringField
 {
     private function __construct(
         private string $value,
     ) {
-        Validator::url($value);
+        // TODO: Add validation.
     }
 
     public static function create(string $value): self

@@ -2,15 +2,15 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Rules\URI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Validator;
 
 final readonly class URL extends StringField
 {
     private function __construct(
         private string $value,
     ) {
-        URI::validate($this->value);
+        Validator::url($value);
     }
 
     public static function create(string $value): self

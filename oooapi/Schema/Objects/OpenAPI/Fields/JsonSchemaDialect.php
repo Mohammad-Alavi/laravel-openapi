@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Rules\URI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Validator;
 
 /**
  * Represents the `jsonSchemaDialect` field in OpenAPI 3.1.
@@ -18,7 +18,7 @@ final readonly class JsonSchemaDialect extends StringField
     public function __construct(
         private string $value,
     ) {
-        URI::validate($this->value);
+        Validator::url($value);
     }
 
     public static function create(string $value): self

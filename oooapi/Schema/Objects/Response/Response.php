@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Links\Lin
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 use Webmozart\Assert\Assert;
 
-class Response extends ExtensibleObject implements HasKey
+final class Response extends ExtensibleObject implements HasKey
 {
     private const DEFAULT = 'default';
 
@@ -25,88 +25,88 @@ class Response extends ExtensibleObject implements HasKey
     private readonly int|string $statusCode;
     private readonly string $description;
 
-    public static function default(string $description = 'Default Response'): static
+    public static function default(string $description = 'Default Response'): self
     {
-        return static::create(self::DEFAULT, $description);
+        return self::create(self::DEFAULT, $description);
     }
 
-    final public static function create(int|string $statusCode, string $description): static
+    final public static function create(int|string $statusCode, string $description): self
     {
         if (self::DEFAULT !== $statusCode) {
             Assert::regex((string) $statusCode, '/^[1-5]\d{2}$/');
         }
 
-        $static = new static();
+        $self = new self();
 
-        $static->statusCode = $statusCode;
-        $static->description = $description;
+        $self->statusCode = $statusCode;
+        $self->description = $description;
 
-        return $static;
+        return $self;
     }
 
-    public static function ok(string $description = 'OK'): static
+    public static function ok(string $description = 'OK'): self
     {
-        return static::create(200, $description);
+        return self::create(200, $description);
     }
 
-    public static function created(string $description = 'Created'): static
+    public static function created(string $description = 'Created'): self
     {
-        return static::create(201, $description);
+        return self::create(201, $description);
     }
 
-    public static function accepted(string $description = 'Accepted'): static
+    public static function accepted(string $description = 'Accepted'): self
     {
-        return static::create(202, $description);
+        return self::create(202, $description);
     }
 
-    public static function deleted(string $description = 'Deleted'): static
+    public static function deleted(string $description = 'Deleted'): self
     {
-        return static::create(204, $description);
+        return self::create(204, $description);
     }
 
-    public static function movedPermanently(string $description = 'Moved Permanently'): static
+    public static function movedPermanently(string $description = 'Moved Permanently'): self
     {
-        return static::create(301, $description);
+        return self::create(301, $description);
     }
 
-    public static function movedTemporarily(string $description = 'Moved Temporarily'): static
+    public static function movedTemporarily(string $description = 'Moved Temporarily'): self
     {
-        return static::create(302, $description);
+        return self::create(302, $description);
     }
 
-    public static function badRequest(string $description = 'Bad Request'): static
+    public static function badRequest(string $description = 'Bad Request'): self
     {
-        return static::create(400, $description);
+        return self::create(400, $description);
     }
 
-    public static function unauthorized(string $description = 'Unauthorized'): static
+    public static function unauthorized(string $description = 'Unauthorized'): self
     {
-        return static::create(401, $description);
+        return self::create(401, $description);
     }
 
-    public static function forbidden(string $description = 'Forbidden'): static
+    public static function forbidden(string $description = 'Forbidden'): self
     {
-        return static::create(403, $description);
+        return self::create(403, $description);
     }
 
-    public static function notFound(string $description = 'Not Found'): static
+    public static function notFound(string $description = 'Not Found'): self
     {
-        return static::create(404, $description);
+        return self::create(404, $description);
     }
 
-    public static function unprocessableEntity(string $description = 'Unprocessable Entity'): static
+    public static function unprocessableEntity(string $description = 'Unprocessable Entity'): self
     {
-        return static::create(422, $description);
+        return self::create(422, $description);
     }
 
-    public static function tooManyRequests(string $description = 'Too Many Requests'): static
+    public static function tooManyRequests(string $description = 'Too Many Requests'): self
     {
-        return static::create(429, $description);
+        return self::create(429, $description);
     }
 
-    public static function internalServerError(string $description = 'Internal Server Error'): static
+    public static function internalServerError(string $description = 'Internal Server Error'): self
     {
-        return static::create(500, $description);
+        return self::create(500, $description);
     }
 
     public function statusCode(): int|string
@@ -119,7 +119,7 @@ class Response extends ExtensibleObject implements HasKey
         return $this->description;
     }
 
-    public function headers(Header ...$header): static
+    public function headers(Header ...$header): self
     {
         $clone = clone $this;
 
@@ -128,7 +128,7 @@ class Response extends ExtensibleObject implements HasKey
         return $clone;
     }
 
-    public function content(MediaType ...$mediaType): static
+    public function content(MediaType ...$mediaType): self
     {
         $clone = clone $this;
 
@@ -137,7 +137,7 @@ class Response extends ExtensibleObject implements HasKey
         return $clone;
     }
 
-    public function links(Links $links): static
+    public function links(Links $links): self
     {
         $clone = clone $this;
 
