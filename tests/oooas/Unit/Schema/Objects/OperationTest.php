@@ -10,8 +10,11 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description as ResponseDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description;
@@ -23,115 +26,117 @@ describe('Operation', function (): void {
     it('can be created with no parameters', function (): void {
         $operation = Operation::create();
 
-        expect($operation->asArray())->toBe([
-            'responses' => [
-                'default' => [
-                    'description' => 'Default Response',
-                ],
-            ],
-        ]);
+        expect($operation->asArray())->toBeEmpty();
     });
 
-    it('can can be created with all parameters', function (string $actionMethod, string $operationName): void {
-        $callback =
-            Callback::create(
-                'MyEvent',
-                '{$request.query.callbackUrl}',
-                PathItem::create()
-                    ->operations(
-                        Operation::$actionMethod()
-                            ->requestBody(
-                                RequestBody::create()
-                                    ->description('something happened'),
-                            )->responses(
-                                Responses::create(
-                                    Response::unauthorized(),
+    it(
+        'can can be created with all parameters',
+        function (string $actionMethod, string $operationName): void {
+            $callback =
+                Callback::create(
+                    'MyEvent',
+                    '{$request.query.callbackUrl}',
+                    PathItem::create()
+                        ->operations(
+                            Operation::$actionMethod()
+                                ->requestBody(
+                                    RequestBody::create()
+                                        ->description('something happened'),
+                                )->responses(
+                                    Responses::create(
+                                        ResponseEntry::create(
+                                            HTTPStatusCode::unauthorized(),
+                                            Response::create(ResponseDescription::create('Unauthorized')),
+                                        ),
+                                    ),
                                 ),
-                            ),
-                    ),
-            );
+                        ),
+                );
 
-        $operation = Operation::create()
-            ->action(Operation::ACTION_GET)
-            ->tags(
-                Tag::create(
-                    Name::create('Users'),
-                    Description::create('Lorem ipsum'),
-                ),
-            )->summary('Lorem ipsum')
-            ->description('Dolar sit amet')
-            ->externalDocs(ExternalDocumentation::create(ExtURL::create('https://example.com/docs')))
-            ->operationId('users.show')
-            ->parameters(
-                ParameterCollection::create(
-                    Parameter::query(
-                        ParamName::create('id'),
-                        SchemaSerializedQuery::create(Schema::string()),
+            $operation = Operation::create()
+                ->action(Operation::ACTION_GET)
+                ->tags(
+                    Tag::create(
+                        Name::create('Users'),
+                        Description::create('Lorem ipsum'),
                     ),
-                ),
-            )->requestBody(RequestBody::create())
-            ->responses(
-                Responses::create(
-                    Response::ok(),
-                ),
-            )
-            ->deprecated()
-            ->security((new ExampleSingleSecurityRequirementSecurity())->build())
-            ->servers(Server::default())
-            ->callbacks($callback);
+                )->summary('Lorem ipsum')
+                ->description('Dolar sit amet')
+                ->externalDocs(ExternalDocumentation::create(ExtURL::create('https://example.com/docs')))
+                ->operationId('users.show')
+                ->parameters(
+                    ParameterCollection::create(
+                        Parameter::query(
+                            ParamName::create('id'),
+                            SchemaSerializedQuery::create(Schema::string()),
+                        ),
+                    ),
+                )->requestBody(RequestBody::create())
+                ->responses(
+                    Responses::create(
+                        ResponseEntry::create(
+                            HTTPStatusCode::ok(),
+                            Response::create(ResponseDescription::create('OK')),
+                        ),
+                    ),
+                )->deprecated()
+                ->security((new ExampleSingleSecurityRequirementSecurity())->build())
+                ->servers(Server::default())
+                ->callbacks($callback);
 
-        expect($operation->asArray())->toBe([
-            'tags' => ['Users'],
-            'summary' => 'Lorem ipsum',
-            'description' => 'Dolar sit amet',
-            'externalDocs' => [
-                'url' => 'https://example.com/docs',
-            ],
-            'operationId' => 'users.show',
-            'parameters' => [
-                [
-                    'name' => 'id',
-                    'in' => 'query',
-                    'schema' => [
-                        'type' => 'string',
+            expect($operation->asArray())->toBe([
+                'tags' => ['Users'],
+                'summary' => 'Lorem ipsum',
+                'description' => 'Dolar sit amet',
+                'externalDocs' => [
+                    'url' => 'https://example.com/docs',
+                ],
+                'operationId' => 'users.show',
+                'parameters' => [
+                    [
+                        'name' => 'id',
+                        'in' => 'query',
+                        'schema' => [
+                            'type' => 'string',
+                        ],
                     ],
                 ],
-            ],
-            'requestBody' => [],
-            'responses' => [
-                '200' => [
-                    'description' => 'OK',
+                'requestBody' => [],
+                'responses' => [
+                    '200' => [
+                        'description' => 'OK',
+                    ],
                 ],
-            ],
-            'deprecated' => true,
-            'security' => [
-                [
-                    'ExampleHTTPBearerSecurityScheme' => [],
+                'deprecated' => true,
+                'security' => [
+                    [
+                        'ExampleHTTPBearerSecurityScheme' => [],
+                    ],
                 ],
-            ],
-            'servers' => [
-                [
-                    'url' => '/',
+                'servers' => [
+                    [
+                        'url' => '/',
+                    ],
                 ],
-            ],
-            'callbacks' => [
-                'MyEvent' => [
-                    '{$request.query.callbackUrl}' => [
-                        $operationName => [
-                            'requestBody' => [
-                                'description' => 'something happened',
-                            ],
-                            'responses' => [
-                                '401' => [
-                                    'description' => 'Unauthorized',
+                'callbacks' => [
+                    'MyEvent' => [
+                        '{$request.query.callbackUrl}' => [
+                            $operationName => [
+                                'requestBody' => [
+                                    'description' => 'something happened',
+                                ],
+                                'responses' => [
+                                    '401' => [
+                                        'description' => 'Unauthorized',
+                                    ],
                                 ],
                             ],
                         ],
                     ],
                 ],
-            ],
-        ]);
-    })->with([
+            ]);
+        },
+    )->with([
         'get action' => ['get', Operation::ACTION_GET],
         'put action' => ['put', Operation::ACTION_PUT],
         'post action' => ['post', Operation::ACTION_POST],
@@ -155,7 +160,10 @@ describe('Operation', function (): void {
         $operation = Operation::get()
             ->responses(
                 Responses::create(
-                    Response::ok(),
+                    ResponseEntry::create(
+                        HTTPStatusCode::ok(),
+                        Response::create(ResponseDescription::create('OK')),
+                    ),
                 ),
             )
             ->tags(...$tag);
@@ -169,10 +177,24 @@ describe('Operation', function (): void {
             ],
         ]);
     })->with([
-        'one string tag' => [['Users'], ['Users']],
-        'multiple string tags' => [['Users', 'Admins'], ['Users', 'Admins']],
-        'one object tag' => [[Tag::create(Name::create('Users'))], ['Users']],
-        'multiple object tags' => [[Tag::create(Name::create('Users')), Tag::create(Name::create('Admins'))], ['Users', 'Admins']],
-        'mixed tags' => [['Users', Tag::create(Name::create('Admins'))], ['Users', 'Admins']],
+        'one string tag' => [
+            ['Users'],
+            ['Users']],
+        'multiple string tags' => [
+            ['Users', 'Admins'],
+            ['Users', 'Admins'],
+        ],
+        'one object tag' => [
+            [Tag::create(Name::create('Users'))],
+            ['Users'],
+        ],
+        'multiple object tags' => [
+            [Tag::create(Name::create('Users')), Tag::create(Name::create('Admins'))],
+            ['Users', 'Admins'],
+        ],
+        'mixed tags' => [
+            ['Users', Tag::create(Name::create('Admins'))],
+            ['Users', 'Admins'],
+        ],
     ]);
 })->covers(Operation::class);

@@ -13,17 +13,30 @@ abstract readonly class StringMapEntry
      * @param TValue $value
      */
     final protected function __construct(
-        private string $key,
+        private string|\Stringable $key,
         private mixed $value,
     ) {
-        Assert::notEmpty($this->key);
+        Assert::notEmpty($this->key());
+    }
+
+    final public function key(): string
+    {
+        return (string) $this->key;
+    }
+
+    /**
+     * @return TValue
+     */
+    final public function value(): mixed
+    {
+        return $this->value;
     }
 
     /**
      * @return non-empty-array<string, TValue>
      */
-    final public function value(): array
+    final public function getSet(): array
     {
-        return [$this->key => $this->value];
+        return [$this->key() => $this->value];
     }
 }

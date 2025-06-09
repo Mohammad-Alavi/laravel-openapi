@@ -28,8 +28,11 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRu
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL as ServerURL;
@@ -69,15 +72,26 @@ describe('OpenApi', function (): void {
                     ),
                 ),
             )->required('id', 'created_at');
-        $expectedResponse = Response::ok()
-            ->content(MediaType::json()->schema($objectDescriptor));
+        $expectedResponse = Responses::create(
+            ResponseEntry::create(
+                HTTPStatusCode::ok(),
+                Response::create(
+                    Description::create('OK'),
+                )->content(
+                    ContentEntry::create(
+                        'application/json',
+                        MediaType::json()->schema($objectDescriptor),
+                    ),
+                ),
+            ),
+        );
         $operationIndex = Operation::get()
-            ->responses(Responses::create($expectedResponse))
+            ->responses($expectedResponse)
             ->tags($tag)
             ->summary('List all audits')
             ->operationId('audits.index');
         $operationCreate = Operation::post()
-            ->responses(Responses::create($expectedResponse))
+            ->responses($expectedResponse)
             ->tags($tag)
             ->summary('Create an audit')
             ->operationId('audits.store')
@@ -86,7 +100,7 @@ describe('OpenApi', function (): void {
         $enumDescriptor = Schema::enum('json', 'ics')
             ->default('json');
         $operationGet = Operation::get()
-            ->responses(Responses::create($expectedResponse))
+            ->responses($expectedResponse)
             ->tags($tag)
             ->summary('View an audit')
             ->operationId('audits.show')

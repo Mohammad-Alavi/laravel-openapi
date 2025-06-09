@@ -7,6 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
@@ -24,19 +25,13 @@ describe('Extensions', function (): void {
             fn (): Components => Components::create(), $expectations,
         ],
         [
-            fn (): Operation => Operation::create(), $expectations + [
-                'responses' => [
-                    'default' => [
-                        'description' => 'Default Response',
-                    ],
-                ],
-            ],
+            fn (): Operation => Operation::create(), $expectations,
         ],
         [
             fn (): PathItem => PathItem::create(), $expectations,
         ],
         [
-            fn (): Response => Response::ok(), $expectations + [
+            fn (): Response => Response::create(Description::create('OK')), $expectations + [
                 'description' => 'OK',
             ],
         ],

@@ -5,7 +5,8 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Field
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMap;
 
 /**
- * @extends StringMap<SchemaName|SchemaURL>
+ * @extends StringMap<SchemaName>
+ * @extends StringMap<SchemaURL>
  */
 final readonly class Mapping extends StringMap
 {

@@ -307,11 +307,6 @@ describe('PetStore', function (): void {
                 'summary' => 'List all pets.',
                 'description' => 'List all pets from the database.',
                 'operationId' => 'nestedSecuritySecondTest',
-                'responses' => [
-                    'default' => [
-                        'description' => 'Default Response',
-                    ],
-                ],
                 'security' => [
                     [
                         'ExampleHTTPBearerSecurityScheme' => [],

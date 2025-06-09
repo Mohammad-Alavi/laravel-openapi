@@ -2,55 +2,31 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableResponseFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseCollection;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
+// TODO: allow providing default response.
 final class Responses extends ExtensibleObject
 {
-    /** @var Response[]|ReusableResponseFactory[] */
-    private array $responses = [];
-
-    public static function create(Response|ReusableResponseFactory|self ...$response): self
-    {
-        $selfResponses = collect($response)
-            ->filter(static fn ($param): bool => $param instanceof self)
-            ->map(static fn ($param): array => $param->all())
-            ->flatten();
-
-        $responses = collect($response)
-            ->reject(static fn ($param): bool => $param instanceof self)
-            ->merge($selfResponses)
-            ->toArray();
-
-        $instance = new self();
-        $instance->responses = $responses;
-
-        return $instance;
+    private function __construct(
+        private readonly ResponseCollection $responseCollection,
+    ) {
     }
 
-    public function all(): array
+    public static function create(ResponseEntry ...$entry): self
     {
-        return $this->responses;
+        return new self(
+            ResponseCollection::create(...$entry),
+        );
     }
 
     protected function toArray(): array
     {
-        if ([] === $this->responses) {
-            // TODO: allow providing default response. maybe somehow via service container?
-            $this->responses = [Response::default()];
-        }
-
         $responses = [];
-        foreach ($this->responses as $response) {
-            if ($response instanceof ReusableResponseFactory) {
-                $responseInstance = $response->build();
-                $responses[$responseInstance->key()] = $response::ref();
-
-                continue;
-            }
-            $responses[$response->key()] = $response;
+        foreach ($this->responseCollection->entries() as $response) {
+            $responses[$response->key()] = $response->value();
         }
 
         return Arr::filter($responses);

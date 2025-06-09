@@ -16,8 +16,11 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleSingleSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleApiKeySecurityScheme;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleHTTPBearerSecurityScheme;
@@ -783,7 +786,10 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         $operation = Operation::get()
             ->responses(
                 Responses::create(
-                    Response::ok(),
+                    ResponseEntry::create(
+                        HTTPStatusCode::ok(),
+                        Response::create(Description::create('OK')),
+                    ),
                 ),
             );
 
@@ -847,10 +853,12 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         $operation = Operation::get()
             ->responses(
                 Responses::create(
-                    Response::ok(),
+                    ResponseEntry::create(
+                        HTTPStatusCode::ok(),
+                        Response::create(Description::create('OK')),
+                    ),
                 ),
-            )
-            ->security($securityBuilder->build($routeInformation->operationAttribute()->security));
+            )->security($securityBuilder->build($routeInformation->operationAttribute()->security));
 
         $openApi = OpenAPI::v311(
             Info::create(

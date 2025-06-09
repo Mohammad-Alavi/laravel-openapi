@@ -21,8 +21,11 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Schemes\Http;
 
@@ -38,7 +41,7 @@ describe(class_basename(Components::class), function (): void {
         $response->allows('key')
             ->andReturn('ReusableResponse');
         $response->expects('build')
-            ->andReturn(Response::deleted());
+            ->andReturn(Response::create(Description::create('Deleted')));
 
         $parameter = \Mockery::mock(ReusableParameterFactory::class);
         $parameter->allows('key')
@@ -87,7 +90,14 @@ describe(class_basename(Components::class), function (): void {
                                     RequestBody::create()
                                         ->description('something happened'),
                                 )->responses(
-                                    Responses::create(Response::ok()),
+                                    Responses::create(
+                                        ResponseEntry::create(
+                                            HTTPStatusCode::ok(),
+                                            Response::create(
+                                                Description::create('OK'),
+                                            ),
+                                        ),
+                                    ),
                                 ),
                         ),
                 ),

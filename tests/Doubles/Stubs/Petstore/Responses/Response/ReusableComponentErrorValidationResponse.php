@@ -5,6 +5,8 @@ namespace Tests\Doubles\Stubs\Petstore\Responses\Response;
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableResponseFactory;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
@@ -25,9 +27,13 @@ class ReusableComponentErrorValidationResponse extends ReusableResponseFactory
             ),
         );
 
-        return Response::unprocessableEntity()
-            ->content(
+        return Response::create(
+            Description::create('Unprocessable Entity'),
+        )->content(
+            ContentEntry::create(
+                'application/json',
                 MediaType::json()->schema($objectDescriptor),
-            );
+            ),
+        );
     }
 }

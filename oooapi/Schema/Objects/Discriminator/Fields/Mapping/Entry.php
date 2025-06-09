@@ -5,7 +5,8 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Field
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMapEntry;
 
 /**
- * @extends StringMapEntry<SchemaName|SchemaURL>
+ * @extends StringMapEntry<SchemaName>
+ * @extends StringMapEntry<SchemaURL>
  */
 final readonly class Entry extends StringMapEntry
 {

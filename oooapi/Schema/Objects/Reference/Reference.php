@@ -25,6 +25,11 @@ final class Reference extends NonExtensibleObject
         return new self($ref, $summary, $description);
     }
 
+    public function ref(): string
+    {
+        return $this->ref->value();
+    }
+
     protected function toArray(): array
     {
         return Arr::filter([

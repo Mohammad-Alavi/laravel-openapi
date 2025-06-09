@@ -52,11 +52,6 @@ describe('OperationBuilder', function (): void {
                         'summary' => '',
                         'description' => '',
                         'operationId' => 'test',
-                        'responses' => [
-                            'default' => [
-                                'description' => 'Default Response',
-                            ],
-                        ],
                         'deprecated' => false,
                     ],
                 ];
@@ -85,11 +80,6 @@ describe('OperationBuilder', function (): void {
                         'summary' => 'summary',
                         'description' => 'description',
                         'operationId' => 'test',
-                        'responses' => [
-                            'default' => [
-                                'description' => 'Default Response',
-                            ],
-                        ],
                         'deprecated' => true,
                     ],
                 ];

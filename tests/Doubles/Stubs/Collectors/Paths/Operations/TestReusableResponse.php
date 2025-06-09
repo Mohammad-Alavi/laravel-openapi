@@ -9,6 +9,6 @@ class TestReusableResponse extends ReusableResponseFactory
 {
     public function build(): Response
     {
-        return Response::create(200, 'Reusable Response');
+        return Response::create('Reusable Response', 200);
     }
 }

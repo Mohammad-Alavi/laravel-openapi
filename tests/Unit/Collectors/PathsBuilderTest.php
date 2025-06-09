@@ -17,13 +17,7 @@ describe(class_basename(PathsBuilder::class), function (): void {
         expect($paths->asArray())->toHaveCount(1)
             ->and($paths->asArray())->toBe([
                 '/has-both-pathItem-and-operation' => [
-                    'get' => [
-                        'responses' => [
-                            'default' => [
-                                'description' => 'Default Response',
-                            ],
-                        ],
-                    ],
+                    'get' => [],
                 ],
             ]);
     });
