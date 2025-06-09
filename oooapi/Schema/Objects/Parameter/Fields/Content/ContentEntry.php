@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMapEntry;
 /**
  * @extends StringMapEntry<MediaType>
  */
-final readonly class Entry extends StringMapEntry
+final readonly class ContentEntry extends StringMapEntry
 {
     public static function create(string $name, MediaType $mediaType): self
     {
