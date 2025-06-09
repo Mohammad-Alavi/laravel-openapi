@@ -118,11 +118,11 @@ final class OpenAPI extends ExtensibleObject
         return $clone;
     }
 
-    public function externalDocs(ExternalDocumentation $externalDocs): self
+    public function externalDocs(ExternalDocumentation $externalDocumentation): self
     {
         $clone = clone $this;
 
-        $clone->externalDocs = $externalDocs;
+        $clone->externalDocs = $externalDocumentation;
 
         return $clone;
     }

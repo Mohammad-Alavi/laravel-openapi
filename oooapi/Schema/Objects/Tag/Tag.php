@@ -13,7 +13,7 @@ final class Tag extends ExtensibleObject implements \Stringable
     private function __construct(
         private readonly Name $name,
         private readonly Description|null $description = null,
-        private readonly ExternalDocumentation|null $externalDocs = null,
+        private readonly ExternalDocumentation|null $externalDocumentation = null,
     ) {
     }
 
@@ -35,7 +35,7 @@ final class Tag extends ExtensibleObject implements \Stringable
         return Arr::filter([
             'name' => $this->name,
             'description' => $this->description,
-            'externalDocs' => $this->externalDocs,
+            'externalDocs' => $this->externalDocumentation,
         ]);
     }
 }

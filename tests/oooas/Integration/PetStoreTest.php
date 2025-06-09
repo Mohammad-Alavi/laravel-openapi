@@ -147,7 +147,7 @@ describe('PetStoreTest', function (): void {
         $components = Components::create()
             ->schemas($allOf, $newPetSchema, $errorSchema);
 
-        $petResponse = ResponseEntry::create(
+        $responseEntry = ResponseEntry::create(
             HTTPStatusCode::ok(),
             Response::create(
                 ResponseDescription::create('pet response'),
@@ -206,7 +206,7 @@ describe('PetStoreTest', function (): void {
                         ),
                     ),
             )
-            ->responses(Responses::create($petResponse, $defaultErrorResponse));
+            ->responses(Responses::create($responseEntry, $defaultErrorResponse));
 
         $path = Path::create(
             '/pets',
@@ -226,7 +226,7 @@ describe('PetStoreTest', function (): void {
             ->description('Returns a user based on a single ID, if the user does not have access to the pet')
             ->operationId('find pet by id')
             ->parameters(ParameterCollection::create($petIdParameter))
-            ->responses(Responses::create($petResponse, $defaultErrorResponse));
+            ->responses(Responses::create($responseEntry, $defaultErrorResponse));
 
         $petDeletedResponse = Response::create(ResponseDescription::create('pet deleted'));
 

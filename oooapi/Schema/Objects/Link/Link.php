@@ -20,10 +20,10 @@ final class Link extends ExtensibleObject
         return new self();
     }
 
-    protected OperationRef|null $operationRef = null;
-    protected OperationId|null $operationId = null;
-    protected Description|null $description = null;
-    protected Server|null $server = null;
+    private OperationRef|null $operationRef = null;
+    private OperationId|null $operationId = null;
+    private Description|null $description = null;
+    private Server|null $server = null;
 
     public function operationRef(OperationRef|null $operationRef): self
     {

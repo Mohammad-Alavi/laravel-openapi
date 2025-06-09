@@ -7,19 +7,19 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Content\
 final readonly class ContentSerialized implements SerializationRule
 {
     private function __construct(
-        private ContentEntry $entry,
+        private ContentEntry $contentEntry,
     ) {
     }
 
-    public static function create(ContentEntry $entry): self
+    public static function create(ContentEntry $contentEntry): self
     {
-        return new self($entry);
+        return new self($contentEntry);
     }
 
     public function toArray(): array
     {
         return [
-            'content' => $this->entry,
+            'content' => $this->contentEntry,
         ];
     }
 }

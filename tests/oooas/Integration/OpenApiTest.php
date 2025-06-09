@@ -72,7 +72,7 @@ describe('OpenApi', function (): void {
                     ),
                 ),
             )->required('id', 'created_at');
-        $expectedResponse = Responses::create(
+        $responses = Responses::create(
             ResponseEntry::create(
                 HTTPStatusCode::ok(),
                 Response::create(
@@ -86,12 +86,12 @@ describe('OpenApi', function (): void {
             ),
         );
         $operationIndex = Operation::get()
-            ->responses($expectedResponse)
+            ->responses($responses)
             ->tags($tag)
             ->summary('List all audits')
             ->operationId('audits.index');
         $operationCreate = Operation::post()
-            ->responses($expectedResponse)
+            ->responses($responses)
             ->tags($tag)
             ->summary('Create an audit')
             ->operationId('audits.store')
@@ -100,7 +100,7 @@ describe('OpenApi', function (): void {
         $enumDescriptor = Schema::enum('json', 'ics')
             ->default('json');
         $operationGet = Operation::get()
-            ->responses($expectedResponse)
+            ->responses($responses)
             ->tags($tag)
             ->summary('View an audit')
             ->operationId('audits.show')
@@ -134,7 +134,7 @@ describe('OpenApi', function (): void {
         ];
         $components = Components::create()->securitySchemes(ExampleHTTPBearerSecurityScheme::create());
         $security = Security::create(ExampleSingleBearerSecurityRequirement::create());
-        $externalDocs = ExternalDocumentation::create(
+        $externalDocumentation = ExternalDocumentation::create(
             ExtURL::create('https://example.com/docs'),
             ExtDescription::create('Example'),
         );
@@ -144,7 +144,7 @@ describe('OpenApi', function (): void {
             ->components($components)
             ->security($security)
             ->tags($tag)
-            ->externalDocs($externalDocs);
+            ->externalDocs($externalDocumentation);
 
         // $result = file_put_contents('openapi.json', $openApi->toJson());
         // docker run --rm -v $PWD:/spec redocly/cli lint --extends recommend openapi.json

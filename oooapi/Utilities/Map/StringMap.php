@@ -29,7 +29,7 @@ abstract readonly class StringMap implements \JsonSerializable
     final public function keys(): array
     {
         return array_map(
-            static fn (StringMapEntry $entry): string => $entry->key(),
+            static fn (StringMapEntry $stringMapEntry): string => $stringMapEntry->key(),
             $this->entries,
         );
     }
@@ -51,7 +51,7 @@ abstract readonly class StringMap implements \JsonSerializable
 
         return array_reduce(
             $this->entries,
-            static fn (array $carry, StringMapEntry $entry): array => array_merge($carry, $entry->getSet()),
+            static fn (array $carry, StringMapEntry $stringMapEntry): array => array_merge($carry, $stringMapEntry->getSet()),
             [],
         );
     }

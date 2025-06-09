@@ -91,7 +91,7 @@ describe(class_basename(OpenAPI::class), function (): void {
                 ),
             )->required('id', 'created_at');
 
-        $expectedResponse = Responses::create(
+        $responses = Responses::create(
             ResponseEntry::create(
                 HTTPStatusCode::ok(),
                 Response::create(
@@ -106,13 +106,13 @@ describe(class_basename(OpenAPI::class), function (): void {
         );
 
         $operation = Operation::get()
-            ->responses($expectedResponse)
+            ->responses($responses)
             ->tags($tag)
             ->summary('List all audits')
             ->operationId('audits.index');
 
         $createAudit = Operation::post()
-            ->responses($expectedResponse)
+            ->responses($responses)
             ->tags($tag)
             ->summary('Create an audit')
             ->operationId('audits.store')
@@ -124,7 +124,7 @@ describe(class_basename(OpenAPI::class), function (): void {
         $enumDescriptor = Schema::enum('json', 'ics');
 
         $readAudit = Operation::get()
-            ->responses($expectedResponse)
+            ->responses($responses)
             ->tags($tag)
             ->summary('View an audit')
             ->operationId('audits.show')
@@ -166,7 +166,7 @@ describe(class_basename(OpenAPI::class), function (): void {
             ExampleOAuth2PasswordSecurityScheme::create(),
         );
 
-        $externalDocs = ExternalDocumentation::create(
+        $externalDocumentation = ExternalDocumentation::create(
             ExtURL::create('https://example.com'),
             ExtDescription::create('Example'),
         );
@@ -177,7 +177,7 @@ describe(class_basename(OpenAPI::class), function (): void {
             ->components($components)
             ->security($security)
             ->tags($tag)
-            ->externalDocs($externalDocs);
+            ->externalDocs($externalDocumentation);
 
         $result = $openApi->asArray();
 
