@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMap;
  * @extends StringMap<Response>
  * @extends StringMap<Reference>
  */
-final readonly class ResponseCollection extends StringMap
+final readonly class ResponseMap extends StringMap
 {
     public static function create(ResponseEntry ...$entry): self
     {

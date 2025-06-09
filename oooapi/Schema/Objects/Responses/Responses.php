@@ -3,7 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseCollection;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseMap;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
@@ -11,14 +11,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 final class Responses extends ExtensibleObject
 {
     private function __construct(
-        private readonly ResponseCollection $responseCollection,
+        private readonly ResponseMap $responseCollection,
     ) {
     }
 
     public static function create(ResponseEntry ...$entry): self
     {
         return new self(
-            ResponseCollection::create(...$entry),
+            ResponseMap::create(...$entry),
         );
     }
 
