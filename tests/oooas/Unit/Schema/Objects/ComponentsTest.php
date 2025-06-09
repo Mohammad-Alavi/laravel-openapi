@@ -10,7 +10,7 @@ use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\Reusabl
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\Entry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\LinkEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\Links;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
@@ -111,7 +111,7 @@ describe(class_basename(Components::class), function (): void {
             ->requestBodies($requestBody)
             ->headers($header)
             ->securitySchemes($securityScheme)
-            ->links(Links::create(Entry::create('LinkExample', $link)))
+            ->links(LinkEntry::create('LinkExample', $link))
             ->callbacks($callback);
 
         expect($components->asArray())->toBe([

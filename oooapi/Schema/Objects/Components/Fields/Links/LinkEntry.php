@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMapEntry;
 /**
  * @extends StringMapEntry<Link>
  */
-final readonly class Entry extends StringMapEntry
+final readonly class LinkEntry extends StringMapEntry
 {
     public static function create(string $name, Link $link): self
     {
