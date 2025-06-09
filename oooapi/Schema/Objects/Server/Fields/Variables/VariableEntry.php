@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMapEntry;
 /**
  * @extends StringMapEntry<ServerVariable>
  */
-final readonly class Entry extends StringMapEntry
+final readonly class VariableEntry extends StringMapEntry
 {
     public static function create(string $name, ServerVariable $serverVariable): self
     {

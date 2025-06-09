@@ -5,6 +5,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\VariableEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Variables;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
@@ -46,11 +47,11 @@ final class Server extends ExtensibleObject
         return $clone;
     }
 
-    public function variables(Variables|null $variables): self
+    public function variables(VariableEntry ...$variableEntry): self
     {
         $clone = clone $this;
 
-        $clone->variables = $variables;
+        $clone->variables = Variables::create(...$variableEntry);
 
         return $clone;
     }

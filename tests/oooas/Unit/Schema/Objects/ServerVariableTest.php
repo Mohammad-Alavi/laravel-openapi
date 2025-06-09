@@ -2,8 +2,7 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Entry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Variables;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\VariableEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\DefaultValue;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\Description;
@@ -23,11 +22,9 @@ class ServerVariableTest extends UnitTestCase
 
         $server = Server::default()
             ->variables(
-                Variables::create(
-                    Entry::create(
-                        'ServerVariableName',
-                        $serverVariable,
-                    ),
+                VariableEntry::create(
+                    'ServerVariableName',
+                    $serverVariable,
                 ),
             );
 

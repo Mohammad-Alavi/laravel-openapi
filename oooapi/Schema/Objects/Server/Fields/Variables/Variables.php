@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMap;
  */
 final readonly class Variables extends StringMap
 {
-    public static function create(Entry ...$entry): self
+    public static function create(VariableEntry ...$entry): self
     {
         return parent::put(...$entry);
     }

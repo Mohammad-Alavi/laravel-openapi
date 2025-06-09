@@ -4,8 +4,7 @@ namespace Tests\oooas\Unit\Schema\Objects\Server;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Entry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Variables;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\VariableEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\DefaultValue;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\ServerVariable;
@@ -22,9 +21,7 @@ class ServerTestTest extends UnitTestCase
         $server = Server::create(URL::create('https://api.example.con/v1'))
             ->description(Description::create('Core API'))
             ->variables(
-                Variables::create(
-                    Entry::create('ServerVariableName', $serverVariable),
-                ),
+                VariableEntry::create('ServerVariableName', $serverVariable),
             );
 
         $this->assertSame([
@@ -44,9 +41,7 @@ class ServerTestTest extends UnitTestCase
 
         $server = Server::create(URL::create('https://api.example.con/v1'))
             ->variables(
-                Variables::create(
-                    Entry::create('username', $serverVariable),
-                ),
+                VariableEntry::create('username', $serverVariable),
             );
 
         $this->assertSame(
