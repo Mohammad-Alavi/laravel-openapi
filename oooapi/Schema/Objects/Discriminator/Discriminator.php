@@ -15,7 +15,7 @@ final class Discriminator extends ExtensibleObject
     ) {
     }
 
-    final public static function create(
+    public static function create(
         PropertyName $propertyName,
         Mapping|null $mapping = null,
     ): self {
