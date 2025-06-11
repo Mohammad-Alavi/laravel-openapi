@@ -9,8 +9,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Examples;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IsReadOnly;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IsWriteOnly;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Title;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
 
 final class MetaData extends Generatable
 {

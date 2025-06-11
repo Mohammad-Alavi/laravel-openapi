@@ -3,9 +3,9 @@
 namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation;
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Callback as CallbackAttribute;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\Components\CallbackFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\ReusableRefObj;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Components\CallbackFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ReusableRefObj;
 
 class CallbackBuilder
 {

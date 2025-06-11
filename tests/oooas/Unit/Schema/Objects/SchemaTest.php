@@ -1,6 +1,6 @@
 <?php
 
-// use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
+// use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
 // use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
 // use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Discriminator;
 // use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocs\ExternalDocs;

@@ -3,8 +3,8 @@
 namespace MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies;
 
 use Illuminate\Support\Collection;
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableRequestBodyFactory;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\FilterStrategy;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableRequestBodyFactory;
 
 final readonly class ReusableRequestBodyFilter implements FilterStrategy
 {

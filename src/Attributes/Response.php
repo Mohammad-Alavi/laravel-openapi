@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Attributes;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableResponseFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\Components\ResponseFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableResponseFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Components\ResponseFactory;
 use Webmozart\Assert\Assert;
 
 // TODO: remove after replacing all usages with Responses attribute

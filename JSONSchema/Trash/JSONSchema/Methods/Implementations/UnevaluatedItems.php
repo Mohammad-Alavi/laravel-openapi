@@ -5,7 +5,6 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Methods\Implem
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Dialect\Draft202012;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\UnevaluatedItems as UnevaluatedItemsKeyword;
-use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
 
 trait UnevaluatedItems
 {

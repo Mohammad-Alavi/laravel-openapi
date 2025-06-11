@@ -3,7 +3,6 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Utilities;
 
 use Illuminate\Support\Facades\File;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\SchemaComposition;
 
 trait Generator
 {
@@ -60,8 +59,12 @@ trait Generator
         return empty($this->toArray());
     }
 
-    public function toNullIfEmpty(): Generatable|SchemaComposition|ReadonlyGenerator|null
+    public function toNullIfEmpty(): Generatable|ReadonlyGenerator|null
     {
-        return $this->isEmpty() ? null : $this;
+        if ($this->isEmpty()) {
+            return null;
+        }
+
+        return $this;
     }
 }

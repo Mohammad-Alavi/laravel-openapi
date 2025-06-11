@@ -4,8 +4,6 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Trash\Vocabularies;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\DefinedFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Format;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
 
 final class FormatAnnotation extends Generatable
 {

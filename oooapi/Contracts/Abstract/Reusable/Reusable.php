@@ -2,14 +2,23 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Reusable;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Reusable as ReusableContract;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Reusable as ReusableContract;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\OpenAPISchema;
 use Webmozart\Assert\Assert;
 
 abstract class Reusable implements ReusableContract
 {
-    use SimpleCreatorTrait;
+    final public static function new(): Descriptor
+    {
+        return OpenAPISchema::withoutSchema()->ref(static::ref());
+    }
+
+    final public static function create(): static
+    {
+        return new static();
+    }
 
     /**
      * The reference to the reusable component.

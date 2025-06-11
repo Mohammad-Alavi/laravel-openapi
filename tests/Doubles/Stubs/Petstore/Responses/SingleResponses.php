@@ -2,8 +2,8 @@
 
 namespace Tests\Doubles\Stubs\Petstore\Responses;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ResponsesFactory;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ResponsesFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description;

@@ -6,8 +6,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AllOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AnyOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\OneOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Descriptor;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
 
 final class Applicator extends Generatable
 {

@@ -11,6 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descript
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\NullDescriptor;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\NumberDescriptor;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\ObjectDescriptor;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\SharedDescriptor;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\StringDescriptor;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\OpenAPISchema;
 
@@ -59,5 +60,20 @@ final class Schema
     public static function enum(mixed ...$value): EnumDescriptor
     {
         return OpenAPISchema::enumerator(...$value);
+    }
+
+    public static function oneOf(OpenAPISchema ...$schemas): SharedDescriptor
+    {
+        return OpenAPISchema::withoutSchema()->oneOf(...$schemas);
+    }
+
+    public static function anyOf(OpenAPISchema ...$schemas): SharedDescriptor
+    {
+        return OpenAPISchema::withoutSchema()->anyOf(...$schemas);
+    }
+
+    public static function allOf(OpenAPISchema ...$schemas): SharedDescriptor
+    {
+        return OpenAPISchema::withoutSchema()->allOf(...$schemas);
     }
 }

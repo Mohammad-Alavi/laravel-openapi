@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Config;
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ServerFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\TagFactory;
 use MohammadAlavi\LaravelOpenApi\Generator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ServerFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\TagFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;

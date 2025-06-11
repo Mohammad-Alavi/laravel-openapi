@@ -2,23 +2,22 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableCallbackFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableParameterFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableRequestBodyFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableResponseFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableCallbackFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableParameterFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableRequestBodyFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableResponseFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\LinkEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\Links;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\SchemaComposition;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
 final class Components extends ExtensibleObject
 {
-    /** @var ReusableSchemaFactory[]|SchemaComposition[]|null */
+    /** @var ReusableSchemaFactory[]|null */
     private array|null $schemas = null;
 
     /** @var ReusableResponseFactory[]|null */
@@ -53,7 +52,7 @@ final class Components extends ExtensibleObject
         return new self();
     }
 
-    public function schemas(ReusableSchemaFactory|SchemaComposition ...$schema): self
+    public function schemas(ReusableSchemaFactory ...$schema): self
     {
         $clone = clone $this;
 
@@ -138,11 +137,6 @@ final class Components extends ExtensibleObject
     {
         $schemas = [];
         foreach ($this->schemas ?? [] as $schema) {
-            if ($schema instanceof SchemaComposition) {
-                $schemas[$schema->key()] = $schema;
-                continue;
-            }
-
             $schemas[$schema::key()] = $schema->build();
         }
 

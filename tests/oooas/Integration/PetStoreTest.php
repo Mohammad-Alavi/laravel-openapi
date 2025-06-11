@@ -3,10 +3,8 @@
 namespace Tests\oooas\Integration;
 
 use Illuminate\Support\Facades\File;
-use MohammadAlavi\LaravelOpenApi\Collections\ParameterCollection;
-use MohammadAlavi\LaravelOpenApi\Collections\Path;
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
@@ -29,6 +27,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\S
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ParameterCollection;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
@@ -43,7 +43,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Formats\IntegerFor
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL as ServerURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use Tests\oooas\Doubles\Stubs\ReusableSchemaStub;
 
 describe('PetStoreTest', function (): void {
     test('PetStore Example', function (): void {
@@ -85,20 +84,7 @@ describe('PetStoreTest', function (): void {
             ),
         )->description(Description::create('maximum number of results to return'));
 
-        $allOf = Schema::object()
-            ->allOf(
-                ReusableSchemaStub::create()->build(),
-                Schema::object()
-                    ->required('id')
-                    ->properties(
-                        Property::create(
-                            'id',
-                            Schema::integer()->format(IntegerFormat::INT64),
-                        ),
-                    ),
-            );
-
-        $newPetSchema = new class extends ReusableSchemaFactory {
+        $animalReusable = new class extends ReusableSchemaFactory {
             public function build(): JSONSchema
             {
                 return Schema::object()
@@ -117,11 +103,39 @@ describe('PetStoreTest', function (): void {
 
             public static function key(): string
             {
-                return 'NewPet';
+                return 'Animal';
             }
         };
 
-        $errorSchema = new class extends ReusableSchemaFactory {
+        $petReusable = new class($animalReusable) extends ReusableSchemaFactory {
+            public function __construct(
+                private readonly ReusableSchemaFactory $animalReusable,
+            ) {
+            }
+
+            public function build(): JSONSchema
+            {
+                return Schema::object()
+                    ->allOf(
+                        $this->animalReusable::new(),
+                        Schema::object()
+                            ->required('id')
+                            ->properties(
+                                Property::create(
+                                    'id',
+                                    Schema::integer()->format(IntegerFormat::INT64),
+                                ),
+                            ),
+                    );
+            }
+
+            public static function key(): string
+            {
+                return 'Pet';
+            }
+        };
+
+        $errorReusable = new class extends ReusableSchemaFactory {
             public function build(): JSONSchema
             {
                 return Schema::object()
@@ -145,7 +159,7 @@ describe('PetStoreTest', function (): void {
         };
 
         $components = Components::create()
-            ->schemas($allOf, $newPetSchema, $errorSchema);
+            ->schemas($petReusable, $animalReusable, $errorReusable);
 
         $responseEntry = ResponseEntry::create(
             HTTPStatusCode::ok(),
@@ -154,7 +168,7 @@ describe('PetStoreTest', function (): void {
             )->content(
                 ContentEntry::create(
                     'application/json',
-                    MediaType::json()->schema($allOf),
+                    MediaType::json()->schema($petReusable::new()),
                 ),
             ),
         );
@@ -168,7 +182,7 @@ describe('PetStoreTest', function (): void {
                     'application/json',
                     MediaType::json()->schema(
                         Schema::array()->items(
-                            $allOf,
+                            $petReusable::new(),
                         ),
                     ),
                 ),
@@ -182,7 +196,7 @@ describe('PetStoreTest', function (): void {
             )->content(
                 ContentEntry::create(
                     'application/json',
-                    MediaType::json()->schema($errorSchema::create()->build()),
+                    MediaType::json()->schema($errorReusable::new()),
                 ),
             ),
         );
@@ -202,7 +216,7 @@ describe('PetStoreTest', function (): void {
                     ->required()
                     ->content(
                         MediaType::json()->schema(
-                            $newPetSchema::create()->build(),
+                            $animalReusable::new(),
                         ),
                     ),
             )
@@ -228,13 +242,19 @@ describe('PetStoreTest', function (): void {
             ->parameters(ParameterCollection::create($petIdParameter))
             ->responses(Responses::create($responseEntry, $defaultErrorResponse));
 
-        $petDeletedResponse = Response::create(ResponseDescription::create('pet deleted'));
+        $petDeletedResponse = ResponseEntry::create(
+            HTTPStatusCode::noContent(),
+            Response::create(ResponseDescription::create('pet deleted')),
+        );
 
         $deletePetById = Operation::delete()
             ->description('deletes a single pet based on the ID supplied')
             ->operationId('deletePet')
-            ->parameters(ParameterCollection::create($petIdParameter->description(Description::create('ID of pet to delete'))))
-            ->responses(Responses::create($petDeletedResponse, $defaultErrorResponse));
+            ->parameters(
+                ParameterCollection::create(
+                    $petIdParameter->description(Description::create('ID of pet to delete')),
+                ),
+            )->responses(Responses::create($petDeletedResponse, $defaultErrorResponse));
 
         $petNested = Path::create(
             '/pets/{id}',

@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Builders;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\TagFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\TagFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 
 class TagBuilder

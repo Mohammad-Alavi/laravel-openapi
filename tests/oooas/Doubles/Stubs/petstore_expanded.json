@@ -1,5 +1,5 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.1.1",
   "info": {
     "version": "1.0.0",
     "title": "Swagger Petstore",
@@ -83,7 +83,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPet"
+                "$ref": "#/components/schemas/Animal"
               }
             }
           }
@@ -189,7 +189,7 @@
       "Pet": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/NewPet"
+            "$ref": "#/components/schemas/Animal"
           },
           {
             "required": [
@@ -200,11 +200,13 @@
                 "type": "integer",
                 "format": "int64"
               }
-            }
+            },
+            "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
-      "NewPet": {
+      "Animal": {
         "required": [
           "name"
         ],
@@ -215,7 +217,8 @@
           "tag": {
             "type": "string"
           }
-        }
+        },
+        "type": "object"
       },
       "Error": {
         "required": [
@@ -230,8 +233,10 @@
           "message": {
             "type": "string"
           }
-        }
+        },
+        "type": "object"
       }
     }
-  }
+  },
+  "jsonSchemaDialect": "https://spec.openapis.org/oas/3.1/dialect/base"
 }
