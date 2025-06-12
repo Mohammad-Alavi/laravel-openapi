@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation;
+namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders;
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses as ResponsesAttribute;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ResponsesFactory;

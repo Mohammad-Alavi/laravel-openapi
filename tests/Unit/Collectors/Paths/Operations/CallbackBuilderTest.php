@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Attributes\Callback as CallbackAttribute;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\CallbackBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\CallbackBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;

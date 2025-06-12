@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation;
+namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 

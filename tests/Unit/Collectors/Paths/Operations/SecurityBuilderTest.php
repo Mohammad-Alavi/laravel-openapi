@@ -4,8 +4,8 @@ namespace Tests\Unit\Collectors\Paths\Operations;
 
 use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation as AttributesOperation;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\SecurityBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\SecurityBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\OperationBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 use MohammadAlavi\ObjectOrientedOpenAPI\Enums\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;

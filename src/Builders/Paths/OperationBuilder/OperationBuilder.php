@@ -1,19 +1,19 @@
 <?php
 
-namespace MohammadAlavi\LaravelOpenApi\Builders\Paths;
+namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
 use MohammadAlavi\LaravelOpenApi\Builders\ExtensionBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\CallbackBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\ParametersBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\RequestBodyBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\ResponsesBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\SecurityBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\ServerBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\TagBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\CallbackBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\ParametersBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\RequestBodyBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\ResponsesBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\SecurityBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\ServerBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\TagBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
@@ -21,13 +21,13 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 final readonly class OperationBuilder
 {
     public function __construct(
-        private TagBuilder $tagBuilder,
-        private ServerBuilder $serverBuilder,
+        private CallbackBuilder $callbackBuilder,
         private ParametersBuilder $parametersBuilder,
         private RequestBodyBuilder $requestBodyBuilder,
         private ResponsesBuilder $responsesBuilder,
         private SecurityBuilder $securityBuilder,
-        private CallbackBuilder $callbackBuilder,
+        private ServerBuilder $serverBuilder,
+        private TagBuilder $tagBuilder,
         private ExtensionBuilder $extensionBuilder,
     ) {
     }

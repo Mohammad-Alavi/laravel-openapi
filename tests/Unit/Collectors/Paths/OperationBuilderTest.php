@@ -8,7 +8,7 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Operation as OperationAttribute;
 use MohammadAlavi\LaravelOpenApi\Attributes\Parameters;
 use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\OperationBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 use Tests\Doubles\Stubs\Attributes\CallbackFactory;
 use Tests\Doubles\Stubs\Attributes\ExtensionFactory;

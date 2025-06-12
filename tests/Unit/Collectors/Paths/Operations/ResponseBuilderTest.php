@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses as ResponsesAttribute;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\ResponsesBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\ResponsesBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 use Tests\Doubles\Stubs\Attributes\ResponsesFactory;
 

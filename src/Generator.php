@@ -5,7 +5,7 @@ namespace MohammadAlavi\LaravelOpenApi;
 use Illuminate\Support\Arr;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\ComponentsBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\InfoBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\Operation\SecurityBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\SecurityBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\PathsBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\ServerBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\TagBuilder;
