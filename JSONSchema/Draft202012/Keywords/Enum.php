@@ -12,7 +12,7 @@ final readonly class Enum implements Keyword
     }
 
     // TODO: It would be cool if enums could accept Constant or/and Schema types
-    public static function create(...$value): self
+    public static function create(mixed ...$value): self
     {
         return new self($value);
     }
@@ -20,6 +20,11 @@ final readonly class Enum implements Keyword
     public static function name(): string
     {
         return 'enum';
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->value();
     }
 
     public function value(): array

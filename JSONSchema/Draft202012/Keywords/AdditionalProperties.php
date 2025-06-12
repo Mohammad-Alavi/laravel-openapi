@@ -22,6 +22,11 @@ final readonly class AdditionalProperties implements Keyword
         return 'additionalProperties';
     }
 
+    public function jsonSerialize(): Descriptor|bool
+    {
+        return $this->value();
+    }
+
     public function value(): Descriptor|bool
     {
         return $this->schema;

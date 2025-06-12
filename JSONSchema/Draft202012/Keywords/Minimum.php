@@ -21,6 +21,11 @@ final readonly class Minimum implements Keyword
         return 'minimum';
     }
 
+    public function jsonSerialize(): float
+    {
+        return $this->value();
+    }
+
     public function value(): float
     {
         return $this->value;

@@ -24,6 +24,11 @@ final readonly class MinItems implements Keyword
         return 'minItems';
     }
 
+    public function jsonSerialize(): int
+    {
+        return $this->value();
+    }
+
     public function value(): int
     {
         return $this->value;

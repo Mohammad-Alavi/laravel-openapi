@@ -6,6 +6,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 
 final readonly class Vocabulary implements Keyword
 {
+    /** @param Vocab[] $vocabs */
     private function __construct(
         private array $vocabs,
     ) {
@@ -21,6 +22,19 @@ final readonly class Vocabulary implements Keyword
         return '$vocabulary';
     }
 
+    public function jsonSerialize(): array
+    {
+        $vocabulary = [];
+        foreach ($this->value() as $vocab) {
+            $vocabulary[$vocab->id()] = $vocab->required();
+        }
+
+        return $vocabulary;
+    }
+
+    /**
+     * @return Vocab[]
+     */
     public function value(): array
     {
         return $this->vocabs;

@@ -16,9 +16,11 @@ describe(class_basename(Properties::class), function (): void {
         $property = Property::create('name', $descriptor);
         $properties = Properties::create($property);
 
-        expect($properties->value())->toBe([
-            'name' => $descriptor,
-        ]);
+        expect(json_encode($properties))->toBe(
+            json_encode([
+                'name' => $descriptor,
+            ]),
+        );
     });
 
     it('can create properties with multiple properties', function (): void {
@@ -30,10 +32,12 @@ describe(class_basename(Properties::class), function (): void {
 
         $properties = Properties::create($nameProperty, $ageProperty);
 
-        expect($properties->value())->toBe([
-            'name' => $nameDescriptor,
-            'age' => $ageDescriptor,
-        ]);
+        expect(json_encode($properties))->toBe(
+            json_encode([
+                'name' => $nameDescriptor,
+                'age' => $ageDescriptor,
+            ]),
+        );
     });
 
     it('returns the correct name', function (): void {

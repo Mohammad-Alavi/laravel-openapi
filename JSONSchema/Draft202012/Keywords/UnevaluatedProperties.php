@@ -22,6 +22,11 @@ final readonly class UnevaluatedProperties implements Keyword
         return 'unevaluatedProperties';
     }
 
+    public function jsonSerialize(): Descriptor
+    {
+        return $this->value();
+    }
+
     public function value(): Descriptor
     {
         return $this->descriptor;

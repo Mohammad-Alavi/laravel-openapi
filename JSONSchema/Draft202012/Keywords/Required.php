@@ -21,6 +21,11 @@ final readonly class Required implements Keyword
         return 'required';
     }
 
+    public function jsonSerialize(): array
+    {
+        return $this->value();
+    }
+
     /** @return string[] */
     public function value(): array
     {

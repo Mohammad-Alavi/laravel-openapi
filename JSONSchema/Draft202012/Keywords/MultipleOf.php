@@ -21,6 +21,11 @@ final readonly class MultipleOf implements Keyword
         return 'multipleOf';
     }
 
+    public function jsonSerialize(): float
+    {
+        return $this->value();
+    }
+
     public function value(): float
     {
         return $this->value;

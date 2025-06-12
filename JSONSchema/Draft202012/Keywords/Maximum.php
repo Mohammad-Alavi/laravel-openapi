@@ -21,6 +21,11 @@ final readonly class Maximum implements Keyword
         return 'maximum';
     }
 
+    public function jsonSerialize(): float
+    {
+        return $this->value();
+    }
+
     public function value(): float
     {
         return $this->value;

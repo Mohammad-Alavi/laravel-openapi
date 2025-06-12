@@ -21,6 +21,11 @@ final readonly class DynamicRef implements Keyword
         return '$dynamicRef';
     }
 
+    public function jsonSerialize(): string
+    {
+        return $this->value();
+    }
+
     public function value(): string
     {
         return $this->value;

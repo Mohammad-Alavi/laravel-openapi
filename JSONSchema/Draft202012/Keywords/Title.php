@@ -21,6 +21,11 @@ final readonly class Title implements Keyword
         return 'title';
     }
 
+    public function jsonSerialize(): string
+    {
+        return $this->value();
+    }
+
     public function value(): string
     {
         return $this->value;

@@ -24,6 +24,11 @@ final readonly class MaxProperties implements Keyword
         return 'maxProperties';
     }
 
+    public function jsonSerialize(): int
+    {
+        return $this->value();
+    }
+
     public function value(): int
     {
         return $this->value;

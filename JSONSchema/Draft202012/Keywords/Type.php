@@ -16,7 +16,7 @@ final readonly class Type implements Keyword
     public static function create(self|string ...$type): self
     {
         $types = array_map(
-            static fn (self|string $type): string|array => is_string($type) ? $type : $type->value(),
+            static fn (self|string $type): string => is_string($type) ? $type : $type->value(),
             $type,
         );
         $validTypes = [
@@ -106,5 +106,13 @@ final readonly class Type implements Keyword
     public static function name(): string
     {
         return 'type';
+    }
+
+    /**
+     * @return string|array<array-key, string>
+     */
+    public function jsonSerialize(): string|array
+    {
+        return $this->value();
     }
 }

@@ -21,6 +21,11 @@ final readonly class Comment implements Keyword
         return '$comment';
     }
 
+    public function jsonSerialize(): string
+    {
+        return $this->value();
+    }
+
     public function value(): string
     {
         return $this->value;

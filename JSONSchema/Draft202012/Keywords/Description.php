@@ -21,6 +21,11 @@ final readonly class Description implements Keyword
         return 'description';
     }
 
+    public function jsonSerialize(): string
+    {
+        return $this->value();
+    }
+
     public function value(): string
     {
         return $this->value;

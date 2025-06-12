@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Descriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Dialect\Draft202012;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Format;
@@ -64,11 +64,11 @@ describe(class_basename(Draft202012::class), function (): void {
     });
 
     it('can create properties keyword', function (): void {
-        $mockDescriptor = Mockery::mock(Descriptor::class);
+        $mockDescriptor = Descriptor::withoutSchema();
         $property = Property::create('name', $mockDescriptor);
         $properties = Draft202012::properties($property);
 
         expect($properties)->toBeInstanceOf(Properties::class)
-            ->and($properties->value())->toBe(['name' => $mockDescriptor]);
+            ->and(json_encode($properties))->toBe(json_encode(['name' => $mockDescriptor]));
     });
 })->covers(Draft202012::class);

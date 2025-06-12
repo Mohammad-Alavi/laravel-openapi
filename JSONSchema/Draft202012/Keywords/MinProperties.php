@@ -24,6 +24,11 @@ final readonly class MinProperties implements Keyword
         return 'minProperties';
     }
 
+    public function jsonSerialize(): int
+    {
+        return $this->value();
+    }
+
     public function value(): int
     {
         return $this->value;

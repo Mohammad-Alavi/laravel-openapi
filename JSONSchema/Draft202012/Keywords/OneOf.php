@@ -22,6 +22,11 @@ final readonly class OneOf implements Keyword
         return 'oneOf';
     }
 
+    public function jsonSerialize(): array
+    {
+        return $this->value();
+    }
+
     /** @return Descriptor[] */
     public function value(): array
     {

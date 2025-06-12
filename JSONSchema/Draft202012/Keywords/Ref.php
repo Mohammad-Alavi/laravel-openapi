@@ -21,6 +21,11 @@ final readonly class Ref implements Keyword
         return '$ref';
     }
 
+    public function jsonSerialize(): string
+    {
+        return $this->value();
+    }
+
     public function value(): string
     {
         return $this->value;

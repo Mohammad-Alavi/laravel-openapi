@@ -22,6 +22,11 @@ final readonly class IfKeyword implements Keyword
         return 'if';
     }
 
+    public function jsonSerialize(): Descriptor
+    {
+        return $this->value();
+    }
+
     public function value(): Descriptor
     {
         return $this->descriptor;

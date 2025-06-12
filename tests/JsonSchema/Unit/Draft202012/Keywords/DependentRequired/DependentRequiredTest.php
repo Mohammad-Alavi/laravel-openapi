@@ -14,9 +14,11 @@ describe(class_basename(DependentRequired::class), function (): void {
         $dependency = Dependency::create('name', 'email', 'phone');
         $dependentRequired = DependentRequired::create($dependency);
 
-        expect($dependentRequired->value())->toBe([
-            'name' => ['email', 'phone'],
-        ]);
+        expect(json_encode($dependentRequired))->toBe(
+            json_encode([
+                'name' => ['email', 'phone'],
+            ]),
+        );
     });
 
     it('can create dependent required with multiple dependencies', function (): void {
@@ -25,10 +27,12 @@ describe(class_basename(DependentRequired::class), function (): void {
 
         $dependentRequired = DependentRequired::create($nameDependency, $addressDependency);
 
-        expect($dependentRequired->value())->toBe([
-            'name' => ['email', 'phone'],
-            'address' => ['city', 'country'],
-        ]);
+        expect(json_encode($dependentRequired))->toBe(
+            json_encode([
+                'name' => ['email', 'phone'],
+                'address' => ['city', 'country'],
+            ]),
+        );
     });
 
     it('returns the correct name', function (): void {

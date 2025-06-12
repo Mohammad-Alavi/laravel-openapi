@@ -21,6 +21,11 @@ final readonly class IsWriteOnly implements Keyword
         return 'writeOnly';
     }
 
+    public function jsonSerialize(): bool
+    {
+        return $this->value();
+    }
+
     public function value(): bool
     {
         return $this->value;

@@ -13,13 +13,15 @@ describe(class_basename(Schema::class), function (): void {
                 ->minLength(5)
                 ->pattern('^[a-zA-Z0-9]*$');
 
-            expect($stringDescriptor->jsonSerialize())->toBe([
-                'type' => 'string',
-                'format' => $stringFormat->value,
-                'maxLength' => 10,
-                'minLength' => 5,
-                'pattern' => '^[a-zA-Z0-9]*$',
-            ]);
+            expect(json_encode($stringDescriptor))->toBe(
+                json_encode([
+                    'type' => 'string',
+                    'format' => $stringFormat->value,
+                    'maxLength' => 10,
+                    'minLength' => 5,
+                    'pattern' => '^[a-zA-Z0-9]*$',
+                ]),
+            );
         },
     )->with(
         StringFormat::cases(),

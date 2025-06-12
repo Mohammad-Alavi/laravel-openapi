@@ -21,6 +21,11 @@ final readonly class Examples implements Keyword
         return 'examples';
     }
 
+    public function jsonSerialize(): array
+    {
+        return $this->value();
+    }
+
     public function value(): array
     {
         return $this->examples;

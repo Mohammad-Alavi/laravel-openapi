@@ -7,7 +7,7 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts;
  *
  * @see https://json-schema.org/learn/glossary#keyword
  */
-interface Keyword
+interface Keyword extends \JsonSerializable
 {
     public static function name(): string;
 

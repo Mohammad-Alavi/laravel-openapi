@@ -21,6 +21,11 @@ final readonly class Anchor implements Keyword
         return '$anchor';
     }
 
+    public function jsonSerialize(): string
+    {
+        return $this->value();
+    }
+
     public function value(): string
     {
         return $this->value;

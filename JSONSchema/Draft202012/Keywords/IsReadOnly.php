@@ -21,6 +21,11 @@ final readonly class IsReadOnly implements Keyword
         return 'readOnly';
     }
 
+    public function jsonSerialize(): bool
+    {
+        return $this->value();
+    }
+
     public function value(): bool
     {
         return $this->value;

@@ -22,11 +22,19 @@ final readonly class Defs implements Keyword
         return '$defs';
     }
 
+    /**
+     * @return Def[]
+     */
     public function value(): array
     {
+        return $this->defs;
+    }
+
+    public function jsonSerialize(): array
+    {
         $defs = [];
-        foreach ($this->defs as $def) {
-            $defs[$def->name()] = $def->value();
+        foreach ($this->value() as $def) {
+            $defs[$def->name()] = $def->value()->jsonSerialize();
         }
 
         return $defs;

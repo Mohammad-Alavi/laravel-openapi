@@ -24,6 +24,11 @@ final readonly class MinContains implements Keyword
         return 'minContains';
     }
 
+    public function jsonSerialize(): int
+    {
+        return $this->value();
+    }
+
     public function value(): int
     {
         return $this->value;

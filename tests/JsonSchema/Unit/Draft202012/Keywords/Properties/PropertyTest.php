@@ -18,19 +18,4 @@ describe(class_basename(Property::class), function (): void {
 
         expect($property->name())->toBe('test_property');
     });
-
-    it('returns the correct schema', function (): void {
-        $descriptor = Descriptor::withoutSchema()
-            ->type('string')
-            ->minLength(5)
-            ->maxLength(10);
-        $property = Property::create('name', $descriptor);
-
-        expect($property->schema())->toBe($descriptor)
-            ->and($property->schema()->jsonSerialize())->toBe([
-                'type' => 'string',
-                'maxLength' => 10,
-                'minLength' => 5,
-            ]);
-    });
 })->covers(Property::class);

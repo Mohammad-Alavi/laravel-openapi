@@ -22,6 +22,11 @@ final readonly class AllOf implements Keyword
         return 'allOf';
     }
 
+    public function jsonSerialize(): array
+    {
+        return $this->value();
+    }
+
     /** @return Descriptor[] */
     public function value(): array
     {

@@ -25,6 +25,11 @@ final readonly class Format implements Keyword
         return 'format';
     }
 
+    public function jsonSerialize(): string
+    {
+        return $this->value();
+    }
+
     public function value(): string
     {
         return $this->definedFormat->value();

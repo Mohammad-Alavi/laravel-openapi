@@ -24,6 +24,11 @@ final readonly class MaxItems implements Keyword
         return 'maxItems';
     }
 
+    public function jsonSerialize(): int
+    {
+        return $this->value();
+    }
+
     public function value(): int
     {
         return $this->value;

@@ -21,6 +21,11 @@ final readonly class DynamicAnchor implements Keyword
         return '$dynamicAnchor';
     }
 
+    public function jsonSerialize(): string
+    {
+        return $this->value();
+    }
+
     public function value(): string
     {
         return $this->value;

@@ -24,6 +24,11 @@ final readonly class MaxLength implements Keyword
         return 'maxLength';
     }
 
+    public function jsonSerialize(): int
+    {
+        return $this->value();
+    }
+
     public function value(): int
     {
         return $this->value;

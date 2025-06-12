@@ -108,6 +108,15 @@ class Descriptor implements DescriptorContract
         $this->schema = is_null($schema) ? null : Dialect::schema($schema);
     }
 
+    final public function schema(string $uri): static
+    {
+        $clone = clone $this;
+
+        $clone->schema = Dialect::schema($uri);
+
+        return $clone;
+    }
+
     /**
      * Create a new instance of the Descriptor without any schema.
      */
@@ -119,18 +128,9 @@ class Descriptor implements DescriptorContract
     /**
      * Create a new instance of the Descriptor with a schema.
      */
-    final public static function create(string|null $schema = 'https://json-schema.org/draft-2020-12/schema'): static
+    final public static function create(string $schema = 'https://json-schema.org/draft-2020-12/schema'): static
     {
         return new static($schema);
-    }
-
-    final public function schema(string $uri): static
-    {
-        $clone = clone $this;
-
-        $clone->schema = Dialect::schema($uri);
-
-        return $clone;
     }
 
     final public function anchor(string $value): static
@@ -540,139 +540,139 @@ class Descriptor implements DescriptorContract
     {
         $keywords = [];
         if ($this->schema instanceof Schema) {
-            $keywords[$this->schema::name()] = $this->schema->value();
+            $keywords[$this->schema::name()] = $this->schema;
         }
         if ($this->id instanceof Id) {
-            $keywords[$this->id::name()] = $this->id->value();
+            $keywords[$this->id::name()] = $this->id;
         }
         if ($this->vocabulary instanceof Vocabulary) {
-            $keywords[$this->vocabulary::name()] = $this->vocabulary->value();
+            $keywords[$this->vocabulary::name()] = $this->vocabulary;
         }
         if ($this->anchor instanceof Anchor) {
-            $keywords[$this->anchor::name()] = $this->anchor->value();
+            $keywords[$this->anchor::name()] = $this->anchor;
         }
         if ($this->ref instanceof Ref) {
-            $keywords[$this->ref::name()] = $this->ref->value();
+            $keywords[$this->ref::name()] = $this->ref;
         }
         if ($this->dynamicAnchor instanceof DynamicAnchor) {
-            $keywords[$this->dynamicAnchor::name()] = $this->dynamicAnchor->value();
+            $keywords[$this->dynamicAnchor::name()] = $this->dynamicAnchor;
         }
         if ($this->dynamicRef instanceof DynamicRef) {
-            $keywords[$this->dynamicRef::name()] = $this->dynamicRef->value();
+            $keywords[$this->dynamicRef::name()] = $this->dynamicRef;
         }
         if ($this->comment instanceof Comment) {
-            $keywords[$this->comment::name()] = $this->comment->value();
+            $keywords[$this->comment::name()] = $this->comment;
         }
         if ($this->title instanceof Title) {
-            $keywords[$this->title::name()] = $this->title->value();
+            $keywords[$this->title::name()] = $this->title;
         }
         if ($this->description instanceof Description) {
-            $keywords[$this->description::name()] = $this->description->value();
+            $keywords[$this->description::name()] = $this->description;
         }
         if ($this->allOf instanceof AllOf) {
-            $keywords[$this->allOf::name()] = $this->allOf->value();
+            $keywords[$this->allOf::name()] = $this->allOf;
         }
         if ($this->anyOf instanceof AnyOf) {
-            $keywords[$this->anyOf::name()] = $this->anyOf->value();
+            $keywords[$this->anyOf::name()] = $this->anyOf;
         }
         if ($this->oneOf instanceof OneOf) {
-            $keywords[$this->oneOf::name()] = $this->oneOf->value();
+            $keywords[$this->oneOf::name()] = $this->oneOf;
         }
         if ($this->type instanceof Type) {
-            $keywords[$this->type::name()] = $this->type->value();
+            $keywords[$this->type::name()] = $this->type;
         }
         if ($this->constant instanceof Constant) {
-            $keywords[$this->constant::name()] = $this->constant->value();
+            $keywords[$this->constant::name()] = $this->constant;
         }
         if ($this->enum instanceof Enum) {
-            $keywords[$this->enum::name()] = $this->enum->value();
+            $keywords[$this->enum::name()] = $this->enum;
         }
         if ($this->items instanceof Items) {
-            $keywords[$this->items::name()] = $this->items->value();
+            $keywords[$this->items::name()] = $this->items;
         }
         if ($this->additionalProperties instanceof AdditionalProperties) {
-            $keywords[$this->additionalProperties::name()] = $this->additionalProperties->value();
+            $keywords[$this->additionalProperties::name()] = $this->additionalProperties;
         }
         if ($this->properties instanceof Properties) {
-            $keywords[$this->properties::name()] = $this->properties->value();
+            $keywords[$this->properties::name()] = $this->properties;
         }
         if ($this->unevaluatedItems instanceof UnevaluatedItems) {
-            $keywords[$this->unevaluatedItems::name()] = $this->unevaluatedItems->value();
+            $keywords[$this->unevaluatedItems::name()] = $this->unevaluatedItems;
         }
         if ($this->unevaluatedProperties instanceof UnevaluatedProperties) {
-            $keywords[$this->unevaluatedProperties::name()] = $this->unevaluatedProperties->value();
+            $keywords[$this->unevaluatedProperties::name()] = $this->unevaluatedProperties;
         }
         if ($this->format instanceof Format) {
-            $keywords[$this->format::name()] = $this->format->value();
+            $keywords[$this->format::name()] = $this->format;
         }
         if ($this->maxLength instanceof MaxLength) {
-            $keywords[$this->maxLength::name()] = $this->maxLength->value();
+            $keywords[$this->maxLength::name()] = $this->maxLength;
         }
         if ($this->minLength instanceof MinLength) {
-            $keywords[$this->minLength::name()] = $this->minLength->value();
+            $keywords[$this->minLength::name()] = $this->minLength;
         }
         if ($this->pattern instanceof Pattern) {
-            $keywords[$this->pattern::name()] = $this->pattern->value();
+            $keywords[$this->pattern::name()] = $this->pattern;
         }
         if ($this->exclusiveMaximum instanceof ExclusiveMaximum) {
-            $keywords[$this->exclusiveMaximum::name()] = $this->exclusiveMaximum->value();
+            $keywords[$this->exclusiveMaximum::name()] = $this->exclusiveMaximum;
         }
         if ($this->exclusiveMinimum instanceof ExclusiveMinimum) {
-            $keywords[$this->exclusiveMinimum::name()] = $this->exclusiveMinimum->value();
+            $keywords[$this->exclusiveMinimum::name()] = $this->exclusiveMinimum;
         }
         if ($this->maximum instanceof Maximum) {
-            $keywords[$this->maximum::name()] = $this->maximum->value();
+            $keywords[$this->maximum::name()] = $this->maximum;
         }
         if ($this->minimum instanceof Minimum) {
-            $keywords[$this->minimum::name()] = $this->minimum->value();
+            $keywords[$this->minimum::name()] = $this->minimum;
         }
         if ($this->multipleOf instanceof MultipleOf) {
-            $keywords[$this->multipleOf::name()] = $this->multipleOf->value();
+            $keywords[$this->multipleOf::name()] = $this->multipleOf;
         }
         if ($this->maxContains instanceof MaxContains) {
-            $keywords[$this->maxContains::name()] = $this->maxContains->value();
+            $keywords[$this->maxContains::name()] = $this->maxContains;
         }
         if ($this->minContains instanceof MinContains) {
-            $keywords[$this->minContains::name()] = $this->minContains->value();
+            $keywords[$this->minContains::name()] = $this->minContains;
         }
         if ($this->maxItems instanceof MaxItems) {
-            $keywords[$this->maxItems::name()] = $this->maxItems->value();
+            $keywords[$this->maxItems::name()] = $this->maxItems;
         }
         if ($this->minItems instanceof MinItems) {
-            $keywords[$this->minItems::name()] = $this->minItems->value();
+            $keywords[$this->minItems::name()] = $this->minItems;
         }
         if ($this->uniqueItems instanceof UniqueItems) {
-            $keywords[$this->uniqueItems::name()] = $this->uniqueItems->value();
+            $keywords[$this->uniqueItems::name()] = $this->uniqueItems;
         }
         if ($this->dependentRequired instanceof DependentRequired) {
-            $keywords[$this->dependentRequired::name()] = $this->dependentRequired->value();
+            $keywords[$this->dependentRequired::name()] = $this->dependentRequired;
         }
         if ($this->maxProperties instanceof MaxProperties) {
-            $keywords[$this->maxProperties::name()] = $this->maxProperties->value();
+            $keywords[$this->maxProperties::name()] = $this->maxProperties;
         }
         if ($this->minProperties instanceof MinProperties) {
-            $keywords[$this->minProperties::name()] = $this->minProperties->value();
+            $keywords[$this->minProperties::name()] = $this->minProperties;
         }
         if ($this->required instanceof Required) {
-            $keywords[$this->required::name()] = $this->required->value();
+            $keywords[$this->required::name()] = $this->required;
         }
         if ($this->examples instanceof Examples) {
-            $keywords[$this->examples::name()] = $this->examples->value();
+            $keywords[$this->examples::name()] = $this->examples;
         }
         if ($this->deprecated instanceof Deprecated) {
-            $keywords[$this->deprecated::name()] = $this->deprecated->value();
+            $keywords[$this->deprecated::name()] = $this->deprecated;
         }
         if ($this->isReadOnly instanceof IsReadOnly) {
-            $keywords[$this->isReadOnly::name()] = $this->isReadOnly->value();
+            $keywords[$this->isReadOnly::name()] = $this->isReadOnly;
         }
         if ($this->isWriteOnly instanceof IsWriteOnly) {
-            $keywords[$this->isWriteOnly::name()] = $this->isWriteOnly->value();
+            $keywords[$this->isWriteOnly::name()] = $this->isWriteOnly;
         }
         if ($this->defaultValue instanceof DefaultValue) {
-            $keywords[$this->defaultValue::name()] = $this->defaultValue->value();
+            $keywords[$this->defaultValue::name()] = $this->defaultValue;
         }
         if ($this->defs instanceof Defs) {
-            $keywords[$this->defs::name()] = $this->defs->value();
+            $keywords[$this->defs::name()] = $this->defs;
         }
 
         return $keywords;

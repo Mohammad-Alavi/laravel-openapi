@@ -22,13 +22,21 @@ final readonly class DependentRequired implements Keyword
         return 'dependentRequired';
     }
 
-    public function value(): array
+    public function jsonSerialize(): array
     {
-        $dependencies = [];
-        foreach ($this->dependencies as $dependency) {
-            $dependencies[$dependency->property()] = $dependency->dependencies();
+        $deps = [];
+        foreach ($this->value() as $dependency) {
+            $deps[$dependency->property()] = $dependency->dependencies();
         }
 
-        return $dependencies;
+        return $deps;
+    }
+
+    /**
+     * @return Dependency[]
+     */
+    public function value(): array
+    {
+        return $this->dependencies;
     }
 }

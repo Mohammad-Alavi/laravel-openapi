@@ -22,6 +22,11 @@ final readonly class Items implements Keyword
         return 'items';
     }
 
+    public function jsonSerialize(): Descriptor
+    {
+        return $this->value();
+    }
+
     public function value(): Descriptor
     {
         return $this->descriptor;

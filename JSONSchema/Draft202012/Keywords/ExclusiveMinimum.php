@@ -21,6 +21,11 @@ final readonly class ExclusiveMinimum implements Keyword
         return 'exclusiveMinimum';
     }
 
+    public function jsonSerialize(): float
+    {
+        return $this->value();
+    }
+
     public function value(): float
     {
         return $this->value;

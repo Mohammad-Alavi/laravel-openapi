@@ -22,6 +22,11 @@ final readonly class UnevaluatedItems implements Keyword
         return 'unevaluatedItems';
     }
 
+    public function jsonSerialize(): Descriptor
+    {
+        return $this->value();
+    }
+
     public function value(): Descriptor
     {
         return $this->descriptor;

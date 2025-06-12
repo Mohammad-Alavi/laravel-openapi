@@ -4,6 +4,9 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentR
 
 final readonly class Dependency
 {
+    /**
+     * @param string[] $dependencies
+     */
     private function __construct(
         private string $property,
         private array $dependencies,
@@ -20,6 +23,9 @@ final readonly class Dependency
         return $this->property;
     }
 
+    /**
+     * @return string[]
+     */
     public function dependencies(): array
     {
         return $this->dependencies;

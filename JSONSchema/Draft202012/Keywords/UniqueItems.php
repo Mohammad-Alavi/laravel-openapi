@@ -21,6 +21,11 @@ final readonly class UniqueItems implements Keyword
         return 'uniqueItems';
     }
 
+    public function jsonSerialize(): bool
+    {
+        return $this->value();
+    }
+
     public function value(): bool
     {
         return $this->value;

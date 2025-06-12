@@ -21,6 +21,11 @@ final readonly class DefaultValue implements Keyword
         return 'default';
     }
 
+    public function jsonSerialize(): mixed
+    {
+        return $this->value();
+    }
+
     public function value(): mixed
     {
         return $this->value;

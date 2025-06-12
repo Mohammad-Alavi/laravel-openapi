@@ -22,6 +22,11 @@ final readonly class AnyOf implements Keyword
         return 'anyOf';
     }
 
+    public function jsonSerialize(): array
+    {
+        return $this->value();
+    }
+
     /** @return Descriptor[] */
     public function value(): array
     {

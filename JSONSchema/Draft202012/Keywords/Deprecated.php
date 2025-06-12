@@ -21,6 +21,11 @@ final readonly class Deprecated implements Keyword
         return 'deprecated';
     }
 
+    public function jsonSerialize(): bool
+    {
+        return $this->value();
+    }
+
     public function value(): bool
     {
         return $this->value;

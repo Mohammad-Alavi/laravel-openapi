@@ -21,6 +21,11 @@ final readonly class ExclusiveMaximum implements Keyword
         return 'exclusiveMaximum';
     }
 
+    public function jsonSerialize(): float
+    {
+        return $this->value();
+    }
+
     public function value(): float
     {
         return $this->value;

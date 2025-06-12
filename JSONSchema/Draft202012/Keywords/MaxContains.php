@@ -24,6 +24,11 @@ final readonly class MaxContains implements Keyword
         return 'maxContains';
     }
 
+    public function jsonSerialize(): int
+    {
+        return $this->value();
+    }
+
     public function value(): int
     {
         return $this->value;

@@ -24,6 +24,11 @@ final readonly class MinLength implements Keyword
         return 'minLength';
     }
 
+    public function jsonSerialize(): int
+    {
+        return $this->value();
+    }
+
     public function value(): int
     {
         return $this->value;
