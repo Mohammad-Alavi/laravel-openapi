@@ -17,18 +17,26 @@ final readonly class Properties implements Keyword
         return new self($property);
     }
 
-    public static function name(): string
-    {
-        return 'properties';
-    }
-
-    public function value(): array
+    public function jsonSerialize(): array
     {
         $properties = [];
-        foreach ($this->properties as $property) {
+        foreach ($this->value() as $property) {
             $properties[$property->name()] = $property->schema();
         }
 
         return $properties;
+    }
+
+    /**
+     * @return Property[]
+     */
+    public function value(): array
+    {
+        return $this->properties;
+    }
+
+    public static function name(): string
+    {
+        return 'properties';
     }
 }
