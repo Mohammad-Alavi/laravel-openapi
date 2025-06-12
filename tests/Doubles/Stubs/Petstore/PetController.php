@@ -4,9 +4,9 @@ namespace Tests\Doubles\Stubs\Petstore;
 
 use MohammadAlavi\LaravelOpenApi\Attributes as OpenAPI;
 use Tests\Doubles\Stubs\Petstore\Parameters\ListPetsParameterCollection;
-use Tests\Doubles\Stubs\Petstore\Responses\MultiResponseMixedWithReusable;
-use Tests\Doubles\Stubs\Petstore\Responses\SingleResponse;
-use Tests\Doubles\Stubs\Petstore\Responses\SingleResponseUsingReusable;
+use Tests\Doubles\Stubs\Petstore\Factories\Responses\MultiResponseMixedWithReusable;
+use Tests\Doubles\Stubs\Petstore\Factories\Responses\SingleResponse;
+use Tests\Doubles\Stubs\Petstore\Factories\Responses\SingleResponseUsingReusable;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleComplexMultiSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleSimpleMultiSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleSingleSecurityRequirementSecurity;

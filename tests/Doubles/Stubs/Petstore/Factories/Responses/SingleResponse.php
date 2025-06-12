@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Doubles\Stubs\Petstore\Responses;
+namespace Tests\Doubles\Stubs\Petstore\Factories\Responses;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ResponsesFactory;
