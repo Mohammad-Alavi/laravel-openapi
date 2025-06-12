@@ -1,15 +1,14 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Reusable;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Reusable as ReusableContract;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields\Ref;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\OpenAPISchema;
 use Webmozart\Assert\Assert;
 
-abstract class Reusable implements ReusableContract
+abstract class Reusable
 {
     final public static function new(): Descriptor
     {
