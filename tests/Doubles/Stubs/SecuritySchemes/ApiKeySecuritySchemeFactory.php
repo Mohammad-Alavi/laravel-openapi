@@ -14,7 +14,7 @@ class ApiKeySecuritySchemeFactory extends SecuritySchemeFactory
         return ApiKey::create('header', ApiKeyLocation::QUERY, 'Api Key Security');
     }
 
-    public static function key(): string
+    public static function name(): string
     {
         return 'ApiKey';
     }

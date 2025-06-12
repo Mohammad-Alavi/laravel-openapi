@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Components
 
 abstract class ReusableResponseFactory extends ReusableComponent implements ResponseFactory
 {
-    final protected static function componentPath(): string
+    final protected static function componentNamespace(): string
     {
         return '/responses';
     }

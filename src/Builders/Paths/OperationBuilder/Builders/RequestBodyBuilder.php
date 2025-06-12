@@ -13,7 +13,7 @@ class RequestBodyBuilder
     public function build(RequestBodyAttribute $requestBodyAttribute): RequestBody|Reference
     {
         if (is_a($requestBodyAttribute->factory, ReusableRequestBodyFactory::class, true)) {
-            return $requestBodyAttribute->factory::ref();
+            return $requestBodyAttribute->factory::reference();
         }
 
         /** @var RequestBodyFactory $factory */

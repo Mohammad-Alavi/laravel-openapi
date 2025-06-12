@@ -17,7 +17,7 @@ class CallbackBuilder
                 $factory = app($callbackAttribute->factory);
 
                 if ($factory instanceof ReusableRefObj) {
-                    return $factory::ref();
+                    return $factory::reference();
                 }
 
                 return $factory->build();

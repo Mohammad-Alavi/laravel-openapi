@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Components
 
 abstract class ReusableCallbackFactory extends ReusableComponent implements CallbackFactory
 {
-    final protected static function componentPath(): string
+    final protected static function componentNamespace(): string
     {
         return '/callbacks';
     }

@@ -101,7 +101,7 @@ describe('PetStoreTest', function (): void {
                     );
             }
 
-            public static function key(): string
+            public static function name(): string
             {
                 return 'Animal';
             }
@@ -129,7 +129,7 @@ describe('PetStoreTest', function (): void {
                     );
             }
 
-            public static function key(): string
+            public static function name(): string
             {
                 return 'Pet';
             }
@@ -152,7 +152,7 @@ describe('PetStoreTest', function (): void {
                     );
             }
 
-            public static function key(): string
+            public static function name(): string
             {
                 return 'Error';
             }

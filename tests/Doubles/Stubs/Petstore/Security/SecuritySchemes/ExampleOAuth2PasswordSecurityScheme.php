@@ -16,7 +16,7 @@ use Tests\Doubles\Stubs\Petstore\Security\Scopes\OrderShippingStatusScope;
 
 class ExampleOAuth2PasswordSecurityScheme extends SecuritySchemeFactory
 {
-    public static function key(): string
+    public static function name(): string
     {
         return 'OAuth2Password';
     }

@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Components
 
 abstract class ReusableSchemaFactory extends ReusableSchema implements SchemaFactory
 {
-    final protected static function componentPath(): string
+    final protected static function componentNamespace(): string
     {
         return '/schemas';
     }

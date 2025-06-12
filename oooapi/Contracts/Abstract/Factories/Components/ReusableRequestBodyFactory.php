@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Components
 
 abstract class ReusableRequestBodyFactory extends ReusableComponent implements RequestBodyFactory
 {
-    final protected static function componentPath(): string
+    final protected static function componentNamespace(): string
     {
         return '/requestBodies';
     }

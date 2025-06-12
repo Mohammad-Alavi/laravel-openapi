@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Components
 
 abstract class ReusableParameterFactory extends ReusableComponent implements ParameterFactory
 {
-    final protected static function componentPath(): string
+    final protected static function componentNamespace(): string
     {
         return '/parameters';
     }

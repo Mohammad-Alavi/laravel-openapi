@@ -31,7 +31,7 @@ final class ParameterCollection extends Generatable
                 static fn (
                     $param,
                 ): Reference|self|Parameter => $param instanceof ReusableParameterFactory
-                    ? $param::ref()
+                    ? $param::reference()
                     : $param,
             )
             ->toArray();

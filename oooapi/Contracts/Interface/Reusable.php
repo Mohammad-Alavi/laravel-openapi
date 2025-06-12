@@ -6,7 +6,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 
 interface Reusable
 {
-    public static function ref(): Reference|string;
+    public static function reference(): Reference;
 
-    public static function key(): string;
+    public static function name(): string;
 }

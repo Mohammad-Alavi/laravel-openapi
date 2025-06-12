@@ -20,7 +20,7 @@ final readonly class ResponseEntry extends StringMapEntry
         Response|ReusableResponseFactory|Reference $response,
     ): self {
         if ($response instanceof ReusableResponseFactory) {
-            return new self($name, $response::ref());
+            return new self($name, $response::reference());
         }
 
         return new self($name, $response);

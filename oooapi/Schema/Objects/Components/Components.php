@@ -137,17 +137,17 @@ final class Components extends ExtensibleObject
     {
         $schemas = [];
         foreach ($this->schemas ?? [] as $schema) {
-            $schemas[$schema::key()] = $schema->build();
+            $schemas[$schema::name()] = $schema->build();
         }
 
         $responses = [];
         foreach ($this->responses ?? [] as $response) {
-            $responses[$response::key()] = $response->build();
+            $responses[$response::name()] = $response->build();
         }
 
         $parameters = [];
         foreach ($this->parameters ?? [] as $parameter) {
-            $parameters[$parameter::key()] = $parameter->build();
+            $parameters[$parameter::name()] = $parameter->build();
         }
 
         $examples = [];
@@ -157,7 +157,7 @@ final class Components extends ExtensibleObject
 
         $requestBodies = [];
         foreach ($this->requestBodies ?? [] as $requestBody) {
-            $requestBodies[$requestBody::key()] = $requestBody->build();
+            $requestBodies[$requestBody::name()] = $requestBody->build();
         }
 
         $headers = [];
@@ -167,13 +167,13 @@ final class Components extends ExtensibleObject
 
         $securitySchemes = [];
         foreach ($this->securitySchemes ?? [] as $securityScheme) {
-            $securitySchemes[$securityScheme::key()] = $securityScheme->build();
+            $securitySchemes[$securityScheme::name()] = $securityScheme->build();
         }
 
         $callbacks = [];
         foreach ($this->callbackFactories ?? [] as $factory) {
             $callback = $factory->build();
-            $callbacks[$factory::key()] = $callback;
+            $callbacks[$factory::name()] = $callback;
         }
 
         return Arr::filter([

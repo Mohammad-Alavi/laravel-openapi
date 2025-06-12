@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme;
 
 class JwtSecuritySchemeFactory extends SecuritySchemeFactory
 {
-    public static function key(): string
+    public static function name(): string
     {
         return 'JWT';
     }

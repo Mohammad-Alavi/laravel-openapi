@@ -40,12 +40,12 @@ final readonly class Requirement
             return new self($securitySchemeFactory, $scopeCollection);
         }
 
-        throw new \InvalidArgumentException("Invalid OAuth2 scopes for {$securitySchemeFactory::key()}.\nAvailable scopes: " . implode(', ', $oAuth2->availableScopes()) . "\nGiven scopes: " . array_reduce($scopeCollection->all(), static fn (string $carry, Scope $scope): string => $carry . $scope->name() . ', ', ''));
+        throw new \InvalidArgumentException("Invalid OAuth2 scopes for {$securitySchemeFactory::name()}.\nAvailable scopes: " . implode(', ', $oAuth2->availableScopes()) . "\nGiven scopes: " . array_reduce($scopeCollection->all(), static fn (string $carry, Scope $scope): string => $carry . $scope->name() . ', ', ''));
     }
 
     public function securityScheme(): string
     {
-        return $this->securitySchemeFactory::key();
+        return $this->securitySchemeFactory::name();
     }
 
     public function scopes(): array

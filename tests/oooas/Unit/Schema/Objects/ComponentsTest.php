@@ -31,19 +31,19 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Schemes\Http;
 describe(class_basename(Components::class), function (): void {
     it('can be create with all parameters', function (): void {
         $mock = \Mockery::mock(ReusableSchemaFactory::class);
-        $mock->allows('key')
+        $mock->allows('name')
             ->andReturn('ExampleSchema');
         $mock->expects('build')
             ->andReturn(Schema::object());
 
         $response = \Mockery::mock(ReusableResponseFactory::class);
-        $response->allows('key')
+        $response->allows('name')
             ->andReturn('ReusableResponse');
         $response->expects('build')
             ->andReturn(Response::create(Description::create('Deleted')));
 
         $parameter = \Mockery::mock(ReusableParameterFactory::class);
-        $parameter->allows('key')
+        $parameter->allows('name')
             ->andReturn('Page');
         $parameter->expects('build')
             ->andReturn(
@@ -57,7 +57,7 @@ describe(class_basename(Components::class), function (): void {
             ->value(5);
 
         $requestBody = \Mockery::mock(ReusableRequestBodyFactory::class);
-        $requestBody->allows('key')
+        $requestBody->allows('name')
             ->andReturn('CreateResource');
         $requestBody->expects('build')
             ->andReturn(RequestBody::create());
@@ -65,7 +65,7 @@ describe(class_basename(Components::class), function (): void {
         $header = Header::create('HeaderExample');
 
         $securityScheme = \Mockery::mock(SecuritySchemeFactory::class);
-        $securityScheme->allows('key')
+        $securityScheme->allows('name')
             ->andReturn('basic');
         $securityScheme->expects('build')
             ->andReturn(
@@ -75,7 +75,7 @@ describe(class_basename(Components::class), function (): void {
         $link = Link::create();
 
         $callback = \Mockery::mock(ReusableCallbackFactory::class);
-        $callback->allows('key')
+        $callback->allows('name')
             ->andReturn('MyEvent');
         $callback->expects('build')
             ->andReturn(

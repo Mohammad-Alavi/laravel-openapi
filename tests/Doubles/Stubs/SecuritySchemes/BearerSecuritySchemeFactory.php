@@ -13,7 +13,7 @@ class BearerSecuritySchemeFactory extends SecuritySchemeFactory
         return Http::bearer('Example Bearer Security');
     }
 
-    public static function key(): string
+    public static function name(): string
     {
         return 'Bearer';
     }

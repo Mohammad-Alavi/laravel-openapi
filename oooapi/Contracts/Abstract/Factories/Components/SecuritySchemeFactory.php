@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Components
 
 abstract class SecuritySchemeFactory extends ReusableComponent implements SecuritySchemeFactoryContract
 {
-    final protected static function componentPath(): string
+    final protected static function componentNamespace(): string
     {
         return '/securitySchemes';
     }
