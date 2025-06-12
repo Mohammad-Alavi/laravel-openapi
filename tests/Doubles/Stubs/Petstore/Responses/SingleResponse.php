@@ -13,7 +13,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
-final class SingleResponses extends ResponsesFactory
+final class SingleResponse extends ResponsesFactory
 {
     public function build(): Responses
     {

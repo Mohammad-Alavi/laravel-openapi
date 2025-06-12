@@ -4,9 +4,9 @@ namespace Tests\Doubles\Stubs\Petstore;
 
 use MohammadAlavi\LaravelOpenApi\Attributes as OpenAPI;
 use Tests\Doubles\Stubs\Petstore\Parameters\ListPetsParameterCollection;
-use Tests\Doubles\Stubs\Petstore\Responses\MixedMultiResponses;
-use Tests\Doubles\Stubs\Petstore\Responses\SingleResponses;
-use Tests\Doubles\Stubs\Petstore\Responses\SingleReusableResponses;
+use Tests\Doubles\Stubs\Petstore\Responses\MultiResponseMixedWithReusable;
+use Tests\Doubles\Stubs\Petstore\Responses\SingleResponse;
+use Tests\Doubles\Stubs\Petstore\Responses\SingleResponseUsingReusable;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleComplexMultiSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleSimpleMultiSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleSingleSecurityRequirementSecurity;
@@ -24,7 +24,7 @@ class PetController
         deprecated: true,
     )]
     #[OpenAPI\Parameters(ListPetsParameterCollection::class)]
-    #[OpenAPI\Responses(SingleReusableResponses::class)]
+    #[OpenAPI\Responses(SingleResponseUsingReusable::class)]
     public function index(): void
     {
     }
@@ -38,7 +38,7 @@ class PetController
         deprecated: false,
     )]
     #[OpenAPI\Parameters(ListPetsParameterCollection::class)]
-    #[OpenAPI\Responses(MixedMultiResponses::class)]
+    #[OpenAPI\Responses(MultiResponseMixedWithReusable::class)]
     public function multiPetTag(): void
     {
     }
@@ -51,7 +51,7 @@ class PetController
         description: 'List all pets from the database.',
     )]
     #[OpenAPI\Parameters(ListPetsParameterCollection::class)]
-    #[OpenAPI\Responses(SingleResponses::class)]
+    #[OpenAPI\Responses(SingleResponse::class)]
     public function nestedSecurityFirst(): void
     {
     }
