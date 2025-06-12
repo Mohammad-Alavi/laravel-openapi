@@ -1,31 +1,29 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OAuthFlow;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Exceptions\InvalidArgumentException;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OAuthFlow\Fields\AuthorizationUrl;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OAuthFlow\Fields\Flow;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OAuthFlow\Fields\RefreshUrl;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OAuthFlow\Fields\TokenUrl;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
-// TODO: there are 2 different objects OAuthFlow and OAuthFlows, but we only have one!
-//  https://swagger.io/specification/#oauth-flows-object
-class OAuthFlow extends ExtensibleObject implements SimpleCreator
+final class OAuthFlow extends ExtensibleObject
 {
-    use SimpleCreatorTrait;
+    protected Flow|null $flow = null;
+    private AuthorizationUrl $authorizationUrl;
+    private TokenUrl $tokenUrl;
+    private RefreshUrl|null $refreshUrl = null;
+    private array|null $scopes = null;
 
-    public const FLOW_IMPLICIT = 'implicit';
-    public const FLOW_PASSWORD = 'password';
-    public const FLOW_CLIENT_CREDENTIALS = 'clientCredentials';
-    public const FLOW_AUTHORIZATION_CODE = 'authorizationCode';
+    public static function create(): self
+    {
+        return new self();
+    }
 
-    protected string|null $flow = null;
-    protected string|null $authorizationUrl = null;
-    protected string|null $tokenUrl = null;
-    protected string|null $refreshUrl = null;
-    protected array|null $scopes = null;
-
-    public function flow(string|null $flow): static
+    public function flow(Flow|null $flow): static
     {
         $clone = clone $this;
 
