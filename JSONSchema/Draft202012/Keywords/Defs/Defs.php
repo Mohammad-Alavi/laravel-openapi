@@ -34,7 +34,7 @@ final readonly class Defs implements Keyword
     {
         $defs = [];
         foreach ($this->value() as $def) {
-            $defs[$def->name()] = $def->value()->jsonSerialize();
+            $defs[$def->name()] = $def->value();
         }
 
         return $defs;
