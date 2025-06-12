@@ -18,11 +18,6 @@ abstract readonly class StringMap implements \JsonSerializable
         Assert::uniqueValues($this->keys());
     }
 
-    final protected static function put(StringMapEntry ...$mapEntry): static
-    {
-        return new static($mapEntry);
-    }
-
     /**
      * @return string[]
      */
@@ -30,7 +25,7 @@ abstract readonly class StringMap implements \JsonSerializable
     {
         return array_map(
             static fn (StringMapEntry $stringMapEntry): string => $stringMapEntry->key(),
-            $this->entries,
+            $this->entries(),
         );
     }
 
@@ -42,17 +37,23 @@ abstract readonly class StringMap implements \JsonSerializable
         return $this->entries;
     }
 
+    final protected static function put(StringMapEntry ...$mapEntry): static
+    {
+        return new static($mapEntry);
+    }
+
     /** @return array<string, TValue>|null */
     final public function jsonSerialize(): array|null
     {
-        if ([] === $this->entries) {
+        if ([] === $this->entries()) {
             return null;
         }
 
-        return array_reduce(
-            $this->entries,
-            static fn (array $carry, StringMapEntry $stringMapEntry): array => array_merge($carry, $stringMapEntry->getSet()),
-            [],
-        );
+        $entries = [];
+        foreach ($this->entries() as $def) {
+            $entries[$def->key()] = $def->value();
+        }
+
+        return $entries;
     }
 }
