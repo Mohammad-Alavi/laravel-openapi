@@ -16,9 +16,6 @@ abstract class Reusable implements ReusableContract
         return OpenAPISchema::withoutSchema()->ref(self::reference()->ref());
     }
 
-    /**
-     * The reference to the reusable component.
-     */
     final public static function reference(): Reference
     {
         $ref = self::baseNamespace() . static::componentNamespace() . '/' . static::name();
@@ -35,9 +32,6 @@ abstract class Reusable implements ReusableContract
 
     abstract protected static function componentNamespace(): string;
 
-    /**
-     * The key of the reusable component that is used to reference it in other places.
-     */
     public static function name(): string
     {
         $key = class_basename(static::class);
