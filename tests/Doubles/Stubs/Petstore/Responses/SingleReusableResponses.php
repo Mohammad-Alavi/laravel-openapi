@@ -6,7 +6,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ResponsesFa
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
-use Tests\Doubles\Stubs\Petstore\Responses\Response\ValidationErrorResponse;
+use Tests\Doubles\Stubs\Petstore\Responses\Reusable\ValidationErrorResponse;
 
 class SingleReusableResponses extends ResponsesFactory
 {

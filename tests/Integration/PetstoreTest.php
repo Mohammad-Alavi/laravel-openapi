@@ -17,7 +17,7 @@ describe('PetStore', function (): void {
                 __DIR__ . '/../Doubles/Stubs/Petstore/Schemas',
             ],
             'responses' => [
-                __DIR__ . '/../Doubles/Stubs/Petstore/Responses/Response',
+                __DIR__ . '/../Doubles/Stubs/Petstore/Responses/Reusable',
             ],
         ]);
 
