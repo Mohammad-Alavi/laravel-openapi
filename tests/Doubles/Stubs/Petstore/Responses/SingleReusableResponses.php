@@ -6,7 +6,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ResponsesFa
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
-use Tests\Doubles\Stubs\Petstore\Responses\Response\ReusableComponentErrorValidationResponse;
+use Tests\Doubles\Stubs\Petstore\Responses\Response\ValidationErrorResponse;
 
 class SingleReusableResponses extends ResponsesFactory
 {
@@ -15,7 +15,7 @@ class SingleReusableResponses extends ResponsesFactory
         return Responses::create(
             ResponseEntry::create(
                 HTTPStatusCode::unprocessableEntity(),
-                ReusableComponentErrorValidationResponse::create(),
+                ValidationErrorResponse::create(),
             ),
         );
     }

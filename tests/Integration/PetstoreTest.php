@@ -57,8 +57,8 @@ describe('PetStore', function (): void {
                 ],
             ])
             ->and($spec['components'])->toHaveKey('responses')
-            ->and($spec['components']['responses'])->toHaveKey('ReusableComponentErrorValidationResponse')
-            ->and($spec['components']['responses']['ReusableComponentErrorValidationResponse'])->toBe([
+            ->and($spec['components']['responses'])->toHaveKey('ValidationErrorResponse')
+            ->and($spec['components']['responses']['ValidationErrorResponse'])->toBe([
                 'description' => 'Unprocessable Entity',
                 'content' => [
                     'application/json' => [
@@ -123,7 +123,7 @@ describe('PetStore', function (): void {
                 ],
                 'responses' => [
                     422 => [
-                        '$ref' => '#/components/responses/ReusableComponentErrorValidationResponse',
+                        '$ref' => '#/components/responses/ValidationErrorResponse',
                     ],
                 ],
                 'deprecated' => true,
@@ -168,7 +168,7 @@ describe('PetStore', function (): void {
                 ],
                 'responses' => [
                     422 => [
-                        '$ref' => '#/components/responses/ReusableComponentErrorValidationResponse',
+                        '$ref' => '#/components/responses/ValidationErrorResponse',
                     ],
                     403 => [
                         'description' => 'Forbidden',

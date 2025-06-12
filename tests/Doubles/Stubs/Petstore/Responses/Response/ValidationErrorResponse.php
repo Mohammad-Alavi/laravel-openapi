@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Descripti
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
-class ReusableComponentErrorValidationResponse extends ReusableResponseFactory
+class ValidationErrorResponse extends ReusableResponseFactory
 {
     public function build(): Response
     {

@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
-use Tests\Doubles\Stubs\Petstore\Responses\Response\ReusableComponentErrorValidationResponse;
+use Tests\Doubles\Stubs\Petstore\Responses\Response\ValidationErrorResponse;
 
 class MixedMultiResponses extends ResponsesFactory
 {
@@ -17,7 +17,7 @@ class MixedMultiResponses extends ResponsesFactory
         return Responses::create(
             ResponseEntry::create(
                 HTTPStatusCode::unprocessableEntity(),
-                ReusableComponentErrorValidationResponse::create(),
+                ValidationErrorResponse::create(),
             ),
             ResponseEntry::create(
                 HTTPStatusCode::forbidden(),
