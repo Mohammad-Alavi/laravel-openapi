@@ -21,7 +21,7 @@ class GenerateCommand extends Command
         }
 
         $this->line(
-            json_encode(
+            \Safe\json_encode(
                 $generator->generate($this->argument('collection')),
                 JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE,
             ),
