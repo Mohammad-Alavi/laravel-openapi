@@ -56,7 +56,7 @@ describe('Extension', function (): void {
     it('can json serialize extension', function (): void {
         $extension = Extension::create('x-test', 'value');
 
-        $result = json_encode($extension);
+        $result = \Safe\json_encode($extension);
 
         expect($result)->toBe('{"x-test":"value"}');
     });
