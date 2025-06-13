@@ -50,8 +50,8 @@ abstract readonly class StringMap implements \JsonSerializable
         }
 
         $entries = [];
-        foreach ($this->entries() as $def) {
-            $entries[$def->key()] = $def->value();
+        foreach ($this->entries() as $entry) {
+            $entries[$entry->key()] = $entry->value();
         }
 
         return $entries;
