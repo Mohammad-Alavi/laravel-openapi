@@ -69,6 +69,6 @@ describe(class_basename(Draft202012::class), function (): void {
         $properties = Draft202012::properties($property);
 
         expect($properties)->toBeInstanceOf(Properties::class)
-            ->and(json_encode($properties))->toBe(json_encode(['name' => $mockDescriptor]));
+            ->and(\Safe\json_encode($properties))->toBe(\Safe\json_encode(['name' => $mockDescriptor]));
     });
 })->covers(Draft202012::class);
