@@ -60,14 +60,14 @@ describe(class_basename(Descriptor::class), function (): void {
             // ->maxLength(10);
 
             // expect($stringSchema->asArray())->toBe('{"type":"string","minLength":3,"maxLength":10}');
-            expect(json_encode(Descriptor::create()->type('string')))->toBe('{"type":"string"}');
+            expect(\Safe\json_encode(Descriptor::create()->type('string')))->toBe('{"type":"string"}');
         },
     );
 
     function jsonDD(mixed $value): void
     {
         dd(
-            json_encode(
+            \Safe\json_encode(
                 $value,
                 JSON_PRETTY_PRINT,
             ),
