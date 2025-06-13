@@ -2,17 +2,14 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
 
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\HasKey;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\JSONSchema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
-class MediaType extends ExtensibleObject implements HasKey, SimpleCreator
+final class MediaType extends ExtensibleObject implements HasKey
 {
-    use SimpleCreatorTrait;
-
     public const MEDIA_TYPE_APPLICATION_JSON = 'application/json';
     public const MEDIA_TYPE_APPLICATION_PDF = 'application/pdf';
     public const MEDIA_TYPE_IMAGE_JPEG = 'image/jpeg';
@@ -23,7 +20,7 @@ class MediaType extends ExtensibleObject implements HasKey, SimpleCreator
     public const MEDIA_TYPE_APPLICATION_X_WWW_FORM_URLENCODED = 'application/x-www-form-urlencoded';
 
     protected string|null $mediaType = null;
-    protected JSONSchema|null $schema = null;
+    protected JSONSchema|ReusableSchemaFactory|null $schema = null;
     protected Example|null $example = null;
 
     /** @var Example[]|null */
@@ -38,15 +35,15 @@ class MediaType extends ExtensibleObject implements HasKey, SimpleCreator
     // Right now it can be created with any arbitrary string via create method of the parent
     // Also creating a MediaType object with a key is not necessary but we can do it anyway using the create method!
     //  This should be prevented!
-    // public static function create(ObjectKeyContract $key = null): static;
+    // public static function create(ObjectKeyContract $key = null): self;
 
-    public static function json(): static
+    public static function json(): self
     {
-        return static::create()
-            ->mediaType(static::MEDIA_TYPE_APPLICATION_JSON);
+        return self::create()
+            ->mediaType(self::MEDIA_TYPE_APPLICATION_JSON);
     }
 
-    public function mediaType(string|null $mediaType): static
+    public function mediaType(string|null $mediaType): self
     {
         $clone = clone $this;
 
@@ -55,49 +52,54 @@ class MediaType extends ExtensibleObject implements HasKey, SimpleCreator
         return $clone;
     }
 
-    public static function pdf(): static
+    public static function create(): self
     {
-        return static::create()
-            ->mediaType(static::MEDIA_TYPE_APPLICATION_PDF);
+        return new self();
     }
 
-    public static function jpeg(): static
+    public static function pdf(): self
     {
-        return static::create()
-            ->mediaType(static::MEDIA_TYPE_IMAGE_JPEG);
+        return self::create()
+            ->mediaType(self::MEDIA_TYPE_APPLICATION_PDF);
     }
 
-    public static function png(): static
+    public static function jpeg(): self
     {
-        return static::create()
-            ->mediaType(static::MEDIA_TYPE_IMAGE_PNG);
+        return self::create()
+            ->mediaType(self::MEDIA_TYPE_IMAGE_JPEG);
     }
 
-    public static function calendar(): static
+    public static function png(): self
     {
-        return static::create()
-            ->mediaType(static::MEDIA_TYPE_TEXT_CALENDAR);
+        return self::create()
+            ->mediaType(self::MEDIA_TYPE_IMAGE_PNG);
     }
 
-    public static function plainText(): static
+    public static function calendar(): self
     {
-        return static::create()
-            ->mediaType(static::MEDIA_TYPE_TEXT_PLAIN);
+        return self::create()
+            ->mediaType(self::MEDIA_TYPE_TEXT_CALENDAR);
     }
 
-    public static function xml(): static
+    public static function plainText(): self
     {
-        return static::create()
-            ->mediaType(static::MEDIA_TYPE_TEXT_XML);
+        return self::create()
+            ->mediaType(self::MEDIA_TYPE_TEXT_PLAIN);
     }
 
-    public static function formUrlEncoded(): static
+    public static function xml(): self
     {
-        return static::create()
-            ->mediaType(static::MEDIA_TYPE_APPLICATION_X_WWW_FORM_URLENCODED);
+        return self::create()
+            ->mediaType(self::MEDIA_TYPE_TEXT_XML);
     }
 
-    public function schema(JSONSchema|null $schema): static
+    public static function formUrlEncoded(): self
+    {
+        return self::create()
+            ->mediaType(self::MEDIA_TYPE_APPLICATION_X_WWW_FORM_URLENCODED);
+    }
+
+    public function schema(JSONSchema|ReusableSchemaFactory|null $schema): self
     {
         $clone = clone $this;
 
@@ -106,7 +108,7 @@ class MediaType extends ExtensibleObject implements HasKey, SimpleCreator
         return $clone;
     }
 
-    public function example(Example|null $example): static
+    public function example(Example|null $example): self
     {
         $clone = clone $this;
 
@@ -115,7 +117,7 @@ class MediaType extends ExtensibleObject implements HasKey, SimpleCreator
         return $clone;
     }
 
-    public function examples(Example ...$example): static
+    public function examples(Example ...$example): self
     {
         $clone = clone $this;
 
@@ -124,18 +126,13 @@ class MediaType extends ExtensibleObject implements HasKey, SimpleCreator
         return $clone;
     }
 
-    public function encoding(Encoding ...$encoding): static
+    public function encoding(Encoding ...$encoding): self
     {
         $clone = clone $this;
 
         $clone->encoding = [] !== $encoding ? $encoding : null;
 
         return $clone;
-    }
-
-    final public function key(): string
-    {
-        return $this->mediaType;
     }
 
     protected function toArray(): array
@@ -156,5 +153,10 @@ class MediaType extends ExtensibleObject implements HasKey, SimpleCreator
             'examples' => [] !== $examples ? $examples : null,
             'encoding' => [] !== $encodings ? $encodings : null,
         ]);
+    }
+
+    final public function key(): string
+    {
+        return $this->mediaType;
     }
 }

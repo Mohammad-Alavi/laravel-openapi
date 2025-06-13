@@ -3,12 +3,15 @@
 namespace Tests\Doubles\Stubs\Petstore\Factories\Responses;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ResponsesFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
-use Tests\Doubles\Stubs\Petstore\Reusable\ValidationErrorResponse;
+use Tests\Doubles\Stubs\Petstore\Reusable\Response\ValidationErrorResponse;
+use Tests\Doubles\Stubs\Petstore\Reusable\Schema\PetSchema;
 
 class MultiResponseMixedWithReusable extends ResponsesFactory
 {
@@ -18,6 +21,16 @@ class MultiResponseMixedWithReusable extends ResponsesFactory
             ResponseEntry::create(
                 HTTPStatusCode::unprocessableEntity(),
                 ValidationErrorResponse::create(),
+            ),
+            ResponseEntry::create(
+                HTTPStatusCode::ok(),
+                Response::create(Description::create('Resource created'))
+                    ->content(
+                        ContentEntry::create(
+                            'application/json',
+                            MediaType::json()->schema(PetSchema::create()),
+                        ),
+                    ),
             ),
             ResponseEntry::create(
                 HTTPStatusCode::forbidden(),

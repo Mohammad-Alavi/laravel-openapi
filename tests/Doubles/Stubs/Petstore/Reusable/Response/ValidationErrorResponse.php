@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Doubles\Stubs\Petstore\Reusable;
+namespace Tests\Doubles\Stubs\Petstore\Reusable\Response;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableResponseFactory;

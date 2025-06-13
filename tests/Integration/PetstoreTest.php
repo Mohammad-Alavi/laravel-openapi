@@ -14,10 +14,10 @@ describe('PetStore', function (): void {
     it(' can be generated', function (array $servers, string $path, string $method, array $expectation): void {
         Config::set('openapi.locations', [
             'schemas' => [
-                __DIR__ . '/../Doubles/Stubs/Petstore/Schemas',
+                __DIR__ . '/../Doubles/Stubs/Petstore/Reusable/Schema',
             ],
             'responses' => [
-                __DIR__ . '/../Doubles/Stubs/Petstore/Responses/Reusable',
+                __DIR__ . '/../Doubles/Stubs/Petstore/Reusable/Response',
             ],
         ]);
 
@@ -30,33 +30,36 @@ describe('PetStore', function (): void {
         Config::set('openapi.collections.default.servers', $servers['classes']);
         $spec = app(Generator::class)->generate()->asArray();
 
-        expect($spec['servers'])->toBe($servers['expectation'])
+        expect(\Safe\json_encode($spec['servers']))->toBe(\Safe\json_encode($servers['expectation']))
             ->and($spec['paths'])->toHaveKey($path)
             ->and($spec['paths'][$path])->toHaveKey($method)
-            ->and($spec['paths'][$path][$method])->toBe($expectation)
+            ->and(\Safe\json_encode($spec['paths'][$path][$method]))->toBe(\Safe\json_encode($expectation))
             ->and($spec)->toHaveKey('components')
             ->and($spec['components'])->toHaveKey('schemas')
             ->and($spec['components']['schemas'])->toHaveKey('PetSchema')
-            ->and($spec['components']['schemas']['PetSchema'])->toBe([
-                'type' => 'object',
-                'properties' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'format' => 'int64',
+            ->and(\Safe\json_encode($spec['components']['schemas']['PetSchema']))->toBe(
+                \Safe\json_encode(
+                    [
+                        'type' => 'object',
+                        'properties' => [
+                            'id' => [
+                                'type' => 'integer',
+                                'format' => 'int64',
+                            ],
+                            'name' => [
+                                'type' => 'string',
+                            ],
+                            'tag' => [
+                                'type' => 'string',
+                            ],
+                        ],
+                        'required' => [
+                            'id',
+                            'name',
+                        ],
                     ],
-                    'name' => [
-                        'type' => 'string',
-                    ],
-                    'tag' => [
-                        'type' => 'string',
-                    ],
-                ],
-                'required' => [
-                    'id',
-                    'name',
-                ],
-            ])
-            ->and($spec['components'])->toHaveKey('responses')
+                ),
+            )->and($spec['components'])->toHaveKey('responses')
             ->and($spec['components']['responses'])->toHaveKey('ValidationErrorResponse')
             ->and($spec['components']['responses']['ValidationErrorResponse'])->toBe([
                 'description' => 'Unprocessable Entity',
@@ -169,6 +172,16 @@ describe('PetStore', function (): void {
                 'responses' => [
                     422 => [
                         '$ref' => '#/components/responses/ValidationErrorResponse',
+                    ],
+                    200 => [
+                        'description' => 'Resource created',
+                        'content' => [
+                            'application/json' => [
+                                'schema' => [
+                                    '$ref' => '#/components/schemas/PetSchema',
+                                ],
+                            ],
+                        ],
                     ],
                     403 => [
                         'description' => 'Forbidden',
