@@ -9,8 +9,8 @@ describe(class_basename(Descriptor::class), function (): void {
     it('can create a descriptor with schema', function (): void {
         $descriptor = Descriptor::create('https://json-schema.org/draft/2020-12/schema');
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 '$schema' => 'https://json-schema.org/draft/2020-12/schema',
             ]),
         );
@@ -19,14 +19,14 @@ describe(class_basename(Descriptor::class), function (): void {
     it('can create a descriptor without schema', function (): void {
         $descriptor = Descriptor::withoutSchema();
 
-        expect(json_encode($descriptor))->toBe('[]');
+        expect(\Safe\json_encode($descriptor))->toBe('[]');
     });
 
     it('can set type', function (): void {
         $descriptor = Descriptor::withoutSchema()->type('string');
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'string',
             ]),
         );
@@ -35,8 +35,8 @@ describe(class_basename(Descriptor::class), function (): void {
     it('can set type using Type class', function (): void {
         $descriptor = Descriptor::withoutSchema()->type(Type::string());
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'string',
             ]),
         );
@@ -47,8 +47,8 @@ describe(class_basename(Descriptor::class), function (): void {
             ->type('string')
             ->format(StringFormat::DATE);
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'string',
                 'format' => 'date',
             ]),
@@ -61,8 +61,8 @@ describe(class_basename(Descriptor::class), function (): void {
             ->minimum(0)
             ->maximum(100);
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'number',
                 'maximum' => 100.0,
                 'minimum' => 0.0,
@@ -76,8 +76,8 @@ describe(class_basename(Descriptor::class), function (): void {
             ->exclusiveMinimum(0)
             ->exclusiveMaximum(100);
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'number',
                 'exclusiveMaximum' => 100.0,
                 'exclusiveMinimum' => 0.0,
@@ -91,8 +91,8 @@ describe(class_basename(Descriptor::class), function (): void {
             ->minLength(5)
             ->maxLength(10);
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'string',
                 'maxLength' => 10,
                 'minLength' => 5,
@@ -105,8 +105,8 @@ describe(class_basename(Descriptor::class), function (): void {
             ->type('string')
             ->pattern('^[a-zA-Z0-9]*$');
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'string',
                 'pattern' => '^[a-zA-Z0-9]*$',
             ]),
@@ -121,8 +121,8 @@ describe(class_basename(Descriptor::class), function (): void {
                 Property::create('age', Descriptor::withoutSchema()->type('integer')),
             );
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'object',
                 'properties' => [
                     'name' => [
@@ -144,8 +144,8 @@ describe(class_basename(Descriptor::class), function (): void {
                 Property::create('age', Descriptor::withoutSchema()->type('integer')),
             )->required('name', 'age');
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'object',
                 'properties' => [
                     'name' => [
@@ -168,8 +168,8 @@ describe(class_basename(Descriptor::class), function (): void {
             ->type(Type::array())
             ->items(Descriptor::withoutSchema()->type(Type::string()));
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'array',
                 'items' => [
                     'type' => 'string',
@@ -183,8 +183,8 @@ describe(class_basename(Descriptor::class), function (): void {
             ->type('string')
             ->enum('red', 'green', 'blue');
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'string',
                 'enum' => ['red', 'green', 'blue'],
             ]),
@@ -196,8 +196,8 @@ describe(class_basename(Descriptor::class), function (): void {
             ->type('string')
             ->const('fixed-value');
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'string',
                 'const' => 'fixed-value',
             ]),
@@ -211,8 +211,8 @@ describe(class_basename(Descriptor::class), function (): void {
             ->description('A color name')
             ->examples('red', 'green', 'blue');
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'title' => 'Color',
                 'description' => 'A color name',
                 'type' => 'string',
@@ -226,8 +226,8 @@ describe(class_basename(Descriptor::class), function (): void {
             ->type('string')
             ->default('default-value');
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'string',
                 'default' => 'default-value',
             ]),
@@ -240,8 +240,8 @@ describe(class_basename(Descriptor::class), function (): void {
             ->readOnly(true)
             ->writeOnly(false);
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'string',
                 'readOnly' => true,
                 'writeOnly' => false,
@@ -254,8 +254,8 @@ describe(class_basename(Descriptor::class), function (): void {
             ->type('string')
             ->deprecated(true);
 
-        expect(json_encode($descriptor))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode([
                 'type' => 'string',
                 'deprecated' => true,
             ]),
