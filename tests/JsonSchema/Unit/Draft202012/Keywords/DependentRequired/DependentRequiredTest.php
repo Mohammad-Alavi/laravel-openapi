@@ -14,8 +14,8 @@ describe(class_basename(DependentRequired::class), function (): void {
         $dependency = Dependency::create('name', 'email', 'phone');
         $dependentRequired = DependentRequired::create($dependency);
 
-        expect(json_encode($dependentRequired))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($dependentRequired))->toBe(
+            \Safe\json_encode([
                 'name' => ['email', 'phone'],
             ]),
         );
@@ -27,8 +27,8 @@ describe(class_basename(DependentRequired::class), function (): void {
 
         $dependentRequired = DependentRequired::create($nameDependency, $addressDependency);
 
-        expect(json_encode($dependentRequired))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($dependentRequired))->toBe(
+            \Safe\json_encode([
                 'name' => ['email', 'phone'],
                 'address' => ['city', 'country'],
             ]),
