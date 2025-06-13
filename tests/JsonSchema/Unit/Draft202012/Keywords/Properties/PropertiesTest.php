@@ -16,8 +16,8 @@ describe(class_basename(Properties::class), function (): void {
         $property = Property::create('name', $descriptor);
         $properties = Properties::create($property);
 
-        expect(json_encode($properties))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($properties))->toBe(
+            \Safe\json_encode([
                 'name' => $descriptor,
             ]),
         );
@@ -32,8 +32,8 @@ describe(class_basename(Properties::class), function (): void {
 
         $properties = Properties::create($nameProperty, $ageProperty);
 
-        expect(json_encode($properties))->toBe(
-            json_encode([
+        expect(\Safe\json_encode($properties))->toBe(
+            \Safe\json_encode([
                 'name' => $nameDescriptor,
                 'age' => $ageDescriptor,
             ]),
