@@ -13,8 +13,8 @@ describe(class_basename(Schema::class), function (): void {
                 ->minLength(5)
                 ->pattern('^[a-zA-Z0-9]*$');
 
-            expect(json_encode($stringDescriptor))->toBe(
-                json_encode([
+            expect(\Safe\json_encode($stringDescriptor))->toBe(
+                \Safe\json_encode([
                     'type' => 'string',
                     'format' => $stringFormat->value,
                     'maxLength' => 10,
