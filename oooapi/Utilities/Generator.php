@@ -14,13 +14,23 @@ trait Generator
      */
     public function toJsonFile(string|null $path = null, string $name = 'openapi'): bool|int
     {
-        return File::put(null !== $path && '' !== $path && '0' !== $path ? $path . sprintf('/%s.json', $name) : $name . '.json', $this->toJson());
+        if (!is_null($path) && '' !== $path && '0' !== $path) {
+            return File::put(
+                $path . sprintf('/%s.json', $name),
+                $this->toJson(),
+            );
+        }
+
+        return File::put(
+            $name . '.json',
+            $this->toJson(),
+        );
     }
 
     public function toJson(
         $options = JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
     ): string {
-        return json_encode($this->jsonSerialize(), $options);
+        return \Safe\json_encode($this->jsonSerialize(), $options);
     }
 
     /**
