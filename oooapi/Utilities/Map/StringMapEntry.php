@@ -31,12 +31,4 @@ abstract readonly class StringMapEntry
     {
         return $this->value;
     }
-
-    /**
-     * @return non-empty-array<string, TValue>
-     */
-    final public function getSet(): array
-    {
-        return [$this->key() => $this->value];
-    }
 }
