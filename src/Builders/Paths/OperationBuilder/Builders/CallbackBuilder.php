@@ -4,8 +4,7 @@ namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders;
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Callback as CallbackAttribute;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Reusable;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Components\CallbackFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableCallbackFactory;
 
 class CallbackBuilder
 {
@@ -13,10 +12,10 @@ class CallbackBuilder
     {
         return $routeInfo->callbackAttributes()
             ->map(static function (CallbackAttribute $callbackAttribute) {
-                /** @var CallbackFactory $factory */
+                /** @var ReusableCallbackFactory $factory */
                 $factory = app($callbackAttribute->factory);
 
-                if ($factory instanceof Reusable) {
+                if ($factory instanceof ReusableCallbackFactory) {
                     return $factory::reference();
                 }
 

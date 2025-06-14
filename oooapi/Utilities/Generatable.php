@@ -3,7 +3,9 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Utilities;
 
 // TODO: is it possible to make this class readonly?
-abstract class Generatable implements \JsonSerializable
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
+
+abstract class Generatable implements OASObject, \JsonSerializable
 {
     use Generator;
 }

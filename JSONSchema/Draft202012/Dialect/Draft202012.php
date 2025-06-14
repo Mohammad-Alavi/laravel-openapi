@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Dialect;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\DefinedFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AdditionalProperties;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AllOf;
@@ -101,12 +101,12 @@ final readonly class Draft202012
         return Vocabulary::create(...$vocab);
     }
 
-    public static function unevaluatedProperties(Descriptor $descriptor): UnevaluatedProperties
+    public static function unevaluatedProperties(JSONSchema $descriptor): UnevaluatedProperties
     {
         return UnevaluatedProperties::create($descriptor);
     }
 
-    public static function unevaluatedItems(Descriptor $descriptor): UnevaluatedItems
+    public static function unevaluatedItems(JSONSchema $descriptor): UnevaluatedItems
     {
         return UnevaluatedItems::create($descriptor);
     }
@@ -186,27 +186,27 @@ final readonly class Draft202012
         return UniqueItems::create($value);
     }
 
-    public static function items(Descriptor $descriptor): Items
+    public static function items(JSONSchema $descriptor): Items
     {
         return Items::create($descriptor);
     }
 
-    public static function allOf(Descriptor ...$builder): AllOf
+    public static function allOf(JSONSchema ...$builder): AllOf
     {
         return AllOf::create(...$builder);
     }
 
-    public static function anyOf(Descriptor ...$builder): AnyOf
+    public static function anyOf(JSONSchema ...$builder): AnyOf
     {
         return AnyOf::create(...$builder);
     }
 
-    public static function oneOf(Descriptor ...$builder): OneOf
+    public static function oneOf(JSONSchema ...$builder): OneOf
     {
         return OneOf::create(...$builder);
     }
 
-    public static function additionalProperties(Descriptor|bool $schema): AdditionalProperties
+    public static function additionalProperties(JSONSchema|bool $schema): AdditionalProperties
     {
         return AdditionalProperties::create($schema);
     }

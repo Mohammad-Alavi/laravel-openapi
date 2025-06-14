@@ -3,30 +3,30 @@
 namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders;
 
 use Illuminate\Support\Collection;
-use MohammadAlavi\LaravelOpenApi\Attributes\Parameters;
+use MohammadAlavi\LaravelOpenApi\Attributes\Parameters as ParametersAttribute;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Collections\ParameterCollectionFactory;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Collections\ParametersFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ParameterCollection;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\JSONSchema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameters;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 class ParametersBuilder
 {
-    public function build(RouteInfo $routeInfo): ParameterCollection
+    public function build(RouteInfo $routeInfo): Parameters
     {
         $parameterCollection = $this->buildPath($routeInfo);
         $attributedParameters = $this->buildAttribute($routeInfo);
 
-        return ParameterCollection::create(
+        return Parameters::create(
             $parameterCollection,
             $attributedParameters,
         );
     }
 
-    protected function buildPath(RouteInfo $routeInfo): ParameterCollection
+    protected function buildPath(RouteInfo $routeInfo): Parameters
     {
         /** @var Collection $parameters */
         $parameters = $routeInfo->parameters()
@@ -58,7 +58,7 @@ class ParametersBuilder
             });
         $parameters = $parameters->filter(static fn (Parameter|null $parameter): bool => !is_null($parameter));
 
-        return ParameterCollection::create(...$parameters->toArray());
+        return Parameters::create(...$parameters->toArray());
     }
 
     private function guessFromReflectionType(\ReflectionType $reflectionType): JSONSchema
@@ -70,17 +70,17 @@ class ParametersBuilder
         };
     }
 
-    protected function buildAttribute(RouteInfo $routeInfo): ParameterCollection
+    protected function buildAttribute(RouteInfo $routeInfo): Parameters
     {
         $parameters = $routeInfo->parametersAttribute();
 
-        if ($parameters instanceof Parameters) {
-            /** @var ParameterCollectionFactory $parametersFactory */
+        if ($parameters instanceof ParametersAttribute) {
+            /** @var ParametersFactory $parametersFactory */
             $parametersFactory = app($parameters->factory);
 
             return $parametersFactory->build();
         }
 
-        return ParameterCollection::create();
+        return Parameters::create();
     }
 }

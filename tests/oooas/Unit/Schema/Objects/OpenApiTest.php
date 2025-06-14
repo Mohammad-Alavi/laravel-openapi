@@ -23,7 +23,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\N
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ParameterCollection;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameters;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
@@ -129,7 +129,7 @@ describe(class_basename(OpenAPI::class), function (): void {
             ->summary('View an audit')
             ->operationId('audits.show')
             ->parameters(
-                ParameterCollection::create(
+                Parameters::create(
                     Parameter::path(
                         ParamName::create('audit'),
                         SchemaSerializedPath::create($stringDescriptor),

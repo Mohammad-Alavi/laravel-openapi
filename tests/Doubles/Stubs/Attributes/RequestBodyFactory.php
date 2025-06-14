@@ -2,10 +2,10 @@
 
 namespace Tests\Doubles\Stubs\Attributes;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Components\RequestBodyFactory as RequestBodyFactoryContract;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableRequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 
-class RequestBodyFactory implements RequestBodyFactoryContract
+class RequestBodyFactory extends ReusableRequestBodyFactory
 {
     public function build(): RequestBody
     {

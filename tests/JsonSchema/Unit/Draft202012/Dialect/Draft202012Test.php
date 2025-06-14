@@ -1,6 +1,5 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Descriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Dialect\Draft202012;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Format;
@@ -12,6 +11,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Prope
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Schema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(Draft202012::class), function (): void {
     it('can create id keyword', function (): void {
@@ -64,7 +64,7 @@ describe(class_basename(Draft202012::class), function (): void {
     });
 
     it('can create properties keyword', function (): void {
-        $mockDescriptor = Descriptor::withoutSchema();
+        $mockDescriptor = LooseFluentDescriptor::withoutSchema();
         $property = Property::create('name', $mockDescriptor);
         $properties = Draft202012::properties($property);
 

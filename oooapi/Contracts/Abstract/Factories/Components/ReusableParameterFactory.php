@@ -3,12 +3,14 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Reusable;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Components\ParameterFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 
-abstract class ReusableParameterFactory extends Reusable implements ParameterFactory
+abstract class ReusableParameterFactory extends Reusable
 {
     final protected static function componentNamespace(): string
     {
         return '/parameters';
     }
+
+    abstract public function build(): Parameter;
 }

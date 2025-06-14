@@ -2,13 +2,15 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components;
 
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Reusable;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Components\SchemaFactory;
 
-abstract class ReusableSchemaFactory extends Reusable implements SchemaFactory
+abstract class ReusableSchemaFactory extends Reusable
 {
     final protected static function componentNamespace(): string
     {
         return '/schemas';
     }
+
+    abstract public function build(): JSONSchema;
 }

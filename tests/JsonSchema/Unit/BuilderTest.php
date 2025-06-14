@@ -1,10 +1,10 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
-describe(class_basename(Descriptor::class), function (): void {
+describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('should return constant value as is', function (mixed $value): void {
-        $descriptor = Descriptor::create()->const($value);
+        $descriptor = LooseFluentDescriptor::create()->const($value);
 
         expect(\Safe\json_encode($descriptor))->toBe(
             \Safe\json_encode([
@@ -19,4 +19,4 @@ describe(class_basename(Descriptor::class), function (): void {
         null,
         false,
     ]);
-})->covers(Descriptor::class);
+})->covers(LooseFluentDescriptor::class);

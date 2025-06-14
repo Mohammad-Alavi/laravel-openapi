@@ -2,18 +2,18 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule;
 
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Style;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\JSONSchema;
 
 abstract readonly class SchemaSerialized implements SerializationRule
 {
     final protected function __construct(
-        private JSONSchema $jsonSchema,
-        private Style|null $style,
+        private JSONSchema   $jsonSchema,
+        private Style|null   $style,
         private Example|null $example,
         /** @var Example[] */
-        private array $examples,
+        private array        $examples,
     ) {
     }
 

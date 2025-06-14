@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Descriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Defs\Def;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Defs\Defs;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(Defs::class), function (): void {
     it('can be created with multiple Defs and returns correct values', function (): void {
-        $desc1 = Descriptor::create('string');
-        $desc2 = Descriptor::create('integer');
+        $desc1 = LooseFluentDescriptor::create('string');
+        $desc2 = LooseFluentDescriptor::create('integer');
         $def1 = Def::create('foo', $desc1);
         $def2 = Def::create('bar', $desc2);
         $defs = Defs::create($def1, $def2);
@@ -26,7 +26,7 @@ describe(class_basename(Defs::class), function (): void {
     });
 
     it('is immutable', function (): void {
-        $desc = Descriptor::create('string');
+        $desc = LooseFluentDescriptor::create('string');
         $def = Def::create('foo', $desc);
         $defs = Defs::create($def);
         expect(fn () => $defs->defs = [])->toThrow(Error::class);

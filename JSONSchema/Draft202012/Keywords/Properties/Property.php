@@ -2,17 +2,17 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 
 final readonly class Property
 {
     private function __construct(
-        private string $name,
-        private Descriptor $descriptor,
+        private string     $name,
+        private JSONSchema $descriptor,
     ) {
     }
 
-    public static function create(string $name, Descriptor $descriptor): self
+    public static function create(string $name, JSONSchema $descriptor): self
     {
         return new self($name, $descriptor);
     }
@@ -22,7 +22,7 @@ final readonly class Property
         return $this->name;
     }
 
-    public function schema(): Descriptor
+    public function schema(): JSONSchema
     {
         return $this->descriptor;
     }

@@ -2,17 +2,17 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 
 final readonly class AdditionalProperties implements Keyword
 {
     private function __construct(
-        private Descriptor|bool $schema,
+        private JSONSchema|bool $schema,
     ) {
     }
 
-    public static function create(Descriptor|bool $schema): self
+    public static function create(JSONSchema|bool $schema): self
     {
         return new self($schema);
     }
@@ -22,12 +22,12 @@ final readonly class AdditionalProperties implements Keyword
         return 'additionalProperties';
     }
 
-    public function jsonSerialize(): Descriptor|bool
+    public function jsonSerialize(): JSONSchema|bool
     {
         return $this->value();
     }
 
-    public function value(): Descriptor|bool
+    public function value(): JSONSchema|bool
     {
         return $this->schema;
     }

@@ -1,13 +1,13 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Descriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
-describe(class_basename(Descriptor::class), function (): void {
+describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('can create a descriptor with schema', function (): void {
-        $descriptor = Descriptor::create('https://json-schema.org/draft/2020-12/schema');
+        $descriptor = LooseFluentDescriptor::create('https://json-schema.org/draft/2020-12/schema');
 
         expect(\Safe\json_encode($descriptor))->toBe(
             \Safe\json_encode([
@@ -17,13 +17,13 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can create a descriptor without schema', function (): void {
-        $descriptor = Descriptor::withoutSchema();
+        $descriptor = LooseFluentDescriptor::withoutSchema();
 
         expect(\Safe\json_encode($descriptor))->toBe('[]');
     });
 
     it('can set type', function (): void {
-        $descriptor = Descriptor::withoutSchema()->type('string');
+        $descriptor = LooseFluentDescriptor::withoutSchema()->type('string');
 
         expect(\Safe\json_encode($descriptor))->toBe(
             \Safe\json_encode([
@@ -33,7 +33,7 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set type using Type class', function (): void {
-        $descriptor = Descriptor::withoutSchema()->type(Type::string());
+        $descriptor = LooseFluentDescriptor::withoutSchema()->type(Type::string());
 
         expect(\Safe\json_encode($descriptor))->toBe(
             \Safe\json_encode([
@@ -43,7 +43,7 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set format', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('string')
             ->format(StringFormat::DATE);
 
@@ -56,7 +56,7 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set minimum and maximum', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('number')
             ->minimum(0)
             ->maximum(100);
@@ -71,7 +71,7 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set exclusive minimum and maximum', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('number')
             ->exclusiveMinimum(0)
             ->exclusiveMaximum(100);
@@ -86,7 +86,7 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set minLength and maxLength', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('string')
             ->minLength(5)
             ->maxLength(10);
@@ -101,7 +101,7 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set pattern', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('string')
             ->pattern('^[a-zA-Z0-9]*$');
 
@@ -114,11 +114,11 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set properties for object type', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('object')
             ->properties(
-                Property::create('name', Descriptor::withoutSchema()->type('string')),
-                Property::create('age', Descriptor::withoutSchema()->type('integer')),
+                Property::create('name', LooseFluentDescriptor::withoutSchema()->type('string')),
+                Property::create('age', LooseFluentDescriptor::withoutSchema()->type('integer')),
             );
 
         expect(\Safe\json_encode($descriptor))->toBe(
@@ -137,11 +137,11 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set required properties', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('object')
             ->properties(
-                Property::create('name', Descriptor::withoutSchema()->type('string')),
-                Property::create('age', Descriptor::withoutSchema()->type('integer')),
+                Property::create('name', LooseFluentDescriptor::withoutSchema()->type('string')),
+                Property::create('age', LooseFluentDescriptor::withoutSchema()->type('integer')),
             )->required('name', 'age');
 
         expect(\Safe\json_encode($descriptor))->toBe(
@@ -164,9 +164,9 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set items for array type', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type(Type::array())
-            ->items(Descriptor::withoutSchema()->type(Type::string()));
+            ->items(LooseFluentDescriptor::withoutSchema()->type(Type::string()));
 
         expect(\Safe\json_encode($descriptor))->toBe(
             \Safe\json_encode([
@@ -179,7 +179,7 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set enum values', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('string')
             ->enum('red', 'green', 'blue');
 
@@ -192,7 +192,7 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set const value', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('string')
             ->const('fixed-value');
 
@@ -205,7 +205,7 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set title, description and examples', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('string')
             ->title('Color')
             ->description('A color name')
@@ -222,7 +222,7 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set default value', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('string')
             ->default('default-value');
 
@@ -235,7 +235,7 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set readOnly and writeOnly', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('string')
             ->readOnly(true)
             ->writeOnly(false);
@@ -250,7 +250,7 @@ describe(class_basename(Descriptor::class), function (): void {
     });
 
     it('can set deprecated', function (): void {
-        $descriptor = Descriptor::withoutSchema()
+        $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('string')
             ->deprecated(true);
 
@@ -261,4 +261,4 @@ describe(class_basename(Descriptor::class), function (): void {
             ]),
         );
     });
-})->covers(Descriptor::class);
+})->covers(LooseFluentDescriptor::class);

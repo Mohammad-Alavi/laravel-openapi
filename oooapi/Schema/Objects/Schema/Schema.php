@@ -2,78 +2,78 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema;
 
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\ArrayRestrictor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\BooleanRestrictor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\ConstantRestrictor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\EnumRestrictor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\IntegerRestrictor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\NullRestrictor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\NumberRestrictor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\ObjectRestrictor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\SharedRestrictor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\StringRestrictor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\ArrayDescriptor;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\BooleanDescriptor;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\ConstantDescriptor;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\EnumDescriptor;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\IntegerDescriptor;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\NullDescriptor;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\NumberDescriptor;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\ObjectDescriptor;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\SharedDescriptor;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\Descriptors\StringDescriptor;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\OpenAPISchema;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\StrictFluentDescriptor;
 
 final class Schema
 {
-    public static function null(): NullDescriptor
+    public static function null(): NullRestrictor
     {
-        return OpenAPISchema::withoutSchema()->type(Type::null());
+        return StrictFluentDescriptor::withoutSchema()->type(Type::null());
     }
 
-    public static function boolean(): BooleanDescriptor
+    public static function boolean(): BooleanRestrictor
     {
-        return OpenAPISchema::withoutSchema()->type(Type::boolean());
+        return StrictFluentDescriptor::withoutSchema()->type(Type::boolean());
     }
 
-    public static function string(): StringDescriptor
+    public static function string(): StringRestrictor
     {
-        return OpenAPISchema::string();
+        return StrictFluentDescriptor::string();
     }
 
-    public static function integer(): IntegerDescriptor
+    public static function integer(): IntegerRestrictor
     {
-        return OpenAPISchema::integer();
+        return StrictFluentDescriptor::integer();
     }
 
-    public static function number(): NumberDescriptor
+    public static function number(): NumberRestrictor
     {
-        return OpenAPISchema::number();
+        return StrictFluentDescriptor::number();
     }
 
-    public static function object(): ObjectDescriptor
+    public static function object(): ObjectRestrictor
     {
-        return OpenAPISchema::object();
+        return StrictFluentDescriptor::object();
     }
 
-    public static function array(): ArrayDescriptor
+    public static function array(): ArrayRestrictor
     {
-        return OpenAPISchema::array();
+        return StrictFluentDescriptor::array();
     }
 
-    public static function const(mixed $value): ConstantDescriptor
+    public static function const(mixed $value): ConstantRestrictor
     {
-        return OpenAPISchema::constant($value);
+        return StrictFluentDescriptor::constant($value);
     }
 
-    public static function enum(mixed ...$value): EnumDescriptor
+    public static function enum(mixed ...$value): EnumRestrictor
     {
-        return OpenAPISchema::enumerator(...$value);
+        return StrictFluentDescriptor::enumerator(...$value);
     }
 
-    public static function oneOf(OpenAPISchema ...$schemas): SharedDescriptor
+    public static function oneOf(StrictFluentDescriptor ...$schemas): SharedRestrictor
     {
-        return OpenAPISchema::withoutSchema()->oneOf(...$schemas);
+        return StrictFluentDescriptor::withoutSchema()->oneOf(...$schemas);
     }
 
-    public static function anyOf(OpenAPISchema ...$schemas): SharedDescriptor
+    public static function anyOf(StrictFluentDescriptor ...$schemas): SharedRestrictor
     {
-        return OpenAPISchema::withoutSchema()->anyOf(...$schemas);
+        return StrictFluentDescriptor::withoutSchema()->anyOf(...$schemas);
     }
 
-    public static function allOf(OpenAPISchema ...$schemas): SharedDescriptor
+    public static function allOf(StrictFluentDescriptor ...$schemas): SharedRestrictor
     {
-        return OpenAPISchema::withoutSchema()->allOf(...$schemas);
+        return StrictFluentDescriptor::withoutSchema()->allOf(...$schemas);
     }
 }

@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ParameterCollection;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameters;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description as ResponseDescription;
@@ -65,7 +65,7 @@ describe('Operation', function (): void {
                 ->externalDocs(ExternalDocumentation::create(ExtURL::create('https://example.com/docs')))
                 ->operationId('users.show')
                 ->parameters(
-                    ParameterCollection::create(
+                    Parameters::create(
                         Parameter::query(
                             ParamName::create('id'),
                             SchemaSerializedQuery::create(Schema::string()),

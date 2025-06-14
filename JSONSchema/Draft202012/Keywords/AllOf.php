@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 
 final readonly class AllOf implements Keyword
@@ -12,7 +12,7 @@ final readonly class AllOf implements Keyword
     ) {
     }
 
-    public static function create(Descriptor ...$builder): self
+    public static function create(JSONSchema ...$builder): self
     {
         return new self($builder);
     }
@@ -27,7 +27,7 @@ final readonly class AllOf implements Keyword
         return $this->value();
     }
 
-    /** @return Descriptor[] */
+    /** @return JSONSchema[] */
     public function value(): array
     {
         return $this->schema;

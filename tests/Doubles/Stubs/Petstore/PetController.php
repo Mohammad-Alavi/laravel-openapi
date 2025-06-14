@@ -6,7 +6,7 @@ use MohammadAlavi\LaravelOpenApi\Attributes as OpenAPI;
 use Tests\Doubles\Stubs\Petstore\Factories\Responses\MultiResponseMixedWithReusable;
 use Tests\Doubles\Stubs\Petstore\Factories\Responses\SingleResponse;
 use Tests\Doubles\Stubs\Petstore\Factories\Responses\SingleResponseUsingReusable;
-use Tests\Doubles\Stubs\Petstore\Parameters\ListPetsParameterCollection;
+use Tests\Doubles\Stubs\Petstore\Parameters\ListPetsParameters;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleComplexMultiSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleSimpleMultiSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleSingleSecurityRequirementSecurity;
@@ -23,7 +23,7 @@ class PetController
         description: 'List all pets from the database.',
         deprecated: true,
     )]
-    #[OpenAPI\Parameters(ListPetsParameterCollection::class)]
+    #[OpenAPI\Parameters(ListPetsParameters::class)]
     #[OpenAPI\Responses(SingleResponseUsingReusable::class)]
     public function index(): void
     {
@@ -37,7 +37,7 @@ class PetController
         description: 'List all pets from the database.',
         deprecated: false,
     )]
-    #[OpenAPI\Parameters(ListPetsParameterCollection::class)]
+    #[OpenAPI\Parameters(ListPetsParameters::class)]
     #[OpenAPI\Responses(MultiResponseMixedWithReusable::class)]
     public function multiPetTag(): void
     {
@@ -50,7 +50,7 @@ class PetController
         summary: 'List all pets.',
         description: 'List all pets from the database.',
     )]
-    #[OpenAPI\Parameters(ListPetsParameterCollection::class)]
+    #[OpenAPI\Parameters(ListPetsParameters::class)]
     #[OpenAPI\Responses(SingleResponse::class)]
     public function nestedSecurityFirst(): void
     {

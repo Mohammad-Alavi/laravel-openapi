@@ -36,7 +36,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
     protected string|null $description = null;
     protected ExternalDocumentation|null $externalDocs = null;
     protected string|null $operationId = null;
-    protected ParameterCollection|null $parameterCollection = null;
+    protected Parameters|null $parameterCollection = null;
     protected RequestBody|Reference|null $requestBody = null;
     protected Responses|null $responses = null;
     protected bool|null $deprecated = null;
@@ -156,7 +156,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function parameters(ParameterCollection $parameterCollection): static
+    public function parameters(Parameters $parameterCollection): static
     {
         $clone = clone $this;
 

@@ -2,18 +2,20 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptor\Descriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\FluentDescriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\StrictFluentDescriptor;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldReuse;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields\Ref;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\JSONSchema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Contracts\OpenAPISchema;
 use Webmozart\Assert\Assert;
 
 abstract class Reusable implements \JsonSerializable
 {
-    final public static function new(): Descriptor
+    final public static function new(): FluentDescriptor
     {
-        return OpenAPISchema::withoutSchema()->ref(self::reference()->ref());
+        return StrictFluentDescriptor::withoutSchema()->ref(self::reference()->ref());
     }
 
     final public static function reference(): Reference
@@ -46,12 +48,18 @@ abstract class Reusable implements \JsonSerializable
         return new static();
     }
 
-    final public function jsonSerialize(): JSONSchema|Reference
+    abstract public function build(): OASObject|JSONSchema;
+
+    final public function jsonSerialize(): OASObject|JSONSchema|Reference
     {
-        if ('/schemas' === static::componentNamespace()) {
-            return OpenAPISchema::withoutSchema()->ref(self::reference()->ref());
+        if (is_a($this, ShouldReuse::class)) {
+            if ('/schemas' === static::componentNamespace()) {
+                return StrictFluentDescriptor::withoutSchema()->ref(self::reference()->ref());
+            }
+
+            return self::reference();
         }
 
-        return self::reference();
+        return $this->build();
     }
 }
