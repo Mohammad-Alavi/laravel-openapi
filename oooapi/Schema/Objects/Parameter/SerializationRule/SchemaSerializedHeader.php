@@ -9,8 +9,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\S
 final readonly class SchemaSerializedHeader extends SchemaSerialized
 {
     public static function create(
-        JSONSchema   $jsonSchema,
-        Simple|null  $style = null,
+        JSONSchema $jsonSchema,
+        Simple|null $style = null,
         Example|null $example = null,
         Example ...$examples,
     ): self {

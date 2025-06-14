@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 final readonly class Def
 {
     private function __construct(
-        private string     $name,
+        private string $name,
         private JSONSchema $descriptor,
     ) {
     }

@@ -12,9 +12,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\S
 final readonly class SchemaSerializedQuery extends SchemaSerialized
 {
     public static function create(
-        JSONSchema                                        $jsonSchema,
+        JSONSchema $jsonSchema,
         DeepObject|Form|PipeDelimited|SpaceDelimited|null $style = null,
-        Example|null                                      $example = null,
+        Example|null $example = null,
         Example ...$examples,
     ): self {
         return new self(

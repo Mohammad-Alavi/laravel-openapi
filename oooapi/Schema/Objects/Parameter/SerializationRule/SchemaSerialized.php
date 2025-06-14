@@ -9,11 +9,11 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\S
 abstract readonly class SchemaSerialized implements SerializationRule
 {
     final protected function __construct(
-        private JSONSchema   $jsonSchema,
-        private Style|null   $style,
+        private JSONSchema $jsonSchema,
+        private Style|null $style,
         private Example|null $example,
         /** @var Example[] */
-        private array        $examples,
+        private array $examples,
     ) {
     }
 

@@ -11,9 +11,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\S
 final readonly class SchemaSerializedPath extends SchemaSerialized
 {
     public static function create(
-        JSONSchema               $jsonSchema,
+        JSONSchema $jsonSchema,
         Label|Matrix|Simple|null $style = null,
-        Example|null             $example = null,
+        Example|null $example = null,
         Example ...$examples,
     ): self {
         return new self(
