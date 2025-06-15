@@ -2,11 +2,11 @@
 
 namespace Tests\Doubles\Stubs\Attributes;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableCallbackFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 
-class CallbackFactory extends ReusableCallbackFactory
+class TestCallbackFactory extends CallbackFactory
 {
     public function build(): Callback
     {

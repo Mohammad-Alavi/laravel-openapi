@@ -10,9 +10,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRu
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameters;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use Tests\Doubles\Stubs\Concerns\TestReusableParameter;
+use Tests\Doubles\Stubs\Concerns\TestParameter;
 
-class ParameterFactory implements ParametersFactoryInterface
+class TestParameterFactory implements ParametersFactoryInterface
 {
     public function build(): Parameters
     {
@@ -25,7 +25,7 @@ class ParameterFactory implements ParametersFactoryInterface
                 Name::create('param_b'),
                 SchemaSerializedPath::create(Schema::string()),
             ),
-            TestReusableParameter::create(),
+            TestParameter::create(),
             Parameter::cookie(
                 Name::create('param_c'),
                 SchemaSerializedCookie::create(Schema::string()),

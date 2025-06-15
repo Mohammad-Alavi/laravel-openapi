@@ -4,7 +4,7 @@ namespace Tests\Doubles\Stubs\Attributes;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ExtensionFactory as AbstractFactory;
 
-class ExtensionFactory extends AbstractFactory
+class TestExtensionFactory extends AbstractFactory
 {
     public function build(): array
     {

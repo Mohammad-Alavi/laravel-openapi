@@ -6,7 +6,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Schemes\Http;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme;
 
-class SecuritySchemeFactory extends AbstractFactory
+class TestSecuritySchemeFactory extends AbstractFactory
 {
     public function build(): SecurityScheme
     {

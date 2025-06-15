@@ -1,6 +1,7 @@
 <?php
 
 arch()
+    ->coversNothing()
     ->expect('MohammadAlavi\ObjectOrientedJSONSchema')
     ->toOnlyBeUsedIn([
         'MohammadAlavi\ObjectOrientedJSONSchema',

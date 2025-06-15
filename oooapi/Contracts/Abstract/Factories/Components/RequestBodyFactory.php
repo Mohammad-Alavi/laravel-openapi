@@ -3,14 +3,14 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Reusable;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 
-abstract class ReusableResponseFactory extends Reusable
+abstract class RequestBodyFactory extends Reusable
 {
     final protected static function componentNamespace(): string
     {
-        return '/responses';
+        return '/requestBodies';
     }
 
-    abstract public function build(): Response;
+    abstract public function build(): RequestBody;
 }

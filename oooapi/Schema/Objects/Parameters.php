@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableParameterFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
@@ -17,7 +17,7 @@ final class Parameters extends Generatable
         $this->parameters = $parameter;
     }
 
-    public static function create(Parameter|ReusableParameterFactory|self ...$parameter): self
+    public static function create(Parameter|ParameterFactory|self ...$parameter): self
     {
         $selfParams = collect($parameter)
             ->filter(static fn ($param): bool => $param instanceof self)
@@ -30,7 +30,7 @@ final class Parameters extends Generatable
             ->map(
                 static fn (
                     $param,
-                ): Reference|self|Parameter => $param instanceof ReusableParameterFactory
+                ): Reference|self|Parameter => $param instanceof ParameterFactory
                     ? $param::reference()
                     : $param,
             )

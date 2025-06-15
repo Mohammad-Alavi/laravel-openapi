@@ -2,6 +2,6 @@
 
 namespace Tests\Doubles\Stubs\Attributes;
 
-class CallbackFactoryInvalid
+class TestRequestBodyFactoryInvalid
 {
 }

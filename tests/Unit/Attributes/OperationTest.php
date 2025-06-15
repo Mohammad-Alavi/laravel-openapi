@@ -1,7 +1,7 @@
 <?php
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
-use Tests\Doubles\Stubs\Attributes\SecuritySchemeFactory;
+use Tests\Doubles\Stubs\Attributes\TestSecuritySchemeFactory;
 
 describe('Operation', function (): void {
     it('can be created with no parameters', function (): void {
@@ -21,7 +21,7 @@ describe('Operation', function (): void {
         $operation = new Operation(
             id: 'id',
             tags: 'tags',
-            security: SecuritySchemeFactory::class,
+            security: TestSecuritySchemeFactory::class,
             method: 'method',
             servers: 'servers',
             summary: 'summary',
@@ -31,7 +31,7 @@ describe('Operation', function (): void {
 
         expect($operation->id)->toBe('id')
             ->and($operation->tags)->toBe('tags')
-            ->and($operation->security)->toBe(SecuritySchemeFactory::class)
+            ->and($operation->security)->toBe(TestSecuritySchemeFactory::class)
             ->and($operation->method)->toBe('method')
             ->and($operation->servers)->toBe('servers')
             ->and($operation->summary)->toBe('summary')

@@ -10,10 +10,11 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\Int
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\NullRestrictor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\NumberRestrictor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\ObjectRestrictor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\RefRestrictor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\StringRestrictor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 
-class StrictFluentDescriptor extends LooseFluentDescriptor implements NullRestrictor, BooleanRestrictor, StringRestrictor, IntegerRestrictor, NumberRestrictor, ObjectRestrictor, ArrayRestrictor, ConstantRestrictor, EnumRestrictor
+class StrictFluentDescriptor extends LooseFluentDescriptor implements RefRestrictor, NullRestrictor, BooleanRestrictor, StringRestrictor, IntegerRestrictor, NumberRestrictor, ObjectRestrictor, ArrayRestrictor, ConstantRestrictor, EnumRestrictor
 {
     public static function null(): NullRestrictor
     {

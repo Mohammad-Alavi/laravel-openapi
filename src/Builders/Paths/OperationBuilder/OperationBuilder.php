@@ -39,7 +39,11 @@ final readonly class OperationBuilder
 
         $operationId = $operation?->id;
         $tags = $this->tagBuilder->build(Arr::wrap($operation?->tags));
-        $security = null !== $operation?->security && '' !== $operation?->security && '0' !== $operation?->security ? $this->securityBuilder->build($operation?->security) : null;
+        if (!is_null($operation?->security) && '' !== $operation?->security && '0' !== $operation?->security) {
+            $security = $this->securityBuilder->build($operation?->security);
+        } else {
+            $security = null;
+        }
         $method = $operation?->method ?? Str::lower($routeInfo->method());
         $summary = $operation?->summary;
         $description = $operation?->description;
@@ -52,7 +56,7 @@ final readonly class OperationBuilder
         $responses = $routeInfo->responsesAttribute() instanceof Responses
             ? $this->responsesBuilder->build($routeInfo->responsesAttribute())
             : null;
-        $callbacks = $this->callbackBuilder->build($routeInfo);
+        $callbacks = $this->callbackBuilder->build($routeInfo->callbackAttributes());
 
         $operation = Operation::create()
             ->action($method)

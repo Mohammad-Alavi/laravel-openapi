@@ -2,26 +2,22 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders;
 
+use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Callback as CallbackAttribute;
-use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableCallbackFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 
 class CallbackBuilder
 {
-    public function build(RouteInfo $routeInfo): array
+    public function build(Collection $callbacks): array
     {
-        return $routeInfo->callbackAttributes()
-            ->map(static function (CallbackAttribute $callbackAttribute) {
-                /** @var ReusableCallbackFactory $factory */
-                $factory = app($callbackAttribute->factory);
+        return $callbacks->map(
+            static function (CallbackAttribute $callbackAttribute) {
+                /** @var CallbackFactory $factory */
+                $factory = $callbackAttribute->factory;
 
-                if ($factory instanceof ReusableCallbackFactory) {
-                    return $factory::reference();
-                }
-
-                return $factory->build();
-            })
-            ->values()
+                return $factory::create();
+            },
+        )->values()
             ->toArray();
     }
 }

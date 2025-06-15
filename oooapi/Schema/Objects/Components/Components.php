@@ -2,11 +2,11 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableCallbackFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableParameterFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableRequestBodyFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableResponseFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\LinkEntry;
@@ -17,19 +17,19 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
 final class Components extends ExtensibleObject
 {
-    /** @var ReusableSchemaFactory[]|null */
+    /** @var SchemaFactory[]|null */
     private array|null $schemas = null;
 
-    /** @var ReusableResponseFactory[]|null */
+    /** @var ResponseFactory[]|null */
     private array|null $responses = null;
 
-    /** @var ReusableParameterFactory[]|null */
+    /** @var ParameterFactory[]|null */
     private array|null $parameters = null;
 
     /** @var Example[]|null */
     private array|null $examples = null;
 
-    /** @var ReusableRequestBodyFactory[]|null */
+    /** @var RequestBodyFactory[]|null */
     private array|null $requestBodies = null;
 
     /** @var Header[]|null */
@@ -40,7 +40,7 @@ final class Components extends ExtensibleObject
 
     private Links|null $links = null;
 
-    /** @var ReusableCallbackFactory[]|null */
+    /** @var CallbackFactory[]|null */
     private array|null $callbackFactories = null;
 
     private function __construct()
@@ -52,7 +52,7 @@ final class Components extends ExtensibleObject
         return new self();
     }
 
-    public function schemas(ReusableSchemaFactory ...$schema): self
+    public function schemas(SchemaFactory ...$schema): self
     {
         $clone = clone $this;
 
@@ -61,7 +61,7 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
-    public function responses(ReusableResponseFactory ...$reusableResponseFactory): self
+    public function responses(ResponseFactory ...$reusableResponseFactory): self
     {
         $clone = clone $this;
 
@@ -70,7 +70,7 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
-    public function parameters(ReusableParameterFactory ...$reusableParameterFactory): self
+    public function parameters(ParameterFactory ...$reusableParameterFactory): self
     {
         $clone = clone $this;
 
@@ -88,7 +88,7 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
-    public function requestBodies(ReusableRequestBodyFactory ...$reusableRequestBodyFactory): self
+    public function requestBodies(RequestBodyFactory ...$reusableRequestBodyFactory): self
     {
         $clone = clone $this;
 
@@ -124,7 +124,7 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
-    public function callbacks(ReusableCallbackFactory ...$reusableCallbackFactory): self
+    public function callbacks(CallbackFactory ...$reusableCallbackFactory): self
     {
         $clone = clone $this;
 

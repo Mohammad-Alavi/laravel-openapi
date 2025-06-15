@@ -6,7 +6,7 @@ use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\Parame
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
-use Tests\Doubles\Stubs\Attributes\ParameterFactory;
+use Tests\Doubles\Stubs\Attributes\TestParameterFactory;
 use Tests\Doubles\Stubs\Collectors\Paths\Operations\TestController;
 
 describe('ParameterBuilder', function (): void {
@@ -15,7 +15,7 @@ describe('ParameterBuilder', function (): void {
             Route::get('/example', static fn (): string => 'example'),
         );
         $routeInformation->actionAttributes = collect([
-            new ParameterAttribute(ParameterFactory::class),
+            new ParameterAttribute(TestParameterFactory::class),
         ]);
         $builder = new ParametersBuilder();
 
@@ -40,7 +40,7 @@ describe('ParameterBuilder', function (): void {
             ->and($urlParam)->toBeInstanceOf(Parameter::class);
     })->with([
         'with action params' => [
-            'params' => [new ParameterAttribute(ParameterFactory::class)],
+            'params' => [new ParameterAttribute(TestParameterFactory::class)],
             'count' => 5,
         ],
         'without action params' => [

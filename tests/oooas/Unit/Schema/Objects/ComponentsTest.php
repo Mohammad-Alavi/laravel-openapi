@@ -2,11 +2,11 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableCallbackFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableParameterFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableRequestBodyFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableResponseFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
@@ -30,19 +30,19 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Schemes\Http;
 
 describe(class_basename(Components::class), function (): void {
     it('can be create with all parameters', function (): void {
-        $mock = \Mockery::mock(ReusableSchemaFactory::class);
+        $mock = \Mockery::mock(SchemaFactory::class);
         $mock->allows('name')
             ->andReturn('ExampleSchema');
         $mock->expects('build')
             ->andReturn(Schema::object());
 
-        $response = \Mockery::mock(ReusableResponseFactory::class);
+        $response = \Mockery::mock(ResponseFactory::class);
         $response->allows('name')
             ->andReturn('ReusableResponse');
         $response->expects('build')
             ->andReturn(Response::create(Description::create('Deleted')));
 
-        $parameter = \Mockery::mock(ReusableParameterFactory::class);
+        $parameter = \Mockery::mock(ParameterFactory::class);
         $parameter->allows('name')
             ->andReturn('Page');
         $parameter->expects('build')
@@ -56,7 +56,7 @@ describe(class_basename(Components::class), function (): void {
         $example = Example::create('Page')
             ->value(5);
 
-        $requestBody = \Mockery::mock(ReusableRequestBodyFactory::class);
+        $requestBody = \Mockery::mock(RequestBodyFactory::class);
         $requestBody->allows('name')
             ->andReturn('CreateResource');
         $requestBody->expects('build')
@@ -74,7 +74,7 @@ describe(class_basename(Components::class), function (): void {
 
         $link = Link::create();
 
-        $callback = \Mockery::mock(ReusableCallbackFactory::class);
+        $callback = \Mockery::mock(CallbackFactory::class);
         $callback->allows('name')
             ->andReturn('MyEvent');
         $callback->expects('build')

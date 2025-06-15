@@ -3,14 +3,14 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Reusable;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
 
-abstract class ReusableParameterFactory extends Reusable
+abstract class CallbackFactory extends Reusable
 {
     final protected static function componentNamespace(): string
     {
-        return '/parameters';
+        return '/callbacks';
     }
 
-    abstract public function build(): Parameter;
+    abstract public function build(): Callback;
 }

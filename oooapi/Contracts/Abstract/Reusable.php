@@ -2,29 +2,24 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\FluentDescriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\StrictFluentDescriptor;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldReuse;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields\Ref;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use Webmozart\Assert\Assert;
 
 abstract class Reusable implements \JsonSerializable
 {
-    final public static function new(): FluentDescriptor
+    final public static function new(): JSONSchema
     {
-        return StrictFluentDescriptor::withoutSchema()->ref(self::reference()->ref());
+        return Schema::ref(static::uri());
     }
 
-    final public static function reference(): Reference
+    private static function uri(): string
     {
-        $ref = self::baseNamespace() . static::componentNamespace() . '/' . static::name();
-
-        return Reference::create(
-            Ref::create($ref),
-        );
+        return self::baseNamespace() . static::componentNamespace() . '/' . static::name();
     }
 
     private static function baseNamespace(): string
@@ -43,18 +38,11 @@ abstract class Reusable implements \JsonSerializable
         return $key;
     }
 
-    final public static function create(): static
-    {
-        return new static();
-    }
-
-    abstract public function build(): OASObject|JSONSchema;
-
-    final public function jsonSerialize(): OASObject|JSONSchema|Reference
+    final public function jsonSerialize(): OASObject|JSONSchema
     {
         if (is_a($this, ShouldReuse::class)) {
             if ('/schemas' === static::componentNamespace()) {
-                return StrictFluentDescriptor::withoutSchema()->ref(self::reference()->ref());
+                return Schema::ref(static::uri());
             }
 
             return self::reference();
@@ -62,4 +50,18 @@ abstract class Reusable implements \JsonSerializable
 
         return $this->build();
     }
+
+    final public static function reference(): Reference
+    {
+        return Reference::create(
+            Ref::create(static::uri()),
+        );
+    }
+
+    final public static function create(): static
+    {
+        return new static();
+    }
+
+    abstract public function build(): OASObject|JSONSchema;
 }

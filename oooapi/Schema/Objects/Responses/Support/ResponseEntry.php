@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableResponseFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\DefaultResponse;
@@ -17,9 +17,9 @@ final readonly class ResponseEntry extends StringMapEntry
 {
     public static function create(
         DefaultResponse|HTTPStatusCode $name,
-        Response|ReusableResponseFactory|Reference $response,
+        Response|ResponseFactory|Reference $response,
     ): self {
-        if ($response instanceof ReusableResponseFactory) {
+        if ($response instanceof ResponseFactory) {
             return new self($name, $response::reference());
         }
 

@@ -10,11 +10,11 @@ use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\OperationBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
-use Tests\Doubles\Stubs\Attributes\CallbackFactory;
-use Tests\Doubles\Stubs\Attributes\ExtensionFactory;
-use Tests\Doubles\Stubs\Attributes\ParameterFactory;
-use Tests\Doubles\Stubs\Attributes\RequestBodyFactory;
-use Tests\Doubles\Stubs\Attributes\ResponsesFactory;
+use Tests\Doubles\Stubs\Attributes\TestCallbackFactory;
+use Tests\Doubles\Stubs\Attributes\TestExtensionFactory;
+use Tests\Doubles\Stubs\Attributes\TestParameterFactory;
+use Tests\Doubles\Stubs\Attributes\TestRequestBodyFactory;
+use Tests\Doubles\Stubs\Attributes\TestResponsesFactory;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleSingleSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Servers\ServerWithMultipleVariableFormatting;
 use Tests\Doubles\Stubs\Tags\TagWithExternalObjectDoc;
@@ -89,9 +89,9 @@ describe('OperationBuilder', function (): void {
                     Route::get('test', static fn (): string => 'test'),
                 );
                 $routeInformation->actionAttributes = collect([
-                    new Callback(CallbackFactory::class),
+                    new Callback(TestCallbackFactory::class),
                     new Collection('test'),
-                    new Extension(ExtensionFactory::class),
+                    new Extension(TestExtensionFactory::class),
                     new OperationAttribute(
                         id: 'test',
                         tags: [TagWithExternalObjectDoc::class],
@@ -102,9 +102,9 @@ describe('OperationBuilder', function (): void {
                         description: 'description',
                         deprecated: true,
                     ),
-                    new Parameters(ParameterFactory::class),
-                    new RequestBody(RequestBodyFactory::class),
-                    new Responses(ResponsesFactory::class),
+                    new Parameters(TestParameterFactory::class),
+                    new RequestBody(TestRequestBodyFactory::class),
+                    new Responses(TestResponsesFactory::class),
                 ]);
 
                 return [
@@ -130,7 +130,7 @@ describe('OperationBuilder', function (): void {
                                 ],
                             ],
                             [
-                                '$ref' => '#/components/parameters/TestReusableParameter',
+                                '$ref' => '#/components/parameters/TestParameter',
                             ],
                             [
                                 'name' => 'param_c',

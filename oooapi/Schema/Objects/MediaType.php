@@ -3,7 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\HasKey;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
@@ -20,7 +20,7 @@ final class MediaType extends ExtensibleObject implements HasKey
     public const MEDIA_TYPE_APPLICATION_X_WWW_FORM_URLENCODED = 'application/x-www-form-urlencoded';
 
     protected string|null $mediaType = null;
-    protected JSONSchema|ReusableSchemaFactory|null $schema = null;
+    protected JSONSchema|SchemaFactory|null $schema = null;
     protected Example|null $example = null;
 
     /** @var Example[]|null */
@@ -99,7 +99,7 @@ final class MediaType extends ExtensibleObject implements HasKey
             ->mediaType(self::MEDIA_TYPE_APPLICATION_X_WWW_FORM_URLENCODED);
     }
 
-    public function schema(JSONSchema|ReusableSchemaFactory|null $schema): self
+    public function schema(JSONSchema|SchemaFactory|null $schema): self
     {
         $clone = clone $this;
 

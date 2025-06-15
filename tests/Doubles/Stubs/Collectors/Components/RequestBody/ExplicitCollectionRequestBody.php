@@ -3,11 +3,11 @@
 namespace Tests\Doubles\Stubs\Collectors\Components\RequestBody;
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableRequestBodyFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 
 #[Collection('test')]
-class ExplicitCollectionRequestBody extends ReusableRequestBodyFactory
+class ExplicitCollectionRequestBody extends RequestBodyFactory
 {
     public function build(): RequestBody
     {

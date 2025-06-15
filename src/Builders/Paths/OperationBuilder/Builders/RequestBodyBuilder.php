@@ -2,15 +2,15 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders;
 
-use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody as RequestBodyAttribute;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableRequestBodyFactory;
+use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 
 class RequestBodyBuilder
 {
-    public function build(RequestBodyAttribute $requestBodyAttribute): ReusableRequestBodyFactory
+    public function build(RequestBody $requestBody): RequestBodyFactory
     {
-        /** @var ReusableRequestBodyFactory $factory */
-        $factory = app($requestBodyAttribute->factory);
+        /** @var RequestBodyFactory $factory */
+        $factory = $requestBody->factory;
 
         return $factory::create();
     }

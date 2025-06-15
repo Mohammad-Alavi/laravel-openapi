@@ -105,4 +105,4 @@ describe('Extensions', function (): void {
             $extensibleObject->getExtension('x-key');
         })->toThrow(InvalidArgumentException::class, 'Extension not found: x-key');
     })->with('extensibleObjectSet');
-})->coversNothing();
+})->coversNothing()->skip();

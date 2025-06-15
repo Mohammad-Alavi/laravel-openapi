@@ -10,21 +10,21 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\Int
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\NullRestrictor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\NumberRestrictor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\ObjectRestrictor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\RefRestrictor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\SharedRestrictor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\StringRestrictor;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\StrictFluentDescriptor;
 
 final class Schema
 {
     public static function null(): NullRestrictor
     {
-        return StrictFluentDescriptor::withoutSchema()->type(Type::null());
+        return StrictFluentDescriptor::null();
     }
 
     public static function boolean(): BooleanRestrictor
     {
-        return StrictFluentDescriptor::withoutSchema()->type(Type::boolean());
+        return StrictFluentDescriptor::boolean();
     }
 
     public static function string(): StringRestrictor
@@ -60,6 +60,11 @@ final class Schema
     public static function enum(mixed ...$value): EnumRestrictor
     {
         return StrictFluentDescriptor::enumerator(...$value);
+    }
+
+    public static function ref(string $ref): RefRestrictor
+    {
+        return StrictFluentDescriptor::withoutSchema()->ref($ref);
     }
 
     public static function oneOf(StrictFluentDescriptor ...$schemas): SharedRestrictor

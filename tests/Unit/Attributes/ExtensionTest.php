@@ -1,8 +1,8 @@
 <?php
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Extension;
-use Tests\Doubles\Stubs\Attributes\ExtensionFactory;
-use Tests\Doubles\Stubs\Attributes\ExtensionFactoryInvalid;
+use Tests\Doubles\Stubs\Attributes\TestExtensionFactory;
+use Tests\Doubles\Stubs\Attributes\TestExtensionFactoryInvalid;
 
 describe('Extension', function (): void {
     it('can handle null factory', function (): void {
@@ -21,13 +21,13 @@ describe('Extension', function (): void {
     });
 
     it('can set valid factory', function (): void {
-        $extension = new Extension(factory: ExtensionFactory::class);
-        expect($extension->factory)->toBe(ExtensionFactory::class);
+        $extension = new Extension(factory: TestExtensionFactory::class);
+        expect($extension->factory)->toBe(TestExtensionFactory::class);
     });
 
     it('can handle invalid factory', function (): void {
         expect(function (): void {
-            new Extension(factory: ExtensionFactoryInvalid::class);
+            new Extension(factory: TestExtensionFactoryInvalid::class);
         })->toThrow(InvalidArgumentException::class);
     });
 

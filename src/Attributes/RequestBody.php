@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Attributes;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableRequestBodyFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 
 #[\Attribute(\Attribute::TARGET_METHOD)]
 final readonly class RequestBody
@@ -15,7 +15,7 @@ final readonly class RequestBody
             ? $factory
             : app()->getNamespace() . 'OpenApi\\RequestBodies\\' . $factory;
 
-        if (!is_a($this->factory, ReusableRequestBodyFactory::class, true)) {
+        if (!is_a($this->factory, RequestBodyFactory::class, true)) {
             throw new \InvalidArgumentException('Factory class must be an instance of RequestBodyFactory');
         }
     }

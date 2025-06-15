@@ -2,10 +2,11 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
 
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
@@ -37,7 +38,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
     protected ExternalDocumentation|null $externalDocs = null;
     protected string|null $operationId = null;
     protected Parameters|null $parameterCollection = null;
-    protected RequestBody|Reference|null $requestBody = null;
+    protected RequestBody|RequestBodyFactory|null $requestBody = null;
     protected Responses|null $responses = null;
     protected bool|null $deprecated = null;
     protected Security|null $security = null;
@@ -46,7 +47,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
     /** @var Server[]|null */
     protected array|null $servers = null;
 
-    /** @var Callback[]|null */
+    /** @var (Callback|CallbackFactory)[]|null */
     protected array|null $callbacks = null;
 
     public static function get(): static
@@ -165,7 +166,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function requestBody(RequestBody|Reference|null $requestBody): static
+    public function requestBody(RequestBody|RequestBodyFactory|null $requestBody): static
     {
         $clone = clone $this;
 
@@ -219,7 +220,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function callbacks(Callback ...$callback): static
+    public function callbacks(Callback|CallbackFactory ...$callback): static
     {
         $clone = clone $this;
 
@@ -232,7 +233,12 @@ class Operation extends ExtensibleObject implements SimpleCreator
     {
         $callbacks = [];
         foreach ($this->callbacks ?? [] as $callback) {
-            $callbacks[$callback->key()] = $callback;
+            if ($callback instanceof CallbackFactory) {
+                $object = $callback->build();
+                $callbacks[$object->key()] = $object;
+            } else {
+                $callbacks[$callback->key()] = $callback;
+            }
         }
 
         return Arr::filter([

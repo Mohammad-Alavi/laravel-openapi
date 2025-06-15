@@ -2,11 +2,16 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Attributes;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableCallbackFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 
 #[\Attribute]
 final readonly class Callback
 {
+    /**
+     * The factory class that will be used to create the callback.
+     *
+     * @var class-string<CallbackFactory>
+     */
     public string $factory;
 
     // TODO: these should be made readonly and public
@@ -15,8 +20,8 @@ final readonly class Callback
     {
         $this->factory = class_exists($factory) ? $factory : app()->getNamespace() . 'OpenApi\\Callbacks\\' . $factory;
 
-        if (!is_a($this->factory, ReusableCallbackFactory::class, true)) {
-            throw new \InvalidArgumentException('Factory class must be an instance of ' . ReusableCallbackFactory::class);
+        if (!is_a($this->factory, CallbackFactory::class, true)) {
+            throw new \InvalidArgumentException('Factory class must be an instance of ' . CallbackFactory::class);
         }
     }
 }

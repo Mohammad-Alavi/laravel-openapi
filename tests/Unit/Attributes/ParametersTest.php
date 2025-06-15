@@ -1,18 +1,18 @@
 <?php
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Parameters;
-use Tests\Doubles\Stubs\Attributes\ParameterFactory;
-use Tests\Doubles\Stubs\Attributes\ParametersFactoryInvalid;
+use Tests\Doubles\Stubs\Attributes\TestParameterFactory;
+use Tests\Doubles\Stubs\Attributes\TestParametersFactoryInvalid;
 
 describe('Parameters', function (): void {
     it('can set valid factory', function (): void {
-        $parameters = new Parameters(factory: ParameterFactory::class);
-        expect($parameters->factory)->toBe(ParameterFactory::class);
+        $parameters = new Parameters(factory: TestParameterFactory::class);
+        expect($parameters->factory)->toBe(TestParameterFactory::class);
     });
 
     it('can handle invalid factory', function (): void {
         expect(function (): void {
-            new Parameters(factory: ParametersFactoryInvalid::class);
+            new Parameters(factory: TestParametersFactoryInvalid::class);
         })->toThrow(InvalidArgumentException::class);
     });
 

@@ -2,7 +2,10 @@
 
 namespace Tests\Doubles\Stubs\Petstore;
 
-use MohammadAlavi\LaravelOpenApi\Attributes as OpenAPI;
+use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
+use MohammadAlavi\LaravelOpenApi\Attributes\Parameters;
+use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
+use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
 use Tests\Doubles\Stubs\Petstore\Factories\Responses\MultiResponseMixedWithReusable;
 use Tests\Doubles\Stubs\Petstore\Factories\Responses\SingleResponse;
 use Tests\Doubles\Stubs\Petstore\Factories\Responses\SingleResponseUsingReusable;
@@ -13,23 +16,23 @@ use Tests\Doubles\Stubs\Petstore\Security\ExampleSingleSecurityRequirementSecuri
 use Tests\Doubles\Stubs\Petstore\Tags\AnotherPetTag;
 use Tests\Doubles\Stubs\Petstore\Tags\PetTag;
 
-#[OpenAPI\PathItem]
+#[PathItem]
 class PetController
 {
-    #[OpenAPI\Operation(
+    #[Operation(
         id: 'listPets',
         tags: PetTag::class,
         summary: 'List all pets.',
         description: 'List all pets from the database.',
         deprecated: true,
     )]
-    #[OpenAPI\Parameters(ListPetsParameters::class)]
-    #[OpenAPI\Responses(SingleResponseUsingReusable::class)]
+    #[Parameters(ListPetsParameters::class)]
+    #[Responses(SingleResponseUsingReusable::class)]
     public function index(): void
     {
     }
 
-    #[OpenAPI\Operation(
+    #[Operation(
         id: 'multiPetTag',
         tags: [PetTag::class, AnotherPetTag::class],
         security: ExampleSingleSecurityRequirementSecurity::class,
@@ -37,26 +40,26 @@ class PetController
         description: 'List all pets from the database.',
         deprecated: false,
     )]
-    #[OpenAPI\Parameters(ListPetsParameters::class)]
-    #[OpenAPI\Responses(MultiResponseMixedWithReusable::class)]
+    #[Parameters(ListPetsParameters::class)]
+    #[Responses(MultiResponseMixedWithReusable::class)]
     public function multiPetTag(): void
     {
     }
 
-    #[OpenAPI\Operation(
+    #[Operation(
         id: 'nestedSecurityFirstTest',
         tags: [PetTag::class],
         security: ExampleSimpleMultiSecurityRequirementSecurity::class,
         summary: 'List all pets.',
         description: 'List all pets from the database.',
     )]
-    #[OpenAPI\Parameters(ListPetsParameters::class)]
-    #[OpenAPI\Responses(SingleResponse::class)]
+    #[Parameters(ListPetsParameters::class)]
+    #[Responses(SingleResponse::class)]
     public function nestedSecurityFirst(): void
     {
     }
 
-    #[OpenAPI\Operation(
+    #[Operation(
         id: 'nestedSecuritySecondTest',
         tags: AnotherPetTag::class,
         security: ExampleComplexMultiSecurityRequirementSecurity::class,

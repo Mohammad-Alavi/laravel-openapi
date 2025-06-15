@@ -9,7 +9,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStat
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 
-class ResponsesFactory extends ResponsesFactoryAbstract
+class TestResponsesFactory extends ResponsesFactoryAbstract
 {
     public function build(): Responses
     {

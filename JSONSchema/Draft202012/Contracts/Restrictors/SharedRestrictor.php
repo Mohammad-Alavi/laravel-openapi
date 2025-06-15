@@ -17,12 +17,11 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptions\Id
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptions\IsReadOnly;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptions\IsWriteOnly;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptions\OneOf;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptions\Ref;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptions\Schema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptions\Title;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptions\Vocabulary;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictor;
 
-interface SharedRestrictor extends Restrictor, Anchor, Comment, Defs, DynamicAnchor, DynamicRef, Id, Ref, Schema, Vocabulary, AllOf, AnyOf, OneOf, DefaultValue, Deprecated, Description, Examples, IsReadOnly, IsWriteOnly, Title
+interface SharedRestrictor extends Restrictor, Anchor, Comment, Defs, DynamicAnchor, DynamicRef, Id, Schema, Vocabulary, AllOf, AnyOf, OneOf, DefaultValue, Deprecated, Description, Examples, IsReadOnly, IsWriteOnly, Title
 {
 }

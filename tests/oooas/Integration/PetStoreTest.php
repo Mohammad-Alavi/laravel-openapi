@@ -5,7 +5,7 @@ namespace Tests\oooas\Integration;
 use Illuminate\Support\Facades\File;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ReusableSchemaFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
@@ -84,7 +84,7 @@ describe('PetStoreTest', function (): void {
             ),
         )->description(Description::create('maximum number of results to return'));
 
-        $animalReusable = new class extends ReusableSchemaFactory {
+        $animalReusable = new class extends SchemaFactory {
             public function build(): JSONSchema
             {
                 return Schema::object()
@@ -107,9 +107,9 @@ describe('PetStoreTest', function (): void {
             }
         };
 
-        $petReusable = new class($animalReusable) extends ReusableSchemaFactory {
+        $petReusable = new class($animalReusable) extends SchemaFactory {
             public function __construct(
-                private readonly ReusableSchemaFactory $animalReusable,
+                private readonly SchemaFactory $animalReusable,
             ) {
             }
 
@@ -135,7 +135,7 @@ describe('PetStoreTest', function (): void {
             }
         };
 
-        $errorReusable = new class extends ReusableSchemaFactory {
+        $errorReusable = new class extends SchemaFactory {
             public function build(): JSONSchema
             {
                 return Schema::object()
