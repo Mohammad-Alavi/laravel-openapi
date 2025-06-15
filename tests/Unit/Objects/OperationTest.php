@@ -1,7 +1,7 @@
 <?php
 
 // use MohammadAlavi\LaravelOpenApi\Builders\SecurityRequirementBuilder;
-// use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
+// use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 // use Tests\Doubles\Stubs\Objects\ASecuritySchemeFactory;
 // use Tests\Doubles\Stubs\Objects\BSecuritySchemeFactory;
 //

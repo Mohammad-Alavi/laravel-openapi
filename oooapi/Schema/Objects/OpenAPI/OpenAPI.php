@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Ext
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\OpenAPI as OpenAPIField;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;

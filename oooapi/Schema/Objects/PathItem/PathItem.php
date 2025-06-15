@@ -3,7 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Summary;

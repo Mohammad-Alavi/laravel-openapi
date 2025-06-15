@@ -2,7 +2,7 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description as ResponseDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;

@@ -3,7 +3,10 @@
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\URL as ExtURL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Description as OperationDescription;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Summary;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
@@ -60,10 +63,10 @@ describe('Operation', function (): void {
                         Name::create('Users'),
                         Description::create('Lorem ipsum'),
                     ),
-                )->summary('Lorem ipsum')
-                ->description('Dolar sit amet')
+                )->summary(Summary::create('Lorem ipsum'))
+                ->description(OperationDescription::create('Dolar sit amet'))
                 ->externalDocs(ExternalDocumentation::create(ExtURL::create('https://example.com/docs')))
-                ->operationId('users.show')
+                ->operationId(OperationId::create('users.show'))
                 ->parameters(
                     Parameters::create(
                         Parameter::query(

@@ -14,7 +14,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\L
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;

@@ -4,7 +4,7 @@ namespace MohammadAlavi\LaravelOpenApi\Builders\Paths;
 
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\OperationBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 
 final readonly class PathItemBuilder

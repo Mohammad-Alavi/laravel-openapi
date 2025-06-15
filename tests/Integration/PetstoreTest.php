@@ -187,7 +187,6 @@ describe('PetStore', function (): void {
                         'description' => 'Forbidden',
                     ],
                 ],
-                'deprecated' => false,
                 'security' => [
                     [
                         'ExampleHTTPBearerSecurityScheme' => [],

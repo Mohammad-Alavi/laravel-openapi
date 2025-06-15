@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Parameters as ParametersAttribute;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Collections\ParametersFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
@@ -56,7 +57,11 @@ class ParametersBuilder
                     SchemaSerializedPath::create($schema),
                 )->required();
             });
-        $parameters = $parameters->filter(static fn (Parameter|null $parameter): bool => !is_null($parameter));
+        $parameters = $parameters->filter(
+            static function (Parameter|ParameterFactory|null $parameter): bool {
+                return !is_null($parameter);
+            },
+        );
 
         return Parameters::create(...$parameters->toArray());
     }

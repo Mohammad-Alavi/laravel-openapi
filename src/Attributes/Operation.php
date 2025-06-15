@@ -23,14 +23,14 @@ final readonly class Operation
      * @param class-string<ServerFactory>|array<array-key, class-string<ServerFactory>>|null $servers
      */
     public function __construct(
-        public string|null $id = null,
+        public string|null       $operationId = null,
         public string|array|null $tags = null,
-        public string|null $security = null,
-        public string|null $method = null,
+        public string|null       $security = null,
+        public string|null       $method = null,
         public string|array|null $servers = null,
-        public string|null $summary = null,
-        public string|null $description = null,
-        public bool|null $deprecated = null,
+        public string|null       $summary = null,
+        public string|null       $description = null,
+        public bool|null         $deprecated = null,
     ) {
         // TODO: maybe we should validate class-strings like $security, $tags, $servers here?
         // If not here, then where?

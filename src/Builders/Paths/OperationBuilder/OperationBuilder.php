@@ -15,8 +15,10 @@ use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\Securi
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\ServerBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\TagBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Summary;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 
 final readonly class OperationBuilder
 {
@@ -35,20 +37,34 @@ final readonly class OperationBuilder
     // TODO: maybe we can abstract the usage of RouteInformation everywhere and use an interface instead
     public function build(RouteInfo $routeInfo): Operation
     {
-        $operation = $routeInfo->operationAttribute();
+        $servers = null;
+        $operation = Operation::create();
+        $operationAttr = $routeInfo->operationAttribute();
 
-        $operationId = $operation?->id;
-        $tags = $this->tagBuilder->build(Arr::wrap($operation?->tags));
-        if (!is_null($operation?->security) && '' !== $operation?->security && '0' !== $operation?->security) {
-            $security = $this->securityBuilder->build($operation?->security);
-        } else {
-            $security = null;
+        if (!is_null($operationAttr)) {
+            $operation = $operation->tags(...$this->tagBuilder->build(Arr::wrap($operationAttr->tags)));
+            if (!is_null($operationAttr->summary)) {
+                $operation = $operation->summary(Summary::create($operationAttr->summary));
+            }
+            if (!is_null($operationAttr->description)) {
+                $operation = $operation->description(Description::create($operationAttr->description));
+            }
+            if (!is_null($operationAttr->operationId)) {
+                $operation = $operation->operationId(OperationId::create($operationAttr->operationId));
+            }
+            if (
+                !is_null($operationAttr->security)
+                && '' !== $operationAttr->security
+                && '0' !== $operationAttr->security
+            ) {
+                $operation = $operation->security($this->securityBuilder->build($operationAttr->security));
+            }
+            if (true === $operationAttr->deprecated) {
+                $operation = $operation->deprecated();
+            }
+            $operation = $operation->action($operationAttr->method ?? Str::lower($routeInfo->method()));
+            $servers = $this->serverBuilder->build(Arr::wrap($operationAttr->servers));
         }
-        $method = $operation?->method ?? Str::lower($routeInfo->method());
-        $summary = $operation?->summary;
-        $description = $operation?->description;
-        $deprecated = $operation?->deprecated;
-        $servers = $this->serverBuilder->build(Arr::wrap($operation?->servers));
         $parameterCollection = $this->parametersBuilder->build($routeInfo);
         $requestBody = $routeInfo->requestBodyAttribute() instanceof RequestBody
             ? $this->requestBodyBuilder->build($routeInfo->requestBodyAttribute())
@@ -58,21 +74,11 @@ final readonly class OperationBuilder
             : null;
         $callbacks = $this->callbackBuilder->build($routeInfo->callbackAttributes());
 
-        $operation = Operation::create()
-            ->action($method)
-            ->tags(...$tags)
-            ->summary($summary)
-            ->description($description)
-            ->operationId($operationId)
-            ->deprecated($deprecated)
+        $operation = $operation->servers(...$servers)
             ->parameters($parameterCollection)
             ->requestBody($requestBody)
             ->responses($responses)
-            ->callbacks(...$callbacks)
-            ->servers(...$servers);
-        if ($security instanceof Security) {
-            $operation = $operation->security($security);
-        }
+            ->callbacks(...$callbacks);
 
         $this->extensionBuilder->build($operation, $routeInfo->extensionAttributes());
 

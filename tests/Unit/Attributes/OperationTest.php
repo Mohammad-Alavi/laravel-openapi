@@ -7,7 +7,7 @@ describe('Operation', function (): void {
     it('can be created with no parameters', function (): void {
         $operation = new Operation();
 
-        expect($operation->id)->toBeNull()
+        expect($operation->operationId)->toBeNull()
             ->and($operation->tags)->toBeNull()
             ->and($operation->security)->toBeNull()
             ->and($operation->method)->toBeNull()
@@ -19,7 +19,7 @@ describe('Operation', function (): void {
 
     it('can be created with all parameters', function (): void {
         $operation = new Operation(
-            id: 'id',
+            operationId: 'id',
             tags: 'tags',
             security: TestSecuritySchemeFactory::class,
             method: 'method',
@@ -29,7 +29,7 @@ describe('Operation', function (): void {
             deprecated: true,
         );
 
-        expect($operation->id)->toBe('id')
+        expect($operation->operationId)->toBe('id')
             ->and($operation->tags)->toBe('tags')
             ->and($operation->security)->toBe(TestSecuritySchemeFactory::class)
             ->and($operation->method)->toBe('method')

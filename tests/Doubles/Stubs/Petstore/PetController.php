@@ -20,7 +20,7 @@ use Tests\Doubles\Stubs\Petstore\Tags\PetTag;
 class PetController
 {
     #[Operation(
-        id: 'listPets',
+        operationId: 'listPets',
         tags: PetTag::class,
         summary: 'List all pets.',
         description: 'List all pets from the database.',
@@ -33,7 +33,7 @@ class PetController
     }
 
     #[Operation(
-        id: 'multiPetTag',
+        operationId: 'multiPetTag',
         tags: [PetTag::class, AnotherPetTag::class],
         security: ExampleSingleSecurityRequirementSecurity::class,
         summary: 'List all pets.',
@@ -47,7 +47,7 @@ class PetController
     }
 
     #[Operation(
-        id: 'nestedSecurityFirstTest',
+        operationId: 'nestedSecurityFirstTest',
         tags: [PetTag::class],
         security: ExampleSimpleMultiSecurityRequirementSecurity::class,
         summary: 'List all pets.',
@@ -60,7 +60,7 @@ class PetController
     }
 
     #[Operation(
-        id: 'nestedSecuritySecondTest',
+        operationId: 'nestedSecuritySecondTest',
         tags: AnotherPetTag::class,
         security: ExampleComplexMultiSecurityRequirementSecurity::class,
         summary: 'List all pets.',

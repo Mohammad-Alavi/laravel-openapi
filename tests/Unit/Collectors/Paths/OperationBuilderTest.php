@@ -35,7 +35,7 @@ describe('OperationBuilder', function (): void {
                 );
                 $routeInformation->actionAttributes = collect([
                     new OperationAttribute(
-                        id: 'test',
+                        operationId: 'test',
                         tags: [],
                         security: null,
                         method: 'get',
@@ -52,7 +52,6 @@ describe('OperationBuilder', function (): void {
                         'summary' => '',
                         'description' => '',
                         'operationId' => 'test',
-                        'deprecated' => false,
                     ],
                 ];
             },
@@ -62,7 +61,7 @@ describe('OperationBuilder', function (): void {
                 );
                 $routeInformation->actionAttributes = collect([
                     new OperationAttribute(
-                        id: 'test',
+                        operationId: 'test',
                         tags: [TagWithoutExternalDoc::class],
                         security: null,
                         method: 'post',
@@ -93,7 +92,7 @@ describe('OperationBuilder', function (): void {
                     new Collection('test'),
                     new Extension(TestExtensionFactory::class),
                     new OperationAttribute(
-                        id: 'test',
+                        operationId: 'test',
                         tags: [TagWithExternalObjectDoc::class],
                         security: ExampleSingleSecurityRequirementSecurity::class,
                         method: 'get',
@@ -147,16 +146,16 @@ describe('OperationBuilder', function (): void {
                             ],
                         ],
                         'deprecated' => true,
-                        /*
-                         * TODO: docs: it seems SecurityScheme object id is mandatory and if we dont set it,
-                         *  it will be null in the SecurityRequirement object $securityScheme field
-                         *  Based on OAS spec security requirement cant not have a name
-                         */
                         'security' => [
                             [
                                 'ExampleHTTPBearerSecurityScheme' => [],
                             ],
                         ],
+                        /*
+                         * TODO: docs: it seems SecurityScheme object id is mandatory and if we dont set it,
+                         *  it will be null in the SecurityRequirement object $securityScheme field
+                         *  Based on OAS spec security requirement cant not have a name
+                         */
                         'servers' => [
                             [
                                 'url' => 'https://example.com',

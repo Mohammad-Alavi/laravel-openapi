@@ -1,8 +1,9 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
 class Paths extends ExtensibleObject

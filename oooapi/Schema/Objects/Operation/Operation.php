@@ -1,23 +1,26 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Deprecated;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Summary;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 
-class Operation extends ExtensibleObject implements SimpleCreator
+final class Operation extends ExtensibleObject
 {
-    use SimpleCreatorTrait;
-
     // TODO: refactor all const everywhere to enum
     public const ACTION_GET = 'get';
     public const ACTION_PUT = 'put';
@@ -28,34 +31,35 @@ class Operation extends ExtensibleObject implements SimpleCreator
     public const ACTION_PATCH = 'patch';
     public const ACTION_TRACE = 'trace';
 
-    protected string|null $method = null;
-
+    private string|null $method = null;
     /** @var string[]|null */
-    protected array|null $tags = null;
-
-    protected string|null $summary = null;
-    protected string|null $description = null;
-    protected ExternalDocumentation|null $externalDocs = null;
-    protected string|null $operationId = null;
-    protected Parameters|null $parameterCollection = null;
-    protected RequestBody|RequestBodyFactory|null $requestBody = null;
-    protected Responses|null $responses = null;
-    protected bool|null $deprecated = null;
-    protected Security|null $security = null;
-    protected bool|null $noSecurity = null;
-
+    private array|null $tags = null;
+    private Summary|null $summary = null;
+    private Description|null $description = null;
+    private ExternalDocumentation|null $externalDocs = null;
+    private OperationId|null $operationId = null;
+    private Parameters|null $parameterCollection = null;
+    private RequestBody|RequestBodyFactory|null $requestBody = null;
+    private Responses|null $responses = null;
+    private Deprecated|null $deprecated = null;
+    private Security|null $security = null;
+    private bool|null $noSecurity = null;
     /** @var Server[]|null */
-    protected array|null $servers = null;
-
+    private array|null $servers = null;
     /** @var (Callback|CallbackFactory)[]|null */
-    protected array|null $callbacks = null;
+    private array|null $callbacks = null;
 
-    public static function get(): static
+    public static function create(): self
     {
-        return static::create()->action(static::ACTION_GET);
+        return new self();
     }
 
-    public function action(string $action): static
+    public static function get(): self
+    {
+        return self::create()->action(self::ACTION_GET);
+    }
+
+    public function action(string $action): self
     {
         $clone = clone $this;
 
@@ -64,39 +68,39 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public static function put(): static
+    public static function put(): self
     {
-        return static::create()->action(static::ACTION_PUT);
+        return self::create()->action(self::ACTION_PUT);
     }
 
-    public static function post(): static
+    public static function post(): self
     {
-        return static::create()->action(static::ACTION_POST);
+        return self::create()->action(self::ACTION_POST);
     }
 
-    public static function delete(): static
+    public static function delete(): self
     {
-        return static::create()->action(static::ACTION_DELETE);
+        return self::create()->action(self::ACTION_DELETE);
     }
 
-    public static function options(): static
+    public static function options(): self
     {
-        return static::create()->action(static::ACTION_OPTIONS);
+        return self::create()->action(self::ACTION_OPTIONS);
     }
 
-    public static function head(): static
+    public static function head(): self
     {
-        return static::create()->action(static::ACTION_HEAD);
+        return self::create()->action(self::ACTION_HEAD);
     }
 
-    public static function patch(): static
+    public static function patch(): self
     {
-        return static::create()->action(static::ACTION_PATCH);
+        return self::create()->action(self::ACTION_PATCH);
     }
 
-    public static function trace(): static
+    public static function trace(): self
     {
-        return static::create()->action(static::ACTION_TRACE);
+        return self::create()->action(self::ACTION_TRACE);
     }
 
     public function method(): string
@@ -104,7 +108,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $this->method;
     }
 
-    public function tags(Tag|string ...$tags): static
+    public function tags(Tag|string ...$tags): self
     {
         $allStringTags = array_map(static function (Tag|string $tag): string {
             if ($tag instanceof Tag) {
@@ -121,7 +125,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function summary(string|null $summary): static
+    public function summary(Summary $summary): self
     {
         $clone = clone $this;
 
@@ -130,7 +134,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function description(string|null $description): static
+    public function description(Description $description): self
     {
         $clone = clone $this;
 
@@ -139,7 +143,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function externalDocs(ExternalDocumentation|null $externalDocs): static
+    public function externalDocs(ExternalDocumentation $externalDocs): self
     {
         $clone = clone $this;
 
@@ -148,7 +152,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function operationId(string|null $operationId): static
+    public function operationId(OperationId $operationId): self
     {
         $clone = clone $this;
 
@@ -157,7 +161,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function parameters(Parameters $parameterCollection): static
+    public function parameters(Parameters $parameterCollection): self
     {
         $clone = clone $this;
 
@@ -166,7 +170,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function requestBody(RequestBody|RequestBodyFactory|null $requestBody): static
+    public function requestBody(RequestBody|RequestBodyFactory|null $requestBody): self
     {
         $clone = clone $this;
 
@@ -175,7 +179,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function responses(Responses|null $responses): static
+    public function responses(Responses|null $responses): self
     {
         $clone = clone $this;
 
@@ -184,16 +188,16 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function deprecated(bool|null $deprecated = true): static
+    public function deprecated(): self
     {
         $clone = clone $this;
 
-        $clone->deprecated = $deprecated;
+        $clone->deprecated = Deprecated::yes();
 
         return $clone;
     }
 
-    public function security(Security $security): static
+    public function security(Security $security): self
     {
         $clone = clone $this;
 
@@ -202,7 +206,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function noSecurity(): static
+    public function noSecurity(): self
     {
         $clone = clone $this;
 
@@ -211,7 +215,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function servers(Server ...$server): static
+    public function servers(Server ...$server): self
     {
         $clone = clone $this;
 
@@ -220,7 +224,7 @@ class Operation extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function callbacks(Callback|CallbackFactory ...$callback): static
+    public function callbacks(Callback|CallbackFactory ...$callback): self
     {
         $clone = clone $this;
 

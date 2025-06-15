@@ -17,7 +17,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Summary;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Description as ParamDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
@@ -26,7 +28,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRu
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameters;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description as ResponseDescription;
@@ -108,14 +110,14 @@ describe(class_basename(OpenAPI::class), function (): void {
         $operation = Operation::get()
             ->responses($responses)
             ->tags($tag)
-            ->summary('List all audits')
-            ->operationId('audits.index');
+            ->summary(Summary::create('List all audits'))
+            ->operationId(OperationId::class::create('audits.index'));
 
         $createAudit = Operation::post()
             ->responses($responses)
             ->tags($tag)
-            ->summary('Create an audit')
-            ->operationId('audits.store')
+            ->summary(Summary::create('Create an audit'))
+            ->operationId(OperationId::create('audits.store'))
             ->requestBody(RequestBody::create()->content(
                 MediaType::json()->schema($objectDescriptor),
             ));
@@ -126,8 +128,8 @@ describe(class_basename(OpenAPI::class), function (): void {
         $readAudit = Operation::get()
             ->responses($responses)
             ->tags($tag)
-            ->summary('View an audit')
-            ->operationId('audits.show')
+            ->summary(Summary::create('View an audit'))
+            ->operationId(OperationId::create('audits.show'))
             ->parameters(
                 Parameters::create(
                     Parameter::path(
