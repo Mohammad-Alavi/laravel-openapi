@@ -2,7 +2,7 @@
 
 namespace Tests\Doubles\Stubs\Petstore\Security;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Collections\SecurityFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\SecurityFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use Tests\Doubles\Stubs\Petstore\Security\SecurityRequirements\ExampleSingleApiKeySecurityRequirement;
 use Tests\Doubles\Stubs\Petstore\Security\SecurityRequirements\ExampleSingleBearerSecurityRequirement;

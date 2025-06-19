@@ -60,7 +60,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         array $expectations,
         array $securitySchemeFactories,
         array $globalSecurity,
-        string|array|null $pathSecurity,
+        string|null $pathSecurity,
     ): void {
         $components = Components::create()->securitySchemes(...$securitySchemeFactories);
 
@@ -106,7 +106,17 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         }
 
         $this->assertSame([
-            'openapi' => Version::V_3_1_0->value,
+            'openapi' => '3.1.1',
+            'info' => [
+                'title' => 'Example API',
+                'version' => '1.0',
+            ],
+            'jsonSchemaDialect' => 'https://spec.openapis.org/oas/3.1/dialect/base',
+            'servers' => [
+                [
+                    'url' => '/',
+                ],
+            ],
             'paths' => [
                 $route => $actionData,
             ], ...$collectionData,
@@ -610,7 +620,17 @@ describe(class_basename(SecurityBuilder::class), function (): void {
 
         // Assert that the generated JSON matches the expected JSON for this scenario
         $expected = [
-            'openapi' => Version::V_3_1_0->value,
+            'openapi' => '3.1.1',
+            'info' => [
+                'title' => 'Example API',
+                'version' => '1.0',
+            ],
+            'jsonSchemaDialect' => 'https://spec.openapis.org/oas/3.1/dialect/base',
+            'servers' => [
+                [
+                    'url' => '/',
+                ],
+            ],
             'paths' => [
                 '/foo' => [
                     'get' => [
@@ -811,7 +831,17 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             );
 
         $expected = [
-            'openapi' => Version::V_3_1_0->value,
+            'openapi' => '3.1.1',
+            'info' => [
+                'title' => 'Example API',
+                'version' => '1.0',
+            ],
+            'jsonSchemaDialect' => 'https://spec.openapis.org/oas/3.1/dialect/base',
+            'servers' => [
+                [
+                    'url' => '/',
+                ],
+            ],
             'paths' => [
                 '/foo' => [
                     'get' => [
@@ -877,7 +907,17 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             );
 
         $expected = [
-            'openapi' => Version::V_3_1_0->value,
+            'openapi' => '3.1.1',
+            'info' => [
+                'title' => 'Example API',
+                'version' => '1.0',
+            ],
+            'jsonSchemaDialect' => 'https://spec.openapis.org/oas/3.1/dialect/base',
+            'servers' => [
+                [
+                    'url' => '/',
+                ],
+            ],
             'paths' => [
                 '/foo' => [
                     'get' => [
