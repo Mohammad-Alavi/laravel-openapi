@@ -25,7 +25,7 @@ return [
                 // ExampleTag::class,
             ],
 
-            // TODO: add an example for security.
+            // TODO: add an example for security factory.
             'security' => null,
 
             // Non-standard attributes used by code/doc generation tools can be added here

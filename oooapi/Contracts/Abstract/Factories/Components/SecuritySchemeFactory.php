@@ -3,7 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Reusable;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 
 abstract class SecuritySchemeFactory extends Reusable
 {

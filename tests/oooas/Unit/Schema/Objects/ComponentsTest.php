@@ -26,7 +26,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStat
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Schemes\Http;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\Http;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 
 describe(class_basename(Components::class), function (): void {
     it('can be create with all parameters', function (): void {
@@ -69,7 +70,7 @@ describe(class_basename(Components::class), function (): void {
             ->andReturn('basic');
         $securityScheme->expects('build')
             ->andReturn(
-                Http::basic(),
+                SecurityScheme::http(Http::basic()),
             );
 
         $link = Link::create();

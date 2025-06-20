@@ -3,11 +3,11 @@
 namespace Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuth\Flows;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuth\Flows\AuthorizationCode;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuth\ScopeCollection;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Schemes\OAuth2;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\OAuthFlows;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Flows\AuthorizationCode;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\ScopeCollection;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\OAuth2;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 use Tests\Doubles\Stubs\Petstore\Security\Scopes\OrderItemScope;
 use Tests\Doubles\Stubs\Petstore\Security\Scopes\OrderPaymentScope;
 use Tests\Doubles\Stubs\Petstore\Security\Scopes\OrderScope;
@@ -18,18 +18,20 @@ class ExampleOAuth2AuthorizationCodeSecurityScheme extends SecuritySchemeFactory
 {
     public function build(): SecurityScheme
     {
-        return OAuth2::create(
-            Flows::create(
-                authorizationCode: AuthorizationCode::create(
-                    'https://example.com/oauth/authorize',
-                    'https://example.com/oauth/token',
-                    null,
-                    ScopeCollection::create(
-                        OrderScope::create(),
-                        OrderItemScope::create(),
-                        OrderPaymentScope::create(),
-                        OrderShippingAddressScope::create(),
-                        OrderShippingStatusScope::create(),
+        return SecurityScheme::oAuth2(
+            OAuth2::create(
+                OAuthFlows::create(
+                    authorizationCode: AuthorizationCode::create(
+                        'https://example.com/oauth/authorize',
+                        'https://example.com/oauth/token',
+                        null,
+                        ScopeCollection::create(
+                            OrderScope::create(),
+                            OrderItemScope::create(),
+                            OrderPaymentScope::create(),
+                            OrderShippingAddressScope::create(),
+                            OrderShippingStatusScope::create(),
+                        ),
                     ),
                 ),
             ),

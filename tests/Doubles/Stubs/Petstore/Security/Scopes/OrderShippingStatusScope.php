@@ -2,8 +2,8 @@
 
 namespace Tests\Doubles\Stubs\Petstore\Security\Scopes;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuth\Scope;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuth\ScopeFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Scope;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\ScopeFactory;
 
 final readonly class OrderShippingStatusScope extends ScopeFactory
 {

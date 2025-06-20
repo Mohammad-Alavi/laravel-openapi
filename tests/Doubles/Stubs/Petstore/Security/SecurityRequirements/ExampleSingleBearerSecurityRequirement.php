@@ -2,9 +2,9 @@
 
 namespace Tests\Doubles\Stubs\Petstore\Security\SecurityRequirements;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuth\SecurityRequirementFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Requirement;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\SecurityRequirementFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\RequiredSecurity;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\SecurityRequirement;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleHTTPBearerSecurityScheme;
 
 final readonly class ExampleSingleBearerSecurityRequirement extends SecurityRequirementFactory
@@ -12,7 +12,7 @@ final readonly class ExampleSingleBearerSecurityRequirement extends SecurityRequ
     public function build(): SecurityRequirement
     {
         return SecurityRequirement::create(
-            Requirement::create(
+            RequiredSecurity::create(
                 ExampleHTTPBearerSecurityScheme::create(),
             ),
         );

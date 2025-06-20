@@ -3,19 +3,19 @@
 namespace Tests\Doubles\Stubs\SecuritySchemes;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Enums\ApiKeyLocation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Schemes\ApiKey;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\ApiKey;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 
 class ApiKeySecuritySchemeFactory extends SecuritySchemeFactory
 {
-    public function build(): SecurityScheme
-    {
-        return ApiKey::create('header', ApiKeyLocation::QUERY, 'Api Key Security');
-    }
-
     public static function name(): string
     {
         return 'ApiKey';
+    }
+
+    public function build(): SecurityScheme
+    {
+        return SecurityScheme::apiKey(ApiKey::query('header'), Description::create('Api Key Security'));
     }
 }

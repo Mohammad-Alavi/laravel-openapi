@@ -3,8 +3,9 @@
 namespace Tests\Doubles\Stubs\SecuritySchemes;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Schemes\Http;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\Http;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 
 class JwtSecuritySchemeFactory extends SecuritySchemeFactory
 {
@@ -15,6 +16,6 @@ class JwtSecuritySchemeFactory extends SecuritySchemeFactory
 
     public function build(): SecurityScheme
     {
-        return Http::bearer('JWT Authentication', 'JWT');
+        return SecurityScheme::http(Http::bearer('JWT Authentication'), Description::create('JWT'));
     }
 }

@@ -36,8 +36,8 @@ final readonly class Generator
         $info = $this->infoBuilder->build($this->getConfigFor('info', $collection));
         $servers = $this->serverBuilder->build($this->getConfigFor('servers', $collection));
         $extensions = $this->getConfigFor('extensions', $collection);
-        $globalSecurity = Arr::get(config('openapi'), sprintf('collections.%s.security', $collection));
-        $security = $globalSecurity ? $this->securityBuilder->build($globalSecurity) : null;
+        $topLevelSecurity = Arr::get(config('openapi'), sprintf('collections.%s.security', $collection));
+        $security = $topLevelSecurity ? $this->securityBuilder->build($topLevelSecurity) : null;
         $paths = $this->pathsBuilder->build(
             $this->routeCollector->whereInCollection($collection),
         );

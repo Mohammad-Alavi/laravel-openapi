@@ -2,14 +2,16 @@
 
 namespace Tests\Unit\Collectors\Paths\Operations;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Container\CircularDependencyException;
 use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation as AttributesOperation;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\SecurityBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\OperationBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
-use MohammadAlavi\ObjectOrientedOpenAPI\Enums\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
@@ -21,7 +23,10 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
+use Tests\Doubles\Stubs\Petstore\Security\ExampleNoSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleSingleSecurityRequirementSecurity;
+use Tests\Doubles\Stubs\Petstore\Security\SecurityRequirements\ExampleSingleApiKeySecurityRequirement;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleApiKeySecurityScheme;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleHTTPBearerSecurityScheme;
 
@@ -31,8 +36,8 @@ describe(class_basename(SecurityBuilder::class), function (): void {
     {
         return [
             'type' => 'http',
-            'description' => 'Example Security',
             'scheme' => 'bearer',
+            'description' => 'Example Security',
         ];
     }
 
@@ -51,77 +56,88 @@ describe(class_basename(SecurityBuilder::class), function (): void {
     {
         return [
             'type' => 'http',
-            'description' => 'Example Bearer Security',
             'scheme' => 'ExampleHTTPBearerSecurityScheme',
+            'description' => 'Example Bearer Security',
         ];
     }
 
-    it('can apply multiple security schemes on operation', function (
-        array $expectations,
-        array $securitySchemeFactories,
-        array $globalSecurity,
-        string|null $pathSecurity,
-    ): void {
-        $components = Components::create()->securitySchemes(...$securitySchemeFactories);
+    it(
+        'can apply multiple security schemes on operation',
+        /**
+         * @throws BindingResolutionException
+         * @throws CircularDependencyException
+         * @throws \JsonException
+         */
+        function (
+            array $expectations,
+            array $securitySchemeFactories,
+            Security|null $topLevelSecurity,
+            string|null $operationSecurity,
+        ): void {
+            $components = Components::create()->securitySchemes(...$securitySchemeFactories);
 
-        $route = '/foo';
-        $action = 'get';
-        $routeInformation = RouteInfo::create(
-            Route::$action($route, static fn (): string => 'example'),
-        );
-        $routeInformation->actionAttributes = collect([
-            new AttributesOperation(security: $pathSecurity),
-        ]);
-        $operation = app(OperationBuilder::class)->build($routeInformation);
-
-        $openApi = OpenAPI::v311(
-            Info::create(
-                Title::create('Example API'),
-                \MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version::create('1.0'),
-            ),
-        )->components($components)
-            ->paths(
-                Paths::create(
-                    Path::create(
-                        $route,
-                        PathItem::create()
-                            ->operations($operation),
-                    ),
-                ),
+            $route = '/foo';
+            $action = 'get';
+            $routeInformation = RouteInfo::create(
+                Route::$action($route, static fn (): string => 'example'),
             );
+            $routeInformation->actionAttributes = collect([
+                new AttributesOperation(security: $operationSecurity),
+            ]);
+            $operation = app(OperationBuilder::class)->build($routeInformation);
 
-        // Assert that the generated JSON matches the expected JSON for this scenario
-        $actionData = [
-            $action => [],
-        ];
-        if (!is_null($expectations['pathSecurity'])) {
-            $actionData[$action] = ['security' => $expectations['pathSecurity']];
-        }
+            $openApi = OpenAPI::v311(
+                Info::create(
+                    Title::create('Example API'),
+                    Version::create('1.0'),
+                ),
+            )->components($components)
+                ->paths(
+                    Paths::create(
+                        Path::create(
+                            $route,
+                            PathItem::create()
+                                ->operations($operation),
+                        ),
+                    ),
+                );
+            if ($topLevelSecurity) {
+                $openApi = $openApi->security($topLevelSecurity);
+            }
 
-        $collectionData = [
-            'components' => $expectations['components'],
-        ];
-        if (!is_null($expectations['globalSecurity'])) {
-            $collectionData['security'] = $expectations['globalSecurity'];
-        }
+            // Assert that the generated JSON matches the expected JSON for this scenario
+            $actionData = [
+                $action => [],
+            ];
+            if (!is_null($expectations['pathSecurity'])) {
+                $actionData[$action] = ['security' => $expectations['pathSecurity']];
+            }
 
-        $this->assertSame([
-            'openapi' => '3.1.1',
-            'info' => [
-                'title' => 'Example API',
-                'version' => '1.0',
-            ],
-            'jsonSchemaDialect' => 'https://spec.openapis.org/oas/3.1/dialect/base',
-            'servers' => [
-                [
-                    'url' => '/',
+            $collectionData = [
+                'components' => $expectations['components'],
+            ];
+            if (!is_null($expectations['globalSecurity'])) {
+                $collectionData['security'] = $expectations['globalSecurity'];
+            }
+
+            $this->assertSame([
+                'openapi' => '3.1.1',
+                'info' => [
+                    'title' => 'Example API',
+                    'version' => '1.0',
                 ],
-            ],
-            'paths' => [
-                $route => $actionData,
-            ], ...$collectionData,
-        ], $openApi->asArray());
-    })->with(
+                'jsonSchemaDialect' => 'https://spec.openapis.org/oas/3.1/dialect/base',
+                'servers' => [
+                    [
+                        'url' => '/',
+                    ],
+                ],
+                'paths' => [
+                    $route => $actionData,
+                ], ...$collectionData,
+            ], $openApi->asArray());
+        },
+    )->with(
         [
             'No global security - no path security' => [
                 [
@@ -162,9 +178,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     ExampleApiKeySecurityScheme::create(),
                     ExampleHTTPBearerSecurityScheme::create(),
                 ],
-                [
-                    ExampleApiKeySecurityScheme::create(),
-                ],
+                Security::create(ExampleSingleApiKeySecurityRequirement::create()),
                 null,
             ],
             'Use default global security - have multi-auth security' => [
@@ -248,10 +262,8 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 [
                     ExampleApiKeySecurityScheme::create(),
                 ],
-                [
-                    ExampleApiKeySecurityScheme::create(),
-                ],
-                [],
+                Security::create(ExampleSingleApiKeySecurityRequirement::create()),
+                ExampleNoSecurityRequirementSecurity::class,
             ],
             'Override global security - with same security' => [
                 [
@@ -274,10 +286,8 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 [
                     ExampleHTTPBearerSecurityScheme::create(), // available global securities (components)
                 ],
-                [
-                    ExampleHTTPBearerSecurityScheme::create(), // applied global securities
-                ],
-                ExampleHTTPBearerSecurityScheme::create(), // security overrides
+                app(ExampleSingleSecurityRequirementSecurity::class)->build(), // applied global securities
+                ExampleHTTPBearerSecurityScheme::class, // security overrides
             ],
             'Override global security - single auth class string' => [
                 [
@@ -302,10 +312,8 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     ExampleHTTPBearerSecurityScheme::create(),
                     ExampleApiKeySecurityScheme::create(),
                 ],
-                [
-                    ExampleApiKeySecurityScheme::create(),
-                ],
-                ExampleHTTPBearerSecurityScheme::create(),
+                Security::create(ExampleSingleApiKeySecurityRequirement::create()),
+                ExampleHTTPBearerSecurityScheme::class,
             ],
             'Override global security - single auth array' => [
                 [
@@ -330,11 +338,9 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     ExampleHTTPBearerSecurityScheme::create(),
                     ExampleApiKeySecurityScheme::create(),
                 ],
+                app(ExampleSingleSecurityRequirementSecurity::class)->build(), // applied global securities
                 [
-                    ExampleHTTPBearerSecurityScheme::create(),
-                ],
-                [
-                    ExampleApiKeySecurityScheme::create(),
+                    ExampleApiKeySecurityScheme::class,
                 ],
             ],
             'Override global security - multi-auth (and) - single auth global security' => [
@@ -595,7 +601,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
     it('can apply multiple security schemes globally', function (
         array $expectedJson,
         array $securitySchemeFactories,
-        array $globalSecurity,
+        array $topLevelSecurity,
     ): void {
         $components = Components::create()->securitySchemes(...$securitySchemeFactories);
 
@@ -605,9 +611,10 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         $openApi = OpenAPI::v311(
             Info::create(
                 Title::create('Example API'),
-                \MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version::create('1.0'),
+                Version::create('1.0'),
             ),
-        )->components($components)
+        )->security($topLevelSecurity)
+            ->components($components)
             ->paths(
                 Paths::create(
                     Path::create(
@@ -816,7 +823,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         $openApi = OpenAPI::v311(
             Info::create(
                 Title::create('Example API'),
-                \MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version::create('1.0'),
+                Version::create('1.0'),
             ),
         )->security((new ExampleSingleSecurityRequirementSecurity())->build())
             ->components($components)
@@ -893,7 +900,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         $openApi = OpenAPI::v311(
             Info::create(
                 Title::create('Example API'),
-                \MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version::create('1.0'),
+                Version::create('1.0'),
             ),
         )->components($components)
             ->paths(

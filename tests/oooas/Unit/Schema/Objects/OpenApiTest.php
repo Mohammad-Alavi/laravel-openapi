@@ -373,8 +373,8 @@ describe(class_basename(OpenAPI::class), function (): void {
                 'securitySchemes' => [
                     'ExampleHTTPBearerSecurityScheme' => [
                         'type' => 'http',
-                        'description' => 'Example Security',
                         'scheme' => 'bearer',
+                        'description' => 'Example Security',
                     ],
                     'OAuth2Password' => [
                         'type' => 'oauth2',
