@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\C
 final readonly class Http implements Scheme
 {
     private function __construct(
-        private string      $scheme,
+        private string $scheme,
         private string|null $bearerFormat = null,
     ) {
     }
