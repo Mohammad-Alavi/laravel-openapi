@@ -2,7 +2,6 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface;
 
-interface ComponentFactory
+interface ShouldBeReferenced
 {
-    public function build(): mixed;
 }

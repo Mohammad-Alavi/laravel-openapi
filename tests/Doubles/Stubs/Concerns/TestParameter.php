@@ -11,7 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 class TestParameter extends ParameterFactory
 {
-    public function build(): Parameter
+    public function component(): Parameter
     {
         return Parameter::query(
             Name::create('TestReusableParameter'),

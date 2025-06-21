@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security;
 
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Objects\SecurityRequirementFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\SecurityRequirement;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\SecurityRequirementFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\ReadonlyGenerator;
@@ -26,14 +26,20 @@ final class Security extends Generatable
         );
     }
 
-    public static function create(SecurityRequirementFactory ...$securityRequirementFactory): self
+    public static function create(SecurityRequirement|SecurityRequirementFactory ...$securityRequirement): self
     {
         // TODO: extract into a builder class
         $securityRequirements = array_map(
-            static fn (
-                SecurityRequirementFactory $securityRequirementFactory,
-            ): SecurityRequirement => $securityRequirementFactory->build(),
-            $securityRequirementFactory,
+            static function (
+                SecurityRequirement|SecurityRequirementFactory $securityRequirement,
+            ): SecurityRequirement {
+                if ($securityRequirement instanceof SecurityRequirement) {
+                    return $securityRequirement;
+                }
+
+                return $securityRequirement->object();
+            },
+            $securityRequirement,
         );
 
         return new self(...$securityRequirements);

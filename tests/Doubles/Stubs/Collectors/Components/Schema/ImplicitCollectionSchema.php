@@ -9,7 +9,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 class ImplicitCollectionSchema extends SchemaFactory
 {
-    public function build(): JSONSchema
+    public function component(): JSONSchema
     {
         return Schema::object()
             ->properties(

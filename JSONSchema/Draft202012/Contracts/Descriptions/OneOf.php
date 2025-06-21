@@ -21,5 +21,5 @@ interface OneOf
      *
      * @see https://www.learnjsonschema.com/2020-12/applicator/oneof/
      */
-    public function oneOf(JSONSchema ...$builder): static;
+    public function oneOf(JSONSchema ...$schema): static;
 }

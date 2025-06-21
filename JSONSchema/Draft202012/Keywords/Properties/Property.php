@@ -3,6 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchemaFactory;
 
 final readonly class Property
 {
@@ -12,9 +13,13 @@ final readonly class Property
     ) {
     }
 
-    public static function create(string $name, JSONSchema $descriptor): self
+    public static function create(string $name, JSONSchema|JSONSchemaFactory $schema): self
     {
-        return new self($name, $descriptor);
+        if ($schema instanceof JSONSchemaFactory) {
+            $schema = $schema->build();
+        }
+
+        return new self($name, $schema);
     }
 
     public function name(): string

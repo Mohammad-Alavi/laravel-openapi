@@ -14,7 +14,7 @@ class ApiKeySecuritySchemeFactory extends SecuritySchemeFactory
         return 'ApiKey';
     }
 
-    public function build(): SecurityScheme
+    public function component(): SecurityScheme
     {
         return SecurityScheme::apiKey(ApiKey::query('header'), Description::create('Api Key Security'));
     }

@@ -11,7 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 #[Collection('test')]
 class ExplicitCollectionSchema extends SchemaFactory
 {
-    public function build(): JSONSchema
+    public function component(): JSONSchema
     {
         return Schema::object()
             ->properties(

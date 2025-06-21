@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\File;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
@@ -86,59 +87,8 @@ describe('PetStoreTest', function (): void {
             ),
         )->description(Description::create('maximum number of results to return'));
 
-        $animalReusable = new class extends SchemaFactory {
-            public function build(): JSONSchema
-            {
-                return Schema::object()
-                    ->required('name')
-                    ->properties(
-                        Property::create(
-                            'name',
-                            Schema::string(),
-                        ),
-                        Property::create(
-                            'tag',
-                            Schema::string(),
-                        ),
-                    );
-            }
-
-            public static function name(): string
-            {
-                return 'Animal';
-            }
-        };
-
-        $petReusable = new class($animalReusable) extends SchemaFactory {
-            public function __construct(
-                private readonly SchemaFactory $animalReusable,
-            ) {
-            }
-
-            public function build(): JSONSchema
-            {
-                return Schema::object()
-                    ->allOf(
-                        $this->animalReusable::new(),
-                        Schema::object()
-                            ->required('id')
-                            ->properties(
-                                Property::create(
-                                    'id',
-                                    Schema::integer()->format(IntegerFormat::INT64),
-                                ),
-                            ),
-                    );
-            }
-
-            public static function name(): string
-            {
-                return 'Pet';
-            }
-        };
-
-        $errorReusable = new class extends SchemaFactory {
-            public function build(): JSONSchema
+        $errorReusable = new class extends SchemaFactory implements ShouldBeReferenced {
+            public function component(): JSONSchema
             {
                 return Schema::object()
                     ->required('code', 'message')
@@ -161,7 +111,7 @@ describe('PetStoreTest', function (): void {
         };
 
         $components = Components::create()
-            ->schemas($petReusable, $animalReusable, $errorReusable);
+            ->schemas(Pet::create(), Animal::create(), $errorReusable);
 
         $responseEntry = ResponseEntry::create(
             HTTPStatusCode::ok(),
@@ -170,7 +120,7 @@ describe('PetStoreTest', function (): void {
             )->content(
                 ContentEntry::create(
                     'application/json',
-                    MediaType::json()->schema($petReusable::new()),
+                    MediaType::json()->schema(Pet::create()),
                 ),
             ),
         );
@@ -184,7 +134,7 @@ describe('PetStoreTest', function (): void {
                     'application/json',
                     MediaType::json()->schema(
                         Schema::array()->items(
-                            $petReusable::new(),
+                            Pet::create(),
                         ),
                     ),
                 ),
@@ -198,7 +148,7 @@ describe('PetStoreTest', function (): void {
             )->content(
                 ContentEntry::create(
                     'application/json',
-                    MediaType::json()->schema($errorReusable::new()),
+                    MediaType::json()->schema($errorReusable::create()),
                 ),
             ),
         );
@@ -218,7 +168,7 @@ describe('PetStoreTest', function (): void {
                     ->required()
                     ->content(
                         MediaType::json()->schema(
-                            $animalReusable::new(),
+                            Animal::create(),
                         ),
                     ),
             )
@@ -275,3 +225,59 @@ describe('PetStoreTest', function (): void {
         );
     });
 })->coversNothing();
+
+class Pet extends SchemaFactory implements ShouldBeReferenced
+{
+    public static function name(): string
+    {
+        return 'Pet';
+    }
+
+    public function component(): JSONSchema
+    {
+        return Schema::object()
+            ->allOf(
+                Animal::create(),
+                Schema::object()
+                    ->required('id')
+                    ->properties(
+                        Property::create(
+                            'id',
+                            Schema::integer()->format(IntegerFormat::INT64),
+                        ),
+                    ),
+            );
+    }
+}
+
+class Tag extends SchemaFactory
+{
+    public function component(): JSONSchema
+    {
+        return Schema::string();
+    }
+}
+
+class Animal extends SchemaFactory implements ShouldBeReferenced
+{
+    public static function name(): string
+    {
+        return 'Animal';
+    }
+
+    public function component(): JSONSchema
+    {
+        return Schema::object()
+            ->required('name')
+            ->properties(
+                Property::create(
+                    'name',
+                    Schema::string(),
+                ),
+                Property::create(
+                    'tag',
+                    Tag::create(),
+                ),
+            );
+    }
+}

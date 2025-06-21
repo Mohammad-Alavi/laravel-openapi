@@ -11,7 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 #[Collection(['test', Generator::COLLECTION_DEFAULT])]
 class MultiCollectionCallback extends CallbackFactory
 {
-    public function build(): Callback
+    public function component(): Callback
     {
         return Callback::create('test', '/multi-collection-callback', PathItem::create());
     }

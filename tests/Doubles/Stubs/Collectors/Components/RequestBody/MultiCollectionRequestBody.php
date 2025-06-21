@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 #[Collection(['test', Generator::COLLECTION_DEFAULT])]
 class MultiCollectionRequestBody extends RequestBodyFactory
 {
-    public function build(): RequestBody
+    public function component(): RequestBody
     {
         return RequestBody::create();
     }

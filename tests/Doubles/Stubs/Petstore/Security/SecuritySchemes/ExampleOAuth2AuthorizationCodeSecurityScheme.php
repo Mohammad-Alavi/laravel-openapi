@@ -16,7 +16,7 @@ use Tests\Doubles\Stubs\Petstore\Security\Scopes\OrderShippingStatusScope;
 
 class ExampleOAuth2AuthorizationCodeSecurityScheme extends SecuritySchemeFactory
 {
-    public function build(): SecurityScheme
+    public function component(): SecurityScheme
     {
         return SecurityScheme::oAuth2(
             OAuth2::create(

@@ -34,19 +34,19 @@ describe(class_basename(Components::class), function (): void {
         $mock = \Mockery::mock(SchemaFactory::class);
         $mock->allows('name')
             ->andReturn('ExampleSchema');
-        $mock->expects('build')
+        $mock->expects('component')
             ->andReturn(Schema::object());
 
         $response = \Mockery::mock(ResponseFactory::class);
         $response->allows('name')
             ->andReturn('ReusableResponse');
-        $response->expects('build')
+        $response->expects('component')
             ->andReturn(Response::create(Description::create('Deleted')));
 
         $parameter = \Mockery::mock(ParameterFactory::class);
         $parameter->allows('name')
             ->andReturn('Page');
-        $parameter->expects('build')
+        $parameter->expects('component')
             ->andReturn(
                 Parameter::query(
                     Name::create('page'),
@@ -60,7 +60,7 @@ describe(class_basename(Components::class), function (): void {
         $requestBody = \Mockery::mock(RequestBodyFactory::class);
         $requestBody->allows('name')
             ->andReturn('CreateResource');
-        $requestBody->expects('build')
+        $requestBody->expects('component')
             ->andReturn(RequestBody::create());
 
         $header = Header::create('HeaderExample');
@@ -68,7 +68,7 @@ describe(class_basename(Components::class), function (): void {
         $securityScheme = \Mockery::mock(SecuritySchemeFactory::class);
         $securityScheme->allows('name')
             ->andReturn('basic');
-        $securityScheme->expects('build')
+        $securityScheme->expects('component')
             ->andReturn(
                 SecurityScheme::http(Http::basic()),
             );
@@ -78,7 +78,7 @@ describe(class_basename(Components::class), function (): void {
         $callback = \Mockery::mock(CallbackFactory::class);
         $callback->allows('name')
             ->andReturn('MyEvent');
-        $callback->expects('build')
+        $callback->expects('component')
             ->andReturn(
                 Callback::create(
                     'test',

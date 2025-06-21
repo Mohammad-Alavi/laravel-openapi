@@ -9,7 +9,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\S
 
 class ExampleHTTPBearerSecurityScheme extends SecuritySchemeFactory
 {
-    public function build(): SecurityScheme
+    public function component(): SecurityScheme
     {
         return SecurityScheme::http(Http::bearer(), Description::create('Example Security'));
     }

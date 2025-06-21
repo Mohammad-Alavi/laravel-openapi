@@ -11,7 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\S
 #[Collection(['test', Generator::COLLECTION_DEFAULT])]
 class MultiCollectionSecurityScheme extends SecuritySchemeFactory
 {
-    public function build(): SecurityScheme
+    public function component(): SecurityScheme
     {
         return SecurityScheme::http(Http::basic());
     }

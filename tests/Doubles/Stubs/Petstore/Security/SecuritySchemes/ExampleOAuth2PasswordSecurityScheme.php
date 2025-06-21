@@ -21,7 +21,7 @@ class ExampleOAuth2PasswordSecurityScheme extends SecuritySchemeFactory
         return 'OAuth2Password';
     }
 
-    public function build(): SecurityScheme
+    public function component(): SecurityScheme
     {
         return SecurityScheme::oAuth2(
             OAuth2::create(

@@ -9,7 +9,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 #[Collection('test')]
 class ExplicitCollectionRequestBody extends RequestBodyFactory
 {
-    public function build(): RequestBody
+    public function component(): RequestBody
     {
         return RequestBody::create();
     }

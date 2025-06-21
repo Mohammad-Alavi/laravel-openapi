@@ -9,19 +9,19 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
 
 final class Parameters extends Generatable
 {
-    private readonly array $parameters;
-
+    /**
+     * @param (Parameter|Reference)[] $parameters
+     */
     private function __construct(
-        Parameter|Reference ...$parameter,
+        private readonly array $parameters,
     ) {
-        $this->parameters = $parameter;
     }
 
     public static function create(Parameter|ParameterFactory|self ...$parameter): self
     {
         $selfParams = collect($parameter)
             ->filter(static fn ($param): bool => $param instanceof self)
-            ->map(static fn ($param): array => $param->all())
+            ->map(static fn (self $param): array => $param->all())
             ->flatten();
 
         $parameters = collect($parameter)
@@ -33,12 +33,14 @@ final class Parameters extends Generatable
                 ): Reference|self|Parameter => $param instanceof ParameterFactory
                     ? $param::reference()
                     : $param,
-            )
-            ->toArray();
+            )->toArray();
 
-        return new self(...$parameters);
+        return new self($parameters);
     }
 
+    /**
+     * @return (Parameter|Reference)[]
+     */
     public function all(): array
     {
         return $this->parameters;

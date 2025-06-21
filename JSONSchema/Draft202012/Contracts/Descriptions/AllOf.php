@@ -3,6 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptions;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchemaFactory;
 
 interface AllOf
 {
@@ -17,5 +18,5 @@ interface AllOf
      *
      * @see https://www.learnjsonschema.com/2020-12/applicator/allof/
      */
-    public function allOf(JSONSchema ...$builder): static;
+    public function allOf(JSONSchema|JSONSchemaFactory ...$schema): static;
 }

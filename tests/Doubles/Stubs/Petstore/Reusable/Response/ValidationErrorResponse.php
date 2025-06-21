@@ -12,7 +12,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 class ValidationErrorResponse extends ResponseFactory
 {
-    public function build(): Response
+    public function component(): Response
     {
         $objectDescriptor = Schema::object()->properties(
             Property::create(

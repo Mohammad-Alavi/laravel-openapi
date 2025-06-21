@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 
 class TestRequestBodyFactory extends RequestBodyFactory
 {
-    public function build(): RequestBody
+    public function component(): RequestBody
     {
         return RequestBody::create();
     }

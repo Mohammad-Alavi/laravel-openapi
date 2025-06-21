@@ -12,7 +12,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 #[Collection(['test', Generator::COLLECTION_DEFAULT])]
 class MultiCollectionSchema extends SchemaFactory
 {
-    public function build(): JSONSchema
+    public function component(): JSONSchema
     {
         return Schema::object()
             ->properties(

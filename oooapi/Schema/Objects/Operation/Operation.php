@@ -238,7 +238,7 @@ final class Operation extends ExtensibleObject
         $callbacks = [];
         foreach ($this->callbacks ?? [] as $callback) {
             if ($callback instanceof CallbackFactory) {
-                $object = $callback->build();
+                $object = $callback->component();
                 $callbacks[$object->key()] = $object;
             } else {
                 $callbacks[$callback->key()] = $callback;

@@ -14,7 +14,7 @@ class JwtSecuritySchemeFactory extends SecuritySchemeFactory
         return 'JWT';
     }
 
-    public function build(): SecurityScheme
+    public function component(): SecurityScheme
     {
         return SecurityScheme::http(Http::bearer('JWT Authentication'), Description::create('JWT'));
     }

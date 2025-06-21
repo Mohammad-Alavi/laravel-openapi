@@ -18,5 +18,5 @@ interface AnyOf
      *
      * @see https://www.learnjsonschema.com/2020-12/applicator/anyof/
      */
-    public function anyOf(JSONSchema ...$builder): static;
+    public function anyOf(JSONSchema ...$schema): static;
 }

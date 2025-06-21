@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 
 class ImplicitDefaultCallback extends CallbackFactory
 {
-    public function build(): Callback
+    public function component(): Callback
     {
         return Callback::create('test', '/implicit-default-callback', PathItem::create());
     }

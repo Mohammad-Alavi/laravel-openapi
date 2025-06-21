@@ -5,13 +5,13 @@ namespace Tests\Doubles\Stubs\Petstore\Reusable\Schema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldReuse;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Formats\IntegerFormat;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
-class PetSchema extends SchemaFactory implements ShouldReuse
+class PetSchema extends SchemaFactory implements ShouldBeReferenced
 {
-    public function build(): JSONSchema
+    public function component(): JSONSchema
     {
         return Schema::object()
             ->required('id', 'name')

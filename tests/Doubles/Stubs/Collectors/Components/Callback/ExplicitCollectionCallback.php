@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 #[Collection('test')]
 class ExplicitCollectionCallback extends CallbackFactory
 {
-    public function build(): Callback
+    public function component(): Callback
     {
         return Callback::create('test', '/explicit-collection-callback', PathItem::create());
     }

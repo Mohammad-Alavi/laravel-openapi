@@ -3,14 +3,26 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Reusable;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchemaFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReusableComponent;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
-abstract class SchemaFactory extends Reusable
+abstract class SchemaFactory extends ReusableComponent implements JSONSchemaFactory
 {
     final protected static function componentNamespace(): string
     {
         return '/schemas';
     }
 
-    abstract public function build(): JSONSchema;
+    final public function build(): JSONSchema
+    {
+        if (is_a($this, ShouldBeReferenced::class)) {
+            return Schema::ref(self::uri());
+        }
+
+        return $this->component();
+    }
+
+    abstract public function component(): JSONSchema;
 }

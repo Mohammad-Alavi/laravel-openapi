@@ -4,6 +4,7 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\FluentDescriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchemaFactory;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Dialect\Draft202012 as Dialect;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\DefinedFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AdditionalProperties;
@@ -108,15 +109,6 @@ class LooseFluentDescriptor implements FluentDescriptor
     ) {
     }
 
-    public function schema(string $uri): static
-    {
-        $clone = clone $this;
-
-        $clone->schema = Dialect::schema($uri);
-
-        return $clone;
-    }
-
     /**
      * Create a new instance of the Descriptor without any schema.
      */
@@ -131,6 +123,15 @@ class LooseFluentDescriptor implements FluentDescriptor
     public static function create(string $schema = 'https://json-schema.org/draft-2020-12/schema'): static
     {
         return new static(Dialect::schema($schema));
+    }
+
+    public function schema(string $uri): static
+    {
+        $clone = clone $this;
+
+        $clone->schema = Dialect::schema($uri);
+
+        return $clone;
     }
 
     public function anchor(string $value): static
@@ -365,38 +366,75 @@ class LooseFluentDescriptor implements FluentDescriptor
         return $clone;
     }
 
-    public function items(JSONSchema $Descriptor): static
+    public function items(JSONSchema|JSONSchemaFactory $schema): static
     {
         $clone = clone $this;
 
-        $clone->items = Dialect::items($Descriptor);
+        if ($schema instanceof JSONSchemaFactory) {
+            $schema = $schema->build();
+        }
+
+        $clone->items = Dialect::items($schema);
 
         return $clone;
     }
 
-    public function allOf(JSONSchema ...$builder): static
+    public function allOf(JSONSchema|JSONSchemaFactory ...$schema): static
     {
         $clone = clone $this;
 
-        $clone->allOf = Dialect::allOf(...$builder);
+        $schemas = array_map(
+            static function (JSONSchema|JSONSchemaFactory $schema): JSONSchema {
+                if ($schema instanceof JSONSchemaFactory) {
+                    return $schema->build();
+                }
+
+                return $schema;
+            },
+            $schema,
+        );
+
+        $clone->allOf = Dialect::allOf(...$schemas);
 
         return $clone;
     }
 
-    public function anyOf(JSONSchema ...$builder): static
+    public function anyOf(JSONSchema|JSONSchemaFactory ...$schema): static
     {
         $clone = clone $this;
 
-        $clone->anyOf = Dialect::anyOf(...$builder);
+        $schemas = array_map(
+            static function (JSONSchema|JSONSchemaFactory $schema): JSONSchema {
+                if ($schema instanceof JSONSchemaFactory) {
+                    return $schema->build();
+                }
+
+                return $schema;
+            },
+            $schema,
+        );
+
+        $clone->anyOf = Dialect::anyOf(...$schemas);
 
         return $clone;
     }
 
-    public function oneOf(JSONSchema ...$builder): static
+    public function oneOf(JSONSchema|JSONSchemaFactory ...$schema): static
     {
         $clone = clone $this;
 
-        $clone->oneOf = Dialect::oneOf(...$builder);
+        $schemas = array_map(
+            static function (JSONSchema|JSONSchemaFactory $schema): JSONSchema {
+                if ($schema instanceof JSONSchemaFactory) {
+                    return $schema->build();
+                }
+
+                return $schema;
+            },
+            $schema,
+        );
+
+        $clone->oneOf = Dialect::oneOf(...$schemas);
 
         return $clone;
     }

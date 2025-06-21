@@ -9,7 +9,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\S
 
 class BSecuritySchemeFactory extends SecuritySchemeFactory
 {
-    public function build(): SecurityScheme
+    public function component(): SecurityScheme
     {
         return SecurityScheme::apiKey(ApiKey::header('header'), Description::create('api_key'));
     }

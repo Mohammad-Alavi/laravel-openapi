@@ -23,7 +23,7 @@ final readonly class RequiredSecurity
             return new self($securitySchemeFactory, ScopeCollection::create());
         }
 
-        $securityScheme = $securitySchemeFactory->build();
+        $securityScheme = $securitySchemeFactory->component();
         if ($securityScheme instanceof OAuth2) {
             return self::createOAuth2Requirement($securitySchemeFactory, $securityScheme, $scopeCollection);
         }

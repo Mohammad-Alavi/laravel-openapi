@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\S
 
 class TestSecuritySchemeFactory extends SecuritySchemeFactory
 {
-    public function build(): SecurityScheme
+    public function component(): SecurityScheme
     {
         return SecurityScheme::http(Http::basic());
     }

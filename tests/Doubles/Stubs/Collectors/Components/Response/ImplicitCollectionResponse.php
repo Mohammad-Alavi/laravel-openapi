@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 
 class ImplicitCollectionResponse extends ResponseFactory
 {
-    public function build(): Response
+    public function component(): Response
     {
         return Response::create(Description::create('OK'));
     }

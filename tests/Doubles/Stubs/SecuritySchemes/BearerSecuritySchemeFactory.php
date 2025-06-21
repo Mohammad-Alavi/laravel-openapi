@@ -13,7 +13,7 @@ class BearerSecuritySchemeFactory extends SecuritySchemeFactory
         return 'Bearer';
     }
 
-    public function build(): SecurityScheme
+    public function component(): SecurityScheme
     {
         return SecurityScheme::http(Http::bearer('Example Bearer Security'));
     }

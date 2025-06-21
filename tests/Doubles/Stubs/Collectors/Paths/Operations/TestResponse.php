@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 
 class TestResponse extends ResponseFactory
 {
-    public function build(): Response
+    public function component(): Response
     {
         return Response::create('Reusable Response');
     }
