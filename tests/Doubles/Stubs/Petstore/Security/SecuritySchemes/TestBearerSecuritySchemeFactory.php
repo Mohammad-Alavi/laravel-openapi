@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\F
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\Http;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 
-class TestHTTPBearerSecuritySchemeFactory extends SecuritySchemeFactory
+class TestBearerSecuritySchemeFactory extends SecuritySchemeFactory
 {
     public function component(): SecurityScheme
     {

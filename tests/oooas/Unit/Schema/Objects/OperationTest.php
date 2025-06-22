@@ -23,7 +23,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
-use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestHTTPBearerSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\Doubles\Stubs\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
 
 describe('Operation', function (): void {
@@ -114,7 +114,7 @@ describe('Operation', function (): void {
                 'deprecated' => true,
                 'security' => [
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                     ],
                 ],
                 'servers' => [

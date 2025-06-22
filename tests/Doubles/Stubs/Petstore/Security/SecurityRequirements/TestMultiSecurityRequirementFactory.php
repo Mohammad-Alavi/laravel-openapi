@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirem
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\ScopeCollection;
 use Tests\Doubles\Stubs\Petstore\Security\Scopes\OrderShippingAddressScope;
 use Tests\Doubles\Stubs\Petstore\Security\Scopes\OrderShippingStatusScope;
-use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestHTTPBearerSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestOAuth2PasswordSecuritySchemeFactory;
 
 final readonly class TestMultiSecurityRequirementFactory extends SecurityRequirementFactory
@@ -17,7 +17,7 @@ final readonly class TestMultiSecurityRequirementFactory extends SecurityRequire
     {
         return SecurityRequirement::create(
             RequiredSecurity::create(
-                TestHTTPBearerSecuritySchemeFactory::create(),
+                TestBearerSecuritySchemeFactory::create(),
             ),
             RequiredSecurity::create(
                 TestOAuth2PasswordSecuritySchemeFactory::create(),

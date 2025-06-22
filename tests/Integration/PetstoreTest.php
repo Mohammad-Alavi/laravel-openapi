@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Generator;
 use Tests\Doubles\Stubs\Petstore\PetController;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestApiKeySecuritySchemeFactory;
-use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestHTTPBearerSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\Doubles\Stubs\Servers\ServerWithMultipleVariableFormatting;
 use Tests\Doubles\Stubs\Servers\ServerWithoutVariables;
 use Tests\Doubles\Stubs\Servers\ServerWithVariables;
@@ -191,7 +191,7 @@ describe('PetStore', function (): void {
                 ],
                 'security' => [
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                     ],
                 ],
             ],
@@ -273,7 +273,7 @@ describe('PetStore', function (): void {
                 ],
                 'security' => [
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                     ],
                     [
                         TestApiKeySecuritySchemeFactory::name() => [],
@@ -323,10 +323,10 @@ describe('PetStore', function (): void {
                 'operationId' => 'nestedSecuritySecondTest',
                 'security' => [
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                     ],
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                         'OAuth2Password' => [
                             'order:shipping:address',
                             'order:shipping:status',

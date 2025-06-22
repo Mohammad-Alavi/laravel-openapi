@@ -27,12 +27,12 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\RequiredSecurity;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\SecurityRequirement;
-use Tests\Doubles\Stubs\Petstore\Security\ExampleNoSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\SecurityRequirements\TestApiKeySecurityRequirementFactory;
 use Tests\Doubles\Stubs\Petstore\Security\SecurityRequirements\TestBearerSecurityRequirementFactory;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestApiKeySecuritySchemeFactory;
-use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestHTTPBearerSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestOAuth2PasswordSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\TestEmptySecurityFactory;
 use Tests\Doubles\Stubs\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
 
 describe(class_basename(SecurityBuilder::class), function (): void {
@@ -87,7 +87,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         function (
             array $expectations,
             array $securitySchemeFactories,
-            Security|null $topLevelSecurity,
+            string|Security|null $topLevelSecurity,
             string|null $operationSecurity,
         ): void {
             $components = Components::create()->securitySchemes(...$securitySchemeFactories);
@@ -118,7 +118,13 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     ),
                 );
             if ($topLevelSecurity) {
-                $openApi = $openApi->security($topLevelSecurity);
+                $openApi = $openApi->security(
+                    is_a(
+                        $topLevelSecurity,
+                        SecurityFactory::class,
+                        true,
+                    ) ? app($topLevelSecurity)->object() : $topLevelSecurity,
+                );
             }
 
             // Assert that the generated JSON matches the expected JSON for this scenario
@@ -132,8 +138,8 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             $collectionData = [
                 'components' => $expectations['components'],
             ];
-            if (!is_null($expectations['globalSecurity'])) {
-                $collectionData['security'] = $expectations['globalSecurity'];
+            if (!is_null($expectations['topLevelSecurity'])) {
+                $collectionData['security'] = $expectations['topLevelSecurity'];
             }
 
             $this->assertSame([
@@ -159,18 +165,18 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 [
                     'components' => [
                         'securitySchemes' => [
-                            TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                            TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                             TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
-                            'OAuth2Password' => oAuth2SecurityExpectations(),
+                            TestOAuth2PasswordSecuritySchemeFactory::name() => oAuth2SecurityExpectations(),
                         ],
                     ],
-                    'globalSecurity' => null,
+                    'topLevelSecurity' => null,
                     'pathSecurity' => null,
                 ],
                 [ // available global securities (components)
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestBearerSecuritySchemeFactory::create(),
                     TestApiKeySecuritySchemeFactory::create(),
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestOAuth2PasswordSecuritySchemeFactory::create(),
                 ],
                 null, // applied global security
                 null, // use default global securities
@@ -180,10 +186,10 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     'components' => [
                         'securitySchemes' => [
                             TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
-                            TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                            TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                         ],
                     ],
-                    'globalSecurity' => [
+                    'topLevelSecurity' => [
                         [
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
@@ -192,9 +198,9 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 ],
                 [
                     TestApiKeySecuritySchemeFactory::create(),
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestBearerSecuritySchemeFactory::create(),
                 ],
-                TestApiKeySecuritySchemeFactory::create(),
+                Security::create(TestApiKeySecurityRequirementFactory::create()),
                 null,
             ],
             'Use default global security - have multi-auth security' => [
@@ -202,29 +208,29 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     'components' => [
                         'securitySchemes' => [
                             TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
-                            'OAuth2Password' => oAuth2SecurityExpectations(),
-                            TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                            TestOAuth2PasswordSecuritySchemeFactory::name() => oAuth2SecurityExpectations(),
+                            TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                         ],
                     ],
-                    'globalSecurity' => [
+                    'topLevelSecurity' => [
                         [
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                         [
                             TestApiKeySecuritySchemeFactory::name() => [],
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                         ],
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                         ],
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                             TestApiKeySecuritySchemeFactory::name() => [],
-                            'OAuth2Password' => [],
+                            TestOAuth2PasswordSecuritySchemeFactory::name() => [],
                         ],
                         [
                             TestApiKeySecuritySchemeFactory::name() => [],
@@ -234,31 +240,55 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 ],
                 [
                     TestApiKeySecuritySchemeFactory::create(),
-                    TestHTTPBearerSecuritySchemeFactory::create(),
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestOAuth2PasswordSecuritySchemeFactory::create(),
+                    TestBearerSecuritySchemeFactory::create(),
                 ],
-                [
-                    TestApiKeySecuritySchemeFactory::create(),
-                    [
-                        TestApiKeySecuritySchemeFactory::create(),
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                    ],
-                    TestHTTPBearerSecuritySchemeFactory::create(),
-                    [
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                        TestApiKeySecuritySchemeFactory::create(),
-                    ],
-                    [
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                        TestApiKeySecuritySchemeFactory::create(),
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                    ],
-                    [
-                        // TODO: should this duplication be removed?
-                        //  I don't think it is removed automatically.
-                        TestApiKeySecuritySchemeFactory::create(),
-                    ],
-                ],
+                Security::create(
+                    SecurityRequirement::create(
+                        RequiredSecurity::create(
+                            TestApiKeySecuritySchemeFactory::create(),
+                        ),
+                    ),
+                    SecurityRequirement::create(
+                        RequiredSecurity::create(
+                            TestApiKeySecuritySchemeFactory::create(),
+                        ),
+                        RequiredSecurity::create(
+                            TestBearerSecuritySchemeFactory::create(),
+                        ),
+                    ),
+                    SecurityRequirement::create(
+                        RequiredSecurity::create(
+                            TestBearerSecuritySchemeFactory::create(),
+                        ),
+                    ),
+                    SecurityRequirement::create(
+                        RequiredSecurity::create(
+                            TestBearerSecuritySchemeFactory::create(),
+                        ),
+                        RequiredSecurity::create(
+                            TestApiKeySecuritySchemeFactory::create(),
+                        ),
+                    ),
+                    SecurityRequirement::create(
+                        RequiredSecurity::create(
+                            TestBearerSecuritySchemeFactory::create(),
+                        ),
+                        RequiredSecurity::create(
+                            TestApiKeySecuritySchemeFactory::create(),
+                        ),
+                        RequiredSecurity::create(
+                            TestOAuth2PasswordSecuritySchemeFactory::create(),
+                        ),
+                    ),
+                    // TODO: should this duplication be removed?
+                    //  I don't think it is removed automatically.
+                    SecurityRequirement::create(
+                        RequiredSecurity::create(
+                            TestApiKeySecuritySchemeFactory::create(),
+                        ),
+                    ),
+                ),
                 null,
             ],
             'Override global security - disable global security' => [
@@ -268,7 +298,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
                         ],
                     ],
-                    'globalSecurity' => [
+                    'topLevelSecurity' => [
                         [
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
@@ -278,180 +308,221 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 [
                     TestApiKeySecuritySchemeFactory::create(),
                 ],
-                TestApiKeySecuritySchemeFactory::create(),
-                ExampleNoSecurityRequirementSecurity::class,
+                Security::create(
+                    SecurityRequirement::create(
+                        RequiredSecurity::create(
+                            TestApiKeySecuritySchemeFactory::create(),
+                        ),
+                    ),
+                ),
+                TestEmptySecurityFactory::class,
             ],
             'Override global security - with same security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
-                            TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                            TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                         ],
                     ],
-                    'globalSecurity' => [
+                    'topLevelSecurity' => [
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                         ],
                     ],
                     'pathSecurity' => [
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                         ],
                     ],
                 ],
                 [
-                    TestHTTPBearerSecuritySchemeFactory::create(), // available global securities (components)
+                    TestBearerSecuritySchemeFactory::create(), // available global securities (components)
                 ],
-                app(TestSingleHTTPBearerSchemeSecurityFactory::class)->object(), // applied global securities
-                TestHTTPBearerSecuritySchemeFactory::class, // security overrides
+                TestSingleHTTPBearerSchemeSecurityFactory::class, // applied global securities
+                TestSingleHTTPBearerSchemeSecurityFactory::class, // security overrides
             ],
             'Override global security - single auth class string' => [
                 [
                     'components' => [
                         'securitySchemes' => [
-                            TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                            TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                             TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
                         ],
                     ],
-                    'globalSecurity' => [
+                    'topLevelSecurity' => [
                         [
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                     ],
                     'pathSecurity' => [
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                         ],
                     ],
                 ],
                 [
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestBearerSecuritySchemeFactory::create(),
                     TestApiKeySecuritySchemeFactory::create(),
                 ],
-                TestApiKeySecuritySchemeFactory::create(),
-                TestHTTPBearerSecuritySchemeFactory::class,
+                Security::create(
+                    SecurityRequirement::create(
+                        RequiredSecurity::create(
+                            TestApiKeySecuritySchemeFactory::create(),
+                        ),
+                    ),
+                ),
+                TestSingleHTTPBearerSchemeSecurityFactory::class,
             ],
             'Override global security - single auth array' => [
                 [
                     'components' => [
                         'securitySchemes' => [
-                            TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                            TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                             TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
                         ],
                     ],
-                    'globalSecurity' => [
-                        [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
-                        ],
-                    ],
-                    'pathSecurity' => [
+                    'topLevelSecurity' => [
                         [
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                     ],
+                    'pathSecurity' => [
+                        [
+                            TestBearerSecuritySchemeFactory::name() => [],
+                        ],
+                    ],
                 ],
                 [
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestBearerSecuritySchemeFactory::create(),
                     TestApiKeySecuritySchemeFactory::create(),
                 ],
-                app(TestSingleHTTPBearerSchemeSecurityFactory::class)->object(), // applied global securities
-                [
-                    TestApiKeySecuritySchemeFactory::class,
-                ],
+                Security::create( // applied global securities
+                    SecurityRequirement::create(
+                        RequiredSecurity::create(
+                            TestApiKeySecuritySchemeFactory::create(),
+                        ),
+                    ),
+                ),
+                TestSingleHTTPBearerSchemeSecurityFactory::class,
             ],
             'Override global security - multi-auth (and) - single auth global security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
-                            TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                            TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                             TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
-                            'OAuth2Password' => oAuth2SecurityExpectations(),
+                            TestOAuth2PasswordSecuritySchemeFactory::name() => oAuth2SecurityExpectations(),
                         ],
                     ],
-                    'globalSecurity' => [
+                    'topLevelSecurity' => [
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                         ],
                     ],
                     'pathSecurity' => [
                         [
                             TestApiKeySecuritySchemeFactory::name() => [],
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                         ],
                     ],
                 ],
                 [
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestBearerSecuritySchemeFactory::create(),
                     TestApiKeySecuritySchemeFactory::create(),
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestOAuth2PasswordSecuritySchemeFactory::create(),
                 ],
-                [
-                    TestHTTPBearerSecuritySchemeFactory::create(),
-                ],
-                [
-                    [
-                        TestApiKeySecuritySchemeFactory::create(),
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                    ],
-                ],
+                TestSingleHTTPBearerSchemeSecurityFactory::class,
+                (new class implements SecurityFactory {
+                    public function object(): Security
+                    {
+                        return Security::create(
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestApiKeySecuritySchemeFactory::create(),
+                                ),
+                                RequiredSecurity::create(
+                                    TestBearerSecuritySchemeFactory::create(),
+                                ),
+                            ),
+                        );
+                    }
+                })::class,
             ],
             'Override global security - multi-auth (and) - multi auth global security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
-                            TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                            TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                             TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
-                            'OAuth2Password' => oAuth2SecurityExpectations(),
+                            TestOAuth2PasswordSecuritySchemeFactory::name() => oAuth2SecurityExpectations(),
                         ],
                     ],
-                    'globalSecurity' => [
+                    'topLevelSecurity' => [
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
-                            'OAuth2Password' => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
+                            TestOAuth2PasswordSecuritySchemeFactory::name() => [],
                         ],
                     ],
                     'pathSecurity' => [
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                     ],
                 ],
                 [
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestBearerSecuritySchemeFactory::create(),
                     TestApiKeySecuritySchemeFactory::create(),
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestOAuth2PasswordSecuritySchemeFactory::create(),
                 ],
-                [
-                    [
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                    ],
-                ],
-                [
-                    [
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                        TestApiKeySecuritySchemeFactory::create(),
-                    ],
-                ],
+                (new class implements SecurityFactory {
+                    public function object(): Security
+                    {
+                        return Security::create(
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestBearerSecuritySchemeFactory::create(),
+                                ),
+                                RequiredSecurity::create(
+                                    TestOAuth2PasswordSecuritySchemeFactory::create(),
+                                ),
+                            ),
+                        );
+                    }
+                })::class,
+                (new class implements SecurityFactory {
+                    public function object(): Security
+                    {
+                        return Security::create(
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestBearerSecuritySchemeFactory::create(),
+                                ),
+                                RequiredSecurity::create(
+                                    TestApiKeySecuritySchemeFactory::create(),
+                                ),
+                            ),
+                        );
+                    }
+                })::class,
             ],
             'Override global security - multi-auth (or) - single auth global security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
-                            TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                            TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                             TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
-                            'OAuth2Password' => oAuth2SecurityExpectations(),
+                            TestOAuth2PasswordSecuritySchemeFactory::name() => oAuth2SecurityExpectations(),
                         ],
                     ],
-                    'globalSecurity' => [
+                    'topLevelSecurity' => [
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                         ],
                     ],
                     'pathSecurity' => [
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                         ],
                         [
                             TestApiKeySecuritySchemeFactory::name() => [],
@@ -459,40 +530,47 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     ],
                 ],
                 [
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestBearerSecuritySchemeFactory::create(),
                     TestApiKeySecuritySchemeFactory::create(),
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestOAuth2PasswordSecuritySchemeFactory::create(),
                 ],
-                [
-                    TestHTTPBearerSecuritySchemeFactory::create(),
-                ],
-                [
-                    [
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                    ],
-                    [
-                        TestApiKeySecuritySchemeFactory::create(),
-                    ],
-                ],
+                TestSingleHTTPBearerSchemeSecurityFactory::class,
+                (new class implements SecurityFactory {
+                    public function object(): Security
+                    {
+                        return Security::create(
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestBearerSecuritySchemeFactory::create(),
+                                ),
+                            ),
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestApiKeySecuritySchemeFactory::create(),
+                                ),
+                            ),
+                        );
+                    }
+                })::class,
             ],
             'Override global security - multi-auth (or) - multi auth global security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
-                            TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                            TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                             TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
-                            'OAuth2Password' => oAuth2SecurityExpectations(),
+                            TestOAuth2PasswordSecuritySchemeFactory::name() => oAuth2SecurityExpectations(),
                         ],
                     ],
-                    'globalSecurity' => [
+                    'topLevelSecurity' => [
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                     ],
                     'pathSecurity' => [
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                         ],
                         [
                             TestApiKeySecuritySchemeFactory::name() => [],
@@ -500,37 +578,55 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     ],
                 ],
                 [
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestBearerSecuritySchemeFactory::create(),
                     TestApiKeySecuritySchemeFactory::create(),
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestOAuth2PasswordSecuritySchemeFactory::create(),
                 ],
-                [
-                    [
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                        TestApiKeySecuritySchemeFactory::create(),
-                    ],
-                ],
-                [
-                    [
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                    ],
-                    [
-                        TestApiKeySecuritySchemeFactory::create(),
-                    ],
-                ],
+                (new class implements SecurityFactory {
+                    public function object(): Security
+                    {
+                        return Security::create(
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestBearerSecuritySchemeFactory::create(),
+                                ),
+                                RequiredSecurity::create(
+                                    TestApiKeySecuritySchemeFactory::create(),
+                                ),
+                            ),
+                        );
+                    }
+                })::class,
+                (new class implements SecurityFactory {
+                    public function object(): Security
+                    {
+                        return Security::create(
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestBearerSecuritySchemeFactory::create(),
+                                ),
+                            ),
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestApiKeySecuritySchemeFactory::create(),
+                                ),
+                            ),
+                        );
+                    }
+                })::class,
             ],
             'Override global security - multi-auth (and + or) - single auth global security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
-                            'OAuth2Password' => oAuth2SecurityExpectations(),
-                            TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                            TestOAuth2PasswordSecuritySchemeFactory::name() => oAuth2SecurityExpectations(),
+                            TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                             TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
                         ],
                     ],
-                    'globalSecurity' => [
+                    'topLevelSecurity' => [
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                         ],
                     ],
                     'pathSecurity' => [
@@ -538,49 +634,60 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
-                            'OAuth2Password' => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
+                            TestOAuth2PasswordSecuritySchemeFactory::name() => [],
                         ],
                     ],
                 ],
                 [
-                    TestHTTPBearerSecuritySchemeFactory::create(),
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestOAuth2PasswordSecuritySchemeFactory::create(),
+                    TestBearerSecuritySchemeFactory::create(),
                     TestApiKeySecuritySchemeFactory::create(),
                 ],
-                [
-                    TestHTTPBearerSecuritySchemeFactory::create(),
-                ],
-                [
-                    TestApiKeySecuritySchemeFactory::create(),
-                    [
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                    ],
-                ],
+                TestSingleHTTPBearerSchemeSecurityFactory::class,
+                (new class implements SecurityFactory {
+                    public function object(): Security
+                    {
+                        return Security::create(
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestApiKeySecuritySchemeFactory::create(),
+                                ),
+                            ),
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestBearerSecuritySchemeFactory::create(),
+                                ),
+                                RequiredSecurity::create(
+                                    TestOAuth2PasswordSecuritySchemeFactory::create(),
+                                ),
+                            ),
+                        );
+                    }
+                })::class,
             ],
             'Override global security - multi-auth (and + or) - multi auth global security' => [
                 [
                     'components' => [
                         'securitySchemes' => [
-                            'OAuth2Password' => oAuth2SecurityExpectations(),
-                            TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                            TestOAuth2PasswordSecuritySchemeFactory::name() => oAuth2SecurityExpectations(),
+                            TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                             TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
                         ],
                     ],
-                    'globalSecurity' => [
+                    'topLevelSecurity' => [
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                     ],
                     'pathSecurity' => [
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
                         ],
                         [
-                            TestHTTPBearerSecuritySchemeFactory::name() => [],
-                            'OAuth2Password' => [],
+                            TestBearerSecuritySchemeFactory::name() => [],
+                            TestOAuth2PasswordSecuritySchemeFactory::name() => [],
                         ],
                         [
                             TestApiKeySecuritySchemeFactory::name() => [],
@@ -588,31 +695,53 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     ],
                 ],
                 [
-                    TestHTTPBearerSecuritySchemeFactory::create(),
-                    TestHTTPBearerSecuritySchemeFactory::create(),
+                    TestOAuth2PasswordSecuritySchemeFactory::create(),
+                    TestBearerSecuritySchemeFactory::create(),
                     TestApiKeySecuritySchemeFactory::create(),
                 ],
-                [
-                    [
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                        TestApiKeySecuritySchemeFactory::create(),
-                    ],
-                ],
-                [
-                    [
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                    ],
-                    [
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                        TestHTTPBearerSecuritySchemeFactory::create(),
-                    ],
-                    [
-                        TestApiKeySecuritySchemeFactory::create(),
-                    ],
-                ],
+                (new class implements SecurityFactory {
+                    public function object(): Security
+                    {
+                        return Security::create(
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestBearerSecuritySchemeFactory::create(),
+                                ),
+                                RequiredSecurity::create(
+                                    TestApiKeySecuritySchemeFactory::create(),
+                                ),
+                            ),
+                        );
+                    }
+                })::class,
+                (new class implements SecurityFactory {
+                    public function object(): Security
+                    {
+                        return Security::create(
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestBearerSecuritySchemeFactory::create(),
+                                ),
+                            ),
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestBearerSecuritySchemeFactory::create(),
+                                ),
+                                RequiredSecurity::create(
+                                    TestOAuth2PasswordSecuritySchemeFactory::create(),
+                                ),
+                            ),
+                            SecurityRequirement::create(
+                                RequiredSecurity::create(
+                                    TestApiKeySecuritySchemeFactory::create(),
+                                ),
+                            ),
+                        );
+                    }
+                })::class,
             ],
         ],
-    )->skip();
+    );
 
     it(
         'can apply multiple security schemes globally',
@@ -680,17 +809,17 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             [
                 'components' => [
                     'securitySchemes' => [
-                        TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                        TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                     ],
                 ],
                 'security' => [
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                     ],
                 ],
             ],
             [
-                TestHTTPBearerSecuritySchemeFactory::create(),
+                TestBearerSecuritySchemeFactory::create(),
             ],
             TestSingleHTTPBearerSchemeSecurityFactory::class,
         ],
@@ -716,25 +845,25 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             [
                 'components' => [
                     'securitySchemes' => [
-                        TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                        TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                         TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
                     ],
                 ],
                 'security' => [
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                         TestApiKeySecuritySchemeFactory::name() => [],
                     ],
                 ],
             ],
             [
-                TestHTTPBearerSecuritySchemeFactory::create(),
+                TestBearerSecuritySchemeFactory::create(),
                 TestApiKeySecuritySchemeFactory::create(),
             ],
             Security::create(
                 SecurityRequirement::create(
                     RequiredSecurity::create(
-                        TestHTTPBearerSecuritySchemeFactory::create(),
+                        TestBearerSecuritySchemeFactory::create(),
                     ),
                     RequiredSecurity::create(
                         TestApiKeySecuritySchemeFactory::create(),
@@ -746,13 +875,13 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             [
                 'components' => [
                     'securitySchemes' => [
-                        TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                        TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                         TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
                     ],
                 ],
                 'security' => [
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                     ],
                     [
                         TestApiKeySecuritySchemeFactory::name() => [],
@@ -760,7 +889,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 ],
             ],
             [
-                TestHTTPBearerSecuritySchemeFactory::create(),
+                TestBearerSecuritySchemeFactory::create(),
                 TestApiKeySecuritySchemeFactory::create(),
             ],
             Security::create(
@@ -772,24 +901,24 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             [
                 'components' => [
                     'securitySchemes' => [
-                        TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                        TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                         TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
                         TestOAuth2PasswordSecuritySchemeFactory::name() => oAuth2SecurityExpectations(),
                     ],
                 ],
                 'security' => [
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                     ],
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                         TestOAuth2PasswordSecuritySchemeFactory::name() => [],
                     ],
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                     ],
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                     ],
                     [
                         TestApiKeySecuritySchemeFactory::name() => [],
@@ -800,19 +929,19 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 ],
             ],
             [
-                TestHTTPBearerSecuritySchemeFactory::create(),
+                TestBearerSecuritySchemeFactory::create(),
                 TestApiKeySecuritySchemeFactory::create(),
                 TestOAuth2PasswordSecuritySchemeFactory::create(),
             ],
             Security::create(
                 SecurityRequirement::create(
                     RequiredSecurity::create(
-                        TestHTTPBearerSecuritySchemeFactory::create(),
+                        TestBearerSecuritySchemeFactory::create(),
                     ),
                 ),
                 SecurityRequirement::create(
                     RequiredSecurity::create(
-                        TestHTTPBearerSecuritySchemeFactory::create(),
+                        TestBearerSecuritySchemeFactory::create(),
                     ),
                     RequiredSecurity::create(
                         TestOAuth2PasswordSecuritySchemeFactory::create(),
@@ -820,12 +949,12 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 ),
                 SecurityRequirement::create(
                     RequiredSecurity::create(
-                        TestHTTPBearerSecuritySchemeFactory::create(),
+                        TestBearerSecuritySchemeFactory::create(),
                     ),
                 ),
                 SecurityRequirement::create(
                     RequiredSecurity::create(
-                        TestHTTPBearerSecuritySchemeFactory::create(),
+                        TestBearerSecuritySchemeFactory::create(),
                     ),
                 ),
                 SecurityRequirement::create(
@@ -839,27 +968,12 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     ),
                 ),
             ),
-            //            [
-            //                TestHTTPBearerSecuritySchemeFactory::create(),
-            //                [
-            //                    TestHTTPBearerSecuritySchemeFactory::create(),
-            //                    TestHTTPBearerSecuritySchemeFactory::create(),
-            //                ],
-            //                [
-            //                    TestHTTPBearerSecuritySchemeFactory::create(),
-            //                ],
-            //                TestHTTPBearerSecuritySchemeFactory::create(),
-            //                [
-            //                    TestApiKeySecuritySchemeFactory::create(),
-            //                ],
-            //                TestApiKeySecuritySchemeFactory::create(),
-            //            ],
         ],
     ]);
 
     it('can buildup the security scheme', function (): void {
         $components = Components::create()
-            ->securitySchemes(TestHTTPBearerSecuritySchemeFactory::create());
+            ->securitySchemes(TestBearerSecuritySchemeFactory::create());
 
         $operation = Operation::get()
             ->responses(
@@ -913,12 +1027,12 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             ],
             'components' => [
                 'securitySchemes' => [
-                    TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                    TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                 ],
             ],
             'security' => [
                 [
-                    TestHTTPBearerSecuritySchemeFactory::name() => [],
+                    TestBearerSecuritySchemeFactory::name() => [],
                 ],
             ],
         ];
@@ -927,7 +1041,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
 
     it('can add operation security using builder', function (): void {
         $components = Components::create()
-            ->securitySchemes(TestHTTPBearerSecuritySchemeFactory::create());
+            ->securitySchemes(TestBearerSecuritySchemeFactory::create());
 
         $routeInformation = RouteInfo::create(
             Route::get('/example', static fn (): string => 'example'),
@@ -986,7 +1100,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                         ],
                         'security' => [
                             [
-                                TestHTTPBearerSecuritySchemeFactory::name() => [],
+                                TestBearerSecuritySchemeFactory::name() => [],
                             ],
                         ],
                     ],
@@ -994,7 +1108,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             ],
             'components' => [
                 'securitySchemes' => [
-                    TestHTTPBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
+                    TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                 ],
             ],
         ];

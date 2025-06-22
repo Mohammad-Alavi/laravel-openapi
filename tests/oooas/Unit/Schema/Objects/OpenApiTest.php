@@ -42,7 +42,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description as TagDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name as TagName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
-use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestHTTPBearerSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestOAuth2PasswordSecuritySchemeFactory;
 use Tests\Doubles\Stubs\Petstore\Security\TestComplexMultiSecurityFactory;
 
@@ -164,7 +164,7 @@ describe(class_basename(OpenAPI::class), function (): void {
         $security = (new TestComplexMultiSecurityFactory())->object();
 
         $components = Components::create()->securitySchemes(
-            TestHTTPBearerSecuritySchemeFactory::create(),
+            TestBearerSecuritySchemeFactory::create(),
             TestOAuth2PasswordSecuritySchemeFactory::create(),
         );
 
@@ -371,7 +371,7 @@ describe(class_basename(OpenAPI::class), function (): void {
             ],
             'components' => [
                 'securitySchemes' => [
-                    TestHTTPBearerSecuritySchemeFactory::name() => [
+                    TestBearerSecuritySchemeFactory::name() => [
                         'type' => 'http',
                         'description' => 'Example Security',
                         'scheme' => 'bearer',
@@ -397,10 +397,10 @@ describe(class_basename(OpenAPI::class), function (): void {
             ],
             'security' => [
                 [
-                    TestHTTPBearerSecuritySchemeFactory::name() => [],
+                    TestBearerSecuritySchemeFactory::name() => [],
                 ],
                 [
-                    TestHTTPBearerSecuritySchemeFactory::name() => [],
+                    TestBearerSecuritySchemeFactory::name() => [],
                     'OAuth2Password' => [
                         'order:shipping:address',
                         'order:shipping:status',

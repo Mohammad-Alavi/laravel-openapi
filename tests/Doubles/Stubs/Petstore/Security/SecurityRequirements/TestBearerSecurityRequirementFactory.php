@@ -5,7 +5,7 @@ namespace Tests\Doubles\Stubs\Petstore\Security\SecurityRequirements;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Objects\SecurityRequirementFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\RequiredSecurity;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\SecurityRequirement;
-use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestHTTPBearerSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 
 final readonly class TestBearerSecurityRequirementFactory extends SecurityRequirementFactory
 {
@@ -13,7 +13,7 @@ final readonly class TestBearerSecurityRequirementFactory extends SecurityRequir
     {
         return SecurityRequirement::create(
             RequiredSecurity::create(
-                TestHTTPBearerSecuritySchemeFactory::create(),
+                TestBearerSecuritySchemeFactory::create(),
             ),
         );
     }

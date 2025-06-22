@@ -15,7 +15,7 @@ use Tests\Doubles\Stubs\Attributes\TestExtensionFactory;
 use Tests\Doubles\Stubs\Attributes\TestParameterFactory;
 use Tests\Doubles\Stubs\Attributes\TestRequestBodyFactory;
 use Tests\Doubles\Stubs\Attributes\TestResponsesFactory;
-use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestHTTPBearerSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\Doubles\Stubs\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
 use Tests\Doubles\Stubs\Servers\ServerWithMultipleVariableFormatting;
 use Tests\Doubles\Stubs\Tags\TagWithExternalObjectDoc;
@@ -149,7 +149,7 @@ describe('OperationBuilder', function (): void {
                         'deprecated' => true,
                         'security' => [
                             [
-                                TestHTTPBearerSecuritySchemeFactory::name() => [],
+                                TestBearerSecuritySchemeFactory::name() => [],
                             ],
                         ],
                         /*

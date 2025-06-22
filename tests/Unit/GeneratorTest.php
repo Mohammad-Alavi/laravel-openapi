@@ -9,9 +9,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
-use Tests\Doubles\Stubs\Petstore\Security\ExampleNoSecurityRequirementSecurity;
-use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestHTTPBearerSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\Doubles\Stubs\Petstore\Security\TestComplexMultiSecurityFactory;
+use Tests\Doubles\Stubs\Petstore\Security\TestEmptySecurityFactory;
 
 beforeEach(function (): void {
     Config::set('openapi', [
@@ -41,7 +41,7 @@ beforeEach(function (): void {
                         }
                     })::class,
                 ],
-                'security' => ExampleNoSecurityRequirementSecurity::class,
+                'security' => TestEmptySecurityFactory::class,
             ],
             'test' => [
                 'info' => [
@@ -177,10 +177,10 @@ describe('Generator', function (): void {
                 ],
                 'security' => [
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                     ],
                     [
-                        TestHTTPBearerSecuritySchemeFactory::name() => [],
+                        TestBearerSecuritySchemeFactory::name() => [],
                         'OAuth2Password' => [
                             'order:shipping:address',
                             'order:shipping:status',
@@ -261,9 +261,7 @@ describe('Generator', function (): void {
                         ],
                     ],
                 ],
-                'security' => [
-                    [],
-                ],
+                'security' => [],
                 'tags' => [
                     [
                         'name' => 'test',
