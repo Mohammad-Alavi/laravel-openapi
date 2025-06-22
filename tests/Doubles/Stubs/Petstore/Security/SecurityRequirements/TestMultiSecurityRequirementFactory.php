@@ -11,7 +11,7 @@ use Tests\Doubles\Stubs\Petstore\Security\Scopes\OrderShippingStatusScope;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestOAuth2PasswordSecuritySchemeFactory;
 
-final readonly class TestMultiSecurityRequirementFactory extends SecurityRequirementFactory
+final class TestMultiSecurityRequirementFactory extends SecurityRequirementFactory
 {
     public function object(): SecurityRequirement
     {

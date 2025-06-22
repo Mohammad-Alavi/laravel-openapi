@@ -161,7 +161,7 @@ describe(class_basename(OpenAPI::class), function (): void {
             Server::create(ServerURL::create('https://api.example.com/v2')),
         ];
 
-        $security = (new TestComplexMultiSecurityFactory())->object();
+        $security = TestComplexMultiSecurityFactory::create();
 
         $components = Components::create()->securitySchemes(
             TestBearerSecuritySchemeFactory::create(),

@@ -9,7 +9,8 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Operation as AttributesOperation;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\SecurityBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\OperationBuilder;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\SecurityFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Objects\SecurityFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
@@ -80,6 +81,10 @@ describe(class_basename(SecurityBuilder::class), function (): void {
     it(
         'can apply multiple security schemes on operation',
         /**
+         * @param SecuritySchemeFactory[] $securitySchemeFactories
+         * @param class-string<SecurityFactory>|Security|null $topLevelSecurity
+         * @param class-string<SecurityFactory>|null $operationSecurity
+         *
          * @throws BindingResolutionException
          * @throws CircularDependencyException
          * @throws \JsonException
@@ -123,7 +128,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                         $topLevelSecurity,
                         SecurityFactory::class,
                         true,
-                    ) ? app($topLevelSecurity)->object() : $topLevelSecurity,
+                    ) ? $topLevelSecurity::create() : $topLevelSecurity,
                 );
             }
 
@@ -432,7 +437,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     TestOAuth2PasswordSecuritySchemeFactory::create(),
                 ],
                 TestSingleHTTPBearerSchemeSecurityFactory::class,
-                (new class implements SecurityFactory {
+                (new class extends SecurityFactory {
                     public function object(): Security
                     {
                         return Security::create(
@@ -475,7 +480,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     TestApiKeySecuritySchemeFactory::create(),
                     TestOAuth2PasswordSecuritySchemeFactory::create(),
                 ],
-                (new class implements SecurityFactory {
+                (new class extends SecurityFactory {
                     public function object(): Security
                     {
                         return Security::create(
@@ -490,7 +495,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                         );
                     }
                 })::class,
-                (new class implements SecurityFactory {
+                (new class extends SecurityFactory {
                     public function object(): Security
                     {
                         return Security::create(
@@ -535,7 +540,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     TestOAuth2PasswordSecuritySchemeFactory::create(),
                 ],
                 TestSingleHTTPBearerSchemeSecurityFactory::class,
-                (new class implements SecurityFactory {
+                (new class extends SecurityFactory {
                     public function object(): Security
                     {
                         return Security::create(
@@ -582,7 +587,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     TestApiKeySecuritySchemeFactory::create(),
                     TestOAuth2PasswordSecuritySchemeFactory::create(),
                 ],
-                (new class implements SecurityFactory {
+                (new class extends SecurityFactory {
                     public function object(): Security
                     {
                         return Security::create(
@@ -597,7 +602,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                         );
                     }
                 })::class,
-                (new class implements SecurityFactory {
+                (new class extends SecurityFactory {
                     public function object(): Security
                     {
                         return Security::create(
@@ -645,7 +650,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     TestApiKeySecuritySchemeFactory::create(),
                 ],
                 TestSingleHTTPBearerSchemeSecurityFactory::class,
-                (new class implements SecurityFactory {
+                (new class extends SecurityFactory {
                     public function object(): Security
                     {
                         return Security::create(
@@ -699,7 +704,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     TestBearerSecuritySchemeFactory::create(),
                     TestApiKeySecuritySchemeFactory::create(),
                 ],
-                (new class implements SecurityFactory {
+                (new class extends SecurityFactory {
                     public function object(): Security
                     {
                         return Security::create(
@@ -714,7 +719,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                         );
                     }
                 })::class,
-                (new class implements SecurityFactory {
+                (new class extends SecurityFactory {
                     public function object(): Security
                     {
                         return Security::create(
@@ -990,7 +995,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 Title::create('Example API'),
                 Version::create('1.0'),
             ),
-        )->security((new TestSingleHTTPBearerSchemeSecurityFactory())->object())
+        )->security(TestSingleHTTPBearerSchemeSecurityFactory::create())
             ->components($components)
             ->paths(
                 Paths::create(

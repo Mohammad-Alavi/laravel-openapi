@@ -84,7 +84,7 @@ describe('Operation', function (): void {
                         ),
                     ),
                 )->deprecated()
-                ->security((new TestSingleHTTPBearerSchemeSecurityFactory())->object())
+                ->security(TestSingleHTTPBearerSchemeSecurityFactory::create())
                 ->servers(Server::default())
                 ->callbacks($callback);
 
