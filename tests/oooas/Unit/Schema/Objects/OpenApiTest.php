@@ -42,9 +42,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description as TagDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name as TagName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
-use Tests\Doubles\Stubs\Petstore\Security\ExampleComplexMultiSecurityRequirementSecurity;
-use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleHTTPBearerSecurityScheme;
-use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleOAuth2PasswordSecurityScheme;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestHTTPBearerSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestOAuth2PasswordSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\TestComplexMultiSecurityFactory;
 
 describe(class_basename(OpenAPI::class), function (): void {
     it('can be created and validated', function (): void {
@@ -161,11 +161,11 @@ describe(class_basename(OpenAPI::class), function (): void {
             Server::create(ServerURL::create('https://api.example.com/v2')),
         ];
 
-        $security = (new ExampleComplexMultiSecurityRequirementSecurity())->build();
+        $security = (new TestComplexMultiSecurityFactory())->object();
 
         $components = Components::create()->securitySchemes(
-            ExampleHTTPBearerSecurityScheme::create(),
-            ExampleOAuth2PasswordSecurityScheme::create(),
+            TestHTTPBearerSecuritySchemeFactory::create(),
+            TestOAuth2PasswordSecuritySchemeFactory::create(),
         );
 
         $externalDocumentation = ExternalDocumentation::create(
@@ -371,13 +371,14 @@ describe(class_basename(OpenAPI::class), function (): void {
             ],
             'components' => [
                 'securitySchemes' => [
-                    'ExampleHTTPBearerSecurityScheme' => [
+                    TestHTTPBearerSecuritySchemeFactory::name() => [
                         'type' => 'http',
-                        'scheme' => 'bearer',
                         'description' => 'Example Security',
+                        'scheme' => 'bearer',
                     ],
                     'OAuth2Password' => [
                         'type' => 'oauth2',
+                        'description' => 'OAuth2 Password Security',
                         'flows' => [
                             'password' => [
                                 'tokenUrl' => 'https://example.com/oauth/authorize',
@@ -396,10 +397,10 @@ describe(class_basename(OpenAPI::class), function (): void {
             ],
             'security' => [
                 [
-                    'ExampleHTTPBearerSecurityScheme' => [],
+                    TestHTTPBearerSecuritySchemeFactory::name() => [],
                 ],
                 [
-                    'ExampleHTTPBearerSecurityScheme' => [],
+                    TestHTTPBearerSecuritySchemeFactory::name() => [],
                     'OAuth2Password' => [
                         'order:shipping:address',
                         'order:shipping:status',

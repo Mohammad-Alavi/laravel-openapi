@@ -6,7 +6,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\ApiKey;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 
-class ExampleApiKeySecurityScheme extends SecuritySchemeFactory
+class TestApiKeySecuritySchemeFactory extends SecuritySchemeFactory
 {
     public function component(): SecurityScheme
     {

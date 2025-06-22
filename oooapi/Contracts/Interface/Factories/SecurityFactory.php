@@ -6,5 +6,5 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 
 interface SecurityFactory
 {
-    public function build(): Security;
+    public function object(): Security;
 }

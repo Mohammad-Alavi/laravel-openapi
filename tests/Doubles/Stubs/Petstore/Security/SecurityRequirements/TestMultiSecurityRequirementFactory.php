@@ -8,19 +8,19 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirem
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\ScopeCollection;
 use Tests\Doubles\Stubs\Petstore\Security\Scopes\OrderShippingAddressScope;
 use Tests\Doubles\Stubs\Petstore\Security\Scopes\OrderShippingStatusScope;
-use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleHTTPBearerSecurityScheme;
-use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\ExampleOAuth2PasswordSecurityScheme;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestHTTPBearerSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestOAuth2PasswordSecuritySchemeFactory;
 
-final readonly class ExampleMultiSecurityRequirement extends SecurityRequirementFactory
+final readonly class TestMultiSecurityRequirementFactory extends SecurityRequirementFactory
 {
     public function object(): SecurityRequirement
     {
         return SecurityRequirement::create(
             RequiredSecurity::create(
-                ExampleHTTPBearerSecurityScheme::create(),
+                TestHTTPBearerSecuritySchemeFactory::create(),
             ),
             RequiredSecurity::create(
-                ExampleOAuth2PasswordSecurityScheme::create(),
+                TestOAuth2PasswordSecuritySchemeFactory::create(),
                 ScopeCollection::create(
                     OrderShippingAddressScope::create(),
                     OrderShippingStatusScope::create(),

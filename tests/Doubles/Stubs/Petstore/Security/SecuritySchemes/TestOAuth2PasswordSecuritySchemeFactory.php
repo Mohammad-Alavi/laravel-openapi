@@ -3,6 +3,7 @@
 namespace Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Flows\Password;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\OAuthFlows;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\ScopeCollection;
@@ -14,7 +15,7 @@ use Tests\Doubles\Stubs\Petstore\Security\Scopes\OrderScope;
 use Tests\Doubles\Stubs\Petstore\Security\Scopes\OrderShippingAddressScope;
 use Tests\Doubles\Stubs\Petstore\Security\Scopes\OrderShippingStatusScope;
 
-class ExampleOAuth2PasswordSecurityScheme extends SecuritySchemeFactory
+class TestOAuth2PasswordSecuritySchemeFactory extends SecuritySchemeFactory
 {
     public static function name(): string
     {
@@ -39,6 +40,7 @@ class ExampleOAuth2PasswordSecurityScheme extends SecuritySchemeFactory
                     ),
                 ),
             ),
+            Description::create('OAuth2 Password Security'),
         );
     }
 }

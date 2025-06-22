@@ -16,6 +16,6 @@ readonly class SecurityBuilder
         /** @var SecurityFactory $factoryInstance */
         $factoryInstance = app($securityFactory);
 
-        return $factoryInstance->build();
+        return $factoryInstance->object();
     }
 }

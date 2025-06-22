@@ -23,7 +23,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
-use Tests\Doubles\Stubs\Petstore\Security\ExampleSingleSecurityRequirementSecurity;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestHTTPBearerSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
 
 describe('Operation', function (): void {
     it('can be created with no parameters', function (): void {
@@ -83,7 +84,7 @@ describe('Operation', function (): void {
                         ),
                     ),
                 )->deprecated()
-                ->security((new ExampleSingleSecurityRequirementSecurity())->build())
+                ->security((new TestSingleHTTPBearerSchemeSecurityFactory())->object())
                 ->servers(Server::default())
                 ->callbacks($callback);
 
@@ -113,7 +114,7 @@ describe('Operation', function (): void {
                 'deprecated' => true,
                 'security' => [
                     [
-                        'ExampleHTTPBearerSecurityScheme' => [],
+                        TestHTTPBearerSecuritySchemeFactory::name() => [],
                     ],
                 ],
                 'servers' => [

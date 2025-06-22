@@ -10,9 +10,9 @@ use Tests\Doubles\Stubs\Petstore\Factories\Responses\MultiResponseMixedWithReusa
 use Tests\Doubles\Stubs\Petstore\Factories\Responses\SingleResponse;
 use Tests\Doubles\Stubs\Petstore\Factories\Responses\SingleResponseUsingReusable;
 use Tests\Doubles\Stubs\Petstore\Parameters\ListPetsParameters;
-use Tests\Doubles\Stubs\Petstore\Security\ExampleComplexMultiSecurityRequirementSecurity;
-use Tests\Doubles\Stubs\Petstore\Security\ExampleSimpleMultiSecurityRequirementSecurity;
-use Tests\Doubles\Stubs\Petstore\Security\ExampleSingleSecurityRequirementSecurity;
+use Tests\Doubles\Stubs\Petstore\Security\TestComplexMultiSecurityFactory;
+use Tests\Doubles\Stubs\Petstore\Security\TestSimpleMultiSecurityFactory;
+use Tests\Doubles\Stubs\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
 use Tests\Doubles\Stubs\Petstore\Tags\AnotherPetTag;
 use Tests\Doubles\Stubs\Petstore\Tags\PetTag;
 
@@ -35,7 +35,7 @@ class PetController
     #[Operation(
         operationId: 'multiPetTag',
         tags: [PetTag::class, AnotherPetTag::class],
-        security: ExampleSingleSecurityRequirementSecurity::class,
+        security: TestSingleHTTPBearerSchemeSecurityFactory::class,
         summary: 'List all pets.',
         description: 'List all pets from the database.',
         deprecated: false,
@@ -49,7 +49,7 @@ class PetController
     #[Operation(
         operationId: 'nestedSecurityFirstTest',
         tags: [PetTag::class],
-        security: ExampleSimpleMultiSecurityRequirementSecurity::class,
+        security: TestSimpleMultiSecurityFactory::class,
         summary: 'List all pets.',
         description: 'List all pets from the database.',
     )]
@@ -62,7 +62,7 @@ class PetController
     #[Operation(
         operationId: 'nestedSecuritySecondTest',
         tags: AnotherPetTag::class,
-        security: ExampleComplexMultiSecurityRequirementSecurity::class,
+        security: TestComplexMultiSecurityFactory::class,
         summary: 'List all pets.',
         description: 'List all pets from the database.',
         deprecated: null,

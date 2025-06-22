@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Generator;
 use Tests\Doubles\Stubs\Petstore\PetController;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestApiKeySecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestHTTPBearerSecuritySchemeFactory;
 use Tests\Doubles\Stubs\Servers\ServerWithMultipleVariableFormatting;
 use Tests\Doubles\Stubs\Servers\ServerWithoutVariables;
 use Tests\Doubles\Stubs\Servers\ServerWithVariables;
@@ -189,7 +191,7 @@ describe('PetStore', function (): void {
                 ],
                 'security' => [
                     [
-                        'ExampleHTTPBearerSecurityScheme' => [],
+                        TestHTTPBearerSecuritySchemeFactory::name() => [],
                     ],
                 ],
             ],
@@ -271,10 +273,10 @@ describe('PetStore', function (): void {
                 ],
                 'security' => [
                     [
-                        'ExampleHTTPBearerSecurityScheme' => [],
+                        TestHTTPBearerSecuritySchemeFactory::name() => [],
                     ],
                     [
-                        'ExampleApiKeySecurityScheme' => [],
+                        TestApiKeySecuritySchemeFactory::name() => [],
                     ],
                 ],
             ],
@@ -321,10 +323,10 @@ describe('PetStore', function (): void {
                 'operationId' => 'nestedSecuritySecondTest',
                 'security' => [
                     [
-                        'ExampleHTTPBearerSecurityScheme' => [],
+                        TestHTTPBearerSecuritySchemeFactory::name() => [],
                     ],
                     [
-                        'ExampleHTTPBearerSecurityScheme' => [],
+                        TestHTTPBearerSecuritySchemeFactory::name() => [],
                         'OAuth2Password' => [
                             'order:shipping:address',
                             'order:shipping:status',

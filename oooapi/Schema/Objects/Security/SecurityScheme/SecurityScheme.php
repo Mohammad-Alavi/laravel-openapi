@@ -49,11 +49,9 @@ final class SecurityScheme extends ExtensibleObject
     protected function toArray(): array
     {
         return Arr::filter([
-            ...[
-                'type' => $this->scheme->type(),
-                ...$this->scheme->toArray(),
-            ],
+            'type' => $this->scheme->type(),
             'description' => $this->description,
+            ...$this->scheme->toArray(),
         ]);
     }
 }

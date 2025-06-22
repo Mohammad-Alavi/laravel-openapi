@@ -9,8 +9,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
-use Tests\Doubles\Stubs\Petstore\Security\ExampleComplexMultiSecurityRequirementSecurity;
 use Tests\Doubles\Stubs\Petstore\Security\ExampleNoSecurityRequirementSecurity;
+use Tests\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestHTTPBearerSecuritySchemeFactory;
+use Tests\Doubles\Stubs\Petstore\Security\TestComplexMultiSecurityFactory;
 
 beforeEach(function (): void {
     Config::set('openapi', [
@@ -73,7 +74,7 @@ beforeEach(function (): void {
                         }
                     })::class,
                 ],
-                'security' => ExampleComplexMultiSecurityRequirementSecurity::class,
+                'security' => TestComplexMultiSecurityFactory::class,
                 'extensions' => [
                     'x-tagGroups' => [
                         [
@@ -176,10 +177,10 @@ describe('Generator', function (): void {
                 ],
                 'security' => [
                     [
-                        'ExampleHTTPBearerSecurityScheme' => [],
+                        TestHTTPBearerSecuritySchemeFactory::name() => [],
                     ],
                     [
-                        'ExampleHTTPBearerSecurityScheme' => [],
+                        TestHTTPBearerSecuritySchemeFactory::name() => [],
                         'OAuth2Password' => [
                             'order:shipping:address',
                             'order:shipping:status',

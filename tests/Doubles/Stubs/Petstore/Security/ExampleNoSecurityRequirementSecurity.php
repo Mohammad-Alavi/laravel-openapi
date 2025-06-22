@@ -8,7 +8,7 @@ use Tests\Doubles\Stubs\Petstore\Security\SecurityRequirements\ExampleNoSecurity
 
 class ExampleNoSecurityRequirementSecurity implements SecurityFactory
 {
-    public function build(): Security
+    public function object(): Security
     {
         return Security::create(
             ExampleNoSecurityRequirement::create(),
