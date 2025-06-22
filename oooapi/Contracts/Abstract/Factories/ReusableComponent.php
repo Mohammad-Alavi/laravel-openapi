@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
