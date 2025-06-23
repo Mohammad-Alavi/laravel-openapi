@@ -1,11 +1,8 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
-use MohammadAlavi\ObjectOrientedJSONSchema\Trash\AvailableVocabulary;
-use MohammadAlavi\ObjectOrientedJSONSchema\Trash\JSONSchema\Narrowers\Draft202012Constrained;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\MetaSchema\MetaSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Narrowable;
-use MohammadAlavi\ObjectOrientedJSONSchema\Vocabulary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 describe(class_basename(Schema::class), function (): void {
@@ -203,7 +200,7 @@ describe(class_basename(Schema::class), function (): void {
     //            };
     //
     //            // dd($dialect);
-    //            // $draft202012 = JsonSchema::Draft202012();
+    //            // $draft202012 = JSONSchema::Draft202012();
     //            // $dialectOAS30 = OAS::Version30();
     //            // $dialectOAS31 = OAS::Version31();
     //        },

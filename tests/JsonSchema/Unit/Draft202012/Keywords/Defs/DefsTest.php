@@ -26,14 +26,12 @@ describe(class_basename(Defs::class), function (): void {
     });
 
     it('is immutable', function (): void {
-        $desc = LooseFluentDescriptor::create('string');
-        $def = Def::create('foo', $desc);
-        $defs = Defs::create($def);
-        expect(fn () => $defs->defs = [])->toThrow(Error::class);
+        expect(Defs::class)->toBeImmutable();
     });
 
     it('can be created with no defs', function (): void {
         $defs = Defs::create();
+
         expect($defs->value())->toBe([])
             ->and($defs->jsonSerialize())->toBe([]);
     });
