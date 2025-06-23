@@ -3,7 +3,7 @@
 namespace Tests\src\Unit\Collectors;
 
 use MohammadAlavi\LaravelOpenApi\Builders\TagBuilder;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\TagFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
@@ -123,7 +123,7 @@ class TagBuilderTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $tagBuilder = app(TagBuilder::class);
-        $tagBuilder->build([(new class extends TagFactory {
+        $tagBuilder->build([(new class implements TagFactory {
             public function build(): Tag
             {
                 return Tag::create(

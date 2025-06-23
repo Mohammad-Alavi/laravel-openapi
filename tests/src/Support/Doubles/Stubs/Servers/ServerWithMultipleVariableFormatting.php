@@ -2,7 +2,7 @@
 
 namespace Tests\src\Support\Doubles\Stubs\Servers;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ServerFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\VariableEntry;
@@ -12,7 +12,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\Des
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\Enum;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\ServerVariable;
 
-class ServerWithMultipleVariableFormatting extends ServerFactory
+class ServerWithMultipleVariableFormatting implements ServerFactory
 {
     public function build(): Server
     {

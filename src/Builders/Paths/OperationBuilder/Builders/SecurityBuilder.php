@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Objects\SecurityFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\SecurityFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use Webmozart\Assert\Assert;
 
@@ -16,6 +16,6 @@ readonly class SecurityBuilder
         /** @var SecurityFactory $factoryInstance */
         $factoryInstance = app($securityFactory);
 
-        return $factoryInstance->object();
+        return $factoryInstance->build();
     }
 }

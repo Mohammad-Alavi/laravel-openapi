@@ -2,13 +2,13 @@
 
 namespace Tests\src\Support\Doubles\Stubs\Petstore\Factories\Responses;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ResponsesFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ResponsesFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use Tests\src\Support\Doubles\Stubs\Petstore\Reusable\Response\ValidationErrorResponse;
 
-class SingleResponseUsingReusable extends ResponsesFactory
+class SingleResponseUsingReusable implements ResponsesFactory
 {
     public function build(): Responses
     {

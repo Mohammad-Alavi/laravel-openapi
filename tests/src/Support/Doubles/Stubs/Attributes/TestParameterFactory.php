@@ -2,7 +2,7 @@
 
 namespace Tests\src\Support\Doubles\Stubs\Attributes;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\ParametersFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ParametersFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedCookie;

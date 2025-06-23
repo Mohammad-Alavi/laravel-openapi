@@ -3,7 +3,7 @@
 namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders;
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses as ResponsesAttribute;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ResponsesFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ResponsesFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 
 class ResponsesBuilder

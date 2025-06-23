@@ -2,12 +2,12 @@
 
 namespace Tests\src\Support\Doubles\Stubs\Servers;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ServerFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 
-class ServerWithoutVariables extends ServerFactory
+class ServerWithoutVariables implements ServerFactory
 {
     public function build(): Server
     {

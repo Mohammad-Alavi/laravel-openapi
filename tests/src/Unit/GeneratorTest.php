@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Config;
 use MohammadAlavi\LaravelOpenApi\Generator;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ServerFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\TagFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
@@ -26,7 +26,7 @@ beforeEach(function (): void {
                     ],
                 ],
                 'servers' => [
-                    (new class extends ServerFactory {
+                    (new class implements ServerFactory {
                         public function build(): Server
                         {
                             return Server::create(URL::create('https://example.com'));
@@ -34,7 +34,7 @@ beforeEach(function (): void {
                     })::class,
                 ],
                 'tags' => [
-                    (new class extends TagFactory {
+                    (new class implements TagFactory {
                         public function build(): Tag
                         {
                             return Tag::create(Name::create('test'));
@@ -53,13 +53,13 @@ beforeEach(function (): void {
                     ],
                 ],
                 'servers' => [
-                    (new class extends ServerFactory {
+                    (new class implements ServerFactory {
                         public function build(): Server
                         {
                             return Server::create(URL::create('https://test.com'));
                         }
                     })::class,
-                    (new class extends ServerFactory {
+                    (new class implements ServerFactory {
                         public function build(): Server
                         {
                             return Server::create(URL::create('https://local.com'));
@@ -67,7 +67,7 @@ beforeEach(function (): void {
                     })::class,
                 ],
                 'tags' => [
-                    (new class extends TagFactory {
+                    (new class implements TagFactory {
                         public function build(): Tag
                         {
                             return Tag::create(Name::create('test'));

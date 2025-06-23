@@ -55,8 +55,9 @@ final class ComponentCollector
         // TODO: refactor: maybe we can decouple this responsibility?
         // you know, instantiating the factories
         return $result
-            ->map(static fn (string $factory) => app($factory))
-            ->values();
+            ->map(static function (string $factory) {
+                return app($factory);
+            })->values();
     }
 
     public function use(FilterStrategy $filterStrategy): self

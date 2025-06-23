@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Attributes;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ResponsesFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ResponsesFactory;
 use Webmozart\Assert\Assert;
 
 #[\Attribute(\Attribute::TARGET_METHOD)]

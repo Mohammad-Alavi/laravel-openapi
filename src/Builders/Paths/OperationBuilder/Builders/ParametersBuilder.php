@@ -7,7 +7,7 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Parameters as ParametersAttribute;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\ParametersFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ParametersFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;

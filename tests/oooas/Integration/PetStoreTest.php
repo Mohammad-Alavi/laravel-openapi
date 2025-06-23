@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests\oooas\Integration;
-
 use Illuminate\Support\Facades\File;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
@@ -87,31 +85,8 @@ describe('PetStoreTest', function (): void {
             ),
         )->description(Description::create('maximum number of results to return'));
 
-        $errorReusable = new class extends SchemaFactory implements ShouldBeReferenced {
-            public function component(): JSONSchema
-            {
-                return Schema::object()
-                    ->required('code', 'message')
-                    ->properties(
-                        Property::create(
-                            'code',
-                            Schema::integer()->format(IntegerFormat::INT32),
-                        ),
-                        Property::create(
-                            'message',
-                            Schema::string(),
-                        ),
-                    );
-            }
-
-            public static function name(): string
-            {
-                return 'Error';
-            }
-        };
-
         $components = Components::create()
-            ->schemas(Pet::create(), Animal::create(), $errorReusable);
+            ->schemas(Pet::create(), Animal::create(), ValidationError::create());
 
         $responseEntry = ResponseEntry::create(
             HTTPStatusCode::ok(),
@@ -148,7 +123,7 @@ describe('PetStoreTest', function (): void {
             )->content(
                 ContentEntry::create(
                     'application/json',
-                    MediaType::json()->schema($errorReusable::create()),
+                    MediaType::json()->schema(ValidationError::create()),
                 ),
             ),
         );
@@ -311,5 +286,28 @@ class Animal extends SchemaFactory implements ShouldBeReferenced
                     Tag::create(),
                 ),
             );
+    }
+}
+
+class ValidationError extends SchemaFactory implements ShouldBeReferenced {
+    public function component(): JSONSchema
+    {
+        return Schema::object()
+            ->required('code', 'message')
+            ->properties(
+                Property::create(
+                    'code',
+                    Schema::integer()->format(IntegerFormat::INT32),
+                ),
+                Property::create(
+                    'message',
+                    Schema::string(),
+                ),
+            );
+    }
+
+    public static function name(): string
+    {
+        return 'Error';
     }
 }

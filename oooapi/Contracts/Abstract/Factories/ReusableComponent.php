@@ -11,6 +11,10 @@ use Webmozart\Assert\Assert;
 
 abstract class ReusableComponent implements \JsonSerializable
 {
+    final public function __construct()
+    {
+    }
+
     final public function jsonSerialize(): JSONSchema|OASObject
     {
         return $this->build();

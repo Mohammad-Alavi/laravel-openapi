@@ -16,12 +16,12 @@ return [
             ],
 
             'servers' => [
-                // Servers should extend `MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ServerFactory` class.
+                // Servers should extend `MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory` class.
                 // ExampleServer::class
             ],
 
             'tags' => [
-                // Tags should extend `MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\TagFactory` class.
+                // Tags should extend `MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory` class.
                 // ExampleTag::class,
             ],
 

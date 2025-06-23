@@ -2,7 +2,7 @@
 
 namespace Tests\src\Support\Doubles\Stubs\Petstore\Factories\Responses;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ResponsesFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ResponsesFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description;
@@ -13,7 +13,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
 use Tests\src\Support\Doubles\Stubs\Petstore\Reusable\Response\ValidationErrorResponse;
 use Tests\src\Support\Doubles\Stubs\Petstore\Reusable\Schema\PetSchema;
 
-class MultiResponseMixedWithReusable extends ResponsesFactory
+class MultiResponseMixedWithReusable implements ResponsesFactory
 {
     public function build(): Responses
     {

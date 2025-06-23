@@ -2,12 +2,12 @@
 
 namespace Tests\src\Support\Doubles\Stubs\Tags;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\TagFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 
-class TagWithoutExternalDoc extends TagFactory
+class TagWithoutExternalDoc implements TagFactory
 {
     public function build(): Tag
     {

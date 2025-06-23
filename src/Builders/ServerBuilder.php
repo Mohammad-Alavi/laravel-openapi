@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Builders;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ServerFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 
 class ServerBuilder

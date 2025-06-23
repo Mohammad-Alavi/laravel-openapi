@@ -2,9 +2,9 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Attributes;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Objects\SecurityFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ServerFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\TagFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\SecurityFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
 
 #[\Attribute(\Attribute::TARGET_METHOD)]
 final readonly class Operation
