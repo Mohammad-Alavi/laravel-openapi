@@ -14,8 +14,8 @@ use Tests\UnitTestCase;
 |
 */
 
-pest()->extends(IntegrationTestCase::class)->in('Integration', 'oooas/Integration', 'JsonSchema/Integration');
-pest()->extends(UnitTestCase::class)->in('Unit', 'oooas/Unit', 'JsonSchema/Unit');
+pest()->extends(IntegrationTestCase::class)->in('Integration', 'oooas/Integration', 'JSONSchema/Integration');
+pest()->extends(UnitTestCase::class)->in('Unit', 'oooas/Unit', 'JSONSchema/Unit');
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +29,13 @@ pest()->extends(UnitTestCase::class)->in('Unit', 'oooas/Unit', 'JsonSchema/Unit'
 */
 
 expect()->extend('toBeOne', fn () => $this->toBe(1));
+expect()->extend('toBeImmutable', function (): void {
+    $reflection = new ReflectionClass($this->value);
+
+    expect($reflection->isReadOnly())->toBeTrue(
+        'The class ' . $this->value . ' is not immutable.',
+    );
+});
 
 /*
 |--------------------------------------------------------------------------
