@@ -1,7 +1,7 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
-use Tests\oooas\Doubles\Fakes\GeneratableFake;
+use Tests\oooas\Support\Doubles\Fakes\GeneratableFake;
 
 describe(class_basename(Generatable::class), function (): void {
     it('can be json serializable', function (): void {

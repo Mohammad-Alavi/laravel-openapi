@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use MohammadAlavi\LaravelOpenApi\Attributes\Responses as ResponsesAttribute;
+use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\ResponsesBuilder;
+use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
+use Tests\src\Support\Doubles\Stubs\Attributes\TestResponsesFactory;
+
+describe(class_basename(ResponsesBuilder::class), function (): void {
+    it('can be created', function (): void {
+        $routeInformation = RouteInfo::create(
+            Route::get('/example', static fn (): string => 'example'),
+        );
+        $routeInformation->actionAttributes = collect([
+            new ResponsesAttribute(TestResponsesFactory::class),
+        ]);
+        $builder = new ResponsesBuilder();
+
+        $responses = $builder->build($routeInformation->responsesAttribute());
+
+        expect($responses->asArray())->toBe([
+            '200' => [
+                'description' => 'OK',
+            ],
+        ]);
+    });
+})->covers(ResponsesBuilder::class);

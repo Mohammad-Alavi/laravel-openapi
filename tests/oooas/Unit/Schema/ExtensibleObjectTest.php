@@ -3,7 +3,7 @@
 use MohammadAlavi\ObjectOrientedOpenAPI\Exceptions\PropertyDoesNotExistException;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use Tests\oooas\Doubles\Fakes\ExtensibleObjectFake;
+use Tests\oooas\Support\Doubles\Fakes\ExtensibleObjectFake;
 
 describe('ExtensibleObject', function (): void {
     it('can manipulate extensions', function (): void {

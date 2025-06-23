@@ -14,8 +14,16 @@ use Tests\UnitTestCase;
 |
 */
 
-pest()->extends(IntegrationTestCase::class)->in('Integration', 'oooas/Integration', 'JSONSchema/Integration');
-pest()->extends(UnitTestCase::class)->in('Unit', 'oooas/Unit', 'JSONSchema/Unit');
+pest()->extends(IntegrationTestCase::class)->in(
+    'src/Integration',
+    'oooas/Integration',
+    'JSONSchema/Integration',
+);
+pest()->extends(UnitTestCase::class)->in(
+    'src/Unit',
+    'oooas/Unit',
+    'JSONSchema/Unit',
+);
 
 /*
 |--------------------------------------------------------------------------

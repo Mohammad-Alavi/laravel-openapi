@@ -220,7 +220,7 @@ describe('PetStoreTest', function (): void {
             ->components($components);
 
         $this->assertEquals(
-            File::json(realpath(__DIR__ . '/../Doubles/Stubs/petstore_expanded.json')),
+            File::json(realpath(__DIR__ . '/../Support/Doubles/Stubs/petstore_expanded.json')),
             $openApi->asArray(),
         );
     });

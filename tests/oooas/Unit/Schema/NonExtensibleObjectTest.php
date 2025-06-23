@@ -2,7 +2,7 @@
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\NonExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
-use Tests\oooas\Doubles\Fakes\NonExtensibleObjectFake;
+use Tests\oooas\Support\Doubles\Fakes\NonExtensibleObjectFake;
 
 describe('NonExtensibleObject', function (): void {
     it('can be created', function (): void {
