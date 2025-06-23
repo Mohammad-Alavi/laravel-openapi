@@ -4,5 +4,5 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descripti
 
 interface IsReadOnly
 {
-    public function readOnly(bool $value): static;
+    public function readOnly(): static;
 }

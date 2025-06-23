@@ -529,20 +529,20 @@ class LooseFluentDescriptor implements FluentDescriptor
         return $clone;
     }
 
-    public function readOnly(bool $value): static
+    public function readOnly(): static
     {
         $clone = clone $this;
 
-        $clone->isReadOnly = Dialect::readOnly($value);
+        $clone->isReadOnly = Dialect::readOnly();
 
         return $clone;
     }
 
-    public function writeOnly(bool $value): static
+    public function writeOnly(): static
     {
         $clone = clone $this;
 
-        $clone->isWriteOnly = Dialect::writeOnly($value);
+        $clone->isWriteOnly = Dialect::writeOnly();
 
         return $clone;
     }

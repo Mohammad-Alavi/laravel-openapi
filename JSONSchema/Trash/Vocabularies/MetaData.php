@@ -74,20 +74,20 @@ final class MetaData extends Generatable
         return $clone;
     }
 
-    public function readOnly(bool $value): self
+    public function readOnly(): self
     {
         $clone = clone $this;
 
-        $clone->isReadOnly = IsReadOnly::create($value);
+        $clone->isReadOnly = IsReadOnly::create();
 
         return $clone;
     }
 
-    public function writeOnly(bool $value): self
+    public function writeOnly(): self
     {
         $clone = clone $this;
 
-        $clone->isWriteOnly = IsWriteOnly::create($value);
+        $clone->isWriteOnly = IsWriteOnly::create();
 
         return $clone;
     }

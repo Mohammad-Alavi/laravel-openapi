@@ -4,5 +4,5 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descripti
 
 interface IsWriteOnly
 {
-    public function writeOnly(bool $value): static;
+    public function writeOnly(): static;
 }

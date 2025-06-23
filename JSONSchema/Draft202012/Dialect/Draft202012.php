@@ -256,14 +256,14 @@ final readonly class Draft202012
         return Examples::create(...$example);
     }
 
-    public static function readOnly(bool $value): IsReadOnly
+    public static function readOnly(): IsReadOnly
     {
-        return IsReadOnly::create($value);
+        return IsReadOnly::create();
     }
 
-    public static function writeOnly(bool $value): IsWriteOnly
+    public static function writeOnly(): IsWriteOnly
     {
-        return IsWriteOnly::create($value);
+        return IsWriteOnly::create();
     }
 
     public static function title(string $value): Title
