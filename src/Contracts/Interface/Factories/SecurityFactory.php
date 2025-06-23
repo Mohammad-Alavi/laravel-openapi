@@ -2,7 +2,6 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ComposableFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 
 interface SecurityFactory

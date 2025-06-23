@@ -289,7 +289,8 @@ class Animal extends SchemaFactory implements ShouldBeReferenced
     }
 }
 
-class ValidationError extends SchemaFactory implements ShouldBeReferenced {
+class ValidationError extends SchemaFactory implements ShouldBeReferenced
+{
     public function component(): JSONSchema
     {
         return Schema::object()
