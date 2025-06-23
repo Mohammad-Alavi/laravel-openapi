@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Parameters;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description as ResponseDescription;

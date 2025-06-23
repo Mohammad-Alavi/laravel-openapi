@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMap;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
 
 /**
  * @extends StringMap<SchemaName>

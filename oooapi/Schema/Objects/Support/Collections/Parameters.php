@@ -1,11 +1,11 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Generatable;
 
 final class Parameters extends Generatable
 {

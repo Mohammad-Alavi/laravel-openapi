@@ -6,7 +6,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\DefaultValue;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\Enum;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use Webmozart\Assert\Assert;
 
 final class ServerVariable extends ExtensibleObject

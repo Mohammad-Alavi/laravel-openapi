@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\ReadonlyGenerator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\ReadonlyGenerator;
 
 final readonly class ScopeCollection extends ReadonlyGenerator
 {

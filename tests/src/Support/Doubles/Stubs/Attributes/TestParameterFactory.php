@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedCookie;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedHeader;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Parameters;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use Tests\src\Support\Doubles\Stubs\Concerns\TestParameter;
 

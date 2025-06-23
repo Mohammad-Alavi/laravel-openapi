@@ -1,11 +1,11 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Utilities;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Support;
 
 // TODO: is it possible to make this class readonly?
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
 
-abstract readonly class ReadonlyGenerator implements OASObject, \JsonSerializable
+abstract class Generatable implements OASObject, \JsonSerializable
 {
     use Generator;
 }

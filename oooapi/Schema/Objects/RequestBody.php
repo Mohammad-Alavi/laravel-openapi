@@ -6,7 +6,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 class RequestBody extends ExtensibleObject implements SimpleCreator
 {

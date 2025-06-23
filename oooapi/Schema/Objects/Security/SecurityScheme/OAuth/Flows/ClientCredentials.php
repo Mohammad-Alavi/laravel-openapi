@@ -4,7 +4,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecuritySc
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Flow;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\ScopeCollection;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final readonly class ClientCredentials extends Flow
 {

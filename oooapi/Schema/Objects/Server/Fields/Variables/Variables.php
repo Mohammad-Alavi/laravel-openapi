@@ -3,7 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\ServerVariable;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMap;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
 
 /**
  * @extends StringMap<ServerVariable>

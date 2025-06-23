@@ -4,7 +4,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Path;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 class Paths extends ExtensibleObject
 {

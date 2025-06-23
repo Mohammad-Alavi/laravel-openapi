@@ -5,7 +5,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\HasKey;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Callback extends ExtensibleObject implements HasKey
 {

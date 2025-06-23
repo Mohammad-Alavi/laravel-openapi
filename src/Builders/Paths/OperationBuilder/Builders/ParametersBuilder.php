@@ -11,18 +11,18 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories\Parameters
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Parameters;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 class ParametersBuilder
 {
     public function build(RouteInfo $routeInfo): Parameters
     {
-        $parameterCollection = $this->buildPath($routeInfo);
+        $parameters = $this->buildPath($routeInfo);
         $attributedParameters = $this->buildAttribute($routeInfo);
 
         return Parameters::create(
-            $parameterCollection,
+            $parameters,
             $attributedParameters,
         );
     }

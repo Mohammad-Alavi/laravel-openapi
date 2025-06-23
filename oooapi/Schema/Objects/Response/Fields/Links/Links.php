@@ -4,7 +4,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Lin
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMap;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
 
 /**
  * @extends StringMap<Link>

@@ -13,7 +13,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\L
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\Links;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Components extends ExtensibleObject
 {

@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\TermsOfServic
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Info extends ExtensibleObject
 {

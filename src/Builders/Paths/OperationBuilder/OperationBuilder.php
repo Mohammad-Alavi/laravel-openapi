@@ -65,7 +65,7 @@ final readonly class OperationBuilder
             $operation = $operation->action($operationAttr->method ?? Str::lower($routeInfo->method()));
             $servers = $this->serverBuilder->build(Arr::wrap($operationAttr->servers));
         }
-        $parameterCollection = $this->parametersBuilder->build($routeInfo);
+        $parameters = $this->parametersBuilder->build($routeInfo);
         $requestBody = $routeInfo->requestBodyAttribute() instanceof RequestBody
             ? $this->requestBodyBuilder->build($routeInfo->requestBodyAttribute())
             : null;
@@ -75,7 +75,7 @@ final readonly class OperationBuilder
         $callbacks = $this->callbackBuilder->build($routeInfo->callbackAttributes());
 
         $operation = $operation->servers(...$servers)
-            ->parameters($parameterCollection)
+            ->parameters($parameters)
             ->requestBody($requestBody)
             ->responses($responses)
             ->callbacks(...$callbacks);

@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class PathItem extends ExtensibleObject
 {

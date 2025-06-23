@@ -6,8 +6,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\O
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Flows\ClientCredentials;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Flows\Implicit;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Flows\Password;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Generatable;
 
 final class OAuthFlows extends Generatable
 {

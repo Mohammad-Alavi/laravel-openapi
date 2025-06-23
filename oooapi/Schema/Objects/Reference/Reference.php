@@ -6,7 +6,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\NonExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields\Ref;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields\Summary;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Reference extends NonExtensibleObject
 {

@@ -4,7 +4,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMap;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
 
 /**
  * @extends StringMap<Response>

@@ -7,7 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\DefaultResponse;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMapEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
 
 /**
  * @extends StringMapEntry<Response>

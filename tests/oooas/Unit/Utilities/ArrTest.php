@@ -2,7 +2,7 @@
 
 namespace Tests\oooas\Unit\Utilities;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 describe('Arr', function (): void {
     it('removes null values', function (): void {

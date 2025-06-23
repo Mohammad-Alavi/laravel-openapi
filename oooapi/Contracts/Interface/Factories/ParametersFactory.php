@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\Factories;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Parameters;
 
 interface ParametersFactory
 {

@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Extensions;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Generatable;
 use Webmozart\Assert\Assert;
 
 // TODO: make readonly if possible

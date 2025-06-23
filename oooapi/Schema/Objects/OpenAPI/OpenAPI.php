@@ -12,7 +12,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class OpenAPI extends ExtensibleObject
 {

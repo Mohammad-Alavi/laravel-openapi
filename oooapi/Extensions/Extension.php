@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Extensions;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\ReadonlyGenerator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\ReadonlyGenerator;
 use Webmozart\Assert\Assert;
 
 final readonly class Extension extends ReadonlyGenerator

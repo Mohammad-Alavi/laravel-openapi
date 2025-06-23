@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Headers\H
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Headers\Headers;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Links\LinkEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Links\Links;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Response extends ExtensibleObject
 {

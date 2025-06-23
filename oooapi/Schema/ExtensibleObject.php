@@ -5,8 +5,8 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Exceptions\PropertyDoesNotExistException;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extensions;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Generatable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Generatable;
 
 // TODO: refactor!
 //  I mean, I don't even know the the extension supposed to work!

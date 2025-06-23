@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\HasKey;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class MediaType extends ExtensibleObject implements HasKey
 {

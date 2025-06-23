@@ -11,13 +11,13 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Deprecat
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Summary;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Parameters;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Operation extends ExtensibleObject
 {
@@ -38,7 +38,7 @@ final class Operation extends ExtensibleObject
     private Description|null $description = null;
     private ExternalDocumentation|null $externalDocs = null;
     private OperationId|null $operationId = null;
-    private Parameters|null $parameterCollection = null;
+    private Parameters|null $parameters = null;
     private RequestBody|RequestBodyFactory|null $requestBody = null;
     private Responses|null $responses = null;
     private Deprecated|null $deprecated = null;
@@ -161,11 +161,11 @@ final class Operation extends ExtensibleObject
         return $clone;
     }
 
-    public function parameters(Parameters $parameterCollection): self
+    public function parameters(Parameters $parameters): self
     {
         $clone = clone $this;
 
-        $clone->parameterCollection = $parameterCollection->toNullIfEmpty();
+        $clone->parameters = $parameters->toNullIfEmpty();
 
         return $clone;
     }
@@ -251,7 +251,7 @@ final class Operation extends ExtensibleObject
             'description' => $this->description,
             'externalDocs' => $this->externalDocs,
             'operationId' => $this->operationId,
-            'parameters' => $this->parameterCollection,
+            'parameters' => $this->parameters,
             'requestBody' => $this->requestBody,
             'responses' => $this->responses,
             'deprecated' => $this->deprecated,

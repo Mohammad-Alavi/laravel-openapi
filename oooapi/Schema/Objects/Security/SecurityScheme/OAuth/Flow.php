@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\ReadonlyGenerator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\ReadonlyGenerator;
 
 abstract readonly class Flow extends ReadonlyGenerator
 {

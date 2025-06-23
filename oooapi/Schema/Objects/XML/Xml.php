@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\Prefix;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\Wrapped;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\XmlNamespace;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Xml extends ExtensibleObject
 {

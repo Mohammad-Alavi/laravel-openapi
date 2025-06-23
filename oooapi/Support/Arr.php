@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Utilities;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Support;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;

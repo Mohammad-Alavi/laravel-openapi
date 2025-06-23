@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Map;
 
 use Webmozart\Assert\Assert;
 

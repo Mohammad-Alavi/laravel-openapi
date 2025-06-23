@@ -3,7 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
-use MohammadAlavi\ObjectOrientedOpenAPI\Utilities\Map\StringMap;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
 
 /**
  * @extends StringMap<Link>

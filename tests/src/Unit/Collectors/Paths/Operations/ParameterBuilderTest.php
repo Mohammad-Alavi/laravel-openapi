@@ -19,10 +19,10 @@ describe('ParameterBuilder', function (): void {
         ]);
         $builder = new ParametersBuilder();
 
-        $parameterCollection = $builder->build($routeInformation);
+        $parameters = $builder->build($routeInformation);
 
-        expect($parameterCollection)->not()->toBeNull()
-            ->and($parameterCollection->all())->toHaveCount(4);
+        expect($parameters)->not()->toBeNull()
+            ->and($parameters->all())->toHaveCount(4);
     });
 
     it('can automatically create parameters from url params', function (array $params, int $count): void {
@@ -33,10 +33,10 @@ describe('ParameterBuilder', function (): void {
 
         $builder = new ParametersBuilder();
 
-        $parameterCollection = $builder->build($routeInformation);
+        $parameters = $builder->build($routeInformation);
 
-        $urlParam = $parameterCollection->all()[0];
-        expect($parameterCollection->all())->toHaveCount($count)
+        $urlParam = $parameters->all()[0];
+        expect($parameters->all())->toHaveCount($count)
             ->and($urlParam)->toBeInstanceOf(Parameter::class);
     })->with([
         'with action params' => [
@@ -55,10 +55,10 @@ describe('ParameterBuilder', function (): void {
         );
         $builder = new ParametersBuilder();
 
-        $parameterCollection = $builder->build($routeInformation);
+        $parameters = $builder->build($routeInformation);
 
-        $typeHintedParam = $parameterCollection->all()[0];
-        expect($parameterCollection->asArray())->toHaveCount(2)
+        $typeHintedParam = $parameters->all()[0];
+        expect($parameters->asArray())->toHaveCount(2)
             ->and($typeHintedParam->asArray()['schema']['type'])->toBe(Type::integer()->value());
     });
 })->covers(ParametersBuilder::class);
