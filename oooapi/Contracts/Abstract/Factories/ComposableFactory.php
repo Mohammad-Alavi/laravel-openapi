@@ -4,7 +4,11 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories;
 
 abstract class ComposableFactory
 {
-    public static function create(): mixed
+    final private function __construct()
+    {
+    }
+
+    final public static function create(): mixed
     {
         return (new static())->object();
     }
