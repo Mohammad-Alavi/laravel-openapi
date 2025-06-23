@@ -191,18 +191,21 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
         );
     });
 
-    it('can set const value', function (): void {
-        $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('string')
-            ->const('fixed-value');
+    it('should return constant value as is', function (mixed $value): void {
+        $descriptor = LooseFluentDescriptor::withoutSchema()->const($value);
 
         expect(\Safe\json_encode($descriptor))->toBe(
             \Safe\json_encode([
-                'type' => 'string',
-                'const' => 'fixed-value',
+                'const' => $value,
             ]),
         );
-    });
+    })->with([
+        'test',
+        1,
+        true,
+        null,
+        false,
+    ]);
 
     it('can set title, description and examples', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
@@ -237,14 +240,14 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('can set readOnly and writeOnly', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('string')
-            ->readOnly(true)
-            ->writeOnly(false);
+            ->readOnly()
+            ->writeOnly();
 
         expect(\Safe\json_encode($descriptor))->toBe(
             \Safe\json_encode([
                 'type' => 'string',
                 'readOnly' => true,
-                'writeOnly' => false,
+                'writeOnly' => true,
             ]),
         );
     });

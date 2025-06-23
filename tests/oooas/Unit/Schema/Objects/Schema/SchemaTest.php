@@ -1,208 +1,75 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
-use MohammadAlavi\ObjectOrientedJSONSchema\Trash\MetaSchema\MetaSchema;
-use MohammadAlavi\ObjectOrientedJSONSchema\Trash\Narrowable;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentRequired\Dependency;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Formats\IntegerFormat;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 describe(class_basename(Schema::class), function (): void {
     it(
-        'can create a keyword',
+        'can be used to create a json file of an specific JSONSchema dialect',
         function (): void {
-            $keyword = new class implements Keyword {
-                public static function name(): string
-                {
-                    return 'keyword';
-                }
+            jsonDD(
+                Schema::integer()->format(IntegerFormat::INT64)->comment('Format test'),
+            );
+            jsonDD(
+                Schema::enum('sag', 'ga')->comment('This is a enum'),
+            );
+            jsonDD(
+                Schema::const('sag')->comment('This is a const'),
+            );
+            jsonDD(
+                Schema::object()
+                        ->comment('This is an object')
+                    ->properties(
+                        Property::create('name', Schema::string()->comment('This is a name')),
+                    )
+                    ->writeOnly()
+                    ->oneOf(
+                        Schema::string(),
+                        Schema::number(),
+                    )->dependentRequired(
+                        Dependency::create('name', 'name'),
+                        Dependency::create('sag', 'dick', 'wat'),
+                    )->required('name'),
+            );
+            jsonDD(
+                Schema::array()
+                        ->comment('This is a null')
+                        ->maxContains(3)
+                        ->uniqueItems()
+                        ->items(
+                            Schema::string(),
+                        )->oneOf(
+                            Schema::string(),
+                            Schema::number(),
+                        ),
+            );
+            //            jsonDD(Schema::string()->comment('This is a string'));
+            //            jsonDD(Schema::number()->double()->comment('This is a comment'));
+            //            jsonDD(Schema::oas31()->integer()->int64());
+            //            jsonDD(Schema::oas31()->string()->format(StringFormat::DATE));
+            //            jsonDD(Schema::oas31()->integer()->int32()->);
+            //            jsonDD(Schema::string());
+            //            jsonDD(Schema::string()->id('sag'));
 
-                public function value(): string
-                {
-                    return 'value';
-                }
+            //            $stringSchema = $schema->metaSchema()->availableKeywords()
+            //                ->string();
+            // ->minLength(3)
+            // ->maxLength(10);
 
-                public function jsonSerialize(): string
-                {
-                    return $this->value();
-                }
-            };
-
-            expect($keyword::name())->toBe('keyword');
+            // expect($stringSchema->asArray())->toBe('{"type":"string","minLength":3,"maxLength":10}');
+            expect(\Safe\json_encode(Schema::create()->type('string')))->toBe('{"type":"string"}');
         },
     );
 
-    dataset('keywords', [
-        [
-            fn (): Keyword => new class implements Keyword {
-                public static function name(): string
-                {
-                    return 'keywordA';
-                }
-
-                public function value(): string
-                {
-                    return 'valueA';
-                }
-
-                public function jsonSerialize(): string
-                {
-                    return $this->value();
-                }
-            },
-            fn (): Keyword => new class implements Keyword {
-                public static function name(): string
-                {
-                    return 'keywordB';
-                }
-
-                public function value(): array
-                {
-                    return ['x' => 'y'];
-                }
-
-                public function jsonSerialize(): array
-                {
-                    return $this->value();
-                }
-            },
-            fn (): Keyword => new class implements Keyword {
-                public static function name(): string
-                {
-                    return 'keywordC';
-                }
-
-                public function value(): int
-                {
-                    return 10;
-                }
-
-                public function jsonSerialize(): int
-                {
-                    return $this->value();
-                }
-            },
-        ],
-    ]);
-
-    //    it(
-    //        'can compose Keywords to create a Vocabulary',
-    //        function (Keyword $keywordA, Keyword $keywordB, Keyword $keywordC): void {
-    //            $vocabulary = new Vocabulary('a-uri', $keywordA, $keywordC, $keywordB);
-    //
-    //            expect($vocabulary->id())->toBe('a-uri')
-    //                ->and($vocabulary->keywords())->toBe([$keywordA, $keywordC, $keywordB]);
-    //        },
-    //    )->with('keywords');
-    //
-    //    it(
-    //        'can compose Vocabularies to create a MetaSchema',
-    //        function (Keyword $keywordA, Keyword $keywordB, Keyword $keywordC): void {
-    //            $vocabA = new Vocabulary('vocab-a', $keywordA);
-    //            $vocabB = new Vocabulary('vocab-b', $keywordB, $keywordC);
-    //            $vocabsA = new AvailableVocabulary($vocabA, true);
-    //            $vocabsB = new AvailableVocabulary($vocabB, false);
-    //            $metaSchema = new MetaSchema('meta-schema-id', 'meta-schema-schema', $vocabsA, $vocabsB);
-    //
-    //            expect($metaSchema->id())->toBe('meta-schema-id')
-    //                ->and($metaSchema->schema())->toBe('meta-schema-schema')
-    //                ->and($metaSchema->availableVocabularies())->toBe([$vocabsA, $vocabsB])
-    //                ->and($metaSchema->availableVocabularies()[0]->id())->toBe('vocab-a')
-    //                ->and($metaSchema->availableVocabularies()[1]->id())->toBe('vocab-b')
-    //                ->and($metaSchema->availableVocabularies()[0]->required())->toBeTrue()
-    //                ->and($metaSchema->availableVocabularies()[1]->required())->toBeFalse()
-    //                ->and($metaSchema->availableKeywords())->toEqual(
-    //                    [
-    //                        ...$vocabA->keywords(),
-    //                        ...$vocabB->keywords(),
-    //                    ],
-    //                );
-    //        },
-    //    )->with('keywords');
-    //
-    //    it(
-    //        'wont allow duplicate keyword',
-    //        function (Keyword $keywordA, Keyword $keywordB, Keyword $keywordC): void {
-    //            $vocabA = new Vocabulary('vocab-a', $keywordA, $keywordB, $keywordC);
-    //            $vocabB = new Vocabulary('vocab-b', $keywordC, $keywordA);
-    //            $vocabsA = new AvailableVocabulary($vocabA, false);
-    //            $vocabsB = new AvailableVocabulary($vocabB, true);
-    //
-    //            expect(function () use ($vocabsA, $vocabsB): void {
-    //                new MetaSchema('meta-schema-id', 'meta-schema-schema', $vocabsA, $vocabsB);
-    //            })->toThrow(
-    //                DomainException::class,
-    //                sprintf('Duplicate keywords found: %s, %s', $keywordC->name(), $keywordA->name()),
-    //            );
-    //        },
-    //    )->with('keywords');
-    //
-    //    it(
-    //        'can compose MetaSchemas to create a another MetaSchema',
-    //        function (): void {
-    //        },
-    //    )->todo();
-    //
-    //    it(
-    //        'can create a Dialect',
-    //        function (Keyword $keywordA, Keyword $keywordB, Keyword $keywordC): void {
-    //            $vocabA = new Vocabulary('vocab-a', $keywordA);
-    //            $vocabB = new Vocabulary('vocab-b', $keywordB, $keywordC);
-    //            $vocabsA = new AvailableVocabulary($vocabA, true);
-    //            $vocabsB = new AvailableVocabulary($vocabB, false);
-    //            $metaSchema = new MetaSchema('meta-schema-id', 'meta-schema-schema', $vocabsA, $vocabsB);
-    //            $dialect = new class($metaSchema) implements Draft202012Constrained {
-    //                public function __construct(private readonly MetaSchema $metaSchema)
-    //                {
-    //                }
-    //
-    //                public function id(): string
-    //                {
-    //                    return 'OAS-3.1';
-    //                }
-    //
-    //                public function metaSchema(): MetaSchema
-    //                {
-    //                    return $this->metaSchema;
-    //                }
-    //            };
-    //
-    //            expect($dialect->id())->toBe('OAS-3.1')
-    //                ->and($dialect->metaSchema())->toBe($metaSchema);
-    //        },
-    //    )->with('keywords');
-    //
-    //    it(
-    //        'can create a Schema based on a Dialect',
-    //        function (Keyword $keywordA, Keyword $keywordB, Keyword $keywordC): void {
-    //            $vocabA = new Vocabulary('vocab-a', $keywordA);
-    //            $vocabB = new Vocabulary('vocab-b', $keywordB, $keywordC);
-    //            $vocabsA = new AvailableVocabulary($vocabA, true);
-    //            $vocabsB = new AvailableVocabulary($vocabB, false);
-    //            $metaSchema = new MetaSchema('meta-schema-id', 'meta-schema-schema', $vocabsA, $vocabsB);
-    //            $dialect = new class($metaSchema) implements Draft202012Constrained {
-    //                public function __construct(private readonly MetaSchema $metaSchema)
-    //                {
-    //                }
-    //
-    //                public function id(): string
-    //                {
-    //                    return 'draft202012';
-    //                }
-    //
-    //                public function metaSchema(): MetaSchema
-    //                {
-    //                    return $this->metaSchema;
-    //                }
-    //
-    //                public function keywords(): Narrowable
-    //                {
-    //                    // TODO: Implement keywords() method.
-    //                }
-    //            };
-    //
-    //            // dd($dialect);
-    //            // $draft202012 = JSONSchema::Draft202012();
-    //            // $dialectOAS30 = OAS::Version30();
-    //            // $dialectOAS31 = OAS::Version31();
-    //        },
-    //    )->with('keywords')->todo();
+    function jsonDD(mixed $value): void
+    {
+        dd(
+            \Safe\json_encode(
+                $value,
+                JSON_PRETTY_PRINT,
+            ),
+        );
+    }
 })->covers(Schema::class)->skip();
