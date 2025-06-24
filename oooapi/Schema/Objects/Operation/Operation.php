@@ -32,7 +32,6 @@ final class Operation extends ExtensibleObject
     private Responses|null $responses = null;
     private Deprecated|null $deprecated = null;
     private Security|null $security = null;
-    private bool|null $noSecurity = null;
     /** @var Server[]|null */
     private array|null $servers = null;
     /** @var (Callback|CallbackFactory)[]|null */
@@ -140,15 +139,6 @@ final class Operation extends ExtensibleObject
         $clone = clone $this;
 
         $clone->security = $security;
-
-        return $clone;
-    }
-
-    public function noSecurity(): self
-    {
-        $clone = clone $this;
-
-        $clone->noSecurity = true;
 
         return $clone;
     }
