@@ -138,7 +138,7 @@ class RouteInfo
 
     public function method(): string
     {
-        return $this->method;
+        return Str::lower($this->method);
     }
 
     public function controller(): string

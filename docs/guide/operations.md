@@ -119,7 +119,7 @@ class UserController extends Controller
      * Updates a user.
      *
      */
-    #[OpenApi\Operation(tags: ['tags'], method: 'PATCH')]
+    #[OpenApi\Operation(tags: ['tags'])]
     public function update(Request $request)
     {
         //

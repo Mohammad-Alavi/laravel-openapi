@@ -31,6 +31,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRu
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Content\ContentEntry;
@@ -128,7 +130,7 @@ describe('PetStoreTest', function (): void {
             ),
         );
 
-        $operation = Operation::get()
+        $operation = Operation::create()
             ->description(
                 OperationDescription::create(
                     'Returns all pets from the system that the user has access to Nam sed condimentum est. 
@@ -160,7 +162,7 @@ describe('PetStoreTest', function (): void {
             ->parameters(Parameters::create($tagsParameter, $limitParameter))
             ->responses(Responses::create($petListingResponse, $defaultErrorResponse));
 
-        $addPet = Operation::post()
+        $addPet = Operation::create()
             ->description(
                 OperationDescription::create(
                     'Creates a new pet in the store.  Duplicates are allowed',
@@ -181,7 +183,16 @@ describe('PetStoreTest', function (): void {
         $path = Path::create(
             '/pets',
             PathItem::create()
-                ->operations($operation, $addPet),
+                ->operations(
+                    AvailableOperation::create(
+                        HttpMethod::GET,
+                        $operation,
+                    ),
+                    AvailableOperation::create(
+                        HttpMethod::POST,
+                        $addPet,
+                    ),
+                ),
         );
 
         $petIdParameter = Parameter::path(
@@ -192,7 +203,7 @@ describe('PetStoreTest', function (): void {
         )->description(Description::create('ID of pet to fetch'))
             ->required();
 
-        $findPetById = Operation::get()
+        $findPetById = Operation::create()
             ->description(
                 OperationDescription::create(
                     'Returns a user based on a single ID, if the user does not have access to the pet',
@@ -206,7 +217,7 @@ describe('PetStoreTest', function (): void {
             Response::create(ResponseDescription::create('pet deleted')),
         );
 
-        $deletePetById = Operation::delete()
+        $deletePetById = Operation::create()
             ->description(OperationDescription::create('deletes a single pet based on the ID supplied'))
             ->operationId(OperationId::create('deletePet'))
             ->parameters(
@@ -218,7 +229,16 @@ describe('PetStoreTest', function (): void {
         $petNested = Path::create(
             '/pets/{id}',
             PathItem::create()
-                ->operations($findPetById, $deletePetById),
+                ->operations(
+                    AvailableOperation::create(
+                        HttpMethod::GET,
+                        $findPetById,
+                    ),
+                    AvailableOperation::create(
+                        HttpMethod::DELETE,
+                        $deletePetById,
+                    ),
+                ),
         );
 
         $openApi = OpenAPI::v311($info)

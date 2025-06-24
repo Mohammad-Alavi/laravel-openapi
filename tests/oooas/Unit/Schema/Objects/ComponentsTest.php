@@ -19,6 +19,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\N
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
@@ -85,20 +87,23 @@ describe(class_basename(Components::class), function (): void {
                     '{$request.query.callbackUrl}',
                     PathItem::create()
                         ->operations(
-                            Operation::post()
-                                ->requestBody(
-                                    RequestBody::create()
-                                        ->description('something happened'),
-                                )->responses(
-                                    Responses::create(
-                                        ResponseEntry::create(
-                                            HTTPStatusCode::ok(),
-                                            Response::create(
-                                                Description::create('OK'),
+                            AvailableOperation::create(
+                                HttpMethod::POST,
+                                Operation::create()
+                                    ->requestBody(
+                                        RequestBody::create()
+                                            ->description('something happened'),
+                                    )->responses(
+                                        Responses::create(
+                                            ResponseEntry::create(
+                                                HTTPStatusCode::ok(),
+                                                Response::create(
+                                                    Description::create('OK'),
+                                                ),
                                             ),
                                         ),
                                     ),
-                                ),
+                            ),
                         ),
                 ),
             );

@@ -26,6 +26,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRu
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Content\ContentEntry;
@@ -87,12 +89,12 @@ describe('OpenApi', function (): void {
                 ),
             ),
         );
-        $operationIndex = Operation::get()
+        $indexOperation = Operation::create()
             ->responses($responses)
             ->tags($tag)
             ->summary(Summary::create('List all audits'))
             ->operationId(OperationId::create('audits.index'));
-        $operationCreate = Operation::post()
+        $postOperation = Operation::create()
             ->responses($responses)
             ->tags($tag)
             ->summary(Summary::create('Create an audit'))
@@ -101,7 +103,7 @@ describe('OpenApi', function (): void {
         $stringDescriptor = Schema::string()->format(StringFormat::UUID);
         $enumDescriptor = Schema::enum('json', 'ics')
             ->default('json');
-        $operationGet = Operation::get()
+        $getOperation = Operation::create()
             ->responses($responses)
             ->tags($tag)
             ->summary(Summary::create('View an audit'))
@@ -122,12 +124,26 @@ describe('OpenApi', function (): void {
             Path::create(
                 '/audits',
                 PathItem::create()
-                    ->operations($operationIndex, $operationCreate),
+                    ->operations(
+                        AvailableOperation::create(
+                            HttpMethod::GET,
+                            $indexOperation,
+                        ),
+                        AvailableOperation::create(
+                            HttpMethod::POST,
+                            $postOperation,
+                        ),
+                    ),
             ),
             Path::create(
                 '/audits/{audit}',
                 PathItem::create()
-                    ->operations($operationGet),
+                    ->operations(
+                        AvailableOperation::create(
+                            HttpMethod::GET,
+                            $getOperation,
+                        ),
+                    ),
             ),
         );
         $servers = [

@@ -1,6 +1,5 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\URL as ExtURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Description as OperationDescription;
@@ -10,7 +9,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description as ResponseDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
@@ -23,10 +21,11 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Param
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
+use Tests\src\Support\Doubles\Stubs\Attributes\TestCallbackFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
 
-describe('Operation', function (): void {
+describe(class_basename(Operation::class), function (): void {
     it('can be created with no parameters', function (): void {
         $operation = Operation::create();
 
@@ -35,30 +34,8 @@ describe('Operation', function (): void {
 
     it(
         'can can be created with all parameters',
-        function (string $actionMethod, string $operationName): void {
-            $callback =
-                Callback::create(
-                    'MyEvent',
-                    '{$request.query.callbackUrl}',
-                    PathItem::create()
-                        ->operations(
-                            Operation::$actionMethod()
-                                ->requestBody(
-                                    RequestBody::create()
-                                        ->description('something happened'),
-                                )->responses(
-                                    Responses::create(
-                                        ResponseEntry::create(
-                                            HTTPStatusCode::unauthorized(),
-                                            Response::create(ResponseDescription::create('Unauthorized')),
-                                        ),
-                                    ),
-                                ),
-                        ),
-                );
-
+        function (): void {
             $operation = Operation::create()
-                ->action(Operation::ACTION_GET)
                 ->tags(
                     Tag::create(
                         Name::create('Users'),
@@ -86,7 +63,7 @@ describe('Operation', function (): void {
                 )->deprecated()
                 ->security(app(TestSingleHTTPBearerSchemeSecurityFactory::class)->build())
                 ->servers(Server::default())
-                ->callbacks($callback);
+                ->callbacks(TestCallbackFactory::create());
 
             expect($operation->asArray())->toBe([
                 'tags' => ['Users'],
@@ -123,36 +100,16 @@ describe('Operation', function (): void {
                     ],
                 ],
                 'callbacks' => [
-                    'MyEvent' => [
-                        '{$request.query.callbackUrl}' => [
-                            $operationName => [
-                                'requestBody' => [
-                                    'description' => 'something happened',
-                                ],
-                                'responses' => [
-                                    '401' => [
-                                        'description' => 'Unauthorized',
-                                    ],
-                                ],
-                            ],
-                        ],
+                    'CallbackFactory' => [
+                        '/' => [],
                     ],
                 ],
             ]);
         },
-    )->with([
-        'get action' => ['get', Operation::ACTION_GET],
-        'put action' => ['put', Operation::ACTION_PUT],
-        'post action' => ['post', Operation::ACTION_POST],
-        'delete action' => ['delete', Operation::ACTION_DELETE],
-        'options action' => ['options', Operation::ACTION_OPTIONS],
-        'head action' => ['head', Operation::ACTION_HEAD],
-        'patch action' => ['patch', Operation::ACTION_PATCH],
-        'trace action' => ['trace', Operation::ACTION_TRACE],
-    ]);
+    );
 
     it('can be created with now security', function (): void {
-        $operation = Operation::get()
+        $operation = Operation::create()
             ->noSecurity();
 
         expect($operation->asArray())->toBe([
@@ -161,7 +118,7 @@ describe('Operation', function (): void {
     })->skip('update the implementation to support no security');
 
     it('can accepts tags in multiple ways', function (array $tag, $expectation): void {
-        $operation = Operation::get()
+        $operation = Operation::create()
             ->responses(
                 Responses::create(
                     ResponseEntry::create(

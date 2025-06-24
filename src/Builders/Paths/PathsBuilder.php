@@ -17,12 +17,16 @@ final readonly class PathsBuilder
     public function build(Collection $routeInfo): Paths
     {
         $paths = $routeInfo->groupBy(
-            fn (RouteInfo $routeInfo): string => $routeInfo->uri(),
+            function (RouteInfo $routeInfo): string {
+                return $routeInfo->uri();
+            },
         )->map(
-            fn (Collection $routeInformation, string $url): Path => Path::create(
-                $url,
-                $this->pathItemBuilder->build(...$routeInformation),
-            ),
+            function (Collection $routeInformation, string $url): Path {
+                return Path::create(
+                    $url,
+                    $this->pathItemBuilder->build(...$routeInformation),
+                );
+            },
         )->values()
             ->toArray();
 

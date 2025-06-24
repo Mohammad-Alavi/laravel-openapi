@@ -21,25 +21,25 @@ use Tests\src\Support\Doubles\Stubs\Servers\ServerWithMultipleVariableFormatting
 use Tests\src\Support\Doubles\Stubs\Tags\TagWithExternalObjectDoc;
 use Tests\src\Support\Doubles\Stubs\Tags\TagWithoutExternalDoc;
 
-describe('OperationBuilder', function (): void {
-    it('can be created in many combinations', function (RouteInfo $routeInfo, array $expected): void {
+describe(class_basename(OperationBuilder::class), function (): void {
+    it('can be created with many combinations', function (RouteInfo $routeInfo, array $expected): void {
         $operationBuilder = app(OperationBuilder::class);
 
         $operation = $operationBuilder->build($routeInfo);
 
-        expect($operation->asArray())->toBe($expected);
+        expect($operation)->key()->toBe($routeInfo->method())
+            ->value()->asArray()->toBe($expected);
     })->with(
         [
             function (): array {
-                $routeInformation = RouteInfo::create(
+                $routeInfo = RouteInfo::create(
                     Route::get('test', static fn (): string => 'test'),
                 );
-                $routeInformation->actionAttributes = collect([
+                $routeInfo->actionAttributes = collect([
                     new OperationAttribute(
                         operationId: 'test',
                         tags: [],
                         security: null,
-                        method: 'get',
                         servers: [],
                         summary: '',
                         description: '',
@@ -48,7 +48,7 @@ describe('OperationBuilder', function (): void {
                 ]);
 
                 return [
-                    'routes' => $routeInformation,
+                    'routeInfo' => $routeInfo,
                     'expected' => [
                         'summary' => '',
                         'description' => '',
@@ -57,15 +57,14 @@ describe('OperationBuilder', function (): void {
                 ];
             },
             function (): array {
-                $routeInformation = RouteInfo::create(
-                    Route::get('test', static fn (): string => 'test'),
+                $routeInfo = RouteInfo::create(
+                    Route::post('test', static fn (): string => 'test'),
                 );
-                $routeInformation->actionAttributes = collect([
+                $routeInfo->actionAttributes = collect([
                     new OperationAttribute(
                         operationId: 'test',
                         tags: [TagWithoutExternalDoc::class],
                         security: null,
-                        method: 'post',
                         servers: [],
                         summary: 'summary',
                         description: 'description',
@@ -74,7 +73,7 @@ describe('OperationBuilder', function (): void {
                 ]);
 
                 return [
-                    'routes' => $routeInformation,
+                    'routeInfo' => $routeInfo,
                     'expected' => [
                         'tags' => ['PostWithoutExternalDoc'],
                         'summary' => 'summary',
@@ -85,10 +84,10 @@ describe('OperationBuilder', function (): void {
                 ];
             },
             function (): array {
-                $routeInformation = RouteInfo::create(
-                    Route::get('test', static fn (): string => 'test'),
+                $routeInfo = RouteInfo::create(
+                    Route::delete('test', static fn (): string => 'test'),
                 );
-                $routeInformation->actionAttributes = collect([
+                $routeInfo->actionAttributes = collect([
                     new Callback(TestCallbackFactory::class),
                     new Collection('test'),
                     new Extension(TestExtensionFactory::class),
@@ -96,7 +95,6 @@ describe('OperationBuilder', function (): void {
                         operationId: 'test',
                         tags: [TagWithExternalObjectDoc::class],
                         security: TestSingleHTTPBearerSchemeSecurityFactory::class,
-                        method: 'get',
                         servers: [ServerWithMultipleVariableFormatting::class],
                         summary: 'summary',
                         description: 'description',
@@ -108,7 +106,7 @@ describe('OperationBuilder', function (): void {
                 ]);
 
                 return [
-                    'routes' => $routeInformation,
+                    'routeInfo' => $routeInfo,
                     'expected' => [
                         'tags' => ['PostWithExternalObjectDoc'],
                         'summary' => 'summary',

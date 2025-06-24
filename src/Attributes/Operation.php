@@ -26,7 +26,6 @@ final readonly class Operation
         public string|null $operationId = null,
         public string|array|null $tags = null,
         public string|null $security = null,
-        public string|null $method = null,
         public string|array|null $servers = null,
         public string|null $summary = null,
         public string|null $description = null,

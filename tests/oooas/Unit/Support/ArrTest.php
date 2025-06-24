@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\oooas\Unit\Utilities;
+namespace Tests\oooas\Unit\Support;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 

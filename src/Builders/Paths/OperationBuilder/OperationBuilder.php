@@ -3,7 +3,6 @@
 namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
 use MohammadAlavi\LaravelOpenApi\Builders\ExtensionBuilder;
@@ -19,6 +18,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Descript
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
 
 final readonly class OperationBuilder
 {
@@ -35,7 +36,7 @@ final readonly class OperationBuilder
     }
 
     // TODO: maybe we can abstract the usage of RouteInformation everywhere and use an interface instead
-    public function build(RouteInfo $routeInfo): Operation
+    public function build(RouteInfo $routeInfo): AvailableOperation
     {
         $servers = null;
         $operation = Operation::create();
@@ -62,7 +63,6 @@ final readonly class OperationBuilder
             if (true === $operationAttr->deprecated) {
                 $operation = $operation->deprecated();
             }
-            $operation = $operation->action($operationAttr->method ?? Str::lower($routeInfo->method()));
             $servers = $this->serverBuilder->build(Arr::wrap($operationAttr->servers));
         }
         $parameters = $this->parametersBuilder->build($routeInfo);
@@ -82,6 +82,9 @@ final readonly class OperationBuilder
 
         $this->extensionBuilder->build($operation, $routeInfo->extensionAttributes());
 
-        return $operation;
+        return AvailableOperation::create(
+            HttpMethod::from($routeInfo->method()),
+            $operation,
+        );
     }
 }

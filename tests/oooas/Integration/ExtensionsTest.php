@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\oooas\Unit\Utilities;
+namespace Tests\oooas\Unit\Support;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;

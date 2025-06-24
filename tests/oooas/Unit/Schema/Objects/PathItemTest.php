@@ -10,6 +10,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description as ResponseDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
@@ -29,15 +31,18 @@ describe(class_basename(PathItem::class), function (): void {
                     ->summary(Summary::create('User endpoints'))
                     ->description(Description::create('Get the users'))
                     ->operations(
-                        Operation::get()
-                            ->responses(
-                                Responses::create(
-                                    ResponseEntry::create(
-                                        HTTPStatusCode::ok(),
-                                        Response::create(ResponseDescription::create('OK')),
+                        AvailableOperation::create(
+                            HttpMethod::GET,
+                            Operation::create()
+                                ->responses(
+                                    Responses::create(
+                                        ResponseEntry::create(
+                                            HTTPStatusCode::ok(),
+                                            Response::create(ResponseDescription::create('OK')),
+                                        ),
                                     ),
                                 ),
-                            ),
+                        ),
                     )
                     ->servers(Server::create(URL::create('https://example.com')))
                     ->parameters(

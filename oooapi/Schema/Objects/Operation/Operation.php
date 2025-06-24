@@ -21,17 +21,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Operation extends ExtensibleObject
 {
-    // TODO: refactor all const everywhere to enum
-    public const ACTION_GET = 'get';
-    public const ACTION_PUT = 'put';
-    public const ACTION_POST = 'post';
-    public const ACTION_DELETE = 'delete';
-    public const ACTION_OPTIONS = 'options';
-    public const ACTION_HEAD = 'head';
-    public const ACTION_PATCH = 'patch';
-    public const ACTION_TRACE = 'trace';
-
-    private string|null $method = null;
     /** @var string[]|null */
     private array|null $tags = null;
     private Summary|null $summary = null;
@@ -52,60 +41,6 @@ final class Operation extends ExtensibleObject
     public static function create(): self
     {
         return new self();
-    }
-
-    public static function get(): self
-    {
-        return self::create()->action(self::ACTION_GET);
-    }
-
-    public function action(string $action): self
-    {
-        $clone = clone $this;
-
-        $clone->method = $action;
-
-        return $clone;
-    }
-
-    public static function put(): self
-    {
-        return self::create()->action(self::ACTION_PUT);
-    }
-
-    public static function post(): self
-    {
-        return self::create()->action(self::ACTION_POST);
-    }
-
-    public static function delete(): self
-    {
-        return self::create()->action(self::ACTION_DELETE);
-    }
-
-    public static function options(): self
-    {
-        return self::create()->action(self::ACTION_OPTIONS);
-    }
-
-    public static function head(): self
-    {
-        return self::create()->action(self::ACTION_HEAD);
-    }
-
-    public static function patch(): self
-    {
-        return self::create()->action(self::ACTION_PATCH);
-    }
-
-    public static function trace(): self
-    {
-        return self::create()->action(self::ACTION_TRACE);
-    }
-
-    public function method(): string
-    {
-        return $this->method;
     }
 
     public function tags(Tag|string ...$tags): self

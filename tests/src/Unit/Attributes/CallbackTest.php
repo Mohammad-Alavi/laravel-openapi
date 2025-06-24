@@ -4,7 +4,7 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Callback;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestCallbackFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestCallbackFactoryInvalid;
 
-describe('Callable', function (): void {
+describe(class_basename(Callback::class), function (): void {
     it('can set valid factory', function (): void {
         $callback = new Callback(TestCallbackFactory::class);
         expect($callback)->toBeInstanceOf(Callback::class);

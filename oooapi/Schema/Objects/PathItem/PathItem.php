@@ -3,10 +3,11 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Summary;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\Operations;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
@@ -14,8 +15,7 @@ final class PathItem extends ExtensibleObject
 {
     private Summary|null $summary = null;
     private Description|null $description = null;
-    /** @var Operation[]|null */
-    private array|null $operations = null;
+    private Operations|null $operations = null;
     /** @var Server[]|null */
     private array|null $servers = null;
     /** @var Parameter[]|null */
@@ -48,11 +48,11 @@ final class PathItem extends ExtensibleObject
         return $clone;
     }
 
-    public function operations(Operation ...$operation): self
+    public function operations(AvailableOperation ...$availableOperation): self
     {
         $clone = clone $this;
 
-        $clone->operations = [] !== $operation ? $operation : null;
+        $clone->operations = Operations::create(...$availableOperation);
 
         return $clone;
     }
@@ -78,16 +78,11 @@ final class PathItem extends ExtensibleObject
 
     protected function toArray(): array
     {
-        $operations = [];
-        foreach ($this->operations ?? [] as $operation) {
-            $operations[$operation->method()] = $operation;
-        }
-
         return Arr::filter(
             [
                 'summary' => $this->summary,
                 'description' => $this->description,
-                ...$operations,
+                ...($this->operations?->jsonSerialize() ?? []),
                 'servers' => $this->servers,
                 'parameters' => $this->parameters,
             ],

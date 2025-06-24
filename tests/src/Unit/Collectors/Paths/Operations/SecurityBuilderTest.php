@@ -19,6 +19,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
@@ -760,8 +762,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         ): void {
             $components = Components::create()->securitySchemes(...$securitySchemeFactories);
 
-            $operation = Operation::create()
-                ->action('get');
+            $operation = Operation::create();
 
             $openApi = OpenAPI::v311(
                 Info::create(
@@ -780,7 +781,12 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                         Path::create(
                             '/foo',
                             PathItem::create()
-                                ->operations($operation),
+                                ->operations(
+                                    AvailableOperation::create(
+                                        HttpMethod::GET,
+                                        $operation,
+                                    ),
+                                ),
                         ),
                     ),
                 );
@@ -980,15 +986,18 @@ describe(class_basename(SecurityBuilder::class), function (): void {
         $components = Components::create()
             ->securitySchemes(TestBearerSecuritySchemeFactory::create());
 
-        $operation = Operation::get()
-            ->responses(
-                Responses::create(
-                    ResponseEntry::create(
-                        HTTPStatusCode::ok(),
-                        Response::create(Description::create('OK')),
+        $operation = AvailableOperation::create(
+            HttpMethod::GET,
+            Operation::create()
+                ->responses(
+                    Responses::create(
+                        ResponseEntry::create(
+                            HTTPStatusCode::ok(),
+                            Response::create(Description::create('OK')),
+                        ),
                     ),
                 ),
-            );
+        );
 
         $openApi = OpenAPI::v311(
             Info::create(
@@ -1057,15 +1066,22 @@ describe(class_basename(SecurityBuilder::class), function (): void {
 
         $securityBuilder = app(SecurityBuilder::class);
 
-        $operation = Operation::get()
-            ->responses(
-                Responses::create(
-                    ResponseEntry::create(
-                        HTTPStatusCode::ok(),
-                        Response::create(Description::create('OK')),
+        $operation = AvailableOperation::create(
+            HttpMethod::PATCH,
+            Operation::create()
+                ->responses(
+                    Responses::create(
+                        ResponseEntry::create(
+                            HTTPStatusCode::ok(),
+                            Response::create(Description::create('OK')),
+                        ),
+                    ),
+                )->security(
+                    $securityBuilder->build(
+                        $routeInformation->operationAttribute()->security,
                     ),
                 ),
-            )->security($securityBuilder->build($routeInformation->operationAttribute()->security));
+        );
 
         $openApi = OpenAPI::v311(
             Info::create(
@@ -1097,7 +1113,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             ],
             'paths' => [
                 '/foo' => [
-                    'get' => [
+                    'patch' => [
                         'responses' => [
                             '200' => [
                                 'description' => 'OK',
