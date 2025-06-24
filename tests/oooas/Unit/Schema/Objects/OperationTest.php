@@ -108,15 +108,6 @@ describe(class_basename(Operation::class), function (): void {
         },
     );
 
-    it('can be created with now security', function (): void {
-        $operation = Operation::create()
-            ->noSecurity();
-
-        expect($operation->asArray())->toBe([
-            'security' => [],
-        ]);
-    })->skip('update the implementation to support no security');
-
     it('can accepts tags in multiple ways', function (array $tag, $expectation): void {
         $operation = Operation::create()
             ->responses(
