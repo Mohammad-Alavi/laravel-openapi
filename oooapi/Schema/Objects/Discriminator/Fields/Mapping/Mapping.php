@@ -2,16 +2,20 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping;
 
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMap;
 
 /**
- * @extends StringMap<SchemaName>
- * @extends StringMap<SchemaURL>
+ * @implements StringMap<StringField>
  */
-final readonly class Mapping extends StringMap
+final readonly class Mapping implements StringMap
 {
+    /** @use StringKeyedMap<StringField> */
+    use StringKeyedMap;
+
     public static function create(Entry ...$entry): self
     {
-        return parent::put(...$entry);
+        return self::put(...$entry);
     }
 }

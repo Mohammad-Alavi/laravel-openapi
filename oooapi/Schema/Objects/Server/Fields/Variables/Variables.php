@@ -4,14 +4,18 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Varia
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\ServerVariable;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMap;
 
 /**
- * @extends StringMap<ServerVariable>
+ * @implements StringMap<ServerVariable>
  */
-final readonly class Variables extends StringMap
+final readonly class Variables implements StringMap
 {
+    /** @use StringKeyedMap<ServerVariable> */
+    use StringKeyedMap;
+
     public static function create(VariableEntry ...$entry): self
     {
-        return parent::put(...$entry);
+        return self::put(...$entry);
     }
 }

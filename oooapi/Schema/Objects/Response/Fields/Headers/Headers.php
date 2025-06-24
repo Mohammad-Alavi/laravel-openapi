@@ -2,18 +2,20 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Headers;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMap;
 
 /**
- * @extends StringMap<Header>
- * @extends StringMap<Reference>
+ * @implements StringMap<OASObject>
  */
-final readonly class Headers extends StringMap
+final readonly class Headers implements StringMap
 {
+    /** @use StringKeyedMap<OASObject> */
+    use StringKeyedMap;
+
     public static function create(HeaderEntry ...$entry): self
     {
-        return parent::put(...$entry);
+        return self::put(...$entry);
     }
 }

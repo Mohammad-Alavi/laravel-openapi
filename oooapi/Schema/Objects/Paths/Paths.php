@@ -3,29 +3,32 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Path;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Fields\Path;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMap;
 
-class Paths extends ExtensibleObject
+/**
+ * @implements StringMap<Path>
+ */
+final class Paths extends ExtensibleObject implements StringMap
 {
-    /** @var Path[] */
-    private array $paths;
+    /** @use StringKeyedMap<Path> */
+    use StringKeyedMap {
+        StringKeyedMap::jsonSerialize as jsonSerializeTrait;
+    }
 
     public static function create(Path ...$path): self
     {
-        $instance = new self();
-        $instance->paths = $path;
+        return self::put(...$path);
+    }
 
-        return $instance;
+    public function jsonSerialize(): array
+    {
+        return $this->jsonSerializeTrait() ?? [];
     }
 
     protected function toArray(): array
     {
-        $paths = [];
-        foreach ($this->paths ?? [] as $path) {
-            $paths[$path->path()] = $path->pathItem();
-        }
-
-        return Arr::filter($paths);
+        return $this->jsonSerialize() ?? [];
     }
 }

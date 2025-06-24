@@ -2,18 +2,20 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Links;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMap;
 
 /**
- * @extends StringMap<Link>
- * @extends StringMap<Reference>
+ * @implements StringMap<OASObject>
  */
-final readonly class Links extends StringMap
+final readonly class Links implements StringMap
 {
+    /** @use StringKeyedMap<OASObject> */
+    use StringKeyedMap;
+
     public static function create(LinkEntry ...$entry): self
     {
-        return parent::put(...$entry);
+        return self::put(...$entry);
     }
 }

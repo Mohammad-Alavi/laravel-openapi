@@ -4,7 +4,7 @@ namespace MohammadAlavi\LaravelOpenApi\Builders\Paths;
 
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Path;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Fields\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 
 final readonly class PathsBuilder

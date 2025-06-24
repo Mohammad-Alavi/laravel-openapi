@@ -25,10 +25,10 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\N
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Fields\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Content\ContentEntry;

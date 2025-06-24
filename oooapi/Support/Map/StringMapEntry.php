@@ -2,33 +2,20 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Map;
 
-use Webmozart\Assert\Assert;
-
 /**
  * @template TValue
  */
-abstract readonly class StringMapEntry
+interface StringMapEntry
 {
     /**
      * @param TValue $value
      */
-    final protected function __construct(
-        private string|\Stringable $key,
-        private mixed $value,
-    ) {
-        Assert::notEmpty($this->key());
-    }
+    public function __construct(string|\Stringable $key, mixed $value);
 
-    final public function key(): string
-    {
-        return (string) $this->key;
-    }
+    public function key(): string;
 
     /**
      * @return TValue
      */
-    final public function value(): mixed
-    {
-        return $this->value;
-    }
+    public function value(): mixed;
 }
