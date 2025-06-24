@@ -53,11 +53,7 @@ final readonly class OperationBuilder
             if (!is_null($operationAttr->operationId)) {
                 $operation = $operation->operationId(OperationId::create($operationAttr->operationId));
             }
-            if (
-                !is_null($operationAttr->security)
-                && '' !== $operationAttr->security
-                && '0' !== $operationAttr->security
-            ) {
+            if (!blank($operationAttr->security)) {
                 $operation = $operation->security($this->securityBuilder->build($operationAttr->security));
             }
             if (true === $operationAttr->deprecated) {
