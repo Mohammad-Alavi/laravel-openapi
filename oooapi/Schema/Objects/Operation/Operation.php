@@ -45,17 +45,20 @@ final class Operation extends ExtensibleObject
 
     public function tags(Tag|string ...$tags): self
     {
-        $allStringTags = array_map(static function (Tag|string $tag): string {
-            if ($tag instanceof Tag) {
-                return (string) $tag;
-            }
+        $allStringTags = array_map(
+            static function (Tag|string $tag): string {
+                if ($tag instanceof Tag) {
+                    return (string) $tag;
+                }
 
-            return $tag;
-        }, $tags);
+                return $tag;
+            },
+            $tags,
+        );
 
         $clone = clone $this;
 
-        $clone->tags = [] !== $allStringTags ? $allStringTags : null;
+        $clone->tags = when(blank($allStringTags), null, $allStringTags);
 
         return $clone;
     }
@@ -154,7 +157,7 @@ final class Operation extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->servers = [] !== $server ? $server : null;
+        $clone->servers = when(blank($server), null, $server);
 
         return $clone;
     }
@@ -163,7 +166,7 @@ final class Operation extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->callbacks = [] !== $callback ? $callback : null;
+        $clone->callbacks = when(blank($callback), null, $callback);
 
         return $clone;
     }
