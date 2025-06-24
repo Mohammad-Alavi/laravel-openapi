@@ -6,14 +6,13 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 
 final readonly class Deprecated implements Keyword
 {
-    private function __construct(
-        private bool $value,
-    ) {
+    private function __construct()
+    {
     }
 
-    public static function create(bool $value): self
+    public static function create(): self
     {
-        return new self($value);
+        return new self();
     }
 
     public static function name(): string
@@ -21,13 +20,13 @@ final readonly class Deprecated implements Keyword
         return 'deprecated';
     }
 
-    public function jsonSerialize(): bool
+    public function jsonSerialize(): true
     {
         return $this->value();
     }
 
-    public function value(): bool
+    public function value(): true
     {
-        return $this->value;
+        return true;
     }
 }

@@ -4,5 +4,5 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descripti
 
 interface Deprecated
 {
-    public function deprecated(bool $value): static;
+    public function deprecated(): static;
 }

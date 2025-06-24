@@ -255,7 +255,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('can set deprecated', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
             ->type('string')
-            ->deprecated(true);
+            ->deprecated();
 
         expect(\Safe\json_encode($descriptor))->toBe(
             \Safe\json_encode([

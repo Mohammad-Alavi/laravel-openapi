@@ -502,11 +502,11 @@ class LooseFluentDescriptor implements FluentDescriptor
         return $clone;
     }
 
-    public function deprecated(bool $value): static
+    public function deprecated(): static
     {
         $clone = clone $this;
 
-        $clone->deprecated = Dialect::deprecated($value);
+        $clone->deprecated = Dialect::deprecated();
 
         return $clone;
     }

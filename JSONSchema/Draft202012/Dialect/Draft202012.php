@@ -241,9 +241,9 @@ final readonly class Draft202012
         return DefaultValue::create($value);
     }
 
-    public static function deprecated(bool $value): Deprecated
+    public static function deprecated(): Deprecated
     {
-        return Deprecated::create($value);
+        return Deprecated::create();
     }
 
     public static function description(string $value): Description
