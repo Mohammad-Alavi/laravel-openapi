@@ -3,8 +3,8 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMapEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
 
 /**
  * @implements StringMapEntry<Operation>

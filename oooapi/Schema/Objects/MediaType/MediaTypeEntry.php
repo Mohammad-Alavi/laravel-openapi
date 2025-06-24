@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMapEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
 
 /**
  * @implements StringMapEntry<MediaType>

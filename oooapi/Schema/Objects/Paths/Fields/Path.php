@@ -4,8 +4,8 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Fields;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMapEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
 use Webmozart\Assert\Assert;
 
 /**

@@ -3,8 +3,8 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMap;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
 
 /**
  * @implements StringMap<StringField>

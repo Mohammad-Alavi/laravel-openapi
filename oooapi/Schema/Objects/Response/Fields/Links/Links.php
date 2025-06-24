@@ -3,8 +3,8 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Links;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMap;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
 
 /**
  * @implements StringMap<OASObject>
