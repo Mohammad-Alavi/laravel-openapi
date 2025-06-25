@@ -30,6 +30,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\Http;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Headers\HeaderEntry;
 
 describe(class_basename(Components::class), function (): void {
     it('can be create with all parameters', function (): void {
@@ -65,7 +66,10 @@ describe(class_basename(Components::class), function (): void {
         $requestBody->expects('component')
             ->andReturn(RequestBody::create());
 
-        $header = Header::create('HeaderExample');
+        $header = HeaderEntry::create(
+            'HeaderExample',
+            Header::create(),
+        );
 
         $securityScheme = \Mockery::mock(SecuritySchemeFactory::class);
         $securityScheme->allows('name')

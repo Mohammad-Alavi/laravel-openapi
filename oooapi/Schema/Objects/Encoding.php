@@ -4,22 +4,20 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleKeyCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Headers\HeaderEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Headers\Headers;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleKeyCreatorTrait;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
-class Encoding extends ExtensibleObject implements SimpleKeyCreator
+final class Encoding extends ExtensibleObject implements SimpleKeyCreator
 {
     use SimpleKeyCreatorTrait;
 
-    protected string|null $contentType = null;
-
-    /** @var Header[]|null */
-    protected array|null $headers = null;
-
-    protected string|null $style = null;
-    protected bool|null $explode = null;
-    protected bool|null $allowReserved = null;
+    private string|null $contentType = null;
+    private Headers|null $headers = null;
+    private string|null $style = null;
+    private bool|null $explode = null;
+    private bool|null $allowReserved = null;
 
     public function contentType(string|null $contentType): static
     {
@@ -30,11 +28,11 @@ class Encoding extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function headers(Header ...$header): static
+    public function headers(HeaderEntry ...$headerEntry): self
     {
         $clone = clone $this;
 
-        $clone->headers = [] !== $header ? $header : null;
+        $clone->headers = Headers::create(...$headerEntry);
 
         return $clone;
     }
@@ -68,14 +66,9 @@ class Encoding extends ExtensibleObject implements SimpleKeyCreator
 
     protected function toArray(): array
     {
-        $headers = [];
-        foreach ($this->headers ?? [] as $header) {
-            $headers[$header->key()] = $header;
-        }
-
         return Arr::filter([
             'contentType' => $this->contentType,
-            'headers' => [] !== $headers ? $headers : null,
+            'headers' => $this->headers,
             'style' => $this->style,
             'explode' => $this->explode,
             'allowReserved' => $this->allowReserved,

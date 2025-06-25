@@ -12,7 +12,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\LinkEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Fields\Links\Links;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Headers\HeaderEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Headers\Headers;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Components extends ExtensibleObject
@@ -32,8 +33,7 @@ final class Components extends ExtensibleObject
     /** @var RequestBodyFactory[]|null */
     private array|null $requestBodies = null;
 
-    /** @var Header[]|null */
-    private array|null $headers = null;
+    private Headers|null $headers = null;
 
     /** @var SecuritySchemeFactory[]|null */
     private array|null $securitySchemes = null;
@@ -97,11 +97,11 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
-    public function headers(Header ...$header): self
+    public function headers(HeaderEntry ...$headerEntry): self
     {
         $clone = clone $this;
 
-        $clone->headers = [] !== $header ? $header : null;
+        $clone->headers = Headers::create(...$headerEntry);
 
         return $clone;
     }
@@ -160,11 +160,6 @@ final class Components extends ExtensibleObject
             $requestBodies[$requestBody::name()] = $requestBody->component();
         }
 
-        $headers = [];
-        foreach ($this->headers ?? [] as $header) {
-            $headers[$header->key()] = $header;
-        }
-
         $securitySchemes = [];
         foreach ($this->securitySchemes ?? [] as $securityScheme) {
             $securitySchemes[$securityScheme::name()] = $securityScheme->component();
@@ -182,7 +177,7 @@ final class Components extends ExtensibleObject
             'parameters' => [] !== $parameters ? $parameters : null,
             'examples' => [] !== $examples ? $examples : null,
             'requestBodies' => [] !== $requestBodies ? $requestBodies : null,
-            'headers' => [] !== $headers ? $headers : null,
+            'headers' => $this->headers,
             'securitySchemes' => [] !== $securitySchemes ? $securitySchemes : null,
             'links' => $this->links,
             'callbacks' => [] !== $callbacks ? $callbacks : null,

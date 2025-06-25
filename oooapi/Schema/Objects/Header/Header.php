@@ -14,7 +14,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Header extends ExtensibleObject
 {
-    private readonly string $key;
     private Description|null $description = null;
     private Required|null $required = null;
     private Deprecated|null $deprecated = null;
@@ -107,13 +106,9 @@ final class Header extends ExtensibleObject
         return $clone;
     }
 
-    public static function create(string $key): self
+    public static function create(): self
     {
-        $static = new self();
-
-        $static->key = $key;
-
-        return $static;
+        return new self();
     }
 
     protected function toArray(): array
@@ -134,10 +129,5 @@ final class Header extends ExtensibleObject
             'examples' => [] !== $examples ? $examples : null,
             'content' => $this->content,
         ]);
-    }
-
-    public function key(): string
-    {
-        return $this->key;
     }
 }

@@ -9,23 +9,27 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Headers\HeaderEntry;
 
 describe(class_basename(Encoding::class), function (): void {
     it('can be created with all parameters', function (): void {
-        $header = Header::create('HeaderName')
-            ->description(Description::create('Lorem ipsum'))
-            ->required()
-            ->deprecated()
-            ->schema(Schema::string())
-            ->example('Example String')
-            ->examples(
-                Example::create('ExampleName')
-                    ->value('Example value'),
-            )->content(
-                ContentEntry::json(
-                    MediaType::create(),
+        $header = HeaderEntry::create(
+            'HeaderName',
+            Header::create()
+                ->description(Description::create('Lorem ipsum'))
+                ->required()
+                ->deprecated()
+                ->schema(Schema::string())
+                ->example('Example String')
+                ->examples(
+                    Example::create('ExampleName')
+                        ->value('Example value'),
+                )->content(
+                    ContentEntry::json(
+                        MediaType::create(),
+                    ),
                 ),
-            );
+        );
 
         $encoding = Encoding::create('EncodingName')
             ->contentType('application/json')

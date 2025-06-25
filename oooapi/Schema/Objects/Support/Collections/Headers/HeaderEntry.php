@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Headers;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Headers;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
