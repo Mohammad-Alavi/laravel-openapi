@@ -51,7 +51,7 @@ final class Operation extends ExtensibleObject
         $allStringTags = array_map(
             static function (Tag|string $tag): string {
                 if ($tag instanceof Tag) {
-                    return (string)$tag;
+                    return (string) $tag;
                 }
 
                 return $tag;
