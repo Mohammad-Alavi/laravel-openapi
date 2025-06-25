@@ -18,7 +18,7 @@ class ExampleTest extends UnitTestCase
             ->value('Value')
             ->externalValue('https://example.com/example.json');
 
-        $mediaType = MediaType::json()
+        $mediaType = MediaType::create()
             ->example($example);
 
         $this->assertSame([

@@ -22,9 +22,8 @@ describe(class_basename(Encoding::class), function (): void {
                 Example::create('ExampleName')
                     ->value('Example value'),
             )->content(
-                ContentEntry::create(
-                    'application/json',
-                    MediaType::json(),
+                ContentEntry::json(
+                    MediaType::create(),
                 ),
             );
 
@@ -35,7 +34,7 @@ describe(class_basename(Encoding::class), function (): void {
             ->explode()
             ->allowReserved();
 
-        $mediaType = MediaType::json()
+        $mediaType = MediaType::create()
             ->encoding($encoding);
 
         expect($mediaType->asArray())->toBe([

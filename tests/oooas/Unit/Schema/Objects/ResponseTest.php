@@ -25,9 +25,8 @@ describe('Response', function (): void {
                     ->value('Example value'),
             )
             ->content(
-                ContentEntry::create(
-                    'application/json',
-                    MediaType::json(),
+                ContentEntry::json(
+                    MediaType::create(),
                 ),
             );
 
@@ -41,9 +40,8 @@ describe('Response', function (): void {
                 $header,
             ),
         )->content(
-            ContentEntry::create(
-                'application/json',
-                MediaType::json(),
+            ContentEntry::json(
+                MediaType::create(),
             ),
         )->links(
             LinkEntry::create('MyLink', $link),

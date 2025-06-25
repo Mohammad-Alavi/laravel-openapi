@@ -21,9 +21,8 @@ describe(class_basename(Header::class), function (): void {
             ->example('Example value')
             ->examples(Example::create('ExampleName'))
             ->content(
-                ContentEntry::create(
-                    'application/json',
-                    MediaType::json(),
+                ContentEntry::json(
+                    MediaType::create(),
                 ),
             );
 

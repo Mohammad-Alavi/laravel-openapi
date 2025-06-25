@@ -11,9 +11,8 @@ describe(class_basename(RequestBody::class), function (): void {
         $requestBody = RequestBody::create()
             ->description('Standard request')
             ->content(
-                ContentEntry::create(
-                    'application/json',
-                    MediaType::json(),
+                ContentEntry::json(
+                    MediaType::create(),
                 ),
             )->required();
 

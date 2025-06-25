@@ -82,9 +82,8 @@ describe('OpenApi', function (): void {
                 Response::create(
                     ResponseDescription::create('OK'),
                 )->content(
-                    ContentEntry::create(
-                        'application/json',
-                        MediaType::json()->schema($objectDescriptor),
+                    ContentEntry::json(
+                        MediaType::create()->schema($objectDescriptor),
                     ),
                 ),
             ),
@@ -102,9 +101,8 @@ describe('OpenApi', function (): void {
             ->requestBody(
                 RequestBody::create()
                     ->content(
-                        ContentEntry::create(
-                            'application/json',
-                            MediaType::json()->schema($objectDescriptor),
+                        ContentEntry::json(
+                            MediaType::create()->schema($objectDescriptor),
                         ),
                     ),
             );

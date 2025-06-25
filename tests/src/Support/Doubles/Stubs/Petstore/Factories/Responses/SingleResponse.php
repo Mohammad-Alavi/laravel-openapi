@@ -23,9 +23,8 @@ final class SingleResponse implements ResponsesFactory
                 Response::create(
                     Description::create('Unprocessable Entity'),
                 )->content(
-                    ContentEntry::create(
-                        'application/json',
-                        MediaType::json()->schema(
+                    ContentEntry::json(
+                        MediaType::create()->schema(
                             Schema::object()
                                 ->properties(
                                     Property::create(

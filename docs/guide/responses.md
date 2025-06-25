@@ -61,7 +61,7 @@ class ErrorValidationResponse extends ResponseFactory implements Reusable
         return Response::create('ErrorValidation')
             ->description('Validation errors')
             ->content(
-                MediaType::json()->schema($response)
+                MediaType::create()->schema($response)
             );
     }
 }

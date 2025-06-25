@@ -95,9 +95,8 @@ describe('PetStoreTest', function (): void {
             Response::create(
                 ResponseDescription::create('pet response'),
             )->content(
-                ContentEntry::create(
-                    'application/json',
-                    MediaType::json()->schema(Pet::create()),
+                ContentEntry::json(
+                    MediaType::create()->schema(Pet::create()),
                 ),
             ),
         );
@@ -107,9 +106,8 @@ describe('PetStoreTest', function (): void {
             Response::create(
                 ResponseDescription::create('pet response'),
             )->content(
-                ContentEntry::create(
-                    'application/json',
-                    MediaType::json()->schema(
+                ContentEntry::json(
+                    MediaType::create()->schema(
                         Schema::array()->items(
                             Pet::create(),
                         ),
@@ -123,9 +121,8 @@ describe('PetStoreTest', function (): void {
             Response::create(
                 ResponseDescription::create('unexpected error'),
             )->content(
-                ContentEntry::create(
-                    'application/json',
-                    MediaType::json()->schema(ValidationError::create()),
+                ContentEntry::json(
+                    MediaType::create()->schema(ValidationError::create()),
                 ),
             ),
         );
@@ -173,9 +170,8 @@ describe('PetStoreTest', function (): void {
                     ->description('Pet to add to the store')
                     ->required()
                     ->content(
-                        ContentEntry::create(
-                            'application/json',
-                            MediaType::json()->schema(
+                        ContentEntry::json(
+                            MediaType::create()->schema(
                                 Animal::create(),
                             ),
                         )

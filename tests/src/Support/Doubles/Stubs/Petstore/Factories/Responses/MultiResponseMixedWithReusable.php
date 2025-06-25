@@ -26,9 +26,8 @@ class MultiResponseMixedWithReusable implements ResponsesFactory
                 HTTPStatusCode::ok(),
                 Response::create(Description::create('Resource created'))
                     ->content(
-                        ContentEntry::create(
-                            'application/json',
-                            MediaType::json()->schema(PetSchema::create()),
+                        ContentEntry::json(
+                            MediaType::create()->schema(PetSchema::create()),
                         ),
                     ),
             ),

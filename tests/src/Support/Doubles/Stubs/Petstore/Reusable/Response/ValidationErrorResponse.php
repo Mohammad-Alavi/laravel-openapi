@@ -30,9 +30,8 @@ class ValidationErrorResponse extends ResponseFactory
         return Response::create(
             Description::create('Unprocessable Entity'),
         )->content(
-            ContentEntry::create(
-                'application/json',
-                MediaType::json()->schema($objectDescriptor),
+            ContentEntry::json(
+                MediaType::create()->schema($objectDescriptor),
             ),
         );
     }
