@@ -5,8 +5,9 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\Encoding;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\EncodingEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class MediaType extends ExtensibleObject
@@ -15,12 +16,10 @@ final class MediaType extends ExtensibleObject
     private Example|null $example = null;
     /** @var Example[]|null */
     private array|null $examples = null;
-    /** @var Encoding[]|null */
-    private array|null $encoding = null;
+    private Encoding|null $encoding = null;
 
-    public static function create(): self
+    private function __construct()
     {
-        return new self();
     }
 
     public function schema(JSONSchema|SchemaFactory|null $schema): self
@@ -50,13 +49,18 @@ final class MediaType extends ExtensibleObject
         return $clone;
     }
 
-    public function encoding(Encoding ...$encoding): self
+    public function encoding(EncodingEntry ...$encodingEntry): self
     {
         $clone = clone $this;
 
-        $clone->encoding = [] !== $encoding ? $encoding : null;
+        $clone->encoding = Encoding::create(...$encodingEntry);
 
         return $clone;
+    }
+
+    public static function create(): self
+    {
+        return new self();
     }
 
     protected function toArray(): array
@@ -66,16 +70,11 @@ final class MediaType extends ExtensibleObject
             $examples[$example->key()] = $example;
         }
 
-        $encodings = [];
-        foreach ($this->encoding ?? [] as $encoding) {
-            $encodings[$encoding->key()] = $encoding;
-        }
-
         return Arr::filter([
             'schema' => $this->schema,
             'example' => $this->example,
             'examples' => [] !== $examples ? $examples : null,
-            'encoding' => [] !== $encodings ? $encodings : null,
+            'encoding' => $this->encoding,
         ]);
     }
 }
