@@ -25,7 +25,7 @@ describe('Parameter', function (): void {
         'can create cookie parameter',
         function (
             Form|null $style,
-            array     $expected,
+            array $expected,
         ): void {
             $parameter = Parameter::cookie(
                 Name::create('user'),
@@ -76,7 +76,7 @@ describe('Parameter', function (): void {
         'can create header parameter',
         function (
             Simple|null $style,
-            array       $expected,
+            array $expected,
         ): void {
             $parameter = Parameter::header(
                 Name::create('user'),
@@ -124,7 +124,7 @@ describe('Parameter', function (): void {
         'can create path parameter',
         function (
             Label|Matrix|Simple|null $style,
-            array                    $expected,
+            array $expected,
         ): void {
             $parameter = Parameter::path(
                 Name::create('user'),
@@ -185,7 +185,7 @@ describe('Parameter', function (): void {
         'can create query parameter',
         function (
             DeepObject|Form|PipeDelimited|SpaceDelimited|null $style,
-            array                                             $expected,
+            array $expected,
         ): void {
             $parameter = Parameter::query(
                 Name::create('user'),
@@ -268,13 +268,13 @@ describe('Parameter', function (): void {
                 'deprecated' => true,
                 ...$expected,
             ]);
-        }
+        },
     )->with([
         'contentSerialized' => [
             ContentSerialized::create(
                 ContentEntry::pdf(
                     MediaType::create(),
-                )
+                ),
             ),
             [
                 'content' => [
