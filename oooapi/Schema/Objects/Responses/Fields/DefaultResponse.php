@@ -6,18 +6,17 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
 
 final readonly class DefaultResponse extends StringField
 {
-    private function __construct(
-        private string $value,
-    ) {
+    private function __construct()
+    {
     }
 
     public static function create(): self
     {
-        return new self('default');
+        return new self();
     }
 
     public function value(): string
     {
-        return $this->value;
+        return 'default';
     }
 }

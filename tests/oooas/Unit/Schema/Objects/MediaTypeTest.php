@@ -2,6 +2,7 @@
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\EncodingEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
@@ -20,7 +21,12 @@ describe(class_basename(MediaType::class), function (): void {
             // Sometimes examples are not named.
             // For example, when there is only one example.
             ->example(Example::create('ExampleName'))
-            ->encoding(Encoding::create('EncodingName'));
+            ->encoding(
+                EncodingEntry::create(
+                    'EncodingName',
+                    Encoding::create('EncodingName'),
+                ),
+            );
 
         expect($mediaType->asArray())->toBe([
             'schema' => [

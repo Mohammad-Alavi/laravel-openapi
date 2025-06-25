@@ -6,6 +6,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\EncodingEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content\ContentEntry;
@@ -31,12 +32,15 @@ describe(class_basename(Encoding::class), function (): void {
                 ),
         );
 
-        $encoding = Encoding::create('EncodingName')
-            ->contentType('application/json')
-            ->headers($header)
-            ->style('simple')
-            ->explode()
-            ->allowReserved();
+        $encoding = EncodingEntry::create(
+            'EncodingName',
+            Encoding::create('EncodingName')
+                ->contentType('application/json')
+                ->headers($header)
+                ->style('simple')
+                ->explode()
+                ->allowReserved(),
+        );
 
         $mediaType = MediaType::create()
             ->encoding($encoding);

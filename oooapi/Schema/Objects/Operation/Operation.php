@@ -37,6 +37,10 @@ final class Operation extends ExtensibleObject
     /** @var (Callback|CallbackFactory)[]|null */
     private array|null $callbacks = null;
 
+    private function __construct()
+    {
+    }
+
     public static function create(): self
     {
         return new self();
@@ -47,7 +51,7 @@ final class Operation extends ExtensibleObject
         $allStringTags = array_map(
             static function (Tag|string $tag): string {
                 if ($tag instanceof Tag) {
-                    return (string) $tag;
+                    return (string)$tag;
                 }
 
                 return $tag;

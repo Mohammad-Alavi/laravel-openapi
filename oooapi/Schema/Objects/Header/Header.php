@@ -25,6 +25,10 @@ final class Header extends ExtensibleObject
     private array|null $examples = null;
     private Content|null $content = null;
 
+    private function __construct()
+    {
+    }
+
     public function description(Description|null $description): self
     {
         $clone = clone $this;

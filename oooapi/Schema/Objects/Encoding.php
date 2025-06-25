@@ -2,22 +2,22 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleKeyCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Headers\HeaderEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Headers\Headers;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleKeyCreatorTrait;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
-final class Encoding extends ExtensibleObject implements SimpleKeyCreator
+final class Encoding extends ExtensibleObject
 {
-    use SimpleKeyCreatorTrait;
-
     private string|null $contentType = null;
     private Headers|null $headers = null;
     private string|null $style = null;
     private bool|null $explode = null;
     private bool|null $allowReserved = null;
+
+    private function __construct()
+    {
+    }
 
     public function contentType(string|null $contentType): self
     {
@@ -35,6 +35,11 @@ final class Encoding extends ExtensibleObject implements SimpleKeyCreator
         $clone->headers = Headers::create(...$headerEntry);
 
         return $clone;
+    }
+
+    public static function create(): self
+    {
+        return new self();
     }
 
     public function style(string|null $style): self
