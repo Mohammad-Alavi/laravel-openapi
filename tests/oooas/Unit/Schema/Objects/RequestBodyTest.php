@@ -3,13 +3,14 @@
 namespace Tests\oooas\Unit\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\ContentEntry;
 
 describe(class_basename(RequestBody::class), function (): void {
     it('can be created with all parameters', function (): void {
         $requestBody = RequestBody::create()
-            ->description('Standard request')
+            ->description(Description::create('Standard request'))
             ->content(
                 ContentEntry::json(
                     MediaType::create(),

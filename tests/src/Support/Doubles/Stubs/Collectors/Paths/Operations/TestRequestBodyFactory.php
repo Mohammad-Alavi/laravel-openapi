@@ -4,7 +4,7 @@ namespace Tests\src\Support\Doubles\Stubs\Collectors\Paths\Operations;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
 
 class TestRequestBodyFactory extends RequestBodyFactory implements ShouldBeReferenced
 {

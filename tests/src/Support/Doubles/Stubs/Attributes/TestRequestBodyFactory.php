@@ -3,7 +3,7 @@
 namespace Tests\src\Support\Doubles\Stubs\Attributes;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
 
 class TestRequestBodyFactory extends RequestBodyFactory
 {

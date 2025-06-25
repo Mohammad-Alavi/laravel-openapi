@@ -1,27 +1,38 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\Fields\Required;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\Content;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\ContentEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
-class RequestBody extends ExtensibleObject implements SimpleCreator
+final class RequestBody extends ExtensibleObject
 {
-    use SimpleCreatorTrait;
-
-    protected string|null $description = null;
-    protected bool|null $required = null;
+    private Description|null $description = null;
+    private Required|null $required = null;
     private Content|null $content = null;
 
-    public function description(string|null $description): static
+    private function __construct()
+    {
+    }
+
+    public function description(Description|null $description): self
     {
         $clone = clone $this;
 
         $clone->description = $description;
+
+        return $clone;
+    }
+
+    public function required(): self
+    {
+        $clone = clone $this;
+
+        $clone->required = Required::yes();
 
         return $clone;
     }
@@ -35,13 +46,9 @@ class RequestBody extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function required(bool|null $required = true): static
+    public static function create(): self
     {
-        $clone = clone $this;
-
-        $clone->required = $required;
-
-        return $clone;
+        return new self();
     }
 
     protected function toArray(): array
