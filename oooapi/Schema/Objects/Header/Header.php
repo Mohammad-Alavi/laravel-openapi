@@ -8,27 +8,13 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Deprecated;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Required;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content\Content;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Header extends ExtensibleObject
 {
     private readonly string $key;
-
-    public static function create(string $key): self
-    {
-        $static = new self();
-
-        $static->key = $key;
-
-        return $static;
-    }
-
-    public function key(): string
-    {
-        return $this->key;
-    }
-
     private Description|null $description = null;
     private Required|null $required = null;
     private Deprecated|null $deprecated = null;
@@ -36,12 +22,9 @@ final class Header extends ExtensibleObject
     private bool|null $explode = null;
     private JSONSchema|null $schema = null;
     private mixed $example = null;
-
     /** @var Example[]|null */
     private array|null $examples = null;
-
-    /** @var MediaType[]|null */
-    private array|null $content = null;
+    private Content|null $content = null;
 
     public function description(Description|null $description): self
     {
@@ -115,13 +98,22 @@ final class Header extends ExtensibleObject
         return $clone;
     }
 
-    public function content(MediaType ...$mediaType): self
+    public function content(ContentEntry ...$contentEntry): self
     {
         $clone = clone $this;
 
-        $clone->content = [] !== $mediaType ? $mediaType : null;
+        $clone->content = Content::create(...$contentEntry);
 
         return $clone;
+    }
+
+    public static function create(string $key): self
+    {
+        $static = new self();
+
+        $static->key = $key;
+
+        return $static;
     }
 
     protected function toArray(): array
@@ -129,11 +121,6 @@ final class Header extends ExtensibleObject
         $examples = [];
         foreach ($this->examples ?? [] as $example) {
             $examples[$example->key()] = $example;
-        }
-
-        $content = [];
-        foreach ($this->content ?? [] as $contentItem) {
-            $content[$contentItem->key()] = $contentItem;
         }
 
         return Arr::filter([
@@ -145,7 +132,12 @@ final class Header extends ExtensibleObject
             'schema' => $this->schema,
             'example' => $this->example,
             'examples' => [] !== $examples ? $examples : null,
-            'content' => [] !== $content ? $content : null,
+            'content' => $this->content,
         ]);
+    }
+
+    public function key(): string
+    {
+        return $this->key;
     }
 }

@@ -1,8 +1,9 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Content;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMap;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
 

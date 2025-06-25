@@ -5,12 +5,12 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Description
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description as ResponseDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Headers\HeaderEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Links\LinkEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content\ContentEntry;
 
 describe('Response', function (): void {
     it('creates a response with all parameters', function (): void {
@@ -24,7 +24,12 @@ describe('Response', function (): void {
                 Example::create('ExampleName')
                     ->value('Example value'),
             )
-            ->content(MediaType::json());
+            ->content(
+                ContentEntry::create(
+                    'application/json',
+                    MediaType::json(),
+                ),
+            );
 
         $link = Link::create();
 

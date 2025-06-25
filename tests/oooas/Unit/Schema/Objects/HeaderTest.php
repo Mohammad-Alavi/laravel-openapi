@@ -7,6 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Description
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content\ContentEntry;
 
 describe(class_basename(Header::class), function (): void {
     it('can be created with all parameters', function (): void {
@@ -19,7 +20,12 @@ describe(class_basename(Header::class), function (): void {
             ->explode()
             ->example('Example value')
             ->examples(Example::create('ExampleName'))
-            ->content(MediaType::json());
+            ->content(
+                ContentEntry::create(
+                    'application/json',
+                    MediaType::json(),
+                ),
+            );
 
         $response = $header->asArray();
 
