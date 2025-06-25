@@ -1,6 +1,7 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Style;
@@ -12,18 +13,20 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\S
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\Simple;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\SpaceDelimited;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\ContentSerialized;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedCookie;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedHeader;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content\ContentEntry;
 
 describe('Parameter', function (): void {
     it(
         'can create cookie parameter',
         function (
             Form|null $style,
-            array $expected,
+            array     $expected,
         ): void {
             $parameter = Parameter::cookie(
                 Name::create('user'),
@@ -74,7 +77,7 @@ describe('Parameter', function (): void {
         'can create header parameter',
         function (
             Simple|null $style,
-            array $expected,
+            array       $expected,
         ): void {
             $parameter = Parameter::header(
                 Name::create('user'),
@@ -122,7 +125,7 @@ describe('Parameter', function (): void {
         'can create path parameter',
         function (
             Label|Matrix|Simple|null $style,
-            array $expected,
+            array                    $expected,
         ): void {
             $parameter = Parameter::path(
                 Name::create('user'),
@@ -183,7 +186,7 @@ describe('Parameter', function (): void {
         'can create query parameter',
         function (
             DeepObject|Form|PipeDelimited|SpaceDelimited|null $style,
-            array $expected,
+            array                                             $expected,
         ): void {
             $parameter = Parameter::query(
                 Name::create('user'),
@@ -245,6 +248,40 @@ describe('Parameter', function (): void {
         'null' => [
             null,
             [],
+        ],
+    ]);
+
+    it(
+        'can serialize content',
+        function (ContentSerialized $contentSerialized, array $expected): void {
+            $parameter = Parameter::query(
+                Name::create('user'),
+                $contentSerialized,
+            )->description(Description::create('User ID'))
+                ->required()
+                ->deprecated();
+
+            expect($parameter->asArray())->toBe([
+                'name' => 'user',
+                'in' => 'query',
+                'description' => 'User ID',
+                'required' => true,
+                'deprecated' => true,
+                ...$expected,
+            ]);
+        }
+    )->with([
+        'contentSerialized' => [
+            ContentSerialized::create(
+                ContentEntry::pdf(
+                    MediaType::create(),
+                )
+            ),
+            [
+                'content' => [
+                    'application/pdf' => [],
+                ],
+            ],
         ],
     ]);
 })->covers(Parameter::class);
