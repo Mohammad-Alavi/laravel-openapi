@@ -5,6 +5,8 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content\Content;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
@@ -13,11 +15,8 @@ class RequestBody extends ExtensibleObject implements SimpleCreator
     use SimpleCreatorTrait;
 
     protected string|null $description = null;
-
-    /** @var MediaType[]|null */
-    protected array|null $content = null;
-
     protected bool|null $required = null;
+    private Content|null $content = null;
 
     public function description(string|null $description): static
     {
@@ -28,11 +27,11 @@ class RequestBody extends ExtensibleObject implements SimpleCreator
         return $clone;
     }
 
-    public function content(MediaType ...$mediaType): static
+    public function content(ContentEntry ...$contentEntry): self
     {
         $clone = clone $this;
 
-        $clone->content = [] !== $mediaType ? $mediaType : null;
+        $clone->content = Content::create(...$contentEntry);
 
         return $clone;
     }
@@ -48,14 +47,9 @@ class RequestBody extends ExtensibleObject implements SimpleCreator
 
     protected function toArray(): array
     {
-        $content = [];
-        foreach ($this->content ?? [] as $contentItem) {
-            $content[$contentItem->key()] = $contentItem;
-        }
-
         return Arr::filter([
             'description' => $this->description,
-            'content' => [] !== $content ? $content : null,
+            'content' => $this->content,
             'required' => $this->required,
         ]);
     }

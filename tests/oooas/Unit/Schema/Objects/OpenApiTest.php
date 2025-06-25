@@ -120,9 +120,15 @@ describe(class_basename(OpenAPI::class), function (): void {
             ->tags($tag)
             ->summary(Summary::create('Create an audit'))
             ->operationId(OperationId::create('audits.store'))
-            ->requestBody(RequestBody::create()->content(
-                MediaType::json()->schema($objectDescriptor),
-            ));
+            ->requestBody(
+                RequestBody::create()
+                    ->content(
+                        ContentEntry::create(
+                            'application/json',
+                            MediaType::json()->schema($objectDescriptor),
+                        ),
+                    ),
+            );
 
         $stringDescriptor = Schema::string()->format(StringFormat::UUID);
         $enumDescriptor = Schema::enum('json', 'ics');

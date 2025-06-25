@@ -173,9 +173,12 @@ describe('PetStoreTest', function (): void {
                     ->description('Pet to add to the store')
                     ->required()
                     ->content(
-                        MediaType::json()->schema(
-                            Animal::create(),
-                        ),
+                        ContentEntry::create(
+                            'application/json',
+                            MediaType::json()->schema(
+                                Animal::create(),
+                            ),
+                        )
                     ),
             )
             ->responses(Responses::create($responseEntry, $defaultErrorResponse));
@@ -311,6 +314,11 @@ class Animal extends SchemaFactory implements ShouldBeReferenced
 
 class ValidationError extends SchemaFactory implements ShouldBeReferenced
 {
+    public static function name(): string
+    {
+        return 'Error';
+    }
+
     public function component(): JSONSchema
     {
         return Schema::object()
@@ -325,10 +333,5 @@ class ValidationError extends SchemaFactory implements ShouldBeReferenced
                     Schema::string(),
                 ),
             );
-    }
-
-    public static function name(): string
-    {
-        return 'Error';
     }
 }
