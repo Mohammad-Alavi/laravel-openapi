@@ -19,7 +19,7 @@ final class Encoding extends ExtensibleObject implements SimpleKeyCreator
     private bool|null $explode = null;
     private bool|null $allowReserved = null;
 
-    public function contentType(string|null $contentType): static
+    public function contentType(string|null $contentType): self
     {
         $clone = clone $this;
 
@@ -37,7 +37,7 @@ final class Encoding extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function style(string|null $style): static
+    public function style(string|null $style): self
     {
         $clone = clone $this;
 
@@ -46,7 +46,7 @@ final class Encoding extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function explode(bool|null $explode = true): static
+    public function explode(bool|null $explode = true): self
     {
         $clone = clone $this;
 
@@ -55,7 +55,7 @@ final class Encoding extends ExtensibleObject implements SimpleKeyCreator
         return $clone;
     }
 
-    public function allowReserved(bool|null $allowReserved = true): static
+    public function allowReserved(bool|null $allowReserved = true): self
     {
         $clone = clone $this;
 
