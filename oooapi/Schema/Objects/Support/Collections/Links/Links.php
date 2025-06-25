@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Links;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Links;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMap;
