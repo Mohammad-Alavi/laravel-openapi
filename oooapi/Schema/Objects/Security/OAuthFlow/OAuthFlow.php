@@ -23,7 +23,7 @@ final class OAuthFlow extends ExtensibleObject
         return new self();
     }
 
-    public function flow(Flow|null $flow): static
+    public function flow(Flow|null $flow): self
     {
         $clone = clone $this;
 
@@ -32,7 +32,7 @@ final class OAuthFlow extends ExtensibleObject
         return $clone;
     }
 
-    public function authorizationUrl(string|null $authorizationUrl): static
+    public function authorizationUrl(string|null $authorizationUrl): self
     {
         $clone = clone $this;
 
@@ -41,7 +41,7 @@ final class OAuthFlow extends ExtensibleObject
         return $clone;
     }
 
-    public function tokenUrl(string|null $tokenUrl): static
+    public function tokenUrl(string|null $tokenUrl): self
     {
         $clone = clone $this;
 
@@ -50,7 +50,7 @@ final class OAuthFlow extends ExtensibleObject
         return $clone;
     }
 
-    public function refreshUrl(string|null $refreshUrl): static
+    public function refreshUrl(string|null $refreshUrl): self
     {
         $clone = clone $this;
 
@@ -64,7 +64,7 @@ final class OAuthFlow extends ExtensibleObject
      *
      * @throws InvalidArgumentException
      */
-    public function scopes(array|null $scopes): static
+    public function scopes(array|null $scopes): self
     {
         if (is_array($scopes)) {
             foreach ($scopes as $key => $value) {
