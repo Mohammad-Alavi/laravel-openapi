@@ -4,12 +4,12 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content\Content;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content\ContentEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Headers\HeaderEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Headers\Headers;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Links\LinkEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Links\Links;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\Content;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers\HeaderEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers\Headers;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Links\LinkEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Links\Links;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Response extends ExtensibleObject
