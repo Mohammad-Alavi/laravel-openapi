@@ -1,9 +1,9 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Links;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMapEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
@@ -11,13 +11,13 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
 /**
  * @implements StringMapEntry<OASObject>
  */
-final readonly class LinkEntry implements StringMapEntry
+final readonly class HeaderEntry implements StringMapEntry
 {
     /** @use StringKeyedMapEntry<OASObject> */
     use StringKeyedMapEntry;
 
-    public static function create(string $name, Link|Reference $link): self
+    public static function create(string $name, Header|Reference $header): self
     {
-        return new self($name, $link);
+        return new self($name, $header);
     }
 }

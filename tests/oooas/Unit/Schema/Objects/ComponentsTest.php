@@ -29,8 +29,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\Http;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Headers\HeaderEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Links\LinkEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers\HeaderEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Links\LinkEntry;
 
 describe(class_basename(Components::class), function (): void {
     it('can be create with all parameters', function (): void {
