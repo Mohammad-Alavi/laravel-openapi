@@ -2,24 +2,28 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Collections\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMap;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
 
-final readonly class ContentSerialized implements SerializationRule
+/**
+ * @implements StringMap<MediaType>
+ */
+final readonly class ContentSerialized implements SerializationRule, StringMap
 {
-    private function __construct(
-        private ContentEntry $contentEntry,
-    ) {
+    /** @use StringKeyedMap<MediaType> */
+    use StringKeyedMap {
+        StringKeyedMap::jsonSerialize as jsonSerializeTrait;
     }
 
     public static function create(ContentEntry $contentEntry): self
     {
-        return new self($contentEntry);
+        return self::put($contentEntry);
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
-        return [
-            'content' => $this->contentEntry,
-        ];
+        return ['content' => $this->jsonSerializeTrait()];
     }
 }

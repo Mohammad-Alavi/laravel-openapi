@@ -104,7 +104,7 @@ final class Parameter extends ExtensibleObject
             'required' => $this->required,
             'deprecated' => $this->deprecated,
             'allowEmptyValue' => $this->allowEmptyValue,
-            ...$this->serializationRule->toArray(),
+            ...$this->serializationRule->jsonSerialize(),
         ]);
     }
 }

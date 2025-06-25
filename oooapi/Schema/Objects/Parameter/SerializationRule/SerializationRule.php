@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule;
 
-interface SerializationRule
+interface SerializationRule extends \JsonSerializable
 {
-    public function toArray(): array;
+    public function jsonSerialize(): array;
 }

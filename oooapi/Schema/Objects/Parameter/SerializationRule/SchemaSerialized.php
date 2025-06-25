@@ -17,7 +17,7 @@ abstract readonly class SchemaSerialized implements SerializationRule
     ) {
     }
 
-    final public function toArray(): array
+    final public function jsonSerialize(): array
     {
         $examples = [];
         foreach ($this->examples as $example) {

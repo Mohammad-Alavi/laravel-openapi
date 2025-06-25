@@ -8,6 +8,6 @@ final class Label extends Base
 {
     protected function value(): string
     {
-        return 'pipeDelimited';
+        return 'label';
     }
 }
