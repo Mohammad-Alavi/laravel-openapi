@@ -23,10 +23,6 @@ final readonly class ResponseEntry implements StringMapEntry
         DefaultResponse|HTTPStatusCode $name,
         Response|ResponseFactory|Reference $response,
     ): self {
-        if ($response instanceof ResponseFactory) {
-            return new self($name, $response::reference());
-        }
-
         return new self($name, $response);
     }
 }

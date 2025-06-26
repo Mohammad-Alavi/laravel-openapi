@@ -5,7 +5,6 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseMap;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 // TODO: allow providing default response.
 final class Responses extends ExtensibleObject
@@ -24,11 +23,6 @@ final class Responses extends ExtensibleObject
 
     protected function toArray(): array
     {
-        $responses = [];
-        foreach ($this->responseMap->entries() as $response) {
-            $responses[$response->key()] = $response->value();
-        }
-
-        return Arr::filter($responses);
+        return $this->responseMap->jsonSerialize() ?? [];
     }
 }
