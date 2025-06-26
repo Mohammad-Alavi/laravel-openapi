@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding as EncodingObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding\Encoding as EncodingObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMap;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
 

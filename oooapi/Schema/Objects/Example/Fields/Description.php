@@ -1,14 +1,15 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Fields;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
 
-final readonly class ExternalValue extends StringField
+final readonly class Description extends StringField
 {
     private function __construct(
         private string $value,
     ) {
+        // TODO: Add validation.
     }
 
     public static function create(string $value): self

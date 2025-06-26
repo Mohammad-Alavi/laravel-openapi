@@ -1,11 +1,11 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Fields\ExternalValue;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields\ExternalValue;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use Webmozart\Assert\Assert;
 

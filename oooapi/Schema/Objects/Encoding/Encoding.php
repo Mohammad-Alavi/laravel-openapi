@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers\HeaderEntry;
@@ -15,7 +15,7 @@ final class Encoding extends ExtensibleObject
     private bool|null $explode = null;
     private bool|null $allowReserved = null;
 
-    public function contentType(string|null $contentType): self
+    public function contentType(string $contentType): self
     {
         $clone = clone $this;
 
@@ -56,11 +56,11 @@ final class Encoding extends ExtensibleObject
         return $clone;
     }
 
-    public function allowReserved(bool|null $allowReserved = true): self
+    public function allowReserved(): self
     {
         $clone = clone $this;
 
-        $clone->allowReserved = $allowReserved;
+        $clone->allowReserved = true;
 
         return $clone;
     }

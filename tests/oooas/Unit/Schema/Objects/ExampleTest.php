@@ -2,10 +2,10 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Fields\ExternalValue;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Fields\Summary;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields\ExternalValue;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields\Summary;
 
 describe(class_basename(Example::class), function (): void {
     it('can be created', function (): void {

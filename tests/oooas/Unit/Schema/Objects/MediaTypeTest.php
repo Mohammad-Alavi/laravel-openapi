@@ -1,7 +1,7 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding\Encoding;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\EncodingEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
