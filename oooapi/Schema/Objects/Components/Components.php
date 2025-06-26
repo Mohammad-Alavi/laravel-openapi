@@ -10,6 +10,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\Examples;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers\HeaderEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers\Headers;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Links\LinkEntry;
@@ -26,9 +28,7 @@ final class Components extends ExtensibleObject
 
     /** @var ParameterFactory[]|null */
     private array|null $parameters = null;
-
-    /** @var Example[]|null */
-    private array|null $examples = null;
+    private Examples|null $examples = null;
 
     /** @var RequestBodyFactory[]|null */
     private array|null $requestBodies = null;
@@ -45,11 +45,6 @@ final class Components extends ExtensibleObject
 
     private function __construct()
     {
-    }
-
-    public static function create(): self
-    {
-        return new self();
     }
 
     public function schemas(SchemaFactory ...$schema): self
@@ -79,13 +74,18 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
-    public function examples(Example ...$example): self
+    public function examples(ExampleEntry ...$exampleEntry): self
     {
         $clone = clone $this;
 
-        $clone->examples = [] !== $example ? $example : null;
+        $clone->examples = Examples::create(...$exampleEntry);
 
         return $clone;
+    }
+
+    public static function create(): self
+    {
+        return new self();
     }
 
     public function requestBodies(RequestBodyFactory ...$reusableRequestBodyFactory): self
@@ -150,11 +150,6 @@ final class Components extends ExtensibleObject
             $parameters[$parameter::name()] = $parameter->component();
         }
 
-        $examples = [];
-        foreach ($this->examples ?? [] as $example) {
-            $examples[$example->key()] = $example;
-        }
-
         $requestBodies = [];
         foreach ($this->requestBodies ?? [] as $requestBody) {
             $requestBodies[$requestBody::name()] = $requestBody->component();
@@ -175,7 +170,7 @@ final class Components extends ExtensibleObject
             'schemas' => [] !== $schemas ? $schemas : null,
             'responses' => [] !== $responses ? $responses : null,
             'parameters' => [] !== $parameters ? $parameters : null,
-            'examples' => [] !== $examples ? $examples : null,
+            'examples' => $this->examples,
             'requestBodies' => [] !== $requestBodies ? $requestBodies : null,
             'headers' => $this->headers,
             'securitySchemes' => [] !== $securitySchemes ? $securitySchemes : null,

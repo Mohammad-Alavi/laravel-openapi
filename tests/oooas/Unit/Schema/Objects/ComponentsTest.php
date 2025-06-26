@@ -8,9 +8,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
@@ -30,6 +30,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\Http;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers\HeaderEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Links\LinkEntry;
 
@@ -58,8 +59,11 @@ describe(class_basename(Components::class), function (): void {
                 ),
             );
 
-        $example = Example::create('Page')
-            ->value(5);
+        $example = ExampleEntry::create(
+            'Page',
+            Example::create()
+                ->value(5),
+        );
 
         $requestBody = \Mockery::mock(RequestBodyFactory::class);
         $requestBody->allows('name')
