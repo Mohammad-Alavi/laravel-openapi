@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\StringField;
 
 final readonly class In extends StringField
 {

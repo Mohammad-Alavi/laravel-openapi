@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuthFlow\Fields;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\StringField;
 
 /**
  * Represents the flow type for OAuth2 authentication.

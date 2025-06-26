@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\StringField;
 
 final readonly class Summary extends StringField
 {

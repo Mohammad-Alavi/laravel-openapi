@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\StringField;
 use Webmozart\Assert\Assert;
 
 final readonly class Email extends StringField

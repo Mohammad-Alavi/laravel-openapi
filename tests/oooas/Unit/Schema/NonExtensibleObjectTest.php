@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\NonExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\NonExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Generatable;
 use Tests\oooas\Support\Doubles\Fakes\NonExtensibleObjectFake;
 

@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Extension as ExtensionAttribute;
 use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ExtensionFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
 
 // TODO: refactor this class to use the ExtensionFactory interface
 class ExtensionBuilder

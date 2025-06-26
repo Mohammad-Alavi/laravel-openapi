@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Generatable;
 

@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\StringField;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Validator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\StringField;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Validator;
 
 final readonly class URL extends StringField
 {
