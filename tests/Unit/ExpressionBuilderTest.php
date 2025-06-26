@@ -112,4 +112,4 @@ describe(class_basename(ExpressionBuilder::class), function (): void {
                 'https://example.com/data/{$request.path.eventType}?transactionId={$request.body#/id}&email={$request.body#/email}',
             );
     });
-})->covers(ExpressionBuilder::class)->only();
+})->covers(ExpressionBuilder::class);
