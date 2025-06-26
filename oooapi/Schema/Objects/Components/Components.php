@@ -9,7 +9,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\Examples;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers\HeaderEntry;
@@ -42,10 +41,6 @@ final class Components extends ExtensibleObject
 
     /** @var CallbackFactory[]|null */
     private array|null $callbackFactories = null;
-
-    private function __construct()
-    {
-    }
 
     public function schemas(SchemaFactory ...$schema): self
     {

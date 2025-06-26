@@ -3,24 +3,22 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\Label;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\Matrix;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\Simple;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
 
 final readonly class SchemaSerializedPath extends SchemaSerialized
 {
     public static function create(
         JSONSchema $jsonSchema,
         Label|Matrix|Simple|null $style = null,
-        Example|null $example = null,
-        Example ...$examples,
+        ExampleEntry ...$exampleEntry,
     ): self {
         return new self(
             $jsonSchema,
             $style,
-            $example,
-            $examples,
+            ...$exampleEntry,
         );
     }
 }

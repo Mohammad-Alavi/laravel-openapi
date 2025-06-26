@@ -19,6 +19,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRu
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
 
 describe('Parameter', function (): void {
     it(
@@ -32,8 +33,14 @@ describe('Parameter', function (): void {
                 SchemaSerializedCookie::create(
                     Schema::integer(),
                     $style,
-                    Example::create('example_test'),
-                    Example::create('ExampleName'),
+                    ExampleEntry::create(
+                        'example_test',
+                        Example::create(),
+                    ),
+                    ExampleEntry::create(
+                        'ExampleName',
+                        Example::create(),
+                    ),
                 ),
             )->description(Description::create('User ID'))
                 ->required()
@@ -51,8 +58,8 @@ describe('Parameter', function (): void {
                     'type' => 'integer',
                 ],
                 ...$expected,
-                'example' => [],
                 'examples' => [
+                    'example_test' => [],
                     'ExampleName' => [],
                 ],
             ]);
@@ -83,8 +90,10 @@ describe('Parameter', function (): void {
                 SchemaSerializedHeader::create(
                     Schema::object(),
                     $style,
-                    Example::create('example_test'),
-                    Example::create('ExampleName'),
+                    ExampleEntry::create(
+                        'example_test',
+                        Example::create(),
+                    ),
                 ),
             )->description(Description::create('User ID'))
                 ->deprecated()
@@ -100,9 +109,8 @@ describe('Parameter', function (): void {
                     'type' => 'object',
                 ],
                 ...$expected,
-                'example' => [],
                 'examples' => [
-                    'ExampleName' => [],
+                    'example_test' => [],
                 ],
             ]);
         },
@@ -131,8 +139,6 @@ describe('Parameter', function (): void {
                 SchemaSerializedPath::create(
                     Schema::string(),
                     $style,
-                    Example::create('example_test'),
-                    Example::create('ExampleName'),
                 ),
             )->description(Description::create('User ID'))
                 ->required()
@@ -148,10 +154,6 @@ describe('Parameter', function (): void {
                     'type' => 'string',
                 ],
                 ...$expected,
-                'example' => [],
-                'examples' => [
-                    'ExampleName' => [],
-                ],
             ]);
         },
     )->with([
@@ -192,8 +194,6 @@ describe('Parameter', function (): void {
                 SchemaSerializedQuery::create(
                     Schema::array(),
                     $style,
-                    Example::create('example_test'),
-                    Example::create('ExampleName'),
                 ),
             )->description(Description::create('User ID'))
                 ->required()
@@ -209,10 +209,6 @@ describe('Parameter', function (): void {
                     'type' => 'array',
                 ],
                 ...$expected,
-                'example' => [],
-                'examples' => [
-                    'ExampleName' => [],
-                ],
             ]);
         },
     )->with([

@@ -14,10 +14,6 @@ final class Contact extends ExtensibleObject
     private URL|null $url = null;
     private Email|null $email = null;
 
-    private function __construct()
-    {
-    }
-
     public static function create(): self
     {
         return new self();

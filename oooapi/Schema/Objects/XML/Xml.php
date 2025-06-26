@@ -18,10 +18,6 @@ final class Xml extends ExtensibleObject
     private Attribute|null $attribute = null;
     private Wrapped|null $wrapped = null;
 
-    private function __construct()
-    {
-    }
-
     public static function create(): self
     {
         return new self();

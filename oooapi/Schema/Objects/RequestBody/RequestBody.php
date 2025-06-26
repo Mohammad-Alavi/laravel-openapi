@@ -15,10 +15,6 @@ final class RequestBody extends ExtensibleObject
     private Required|null $required = null;
     private Content|null $content = null;
 
-    private function __construct()
-    {
-    }
-
     public function description(Description|null $description): self
     {
         $clone = clone $this;

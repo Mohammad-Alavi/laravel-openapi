@@ -9,7 +9,7 @@ use Tests\src\Support\Doubles\Stubs\FakeExtension;
 
 describe(class_basename(ExtensionBuilder::class), function (): void {
     it('can be created using factory', function (): void {
-        $example = Example::create('test');
+        $example = Example::create();
 
         /** @var ExtensionBuilder $extensionBuilder */
         $extensionBuilder = app(ExtensionBuilder::class);
@@ -26,7 +26,7 @@ describe(class_basename(ExtensionBuilder::class), function (): void {
     });
 
     it('can be created using key and value', function (): void {
-        $example = Example::create('test');
+        $example = Example::create();
 
         /** @var ExtensionBuilder $extensionBuilder */
         $extensionBuilder = app(ExtensionBuilder::class);

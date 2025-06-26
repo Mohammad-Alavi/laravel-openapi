@@ -37,10 +37,6 @@ final class Operation extends ExtensibleObject
     /** @var (Callback|CallbackFactory)[]|null */
     private array|null $callbacks = null;
 
-    private function __construct()
-    {
-    }
-
     public static function create(): self
     {
         return new self();

@@ -5,7 +5,6 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\Encoding;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\EncodingEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
@@ -17,10 +16,6 @@ final class MediaType extends ExtensibleObject
     private JSONSchema|SchemaFactory|null $schema = null;
     private Examples|null $examples = null;
     private Encoding|null $encoding = null;
-
-    private function __construct()
-    {
-    }
 
     public function schema(JSONSchema|SchemaFactory|null $schema): self
     {

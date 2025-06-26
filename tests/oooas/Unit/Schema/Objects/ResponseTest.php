@@ -23,7 +23,7 @@ describe('Response', function (): void {
             ->examples(
                 ExampleEntry::create(
                     'ExampleName',
-                    Example::create('ExampleName')
+                    Example::create()
                         ->value('Example value'),
                 ),
             )->content(

@@ -15,10 +15,6 @@ final class Encoding extends ExtensibleObject
     private bool|null $explode = null;
     private bool|null $allowReserved = null;
 
-    private function __construct()
-    {
-    }
-
     public function contentType(string|null $contentType): self
     {
         $clone = clone $this;

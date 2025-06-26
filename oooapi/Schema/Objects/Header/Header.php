@@ -4,7 +4,6 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Deprecated;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Required;
@@ -24,10 +23,6 @@ final class Header extends ExtensibleObject
     private JSONSchema|null $schema = null;
     private Examples|null $examples = null;
     private Content|null $content = null;
-
-    private function __construct()
-    {
-    }
 
     public function description(Description|null $description): self
     {

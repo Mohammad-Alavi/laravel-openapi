@@ -11,24 +11,14 @@ use Webmozart\Assert\Assert;
 
 final class Example extends ExtensibleObject
 {
-    protected Summary|null $summary = null;
-    protected Description|null $description = null;
-    protected mixed $value = null;
-    protected ExternalValue|null $externalValue = null;
-    private readonly string $key;
+    private Summary|null $summary = null;
+    private Description|null $description = null;
+    private mixed $value = null;
+    private ExternalValue|null $externalValue = null;
 
-    final public static function create(string|null $key = null): self
+    public static function create(): self
     {
-        $static = new self();
-
-        $static->key = $key ?? '';
-
-        return $static;
-    }
-
-    final public function key(): string
-    {
-        return $this->key;
+        return new self();
     }
 
     public function summary(Summary $summary): self

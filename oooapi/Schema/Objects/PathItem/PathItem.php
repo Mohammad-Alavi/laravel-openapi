@@ -21,10 +21,6 @@ final class PathItem extends ExtensibleObject
     /** @var Parameter[]|null */
     private array|null $parameters = null;
 
-    private function __construct()
-    {
-    }
-
     public static function create(): self
     {
         return new self();

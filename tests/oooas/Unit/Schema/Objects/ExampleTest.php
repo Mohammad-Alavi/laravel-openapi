@@ -9,7 +9,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Fields\Summary;
 
 describe(class_basename(Example::class), function (): void {
     it('can be created', function (): void {
-        $example = Example::create('example_test')
+        $example = Example::create()
             ->summary(Summary::create('Summary ipsum'))
             ->description(Description::create('Description ipsum'))
             ->value('Value');
@@ -24,7 +24,7 @@ describe(class_basename(Example::class), function (): void {
     });
 
     it('can be created with external value', function (): void {
-        $example = Example::create('example_test')
+        $example = Example::create()
             ->externalValue(
                 ExternalValue::create('https://example.com/example.json'),
             );
@@ -37,7 +37,7 @@ describe(class_basename(Example::class), function (): void {
     });
 
     it('prevents setting mutually exclusive values', function (): void {
-        expect(fn () => Example::create('example_test')
+        expect(fn () => Example::create()
             ->value('Value')
             ->externalValue(
                 ExternalValue::create('https://example.com/example.json'),

@@ -3,33 +3,32 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Style;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\Examples;
 
 abstract readonly class SchemaSerialized implements SerializationRule
 {
+    private Examples|null $examples;
+
     final protected function __construct(
         private JSONSchema $jsonSchema,
         private Style|null $style,
-        private Example|null $example,
-        /** @var Example[] */
-        private array $examples,
+        ExampleEntry ...$exampleEntry,
     ) {
+        $this->examples = when(
+            blank($exampleEntry),
+            null,
+            Examples::create(...$exampleEntry),
+        );
     }
 
     final public function jsonSerialize(): array
     {
-        $examples = [];
-        foreach ($this->examples as $example) {
-            $examples[$example->key()] = $example;
-        }
-        $examples = [] !== $examples ? $examples : null;
-
         return [
             'schema' => $this->jsonSchema,
             ...($this->style?->toArray() ?? []),
-            'example' => $this->example,
-            'examples' => $examples,
+            'examples' => $this->examples,
         ];
     }
 }
