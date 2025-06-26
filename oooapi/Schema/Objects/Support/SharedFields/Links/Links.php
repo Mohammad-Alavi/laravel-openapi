@@ -14,8 +14,8 @@ final readonly class Links implements StringMap
     /** @use StringKeyedMap<OASObject> */
     use StringKeyedMap;
 
-    public static function create(LinkEntry ...$entry): self
+    public static function create(LinkEntry ...$linkEntry): self
     {
-        return self::put(...$entry);
+        return self::put(...$linkEntry);
     }
 }
