@@ -5,6 +5,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\EncodingEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
 
 describe(class_basename(MediaType::class), function (): void {
     it('can be created with no parameters', function (): void {
@@ -16,12 +17,16 @@ describe(class_basename(MediaType::class), function (): void {
     it('can be created with all parameters', function (): void {
         $mediaType = MediaType::create()
             ->schema(Schema::object())
-            ->examples(Example::create('ExampleName'), Example::create('ExampleName2'))
-            // TODO: Allow creating a Example without a key.
-            // Sometimes examples are not named.
-            // For example, when there is only one example.
-            ->example(Example::create('ExampleName'))
-            ->encoding(
+            ->examples(
+                ExampleEntry::create(
+                    'ExampleName',
+                    Example::create(),
+                ),
+                ExampleEntry::create(
+                    'ExampleName2',
+                    Example::create(),
+                ),
+            )->encoding(
                 EncodingEntry::create(
                     'EncodingName',
                     Encoding::create(),
@@ -32,7 +37,6 @@ describe(class_basename(MediaType::class), function (): void {
             'schema' => [
                 'type' => 'object',
             ],
-            'example' => [],
             'examples' => [
                 'ExampleName' => [],
                 'ExampleName2' => [],

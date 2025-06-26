@@ -8,14 +8,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\Encoding;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\EncodingEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\Examples;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class MediaType extends ExtensibleObject
 {
     private JSONSchema|SchemaFactory|null $schema = null;
-    private Example|null $example = null;
-    /** @var Example[]|null */
-    private array|null $examples = null;
+    private Examples|null $examples = null;
     private Encoding|null $encoding = null;
 
     private function __construct()
@@ -31,22 +31,18 @@ final class MediaType extends ExtensibleObject
         return $clone;
     }
 
-    public function example(Example|null $example): self
+    public function examples(ExampleEntry ...$exampleEntry): self
     {
         $clone = clone $this;
 
-        $clone->example = $example;
+        $clone->examples = Examples::create(...$exampleEntry);
 
         return $clone;
     }
 
-    public function examples(Example ...$example): self
+    public static function create(): self
     {
-        $clone = clone $this;
-
-        $clone->examples = [] !== $example ? $example : null;
-
-        return $clone;
+        return new self();
     }
 
     public function encoding(EncodingEntry ...$encodingEntry): self
@@ -58,22 +54,11 @@ final class MediaType extends ExtensibleObject
         return $clone;
     }
 
-    public static function create(): self
-    {
-        return new self();
-    }
-
     protected function toArray(): array
     {
-        $examples = [];
-        foreach ($this->examples ?? [] as $example) {
-            $examples[$example->key()] = $example;
-        }
-
         return Arr::filter([
             'schema' => $this->schema,
-            'example' => $this->example,
-            'examples' => [] !== $examples ? $examples : null,
+            'examples' => $this->examples,
             'encoding' => $this->encoding,
         ]);
     }
