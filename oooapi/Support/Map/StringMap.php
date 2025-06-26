@@ -12,7 +12,7 @@ interface StringMap extends \JsonSerializable
      */
     public function __construct(array $entries);
 
-    public static function put(StringMapEntry ...$mapEntry): static;
+    public static function put(StringMapEntry ...$stringMapEntry): static;
 
     /**
      * @return string[]
