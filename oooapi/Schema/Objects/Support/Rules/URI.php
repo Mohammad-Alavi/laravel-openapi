@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Rules;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Rules;
 
 final readonly class URI
 {

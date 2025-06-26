@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Rules\URI;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Rules\URL;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Rules\URI;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\Rules\URL;
 
 final readonly class Validator
 {
