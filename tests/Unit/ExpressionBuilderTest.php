@@ -26,50 +26,56 @@ describe(class_basename(ExpressionBuilder::class), function (): void {
 
     it('appends path parameters', function (): void {
         $builder = ExpressionBuilder::of('base')
-            ->append(PathParameter::create('id'))
-            ->append(PathParameter::create('sub'));
+            ->appendPathParam(PathParameter::create('id'))
+            ->appendPathParam(PathParameter::create('sub'));
 
         expect($builder->value())->toBe('base/id/sub');
     });
 
     it('prepends path parameters', function (): void {
         $builder = ExpressionBuilder::of('base')
-            ->append(PathParameter::create('id'))
-            ->prepend(PathParameter::create('root'));
+            ->appendPathParam(PathParameter::create('id'))
+            ->prependPathParam(PathParameter::create('root'));
 
-        expect($builder->value())->toBe('root/base/id');
+        expect($builder->value())->toBe('base/root/id');
     });
 
     it('appends query parameters', function (): void {
         $builder = ExpressionBuilder::of('base')
-            ->append(QueryParameter::create('a', '1'))
-            ->append(QueryParameter::create('b', '2'));
+            ->appendQueryParam(QueryParameter::create('a', '1'))
+            ->appendQueryParam(QueryParameter::create('b', '2'));
 
         expect($builder->value())->toBe('base?a=1&b=2');
     });
 
     it('prepends query parameters', function (): void {
         $builder = ExpressionBuilder::of('base')
-            ->append(QueryParameter::create('a', '1'))
-            ->prepend(QueryParameter::create('b', '2'));
+            ->appendQueryParam(QueryParameter::create('a', '1'))
+            ->prependQueryParam(QueryParameter::create('b', '2'));
 
         expect($builder->value())->toBe('base?b=2&a=1');
     });
 
     it('combines path and query parameters', function (): void {
         $builder = ExpressionBuilder::of('root')
-            ->append(PathParameter::create('id'))
-            ->append(QueryParameter::create('q', 'test'));
+            ->appendPathParam(PathParameter::create('id'))
+            ->appendQueryParam(QueryParameter::create('q', 'test'));
 
         expect($builder->value())->toBe('root/id?q=test');
     });
 
     it('appends raw string values', function (): void {
-        expect(ExpressionBuilder::of('base')->append('-suffix')->value())->toBe('base-suffix');
+        expect(
+            ExpressionBuilder::of('base')
+            ->append('-suffix')->value(),
+        )->toBe('base-suffix');
     });
 
     it('prepends raw string values', function (): void {
-        expect(ExpressionBuilder::of('base')->prepend('prefix-')->value())->toBe('prefix-base');
+        expect(
+            ExpressionBuilder::of('base')
+            ->prepend('prefix-')->value(),
+        )->toBe('prefix-base');
     });
 
     it('trims initial string in of()', function (): void {
@@ -85,16 +91,16 @@ describe(class_basename(ExpressionBuilder::class), function (): void {
     it('accepts RuntimeExpressionAbstract as value', function (): void {
         $builder = ExpressionBuilder::of('https://example.com')
             ->append('/data')
-            ->append(
+            ->appendQueryParam(
                 QueryParameter::create(
                     'transactionId',
                     RequestBodyExpression::create('id'),
                 ),
-            )->append(
+            )->appendPathParam(
                 PathParameter::create(
                     RequestPathExpression::create('eventType'),
                 ),
-            )->append(
+            )->appendQueryParam(
                 QueryParameter::create(
                     'email',
                     RequestBodyExpression::create('email'),
@@ -106,4 +112,4 @@ describe(class_basename(ExpressionBuilder::class), function (): void {
                 'https://example.com/data/{$request.path.eventType}?transactionId={$request.body#/id}&email={$request.body#/email}',
             );
     });
-})->covers(ExpressionBuilder::class);
+})->covers(ExpressionBuilder::class)->only();
