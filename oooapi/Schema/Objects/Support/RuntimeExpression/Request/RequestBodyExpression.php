@@ -41,7 +41,7 @@ final readonly class RequestBodyExpression extends RequestExpression
             return new self(BodyReference::create($jsonPointer));
         }
 
-        if (!str_starts_with($value, '/')) {
+        if (!blank($value) && !str_starts_with($value, '/')) {
             $value = '/' . $value;
         }
 
