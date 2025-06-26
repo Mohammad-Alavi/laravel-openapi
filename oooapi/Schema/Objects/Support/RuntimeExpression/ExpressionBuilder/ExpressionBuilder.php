@@ -19,28 +19,44 @@ final class ExpressionBuilder
         return new self(trim((string) $value));
     }
 
-    public function append(string|PathParameter|QueryParameter $value): self
+    public function appendPathParam(PathParameter $value): self
     {
-        if ($value instanceof PathParameter) {
-            $this->pathParameters[] = $value;
-        } elseif ($value instanceof QueryParameter) {
-            $this->queryParameters[] = $value;
-        } else {
-            $this->value .= $value;
-        }
+        $this->pathParameters[] = $value;
 
         return $this;
     }
 
-    public function prepend(string|PathParameter|QueryParameter $value): self
+    public function appendQueryParam(QueryParameter $value): self
     {
-        if ($value instanceof PathParameter) {
-            array_unshift($this->pathParameters, $value);
-        } elseif ($value instanceof QueryParameter) {
-            array_unshift($this->queryParameters, $value);
-        } else {
-            $this->value = $value . $this->value;
-        }
+        $this->queryParameters[] = $value;
+
+        return $this;
+    }
+
+    public function append(string $value): self
+    {
+        $this->value .= $value;
+
+        return $this;
+    }
+
+    public function prependPathParam(PathParameter $value): self
+    {
+        array_unshift($this->pathParameters, $value);
+
+        return $this;
+    }
+
+    public function prependQueryParam(QueryParameter $value): self
+    {
+        array_unshift($this->queryParameters, $value);
+
+        return $this;
+    }
+
+    public function prepend(string $value): self
+    {
+        $this->value = $value . $this->value;
 
         return $this;
     }
