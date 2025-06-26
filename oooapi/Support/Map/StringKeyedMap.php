@@ -39,9 +39,9 @@ trait StringKeyedMap
         return $this->entries;
     }
 
-    final public static function put(StringMapEntry ...$mapEntry): static
+    final public static function put(StringMapEntry ...$stringMapEntry): static
     {
-        return new static($mapEntry);
+        return new static($stringMapEntry);
     }
 
     /** @return array<string, TValue>|null */
