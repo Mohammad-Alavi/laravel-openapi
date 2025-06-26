@@ -2,12 +2,16 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\SimpleCreator;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\SimpleCreatorTrait;
-
-abstract readonly class ScopeFactory implements SimpleCreator
+abstract readonly class ScopeFactory
 {
-    use SimpleCreatorTrait;
+    final private function __construct()
+    {
+    }
+
+    final public static function create(): static
+    {
+        return new static();
+    }
 
     abstract public function build(): Scope;
 }

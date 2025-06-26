@@ -2,24 +2,29 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
 
 describe(class_basename(Header::class), function (): void {
     it('can be created with all parameters', function (): void {
-        $header = Header::create('HeaderName')
+        $header = Header::create()
             ->description(Description::create('Lorem ipsum'))
             ->required()
             ->deprecated()
             ->schema(Schema::object())
             ->style('simple')
             ->explode()
-            ->example('Example value')
-            ->examples(Example::create('ExampleName'))
+            ->examples(
+                ExampleEntry::create(
+                    'ExampleName',
+                    Example::create(),
+                ),
+            )
             ->content(
                 ContentEntry::json(
                     MediaType::create(),
@@ -37,7 +42,6 @@ describe(class_basename(Header::class), function (): void {
             'schema' => [
                 'type' => 'object',
             ],
-            'example' => 'Example value',
             'examples' => [
                 'ExampleName' => [],
             ],

@@ -3,13 +3,14 @@
 namespace Tests\oooas\Unit\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\EncodingEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers\HeaderEntry;
 
 describe(class_basename(Encoding::class), function (): void {
@@ -21,10 +22,12 @@ describe(class_basename(Encoding::class), function (): void {
                 ->required()
                 ->deprecated()
                 ->schema(Schema::string())
-                ->example('Example String')
                 ->examples(
-                    Example::create('ExampleName')
-                        ->value('Example value'),
+                    ExampleEntry::create(
+                        'ExampleName',
+                        Example::create()
+                            ->value('Example value'),
+                    ),
                 )->content(
                     ContentEntry::json(
                         MediaType::create(),
@@ -34,7 +37,7 @@ describe(class_basename(Encoding::class), function (): void {
 
         $encoding = EncodingEntry::create(
             'EncodingName',
-            Encoding::create('EncodingName')
+            Encoding::create()
                 ->contentType('application/json')
                 ->headers($header)
                 ->style('simple')
@@ -57,7 +60,6 @@ describe(class_basename(Encoding::class), function (): void {
                             'schema' => [
                                 'type' => 'string',
                             ],
-                            'example' => 'Example String',
                             'examples' => [
                                 'ExampleName' => [
                                     'value' => 'Example value',

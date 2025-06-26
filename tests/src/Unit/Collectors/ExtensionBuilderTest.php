@@ -4,7 +4,7 @@ namespace Tests\Unit\Collectors;
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Extension;
 use MohammadAlavi\LaravelOpenApi\Builders\ExtensionBuilder;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
 use Tests\src\Support\Doubles\Stubs\FakeExtension;
 
 describe(class_basename(ExtensionBuilder::class), function (): void {

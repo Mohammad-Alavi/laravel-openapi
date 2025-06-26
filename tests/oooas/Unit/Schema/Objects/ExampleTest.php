@@ -2,32 +2,45 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
-use PHPUnit\Framework\Attributes\CoversClass;
-use Tests\UnitTestCase;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Fields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Fields\ExternalValue;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Fields\Summary;
 
-#[CoversClass(Example::class)]
-class ExampleTest extends UnitTestCase
-{
-    public function testCreateWithAllParametersWorks(): void
-    {
+describe(class_basename(Example::class), function (): void {
+    it('can be created', function (): void {
         $example = Example::create('example_test')
-            ->summary('Summary ipsum')
-            ->description('Description ipsum')
+            ->summary(Summary::create('Summary ipsum'))
+            ->description(Description::create('Description ipsum'))
+            ->value('Value');
+
+        $response = $example->asArray();
+
+        expect($response)->toBe([
+            'summary' => 'Summary ipsum',
+            'description' => 'Description ipsum',
+            'value' => 'Value',
+        ]);
+    });
+
+    it('can be created with external value', function (): void {
+        $example = Example::create('example_test')
+            ->externalValue(
+                ExternalValue::create('https://example.com/example.json'),
+            );
+
+        $response = $example->asArray();
+
+        expect($response)->toBe([
+            'externalValue' => 'https://example.com/example.json',
+        ]);
+    });
+
+    it('prevents setting mutually exclusive values', function (): void {
+        expect(fn () => Example::create('example_test')
             ->value('Value')
-            ->externalValue('https://example.com/example.json');
-
-        $mediaType = MediaType::create()
-            ->example($example);
-
-        $this->assertSame([
-            'example' => [
-                'summary' => 'Summary ipsum',
-                'description' => 'Description ipsum',
-                'value' => 'Value',
-                'externalValue' => 'https://example.com/example.json',
-            ],
-        ], $mediaType->asArray());
-    }
-}
+            ->externalValue(
+                ExternalValue::create('https://example.com/example.json'),
+            ))->toThrow(\InvalidArgumentException::class);
+    });
+})->covers(Example::class);

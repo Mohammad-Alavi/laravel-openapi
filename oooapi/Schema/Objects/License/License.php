@@ -43,7 +43,7 @@ final class License extends ExtensibleObject
     {
         Assert::null(
             $this->url,
-            'Identifier and URL fields are mutually exclusive. Please unset the URL field before setting the identifier.',
+            'identifier and url fields are mutually exclusive.',
         );
 
         $clone = clone $this;
@@ -57,7 +57,7 @@ final class License extends ExtensibleObject
     {
         Assert::null(
             $this->identifier,
-            'URL and Identifier fields are mutually exclusive. Please unset the identifier field before setting the URL.',
+            'url and identifier fields are mutually exclusive.',
         );
 
         $clone = clone $this;

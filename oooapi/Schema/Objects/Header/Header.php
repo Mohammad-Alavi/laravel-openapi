@@ -4,12 +4,14 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Deprecated;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Required;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\Content;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\Examples;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Header extends ExtensibleObject
@@ -20,9 +22,7 @@ final class Header extends ExtensibleObject
     private string|null $style = null;
     private bool|null $explode = null;
     private JSONSchema|null $schema = null;
-    private mixed $example = null;
-    /** @var Example[]|null */
-    private array|null $examples = null;
+    private Examples|null $examples = null;
     private Content|null $content = null;
 
     private function __construct()
@@ -83,22 +83,18 @@ final class Header extends ExtensibleObject
         return $clone;
     }
 
-    public function example(mixed $example): self
+    public function examples(ExampleEntry ...$exampleEntry): self
     {
         $clone = clone $this;
 
-        $clone->example = $example;
+        $clone->examples = Examples::create(...$exampleEntry);
 
         return $clone;
     }
 
-    public function examples(Example ...$example): self
+    public static function create(): self
     {
-        $clone = clone $this;
-
-        $clone->examples = [] !== $example ? $example : null;
-
-        return $clone;
+        return new self();
     }
 
     public function content(ContentEntry ...$contentEntry): self
@@ -110,18 +106,8 @@ final class Header extends ExtensibleObject
         return $clone;
     }
 
-    public static function create(): self
-    {
-        return new self();
-    }
-
     protected function toArray(): array
     {
-        $examples = [];
-        foreach ($this->examples ?? [] as $example) {
-            $examples[$example->key()] = $example;
-        }
-
         return Arr::filter([
             'description' => $this->description,
             'required' => $this->required,
@@ -129,8 +115,7 @@ final class Header extends ExtensibleObject
             'style' => $this->style,
             'explode' => $this->explode,
             'schema' => $this->schema,
-            'example' => $this->example,
-            'examples' => [] !== $examples ? $examples : null,
+            'examples' => $this->examples,
             'content' => $this->content,
         ]);
     }
