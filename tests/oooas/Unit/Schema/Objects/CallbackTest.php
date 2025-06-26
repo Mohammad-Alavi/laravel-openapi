@@ -12,20 +12,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\Request\RequestQueryExpression;
 
 describe(class_basename(Callback::class), function (): void {
-    it('can be created with no parameters', function (): void {
-        $callback = Callback::create();
-
-        expect($callback->asArray())->toBeEmpty();
-    });
-
     it(
-        'can be created with all parameters',
+        'can be created',
         function (HttpMethod $method): void {
             $callback = Callback::create(
-                'MyEvent',
-                '{$request.query.callbackUrl}',
+                RequestQueryExpression::create('callbackUrl'),
                 PathItem::create()
                     ->operations(
                         AvailableOperation::create(
@@ -33,24 +27,37 @@ describe(class_basename(Callback::class), function (): void {
                             Operation::create()
                                 ->requestBody(
                                     RequestBody::create()
-                                        ->description(Description::create('something happened')),
+                                        ->description(
+                                            Description::create('something happened'),
+                                        ),
                                 )->responses(
                                     Responses::create(
                                         ResponseEntry::create(
                                             HTTPStatusCode::unauthorized(),
-                                            Response::create(ResponseDescription::create('Unauthorized')),
+                                            Response::create(
+                                                ResponseDescription::create('Unauthorized'),
+                                            ),
                                         ),
                                     ),
                                 ),
                         ),
                     ),
+                'MyEvent',
             );
 
             expect($callback->asArray())->toBe([
-                'operationRef' => 'testRef',
-                'operationId' => 'testId',
-                'description' => 'Some descriptions',
-                'server' => $callback->asArray(),
+                '$request.query.callbackUrl' => [
+                    $method->value => [
+                        'requestBody' => [
+                            'description' => 'something happened',
+                        ],
+                        'responses' => [
+                            401 => [
+                                'description' => 'Unauthorized',
+                            ],
+                        ],
+                    ],
+                ],
             ]);
         },
     )->with([
@@ -63,4 +70,4 @@ describe(class_basename(Callback::class), function (): void {
         'patch action' => [HttpMethod::PATCH],
         'trace action' => [HttpMethod::TRACE],
     ]);
-})->covers(Callback::class)->skip();
+})->covers(Callback::class);

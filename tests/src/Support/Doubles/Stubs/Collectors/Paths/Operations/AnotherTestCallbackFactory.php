@@ -10,6 +10,6 @@ class AnotherTestCallbackFactory extends CallbackFactory
 {
     public function component(): Callback
     {
-        return Callback::create('ReusableCallback', '/test', PathItem::create());
+        return Callback::create('/test', PathItem::create(), 'ReusableCallback');
     }
 }

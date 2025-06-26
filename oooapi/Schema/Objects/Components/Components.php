@@ -2,13 +2,14 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Callbacks\CallbackEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Callbacks\Callbacks;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\Examples;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers\HeaderEntry;
@@ -21,26 +22,18 @@ final class Components extends ExtensibleObject
 {
     /** @var SchemaFactory[]|null */
     private array|null $schemas = null;
-
     /** @var ResponseFactory[]|null */
     private array|null $responses = null;
-
     /** @var ParameterFactory[]|null */
     private array|null $parameters = null;
     private Examples|null $examples = null;
-
     /** @var RequestBodyFactory[]|null */
     private array|null $requestBodies = null;
-
     private Headers|null $headers = null;
-
     /** @var SecuritySchemeFactory[]|null */
     private array|null $securitySchemes = null;
-
     private Links|null $links = null;
-
-    /** @var CallbackFactory[]|null */
-    private array|null $callbackFactories = null;
+    private Callbacks|null $callbacks = null;
 
     public function schemas(SchemaFactory ...$schema): self
     {
@@ -119,11 +112,11 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
-    public function callbacks(CallbackFactory ...$reusableCallbackFactory): self
+    public function callbacks(CallbackEntry ...$callbackEntry): self
     {
         $clone = clone $this;
 
-        $clone->callbackFactories = [] !== $reusableCallbackFactory ? $reusableCallbackFactory : null;
+        $clone->callbacks = Callbacks::create(...$callbackEntry);
 
         return $clone;
     }
@@ -155,12 +148,6 @@ final class Components extends ExtensibleObject
             $securitySchemes[$securityScheme::name()] = $securityScheme->component();
         }
 
-        $callbacks = [];
-        foreach ($this->callbackFactories ?? [] as $factory) {
-            $callback = $factory->component();
-            $callbacks[$factory::name()] = $callback;
-        }
-
         return Arr::filter([
             'schemas' => [] !== $schemas ? $schemas : null,
             'responses' => [] !== $responses ? $responses : null,
@@ -170,7 +157,7 @@ final class Components extends ExtensibleObject
             'headers' => $this->headers,
             'securitySchemes' => [] !== $securitySchemes ? $securitySchemes : null,
             'links' => $this->links,
-            'callbacks' => [] !== $callbacks ? $callbacks : null,
+            'callbacks' => $this->callbacks,
             // TODO: add extensions
         ]);
     }

@@ -9,7 +9,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields\Ref;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use Webmozart\Assert\Assert;
 
-abstract class ReusableComponent implements \JsonSerializable
+abstract class ReusableComponent implements \JsonSerializable, OASObject
 {
     final public function __construct()
     {

@@ -31,13 +31,18 @@ final readonly class RequestBodyExpression extends RequestExpression
             }
 
             // Must start with the pointer prefix
-            if (!str_starts_with($remaining, BodyReference::POINTER_PREFIX)) {
+            if (!str_starts_with($remaining, BodyReference::POINTER_PREFIX)
+            ) {
                 throw new \InvalidArgumentException(sprintf('Body reference JSON pointer must start with "%s", got "%s"', BodyReference::POINTER_PREFIX, $remaining));
             }
 
             $jsonPointer = substr($remaining, strlen(BodyReference::POINTER_PREFIX));
 
             return new self(BodyReference::create($jsonPointer));
+        }
+
+        if (!str_starts_with($value, '/')) {
+            $value = '/' . $value;
         }
 
         // Otherwise, assume the value is just the JSON pointer (without the # prefix)

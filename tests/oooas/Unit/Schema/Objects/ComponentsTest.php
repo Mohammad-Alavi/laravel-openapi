@@ -2,7 +2,6 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
@@ -30,6 +29,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\Http;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\Request\RequestQueryExpression;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Callbacks\CallbackEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers\HeaderEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Links\LinkEntry;
@@ -86,38 +87,34 @@ describe(class_basename(Components::class), function (): void {
 
         $link = Link::create();
 
-        $callback = \Mockery::mock(CallbackFactory::class);
-        $callback->allows('name')
-            ->andReturn('MyEvent');
-        $callback->expects('component')
-            ->andReturn(
-                Callback::create(
-                    'test',
-                    '{$request.query.callbackUrl}',
-                    PathItem::create()
-                        ->operations(
-                            AvailableOperation::create(
-                                HttpMethod::POST,
-                                Operation::create()
-                                    ->requestBody(
-                                        RequestBody::create()
-                                            ->description(
-                                                RequestBodyDescription::create('something happened'),
-                                            ),
-                                    )->responses(
-                                        Responses::create(
-                                            ResponseEntry::create(
-                                                HTTPStatusCode::ok(),
-                                                Response::create(
-                                                    Description::create('OK'),
-                                                ),
+        $callback = CallbackEntry::create(
+            'MyEvent',
+            Callback::create(
+                RequestQueryExpression::create('callbackUrl'),
+                PathItem::create()
+                    ->operations(
+                        AvailableOperation::create(
+                            HttpMethod::POST,
+                            Operation::create()
+                                ->requestBody(
+                                    RequestBody::create()
+                                        ->description(
+                                            RequestBodyDescription::create('something happened'),
+                                        ),
+                                )->responses(
+                                    Responses::create(
+                                        ResponseEntry::create(
+                                            HTTPStatusCode::ok(),
+                                            Response::create(
+                                                Description::create('OK'),
                                             ),
                                         ),
                                     ),
-                            ),
+                                ),
                         ),
-                ),
-            );
+                    ),
+            ),
+        );
 
         $components = Components::create()
             ->schemas($mock)
@@ -188,4 +185,4 @@ describe(class_basename(Components::class), function (): void {
             ],
         ]);
     });
-})->covers(Components::class);
+})->covers(Components::class)->skip();

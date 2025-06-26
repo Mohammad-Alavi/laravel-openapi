@@ -32,7 +32,7 @@ abstract readonly class RequestExpression extends RuntimeExpressionAbstract
     /**
      * Get the source part of the expression.
      */
-    protected function getSource(): string
+    public function getSource(): string
     {
         return substr($this->value(), strlen(self::PREFIX));
     }

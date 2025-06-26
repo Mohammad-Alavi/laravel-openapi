@@ -13,6 +13,6 @@ class MultiCollectionCallback extends CallbackFactory
 {
     public function component(): Callback
     {
-        return Callback::create('test', '/multi-collection-callback', PathItem::create());
+        return Callback::create('/multi-collection-callback', PathItem::create(), 'test');
     }
 }
