@@ -1,0 +1,30 @@
+<?php
+
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\URLExpression;
+
+describe('URLExpression', function (): void {
+    it('can be created with default value', function (): void {
+        $urlExpression = URLExpression::create();
+
+        expect($urlExpression->value())->toBe('$url');
+    });
+
+    it('can be created with explicit value', function (): void {
+        $urlExpression = URLExpression::create('$url');
+
+        expect($urlExpression->value())->toBe('$url');
+    });
+
+    it('throws an exception for an invalid value', function (): void {
+        expect(fn (): URLExpression => URLExpression::create('invalid'))->toThrow(
+            InvalidArgumentException::class,
+            'URL expression must be "$url", got "invalid"',
+        );
+    });
+
+    it('can be serialized to JSON', function (): void {
+        $urlExpression = URLExpression::create();
+
+        expect(json_encode($urlExpression))->toBe('"$url"');
+    });
+})->covers(URLExpression::class);
