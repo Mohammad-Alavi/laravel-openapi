@@ -4,7 +4,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use Tests\src\Support\Doubles\Stubs\Objects\ASecuritySchemeFactory;
 use Tests\src\Support\Doubles\Stubs\Objects\BSecuritySchemeFactory;
 
-//describe(class_basename(Operation::class), function (): void {
+// describe(class_basename(Operation::class), function (): void {
 //    it('can set security', function (array $securityReqs, array $expectation): void {
 //        $operation = Operation::create();
 //
@@ -73,4 +73,4 @@ use Tests\src\Support\Doubles\Stubs\Objects\BSecuritySchemeFactory;
 //            ],
 //        ],
 //    ]);
-//})->covers(Operation::class)->skip();
+// })->covers(Operation::class)->skip();
