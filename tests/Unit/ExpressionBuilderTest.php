@@ -87,7 +87,6 @@ describe(class_basename(ExpressionBuilder::class), function (): void {
         expect(ExpressionBuilder::of($expr)->value())->toBe('$url');
     });
 
-    //   'https://example.com?transactionId={$request.body#/id}&email={$request.body#/email}':
     it('accepts RuntimeExpressionAbstract as value', function (): void {
         $builder = ExpressionBuilder::of('https://example.com')
             ->append('/data')
