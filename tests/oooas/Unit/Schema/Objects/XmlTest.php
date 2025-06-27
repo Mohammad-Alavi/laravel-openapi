@@ -28,5 +28,5 @@ describe(class_basename(Xml::class), function (): void {
                 'wrapped' => true,
             ],
         ], $schema->asArray());
-    })->skip();
+    })->todo();
 })->covers(Xml::class);

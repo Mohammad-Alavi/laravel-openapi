@@ -13,7 +13,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
 use Webmozart\Assert\InvalidArgumentException;
 
-describe('Extensions', function (): void {
+describe(class_basename(Extension::class), function (): void {
     $expectations = [
         'x-key' => 'value',
         'x-foo' => 'bar',
@@ -42,20 +42,23 @@ describe('Extensions', function (): void {
         ],
     ]);
 
-    it('can create objects with extension', function (ExtensibleObject $extensibleObject, array $expectations): void {
-        $object = new \stdClass();
-        $extension1 = Extension::create('x-key', 'value');
-        $extension2 = Extension::create('x-foo', 'bar');
-        $extension3 = Extension::create('x-baz', null);
-        $extension4 = Extension::create('x-obj', $object);
-        $sut = $extensibleObject
-            ->addExtension($extension1)
-            ->addExtension($extension2)
-            ->addExtension($extension3)
-            ->addExtension($extension4);
+    it(
+        'can create objects with extension',
+        function (ExtensibleObject $extensibleObject, array $expectations): void {
+            $object = new \stdClass();
+            $extension1 = Extension::create('x-key', 'value');
+            $extension2 = Extension::create('x-foo', 'bar');
+            $extension3 = Extension::create('x-baz', null);
+            $extension4 = Extension::create('x-obj', $object);
+            $sut = $extensibleObject
+                ->addExtension($extension1)
+                ->addExtension($extension2)
+                ->addExtension($extension3)
+                ->addExtension($extension4);
 
-        expect($sut->asArray())->toEqual($expectations);
-    })->with('extensibleObjectSet');
+            expect($sut->asArray())->toEqual($expectations);
+        },
+    )->with('extensibleObjectSet');
 
     it('can unset extensions', function (): void {
         $object = Schema::object()
@@ -100,9 +103,12 @@ describe('Extensions', function (): void {
         expect($object->extensions())->toBe([$extension1, $extension2]);
     })->with('extensibleObjectSet');
 
-    it('throws exception when extension does not exist', function (ExtensibleObject $extensibleObject): void {
-        expect(function () use ($extensibleObject): void {
-            $extensibleObject->getExtension('x-key');
-        })->toThrow(InvalidArgumentException::class, 'Extension not found: x-key');
-    })->with('extensibleObjectSet');
-})->coversNothing()->skip();
+    it(
+        'throws exception when extension does not exist',
+        function (ExtensibleObject $extensibleObject): void {
+            expect(function () use ($extensibleObject): void {
+                $extensibleObject->getExtension('x-key');
+            })->toThrow(InvalidArgumentException::class, 'Extension not found: x-key');
+        },
+    )->with('extensibleObjectSet');
+})->coversNothing()->todo();

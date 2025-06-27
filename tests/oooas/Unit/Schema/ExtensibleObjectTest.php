@@ -5,7 +5,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
 use Tests\oooas\Support\Doubles\Fakes\ExtensibleObjectFake;
 
-describe('ExtensibleObject', function (): void {
+describe(class_basename(ExtensibleObject::class), function (): void {
     it('can manipulate extensions', function (): void {
         $object = ExtensibleObjectFake::create();
         $extension1 = Extension::create('x-test', 'value');
