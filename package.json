@@ -9,6 +9,7 @@
     "node": ">=22.0.0"
   },
   "devDependencies": {
+    "@redocly/cli": "^1.34.3",
     "vitepress": "^1.3.4"
   },
   "dependencies": {
