@@ -13,7 +13,7 @@ describe('Tag', function (): void {
             Name::create('Users'),
             Description::create('All user endpoints'),
             ExternalDocumentation::create(
-                URL::create('https://example.com/docs/users'),
+                URL::create('https://laragen.io/docs/users'),
                 ExtDescription::create('User API documentation'),
             ),
         );
@@ -22,7 +22,7 @@ describe('Tag', function (): void {
             'name' => 'Users',
             'description' => 'All user endpoints',
             'externalDocs' => [
-                'url' => 'https://example.com/docs/users',
+                'url' => 'https://laragen.io/docs/users',
                 'description' => 'User API documentation',
             ],
         ]);

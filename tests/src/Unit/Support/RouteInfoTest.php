@@ -11,11 +11,11 @@ describe(class_basename(RouteInfo::class), function (): void {
         $routeInformation = RouteInfo::create(
             Route::get('/example', static fn (): string => 'example')
                 ->name('example')
-                ->domain('example.com'),
+                ->domain('laragen.io'),
         );
 
         expect($routeInformation)->toBeInstanceOf(RouteInfo::class)
-            ->and($routeInformation->domain())->toBe('example.com')
+            ->and($routeInformation->domain())->toBe('laragen.io')
             ->and($routeInformation->method())->toBe('get')
             ->and($routeInformation->uri())->toBe('/example')
             ->and($routeInformation->name())->toBe('example')

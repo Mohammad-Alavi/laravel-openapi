@@ -44,7 +44,7 @@ describe(class_basename(PathItem::class), function (): void {
                                 ),
                         ),
                     )
-                    ->servers(Server::create(URL::create('https://example.com')))
+                    ->servers(Server::create(URL::create('https://laragen.io')))
                     ->parameters(
                         Parameter::query(
                             Name::create('test_parameter'),
@@ -66,7 +66,7 @@ describe(class_basename(PathItem::class), function (): void {
                     ],
                 ],
                 'servers' => [
-                    ['url' => 'https://example.com'],
+                    ['url' => 'https://laragen.io'],
                 ],
                 'parameters' => [
                     [

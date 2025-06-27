@@ -21,7 +21,7 @@ class ServerBuilderTest extends TestCase
             [ServerWithoutVariables::class],
             [
                 [
-                    'url' => 'https://example.com',
+                    'url' => 'https://laragen.io',
                     'description' => 'sample_description',
                 ],
             ],
@@ -30,7 +30,7 @@ class ServerBuilderTest extends TestCase
             [ServerWithVariables::class],
             [
                 [
-                    'url' => 'https://example.com',
+                    'url' => 'https://laragen.io',
                     'description' => 'sample_description',
                     'variables' => [
                         'variable_name' => [
@@ -45,7 +45,7 @@ class ServerBuilderTest extends TestCase
             [ServerWithEnum::class],
             [
                 [
-                    'url' => 'https://example.com',
+                    'url' => 'https://laragen.io',
                     'description' => 'sample_description',
                     'variables' => [
                         'variable_name' => [
@@ -65,7 +65,7 @@ class ServerBuilderTest extends TestCase
             [ServerWithMultipleVariableFormatting::class],
             [
                 [
-                    'url' => 'https://example.com',
+                    'url' => 'https://laragen.io',
                     'description' => 'sample_description',
                     'variables' => [
                         'ServerVariableA' => [
@@ -89,7 +89,7 @@ class ServerBuilderTest extends TestCase
             [ServerWithVariables::class, ServerWithMultipleVariableFormatting::class],
             [
                 [
-                    'url' => 'https://example.com',
+                    'url' => 'https://laragen.io',
                     'description' => 'sample_description',
                     'variables' => [
                         'variable_name' => [
@@ -99,7 +99,7 @@ class ServerBuilderTest extends TestCase
                     ],
                 ],
                 [
-                    'url' => 'https://example.com',
+                    'url' => 'https://laragen.io',
                     'description' => 'sample_description',
                     'variables' => [
                         'ServerVariableA' => [

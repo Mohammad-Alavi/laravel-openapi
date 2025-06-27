@@ -19,7 +19,7 @@ describe(class_basename(Info::class), function (): void {
             Version::create('v1'),
         )->summary(Summary::create('Some Arrays!'))
             ->description(Description::create('A pretend API'))
-            ->termsOfService(TermsOfService::create('https://example.com'))
+            ->termsOfService(TermsOfService::create('https://laragen.io'))
             ->contact(Contact::create())
             ->license(License::create(Name::create('MIT')));
 
@@ -27,7 +27,7 @@ describe(class_basename(Info::class), function (): void {
             'title' => 'Pretend API',
             'summary' => 'Some Arrays!',
             'description' => 'A pretend API',
-            'termsOfService' => 'https://example.com',
+            'termsOfService' => 'https://laragen.io',
             'contact' => [],
             'license' => [
                 'name' => 'MIT',

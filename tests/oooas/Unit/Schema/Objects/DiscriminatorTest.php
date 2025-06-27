@@ -13,7 +13,7 @@ describe('Discriminator', function (): void {
             PropertyName::create('Discriminator Name'),
             Mapping::create(
                 Entry::create('cat', SchemaName::create('value')),
-                Entry::create('dog', SchemaURL::create('https://example.com/dog')),
+                Entry::create('dog', SchemaURL::create('https://laragen.io/dog')),
             ),
         );
 
@@ -21,7 +21,7 @@ describe('Discriminator', function (): void {
             'propertyName' => 'Discriminator Name',
             'mapping' => [
                 'cat' => 'value',
-                'dog' => 'https://example.com/dog',
+                'dog' => 'https://laragen.io/dog',
             ],
         ]);
     });

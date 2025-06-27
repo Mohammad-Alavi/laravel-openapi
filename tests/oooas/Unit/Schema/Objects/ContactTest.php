@@ -19,8 +19,8 @@ class ContactTest extends UnitTestCase
     {
         $contact = Contact::create()
             ->name(Name::create('Example'))
-            ->url(URL::create('https://example.com'))
-            ->email(Email::create('hello@example.com'));
+            ->url(URL::create('https://laragen.io'))
+            ->email(Email::create('hello@laragen.io'));
 
         $info = Info::create(
             Title::create('API Specification'),
@@ -31,8 +31,8 @@ class ContactTest extends UnitTestCase
             'title' => 'API Specification',
             'contact' => [
                 'name' => 'Example',
-                'url' => 'https://example.com',
-                'email' => 'hello@example.com',
+                'url' => 'https://laragen.io',
+                'email' => 'hello@laragen.io',
             ],
             'version' => 'v1',
         ], $info->asArray());

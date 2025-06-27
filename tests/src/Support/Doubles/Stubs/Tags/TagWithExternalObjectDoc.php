@@ -18,7 +18,7 @@ class TagWithExternalObjectDoc implements TagFactory
             Name::create('PostWithExternalObjectDoc'),
             Description::create('Post Tag'),
             ExternalDocumentation::create(
-                URL::create('https://example.com/external-docs'),
+                URL::create('https://laragen.io/external-docs'),
                 ExtDescription::create('External API documentation'),
             ),
         );

@@ -14,6 +14,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description a
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Name as LicenseName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\URL as LicenseURL;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
@@ -44,6 +47,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Para
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description as TagDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name as TagName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
+use Pest\Expectation;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecurityRequirements\TestBearerSecurityRequirementFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 
@@ -61,14 +65,20 @@ describe('OpenApi', function (): void {
         );
         $contact = Contact::create()
             ->name(Name::create('Example'))
-            ->url(URL::create('https://example.com'))
-            ->email(Email::create('hello@example.com'));
+            ->url(URL::create('https://laragen.io'))
+            ->email(Email::create('hello@laragen.io'));
         $info = Info::create(
             Title::create('API Specification'),
             Version::create('v1'),
         )->description(InfoDescription::create('For using the Example App API'))
-            ->contact($contact);
-        $objectDescriptor = Schema::object()
+            ->contact($contact)
+            ->license(
+                License::create(
+                    LicenseName::create('MIT'),
+                    LicenseURL::create('https://github.com/laragen'),
+                ),
+            );
+        $schema = Schema::object()
             ->properties(
                 Property::create('id', Schema::string()->format(StringFormat::UUID)),
                 Property::create('created_at', Schema::string()->format(StringFormat::DATE_TIME)),
@@ -89,7 +99,17 @@ describe('OpenApi', function (): void {
                     ResponseDescription::create('OK'),
                 )->content(
                     ContentEntry::json(
-                        MediaType::create()->schema($objectDescriptor),
+                        MediaType::create()->schema($schema),
+                    ),
+                ),
+            ),
+            ResponseEntry::create(
+                HTTPStatusCode::unprocessableEntity(),
+                Response::create(
+                    ResponseDescription::create('Unprocessable Entity'),
+                )->content(
+                    ContentEntry::json(
+                        MediaType::create()->schema($schema),
                     ),
                 ),
             ),
@@ -108,7 +128,7 @@ describe('OpenApi', function (): void {
                 RequestBody::create()
                     ->content(
                         ContentEntry::json(
-                            MediaType::create()->schema($objectDescriptor),
+                            MediaType::create()->schema($schema),
                         ),
                     ),
             );
@@ -159,13 +179,13 @@ describe('OpenApi', function (): void {
             ),
         );
         $servers = [
-            Server::create(ServerURL::create('https://api.example.com/v1')),
-            Server::create(ServerURL::create('https://api.example.com/v2')),
+            Server::create(ServerURL::create('https://api.laragen.io/v1')),
+            Server::create(ServerURL::create('https://api.laragen.io/v2')),
         ];
         $components = Components::create()->securitySchemes(TestBearerSecuritySchemeFactory::create());
         $security = Security::create(TestBearerSecurityRequirementFactory::create());
         $externalDocumentation = ExternalDocumentation::create(
-            ExtURL::create('https://example.com/docs'),
+            ExtURL::create('https://laragen.io/docs'),
             ExtDescription::create('Example'),
         );
         $openApi = OpenAPI::v311($info)
@@ -176,18 +196,22 @@ describe('OpenApi', function (): void {
             ->tags($tag)
             ->externalDocs($externalDocumentation);
 
-        file_put_contents('openapi.json', $openApi->toJson());
+        file_put_contents('openapi.json', $openApi->toJson(JSON_PRETTY_PRINT));
 
         $output = [];
         $returnVar = 0;
-
-        \Safe\exec(
-            'npx redocly lint --extends recommended-strict openapi.json 2>&1',
+        $successful = exec(
+            'npx redocly lint --format stylish --extends recommended-strict openapi.json 2>&1',
             $output,
             $returnVar,
         );
 
-        expect($output)->toBeEmpty(implode("\n", $output))
-            ->and($returnVar)->toBe(0);
+        expect($successful)->unless(
+            $successful,
+            function (Expectation $expectation) use ($output, $returnVar): Expectation {
+                return $expectation->toBeEmpty(implode("\n", $output))
+                    ->and($returnVar)->toBe(0);
+            },
+        );
     });
 })->coversNothing();

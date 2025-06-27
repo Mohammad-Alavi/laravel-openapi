@@ -16,7 +16,7 @@ class ServerWithMultipleVariableFormatting implements ServerFactory
 {
     public function build(): Server
     {
-        return Server::create(URL::create('https://example.com'))
+        return Server::create(URL::create('https://laragen.io'))
             ->description(Description::create('sample_description'))
             ->variables(
                 VariableEntry::create(

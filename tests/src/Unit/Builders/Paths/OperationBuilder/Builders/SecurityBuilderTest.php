@@ -66,8 +66,8 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             'description' => 'OAuth2 Password Security',
             'flows' => [
                 'password' => [
-                    'tokenUrl' => 'https://example.com/oauth/authorize',
-                    'refreshUrl' => 'https://example.com/oauth/token',
+                    'tokenUrl' => 'https://laragen.io/oauth/authorize',
+                    'refreshUrl' => 'https://laragen.io/oauth/token',
                     'scopes' => [
                         'order' => 'Full information about orders.',
                         'order:item' => 'Information about items within an order.',

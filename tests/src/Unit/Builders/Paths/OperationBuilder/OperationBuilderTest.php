@@ -157,7 +157,7 @@ describe(class_basename(OperationBuilder::class), function (): void {
                          */
                         'servers' => [
                             [
-                                'url' => 'https://example.com',
+                                'url' => 'https://laragen.io',
                                 'description' => 'sample_description',
                                 'variables' => [
                                     'ServerVariableA' => [
@@ -174,7 +174,7 @@ describe(class_basename(OperationBuilder::class), function (): void {
                         ],
                         'callbacks' => [
                             'TestCallbackFactory' => [
-                                'https://example.com/' => [],
+                                'https://laragen.io/' => [],
                             ],
                         ],
                         'x-key' => 'value',

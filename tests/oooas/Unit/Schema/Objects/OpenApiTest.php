@@ -57,8 +57,8 @@ describe(class_basename(OpenAPI::class), function (): void {
 
         $contact = Contact::create()
             ->name(Name::create('Example'))
-            ->url(URL::create('https://example.com'))
-            ->email(Email::create('hello@example.com'));
+            ->url(URL::create('https://laragen.io'))
+            ->email(Email::create('hello@laragen.io'));
 
         $info = Info::create(
             Title::create('API Specification'),
@@ -177,8 +177,8 @@ describe(class_basename(OpenAPI::class), function (): void {
         );
 
         $servers = [
-            Server::create(ServerURL::create('https://api.example.com/v1')),
-            Server::create(ServerURL::create('https://api.example.com/v2')),
+            Server::create(ServerURL::create('https://api.laragen.io/v1')),
+            Server::create(ServerURL::create('https://api.laragen.io/v2')),
         ];
 
         $security = app(TestComplexMultiSecurityFactory::class)->build();
@@ -189,7 +189,7 @@ describe(class_basename(OpenAPI::class), function (): void {
         );
 
         $externalDocumentation = ExternalDocumentation::create(
-            ExtURL::create('https://example.com'),
+            ExtURL::create('https://laragen.io'),
             ExtDescription::create('Example'),
         );
 
@@ -210,15 +210,15 @@ describe(class_basename(OpenAPI::class), function (): void {
                 'description' => 'For using the Example App API',
                 'contact' => [
                     'name' => 'Example',
-                    'url' => 'https://example.com',
-                    'email' => 'hello@example.com',
+                    'url' => 'https://laragen.io',
+                    'email' => 'hello@laragen.io',
                 ],
                 'version' => 'v1',
             ],
             'jsonSchemaDialect' => JsonSchemaDialect::v31x()->value(),
             'servers' => [
-                ['url' => 'https://api.example.com/v1'],
-                ['url' => 'https://api.example.com/v2'],
+                ['url' => 'https://api.laragen.io/v1'],
+                ['url' => 'https://api.laragen.io/v2'],
             ],
             'paths' => [
                 '/audits' => [
@@ -401,8 +401,8 @@ describe(class_basename(OpenAPI::class), function (): void {
                         'description' => 'OAuth2 Password Security',
                         'flows' => [
                             'password' => [
-                                'tokenUrl' => 'https://example.com/oauth/authorize',
-                                'refreshUrl' => 'https://example.com/oauth/token',
+                                'tokenUrl' => 'https://laragen.io/oauth/authorize',
+                                'refreshUrl' => 'https://laragen.io/oauth/token',
                                 'scopes' => [
                                     'order' => 'Full information about orders.',
                                     'order:item' => 'Information about items within an order.',
@@ -431,7 +431,7 @@ describe(class_basename(OpenAPI::class), function (): void {
                 ['name' => 'Audits', 'description' => 'All the audits'],
             ],
             'externalDocs' => [
-                'url' => 'https://example.com',
+                'url' => 'https://laragen.io',
                 'description' => 'Example',
             ],
         ]);

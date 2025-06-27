@@ -11,6 +11,6 @@ class ImplicitDefaultCallback extends CallbackFactory implements ShouldBeReferen
 {
     public function component(): Callback
     {
-        return Callback::create('https://example.com/implicit-default-callback', PathItem::create());
+        return Callback::create('https://laragen.io/implicit-default-callback', PathItem::create());
     }
 }

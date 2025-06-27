@@ -13,6 +13,6 @@ class ExplicitCollectionCallback extends CallbackFactory implements ShouldBeRefe
 {
     public function component(): Callback
     {
-        return Callback::create('https://example.com/explicit-collection-callback', PathItem::create());
+        return Callback::create('https://laragen.io/explicit-collection-callback', PathItem::create());
     }
 }

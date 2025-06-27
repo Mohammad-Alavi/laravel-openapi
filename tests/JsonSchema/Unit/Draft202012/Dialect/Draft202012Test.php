@@ -15,10 +15,10 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(Draft202012::class), function (): void {
     it('can create id keyword', function (): void {
-        $id = Draft202012::id('https://example.com/schema.json');
+        $id = Draft202012::id('https://laragen.io/schema.json');
 
         expect($id)->toBeInstanceOf(Id::class)
-            ->and($id->value())->toBe('https://example.com/schema.json');
+            ->and($id->value())->toBe('https://laragen.io/schema.json');
     });
 
     it('can create schema keyword', function (): void {

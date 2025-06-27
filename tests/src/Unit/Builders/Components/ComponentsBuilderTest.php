@@ -97,10 +97,10 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                     ],
                     'callbacks' => [
                         'ExplicitCollectionCallback' => [
-                            'https://example.com/explicit-collection-callback' => [],
+                            'https://laragen.io/explicit-collection-callback' => [],
                         ],
                         'MultiCollectionCallback' => [
-                            'https://example.com/multi-collection-callback' => [],
+                            'https://laragen.io/multi-collection-callback' => [],
                         ],
                     ],
                 ],
@@ -140,10 +140,10 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                     ],
                     'callbacks' => [
                         'MultiCollectionCallback' => [
-                            'https://example.com/multi-collection-callback' => [],
+                            'https://laragen.io/multi-collection-callback' => [],
                         ],
                         'ImplicitDefaultCallback' => [
-                            'https://example.com/implicit-default-callback' => [],
+                            'https://laragen.io/implicit-default-callback' => [],
                         ],
                     ],
                 ],

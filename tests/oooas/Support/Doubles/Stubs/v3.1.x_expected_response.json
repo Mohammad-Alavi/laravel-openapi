@@ -6,17 +6,17 @@
     "description": "For using the Example App API",
     "contact": {
       "name": "Example",
-      "url": "https://example.com",
-      "email": "hello@example.com"
+      "url": "https://laragen.io",
+      "email": "hello@laragen.io"
     },
     "version": "v1"
   },
   "servers": [
     {
-      "url": "https://api.example.com/v1"
+      "url": "https://api.laragen.io/v1"
     },
     {
-      "url": "https://api.example.com/v2"
+      "url": "https://api.laragen.io/v2"
     }
   ],
   "paths": {
@@ -237,7 +237,7 @@
         "type": "oauth2",
         "flows": {
           "password": {
-            "tokenUrl": "https://api.example.com/oauth/authorize"
+            "tokenUrl": "https://api.laragen.io/oauth/authorize"
           }
         }
       }
@@ -257,6 +257,6 @@
   ],
   "externalDocs": {
     "description": "Example",
-    "url": "https://example.com"
+    "url": "https://laragen.io"
   }
 }

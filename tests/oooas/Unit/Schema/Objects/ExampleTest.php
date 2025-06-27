@@ -26,13 +26,13 @@ describe(class_basename(Example::class), function (): void {
     it('can be created with external value', function (): void {
         $example = Example::create()
             ->externalValue(
-                ExternalValue::create('https://example.com/example.json'),
+                ExternalValue::create('https://laragen.io/example.json'),
             );
 
         $response = $example->asArray();
 
         expect($response)->toBe([
-            'externalValue' => 'https://example.com/example.json',
+            'externalValue' => 'https://laragen.io/example.json',
         ]);
     });
 
@@ -40,7 +40,7 @@ describe(class_basename(Example::class), function (): void {
         expect(fn () => Example::create()
             ->value('Value')
             ->externalValue(
-                ExternalValue::create('https://example.com/example.json'),
+                ExternalValue::create('https://laragen.io/example.json'),
             ))->toThrow(\InvalidArgumentException::class);
     });
 })->covers(Example::class);

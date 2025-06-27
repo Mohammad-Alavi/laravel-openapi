@@ -29,7 +29,7 @@ beforeEach(function (): void {
                     (new class implements ServerFactory {
                         public function build(): Server
                         {
-                            return Server::create(URL::create('https://example.com'));
+                            return Server::create(URL::create('https://laragen.io'));
                         }
                     })::class,
                 ],
@@ -168,10 +168,10 @@ describe('Generator', function (): void {
                     ],
                     'callbacks' => [
                         'ExplicitCollectionCallback' => [
-                            'https://example.com/explicit-collection-callback' => [],
+                            'https://laragen.io/explicit-collection-callback' => [],
                         ],
                         'MultiCollectionCallback' => [
-                            'https://example.com/multi-collection-callback' => [],
+                            'https://laragen.io/multi-collection-callback' => [],
                         ],
                     ],
                 ],
@@ -218,7 +218,7 @@ describe('Generator', function (): void {
                 ],
                 'servers' => [
                     [
-                        'url' => 'https://example.com',
+                        'url' => 'https://laragen.io',
                     ],
                 ],
                 'components' => [
@@ -254,10 +254,10 @@ describe('Generator', function (): void {
                     ],
                     'callbacks' => [
                         'MultiCollectionCallback' => [
-                            'https://example.com/multi-collection-callback' => [],
+                            'https://laragen.io/multi-collection-callback' => [],
                         ],
                         'ImplicitDefaultCallback' => [
-                            'https://example.com/implicit-default-callback' => [],
+                            'https://laragen.io/implicit-default-callback' => [],
                         ],
                     ],
                 ],

@@ -43,7 +43,7 @@ describe(class_basename(Operation::class), function (): void {
                     ),
                 )->summary(Summary::create('Lorem ipsum'))
                 ->description(OperationDescription::create('Dolar sit amet'))
-                ->externalDocs(ExternalDocumentation::create(ExtURL::create('https://example.com/docs')))
+                ->externalDocs(ExternalDocumentation::create(ExtURL::create('https://laragen.io/docs')))
                 ->operationId(OperationId::create('users.show'))
                 ->parameters(
                     Parameters::create(
@@ -70,7 +70,7 @@ describe(class_basename(Operation::class), function (): void {
                 'summary' => 'Lorem ipsum',
                 'description' => 'Dolar sit amet',
                 'externalDocs' => [
-                    'url' => 'https://example.com/docs',
+                    'url' => 'https://laragen.io/docs',
                 ],
                 'operationId' => 'users.show',
                 'parameters' => [
@@ -101,7 +101,7 @@ describe(class_basename(Operation::class), function (): void {
                 ],
                 'callbacks' => [
                     'TestCallbackFactory' => [
-                        'https://example.com/' => [],
+                        'https://laragen.io/' => [],
                     ],
                 ],
             ]);

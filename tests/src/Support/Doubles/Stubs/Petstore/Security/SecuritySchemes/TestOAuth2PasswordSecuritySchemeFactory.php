@@ -28,8 +28,8 @@ class TestOAuth2PasswordSecuritySchemeFactory extends SecuritySchemeFactory
             OAuth2::create(
                 OAuthFlows::create(
                     password: Password::create(
-                        'https://example.com/oauth/authorize',
-                        'https://example.com/oauth/token',
+                        'https://laragen.io/oauth/authorize',
+                        'https://laragen.io/oauth/token',
                         ScopeCollection::create(
                             OrderScope::create(),
                             OrderItemScope::create(),

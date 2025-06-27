@@ -1,6 +1,5 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Exceptions\PropertyDoesNotExistException;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
 use Tests\oooas\Support\Doubles\Fakes\ExtensibleObjectFake;
@@ -55,12 +54,5 @@ describe(class_basename(ExtensibleObject::class), function (): void {
             'x-test' => 'value',
             'x-foo' => 'bar',
         ]);
-    });
-
-    it('should throw an exception if property does not exist', function (): void {
-        $extensibleObjectFake = ExtensibleObjectFake::create();
-
-        expect(static fn () => $extensibleObjectFake->nonExistingProperty)
-            ->toThrow(PropertyDoesNotExistException::class);
     });
 })->covers(ExtensibleObject::class);

@@ -101,7 +101,7 @@ describe('PetStore', function (): void {
                 'classes' => [ServerWithoutVariables::class],
                 'expectation' => [
                     [
-                        'url' => 'https://example.com',
+                        'url' => 'https://laragen.io',
                         'description' => 'sample_description',
                     ],
                 ],
@@ -139,7 +139,7 @@ describe('PetStore', function (): void {
                 'classes' => [ServerWithVariables::class],
                 'expectation' => [
                     [
-                        'url' => 'https://example.com',
+                        'url' => 'https://laragen.io',
                         'description' => 'sample_description',
                         'variables' => [
                             'variable_name' => [
@@ -201,7 +201,7 @@ describe('PetStore', function (): void {
                 'classes' => [ServerWithMultipleVariableFormatting::class],
                 'expectation' => [
                     [
-                        'url' => 'https://example.com',
+                        'url' => 'https://laragen.io',
                         'description' => 'sample_description',
                         'variables' => [
                             'ServerVariableA' => [
@@ -286,7 +286,7 @@ describe('PetStore', function (): void {
                 'classes' => [ServerWithVariables::class, ServerWithMultipleVariableFormatting::class],
                 'expectation' => [
                     [
-                        'url' => 'https://example.com',
+                        'url' => 'https://laragen.io',
                         'description' => 'sample_description',
                         'variables' => [
                             'variable_name' => [
@@ -296,7 +296,7 @@ describe('PetStore', function (): void {
                         ],
                     ],
                     [
-                        'url' => 'https://example.com',
+                        'url' => 'https://laragen.io',
                         'description' => 'sample_description',
                         'variables' => [
                             'ServerVariableA' => [

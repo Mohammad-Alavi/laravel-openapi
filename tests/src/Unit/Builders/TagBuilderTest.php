@@ -43,7 +43,7 @@ class TagBuilderTest extends TestCase
                     'name' => 'PostWithExternalObjectDoc',
                     'description' => 'Post Tag',
                     'externalDocs' => [
-                        'url' => 'https://example.com/external-docs',
+                        'url' => 'https://laragen.io/external-docs',
                         'description' => 'External API documentation',
                     ],
                 ],
@@ -64,7 +64,7 @@ class TagBuilderTest extends TestCase
                     'name' => 'PostWithExternalObjectDoc',
                     'description' => 'Post Tag',
                     'externalDocs' => [
-                        'url' => 'https://example.com/external-docs',
+                        'url' => 'https://laragen.io/external-docs',
                         'description' => 'External API documentation',
                     ],
                 ],

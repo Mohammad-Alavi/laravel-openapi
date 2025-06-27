@@ -10,6 +10,6 @@ class AnotherTestCallbackFactory extends CallbackFactory
 {
     public function component(): Callback
     {
-        return Callback::create('https://example.com/test', PathItem::create());
+        return Callback::create('https://laragen.io/test', PathItem::create());
     }
 }

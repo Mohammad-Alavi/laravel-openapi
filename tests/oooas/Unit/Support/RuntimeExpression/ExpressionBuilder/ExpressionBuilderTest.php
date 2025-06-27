@@ -89,7 +89,7 @@ describe(class_basename(ExpressionBuilder::class), function (): void {
     });
 
     it('accepts RuntimeExpressionAbstract as value', function (): void {
-        $builder = ExpressionBuilder::of('https://example.com')
+        $builder = ExpressionBuilder::of('https://laragen.io')
             ->append('/data')
             ->appendQueryParam(
                 QueryParameter::create(
@@ -109,7 +109,7 @@ describe(class_basename(ExpressionBuilder::class), function (): void {
 
         expect($builder->value())
             ->toBe(
-                'https://example.com/data/{$request.path.eventType}?transactionId={$request.body#/id}&email={$request.body#/email}',
+                'https://laragen.io/data/{$request.path.eventType}?transactionId={$request.body#/id}&email={$request.body#/email}',
             );
     });
 })->covers(ExpressionBuilder::class);

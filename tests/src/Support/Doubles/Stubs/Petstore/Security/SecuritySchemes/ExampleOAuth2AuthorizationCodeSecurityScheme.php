@@ -22,8 +22,8 @@ class ExampleOAuth2AuthorizationCodeSecurityScheme extends SecuritySchemeFactory
             OAuth2::create(
                 OAuthFlows::create(
                     authorizationCode: AuthorizationCode::create(
-                        'https://example.com/oauth/authorize',
-                        'https://example.com/oauth/token',
+                        'https://laragen.io/oauth/authorize',
+                        'https://laragen.io/oauth/token',
                         null,
                         ScopeCollection::create(
                             OrderScope::create(),

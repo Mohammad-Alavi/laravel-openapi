@@ -14,6 +14,6 @@ class MultiCollectionCallback extends CallbackFactory implements ShouldBeReferen
 {
     public function component(): Callback
     {
-        return Callback::create('https://example.com/multi-collection-callback', PathItem::create());
+        return Callback::create('https://laragen.io/multi-collection-callback', PathItem::create());
     }
 }

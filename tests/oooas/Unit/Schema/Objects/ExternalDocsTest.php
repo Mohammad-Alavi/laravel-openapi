@@ -9,12 +9,12 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fie
 describe(class_basename(ExternalDocumentation::class), function (): void {
     it('can be created with all parameters', function (): void {
         $externalDocumentation = ExternalDocumentation::create(
-            URL::create('https://example.com'),
+            URL::create('https://laragen.io'),
             Description::create('example Repo'),
         );
 
         expect($externalDocumentation->asArray())->toBe([
-            'url' => 'https://example.com',
+            'url' => 'https://laragen.io',
             'description' => 'example Repo',
         ]);
     });
