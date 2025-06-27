@@ -1,11 +1,10 @@
 <?php
 
-// use MohammadAlavi\LaravelOpenApi\Builders\SecurityRequirementBuilder;
-// use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
-// use Tests\src\Support\Doubles\Stubs\Objects\ASecuritySchemeFactory;
-// use Tests\src\Support\Doubles\Stubs\Objects\BSecuritySchemeFactory;
-//
-// describe('Operation', function (): void {
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
+use Tests\src\Support\Doubles\Stubs\Objects\ASecuritySchemeFactory;
+use Tests\src\Support\Doubles\Stubs\Objects\BSecuritySchemeFactory;
+
+//describe(class_basename(Operation::class), function (): void {
 //    it('can set security', function (array $securityReqs, array $expectation): void {
 //        $operation = Operation::create();
 //
@@ -17,16 +16,16 @@
 //            [],
 //            [],
 //        ],
-// //        'no security' => [
-// //            [(new SecurityRequirementBuilder())->build(NoSecurityScheme::class)],
-// //            [
-// //                'security' => [],
-// //            ],
-// //        ],
-// //        'default security' => [
-// //            [(new SecurityRequirementBuilder())->build(DefaultSecurityScheme::class)],
-// //            [],
-// //        ],
+//    //        'no security' => [
+//    //            [(new SecurityRequirementBuilder())->build(NoSecurityScheme::class)],
+//    //            [
+//    //                'security' => [],
+//    //            ],
+//    //        ],
+//    //        'default security' => [
+//    //            [(new SecurityRequirementBuilder())->build(DefaultSecurityScheme::class)],
+//    //            [],
+//    //        ],
 //        'one element array security' => [
 //            [(new SecurityRequirementBuilder())->build(ASecuritySchemeFactory::class)],
 //            [
@@ -74,4 +73,4 @@
 //            ],
 //        ],
 //    ]);
-// })->covers(Operation::class)->skip();
+//})->covers(Operation::class)->skip();

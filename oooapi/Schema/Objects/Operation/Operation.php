@@ -34,7 +34,7 @@ final class Operation extends ExtensibleObject
     private Security|null $security = null;
     /** @var Server[]|null */
     private array|null $servers = null;
-    /** @var (Callback|CallbackFactory)[]|null */
+    /** @var Callback[]|null */
     private array|null $callbacks = null;
 
     public static function create(): self
@@ -156,24 +156,21 @@ final class Operation extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->callbacks = when(blank($callback), null, $callback);
+        foreach ($callback as $item) {
+            if ($item instanceof CallbackFactory) {
+                $clone->callbacks[$item::name()] = $item->component();
+            }
+
+            if ($item instanceof Callback) {
+                $clone->callbacks[$item->name()] = $item;
+            }
+        }
 
         return $clone;
     }
 
     protected function toArray(): array
     {
-        $callbacks = [];
-        foreach ($this->callbacks ?? [] as $callback) {
-            if ($callback instanceof CallbackFactory) {
-                $callbacks[$callback::name()] = $callback->component();
-            }
-
-            if ($callback instanceof Callback) {
-                $callbacks[$callback->name()] = $callback;
-            }
-        }
-
         return Arr::filter([
             'tags' => $this->tags,
             'summary' => $this->summary,
@@ -186,7 +183,7 @@ final class Operation extends ExtensibleObject
             'deprecated' => $this->deprecated,
             'security' => $this->security,
             'servers' => $this->servers,
-            'callbacks' => when(blank($callbacks), null, $callbacks),
+            'callbacks' => $this->callbacks,
         ]);
     }
 }
