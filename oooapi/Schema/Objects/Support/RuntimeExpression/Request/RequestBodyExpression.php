@@ -19,7 +19,7 @@ final readonly class RequestBodyExpression extends RequestExpression
     /**
      * Create a new request body expression.
      */
-    public static function create(string $value = ''): static
+    public static function create(string $value = ''): self
     {
         // If the value is already a full expression, extract the JSON pointer
         if (str_starts_with($value, RequestExpression::PREFIX . BodyReference::PREFIX)) {

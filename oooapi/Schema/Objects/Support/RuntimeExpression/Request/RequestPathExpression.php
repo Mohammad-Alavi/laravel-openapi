@@ -19,7 +19,7 @@ final readonly class RequestPathExpression extends RequestExpression
     /**
      * Create a new request path expression.
      */
-    public static function create(string $value): static
+    public static function create(string $value): self
     {
         // If the value is already a full expression, extract the name
         if (str_starts_with($value, RequestExpression::PREFIX . PathReference::PREFIX)) {

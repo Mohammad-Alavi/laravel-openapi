@@ -2,17 +2,12 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\StringField;
-
 /**
  * Runtime expressions allow defining values based on information that will only be available
  * within the HTTP message in an actual API call. This mechanism is used by Link Objects and Callback Objects.
  */
-abstract readonly class RuntimeExpressionAbstract extends StringField
+abstract readonly class RuntimeExpressionAbstract implements \JsonSerializable, \Stringable
 {
-    /**
-     * Create a new runtime expression.
-     */
     protected function __construct(
         private string $value,
     ) {
@@ -27,19 +22,26 @@ abstract readonly class RuntimeExpressionAbstract extends StringField
         // Base validation will be implemented in child classes
     }
 
+    final public function __toString(): string
+    {
+        return $this->value();
+    }
+
+    public function embeddable(): string
+    {
+        return '{' . $this->__toString() . '}';
+    }
+
     /**
      * Get the expression value.
      */
-    public function value(): string
+    final public function value(): string
     {
         return $this->value;
     }
 
-    /**
-     * Create a new instance of the runtime expression.
-     */
-    public static function create(string $value): static
+    final public function jsonSerialize(): string
     {
-        return new static($value);
+        return (string) $this;
     }
 }

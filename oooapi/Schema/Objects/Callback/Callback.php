@@ -21,6 +21,10 @@ final class Callback extends ExtensibleObject
         PathItem $pathItem,
         string|null $name = null,
     ): self {
+        if ($expression instanceof RuntimeExpressionAbstract) {
+            $expression = $expression->embeddable();
+        }
+
         return new self($expression, $pathItem, $name);
     }
 

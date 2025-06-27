@@ -11,15 +11,6 @@ abstract readonly class ResponseExpression extends RuntimeExpressionAbstract
     public const PREFIX = '$response.';
 
     /**
-     * Create a new Response expression.
-     */
-    protected function __construct(
-        string $value,
-    ) {
-        parent::__construct($value);
-    }
-
-    /**
      * Validate that the expression is valid.
      */
     protected function validateExpression(string $expression): void

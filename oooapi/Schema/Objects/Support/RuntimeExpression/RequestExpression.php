@@ -11,15 +11,6 @@ abstract readonly class RequestExpression extends RuntimeExpressionAbstract
     public const PREFIX = '$request.';
 
     /**
-     * Create a new Request expression.
-     */
-    protected function __construct(
-        string $value,
-    ) {
-        parent::__construct($value);
-    }
-
-    /**
      * Validate that the expression is valid.
      */
     protected function validateExpression(string $expression): void

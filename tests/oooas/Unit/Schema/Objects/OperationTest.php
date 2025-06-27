@@ -100,7 +100,7 @@ describe(class_basename(Operation::class), function (): void {
                     ],
                 ],
                 'callbacks' => [
-                    'CallbackFactory' => [
+                    'TestCallbackFactory' => [
                         'https://example.com/' => [],
                     ],
                 ],

@@ -15,7 +15,7 @@ final readonly class QueryParameter
     public static function create(string $name, string|RuntimeExpressionAbstract $value): self
     {
         if ($value instanceof RuntimeExpressionAbstract) {
-            $value = '{' . $value->value() . '}';
+            $value = $value->embeddable();
         }
 
         return new self($name, trim($value));

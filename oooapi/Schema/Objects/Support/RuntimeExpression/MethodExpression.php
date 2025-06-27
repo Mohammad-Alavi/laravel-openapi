@@ -10,16 +10,10 @@ final readonly class MethodExpression extends RuntimeExpressionAbstract
 {
     private const EXPRESSION = '$method';
 
-    private function __construct(
-        string $value = self::EXPRESSION,
-    ) {
-        parent::__construct($value);
-    }
-
     /**
      * Create a new Method expression.
      */
-    public static function create(string $value = self::EXPRESSION): static
+    public static function create(string $value = self::EXPRESSION): self
     {
         return new self($value);
     }

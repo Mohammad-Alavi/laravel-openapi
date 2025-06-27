@@ -19,7 +19,7 @@ final readonly class RequestHeaderExpression extends RequestExpression
     /**
      * Create a new request header expression.
      */
-    public static function create(string $value): static
+    public static function create(string $value): self
     {
         // If the value is already a full expression, extract the token
         if (str_starts_with($value, RequestExpression::PREFIX . HeaderReference::PREFIX)) {

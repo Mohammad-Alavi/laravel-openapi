@@ -14,7 +14,7 @@ final readonly class PathParameter
     public static function create(string|RuntimeExpressionAbstract $name): self
     {
         if ($name instanceof RuntimeExpressionAbstract) {
-            $name = '{' . $name->value() . '}';
+            $name = $name->embeddable();
         }
 
         return new self(trim($name));

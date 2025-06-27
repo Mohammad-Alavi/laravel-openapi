@@ -45,8 +45,8 @@ describe(class_basename(Callback::class), function (): void {
                 'MyEvent',
             );
 
-            expect($callback->asArray())->toBe([
-                '$request.query.callbackUrl' => [
+            expect($callback)->asArray()->toBe([
+                '{$request.query.callbackUrl}' => [
                     $method->value => [
                         'requestBody' => [
                             'description' => 'something happened',
@@ -58,7 +58,7 @@ describe(class_basename(Callback::class), function (): void {
                         ],
                     ],
                 ],
-            ]);
+            ])->name()->toBe('MyEvent');
         },
     )->with([
         'get action' => [HttpMethod::GET],
