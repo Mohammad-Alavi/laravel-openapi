@@ -47,6 +47,12 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecurityRequirements\TestBearerSecurityRequirementFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 
+afterAll(
+    function (): void {
+        \Safe\unlink('openapi.json');
+    },
+);
+
 describe('OpenApi', function (): void {
     it('can generate valid OpenAPI v3.1.0 docs', function (): void {
         $tag = Tag::create(
@@ -170,149 +176,18 @@ describe('OpenApi', function (): void {
             ->tags($tag)
             ->externalDocs($externalDocumentation);
 
-        // $result = file_put_contents('openapi.json', $openApi->toJson());
-        // docker run --rm -v $PWD:/spec redocly/cli lint --extends recommend openapi.json
-    });
-    // TODO: move and use these to test the Security class
-    //    ->with([
-    //        function (): SecurityScheme {
-    //            return OAuth2::create(
-    //                Flows::create()
-    //                    ->implicit(
-    //                        Flows\Implicit::create(
-    //                            'https://api.example.com/oauth/authorize',
-    //                            'https://api.example.com/oauth/refresh',
-    //                            ScopeCollection::create(
-    //                                Scope::create('read:audits', 'Read audits'),
-    //                                Scope::create('write:audits', 'Write audits'),
-    //                            ),
-    //                        ),
-    //                    ),
-    //            );
-    //        },
-    //        function (): SecurityScheme {
-    //            return OAuth2::create(
-    //                Flows::create()
-    //                    ->password(
-    //                        Flows\Password::create(
-    //                            'https://api.example.com/oauth/authorize',
-    //                            'https://api.example.com/oauth/refresh',
-    //                            ScopeCollection::create(
-    //                                Scope::create('read:audits', 'Read audits'),
-    //                                Scope::create('write:audits', 'Write audits'),
-    //                            ),
-    //                        ),
-    //                    ),
-    //            );
-    //        },
-    //        function (): SecurityScheme {
-    //            return OAuth2::create(
-    //                Flows::create()
-    //                    ->clientCredentials(
-    //                        Flows\ClientCredentials::create(
-    //                            'https://api.example.com/oauth/authorize',
-    //                            'https://api.example.com/oauth/refresh',
-    //                            ScopeCollection::create(
-    //                                Scope::create('read:audits', 'Read audits'),
-    //                                Scope::create('write:audits', 'Write audits'),
-    //                            ),
-    //                        ),
-    //                    ),
-    //            );
-    //        },
-    //        function (): SecurityScheme {
-    //            return OAuth2::create(
-    //                Flows::create()
-    //                    ->authorizationCode(
-    //                        Flows\AuthorizationCode::create(
-    //                            'https://api.example.com/oauth/authorize',
-    //                            'https://api.example.com/oauth/token',
-    //                            'https://api.example.com/oauth/refresh',
-    //                            ScopeCollection::create(
-    //                                Scope::create('read:audits', 'Read audits'),
-    //                                Scope::create('write:audits', 'Write audits'),
-    //                            ),
-    //                        ),
-    //                    ),
-    //            );
-    //        },
-    //        fn (): SecurityScheme => ApiKey::create('X-API-Key', ApiKeyLocation::HEADER),
-    //        fn (): SecurityScheme => ApiKey::create('in-query', ApiKeyLocation::QUERY),
-    //        fn (): SecurityScheme => ApiKey::create('in-cookie', ApiKeyLocation::COOKIE),
-    //        fn (): SecurityScheme => Http::basic('test_api_key'),
-    //        fn (): SecurityScheme => Http::bearer('test_api_key', 'JWT'),
-    //        fn (): SecurityScheme => OpenIdConnect::create('https://api.example.com/.well-known/openid-configuration'),
-    //    ]);
+        file_put_contents('openapi.json', $openApi->toJson());
 
-    // TODO: write test
-    //    it('can be created using security method', function (Security $security, array $expectation): void {
-    //        $openApi = OpenApi::create()->security($security);
-    //
-    //        $result = $openApi->asArray();
-    //
-    //        expect($result)->toBe($expectation);
-    //    })->with([
-    //        'empty array [] security' => [
-    //            [],
-    //            ['openapi' => OASVersion::V_3_1_0->value],
-    //        ],
-    //        'no security' => [
-    //            (new ExampleNoSecurityRequirementSecurity())->build(),
-    //            [
-    //                'openapi' => OASVersion::V_3_1_0->value,
-    //                'security' => [
-    //                    [],
-    //                ],
-    //            ],
-    //        ],
-    //        'one element array security' => [
-    //            [(new SecurityRequirementBuilder())->build(ASecuritySchemeFactory::class)],
-    //            [
-    //                'openapi' => OASVersion::V_3_1_0->value,
-    //                'security' => [
-    //                    [
-    //                        'ASecuritySchemeFactory' => [],
-    //                    ],
-    //                ],
-    //            ],
-    //        ],
-    //        'nested security' => [
-    //            [
-    //                (new SecurityRequirementBuilder())->build([
-    //                    ASecuritySchemeFactory::class,
-    //                    BSecuritySchemeFactory::class,
-    //                ]),
-    //            ],
-    //            [
-    //                'openapi' => OASVersion::V_3_1_0->value,
-    //                'security' => [
-    //                    [
-    //                        'ASecuritySchemeFactory' => [],
-    //                    ],
-    //                    [
-    //                        'BSecuritySchemeFactory' => [],
-    //                    ],
-    //                ],
-    //            ],
-    //        ],
-    //        'multiple nested security' => [
-    //            [
-    //                (new SecurityRequirementBuilder())->build([
-    //                    BSecuritySchemeFactory::class,
-    //                ]),
-    //                (new SecurityRequirementBuilder())->build([
-    //                    ASecuritySchemeFactory::class,
-    //                    BSecuritySchemeFactory::class,
-    //                ]),
-    //            ],
-    //            [
-    //                'openapi' => OASVersion::V_3_1_0->value,
-    //                'security' => [
-    //                    [
-    //                        'BSecuritySchemeFactory' => [],
-    //                    ],
-    //                ],
-    //            ],
-    //        ],
-    //    ])->skip();
+        $output = [];
+        $returnVar = 0;
+
+        \Safe\exec(
+            'npx redocly lint --extends recommended-strict openapi.json 2>&1',
+            $output,
+            $returnVar,
+        );
+
+        expect($output)->toBeEmpty(implode("\n", $output))
+            ->and($returnVar)->toBe(0);
+    });
 })->coversNothing();
