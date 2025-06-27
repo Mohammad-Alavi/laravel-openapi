@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\src\Unit\Collectors;
+namespace Tests\src\Unit\Builders;
 
 use MohammadAlavi\LaravelOpenApi\Builders\ServerBuilder;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;

@@ -3,7 +3,7 @@
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestSecuritySchemeFactory;
 
-describe('Operation', function (): void {
+describe(class_basename(Operation::class), function (): void {
     it('can be created with no parameters', function (): void {
         $operation = new Operation();
 

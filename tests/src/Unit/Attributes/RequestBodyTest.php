@@ -4,7 +4,7 @@ use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestRequestBodyFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestRequestBodyFactoryInvalid;
 
-describe('RequestBody', function (): void {
+describe(class_basename(RequestBody::class), function (): void {
     it('can set valid factory', function (): void {
         $RequestBody = new RequestBody(factory: TestRequestBodyFactory::class);
         expect($RequestBody->factory)->toBe(TestRequestBodyFactory::class);

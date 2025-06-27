@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\LaravelOpenApi\Objects;
+namespace MohammadAlavi\LaravelOpenApi\Support;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Route;

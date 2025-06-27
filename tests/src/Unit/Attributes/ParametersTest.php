@@ -4,7 +4,7 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Parameters;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestParameterFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestParametersFactoryInvalid;
 
-describe('Parameters', function (): void {
+describe(class_basename(Parameters::class), function (): void {
     it('can set valid factory', function (): void {
         $parameters = new Parameters(factory: TestParameterFactory::class);
         expect($parameters->factory)->toBe(TestParameterFactory::class);

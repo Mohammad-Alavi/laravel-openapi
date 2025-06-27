@@ -9,7 +9,7 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Parameters;
 use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\OperationBuilder;
-use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
+use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestCallbackFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestExtensionFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestParameterFactory;

@@ -1,7 +1,7 @@
 <?php
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
-use MohammadAlavi\LaravelOpenApi\Services\ComponentCollector;
+use MohammadAlavi\LaravelOpenApi\Support\ComponentCollector;
 use Pest\Arch\Contracts\ArchExpectation;
 use Pest\Expectation;
 

@@ -1,17 +1,9 @@
 <?php
 
-namespace Tests\src\Unit\Collectors;
-
 use MohammadAlavi\LaravelOpenApi\Builders\InfoBuilder;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use Tests\TestCase;
 
-#[CoversClass(InfoBuilder::class)]
-class InfoBuilderTest extends TestCase
-{
-    public static function providerBuildContact(): \Iterator
-    {
+describe(class_basename(InfoBuilder::class), function (): void {
+    dataset('contact_dataset', function (): Iterator {
         $common = [
             'title' => 'sample_title',
             'description' => 'sample_description',
@@ -161,32 +153,12 @@ class InfoBuilderTest extends TestCase
             $common,
             $common,
         ];
-    }
+    });
 
-    #[DataProvider('providerBuildContact')]
-    public function testBuildContact(array $config, array $expected): void
-    {
+    it('can build contact', function (array $config, array $expected): void {
         $infoBuilder = new InfoBuilder();
         $info = $infoBuilder->build($config);
-        $this->assertSameAssociativeArray($expected, $info->asArray());
-    }
 
-    /**
-     * Assert equality as an associative array.
-     */
-    protected function assertSameAssociativeArray(array $expected, array $actual): void
-    {
-        foreach ($expected as $key => $value) {
-            if (is_array($value)) {
-                $this->assertSameAssociativeArray($value, $actual[$key]);
-                unset($actual[$key]);
-                continue;
-            }
-
-            $this->assertSame($value, $actual[$key]);
-            unset($actual[$key]);
-        }
-
-        $this->assertCount(0, $actual, sprintf('[%s] does not matched keys.', implode(', ', array_keys($actual))));
-    }
-}
+        expect($info->asArray())->toEqualCanonicalizing($expected);
+    })->with('contact_dataset');
+})->covers(InfoBuilder::class);

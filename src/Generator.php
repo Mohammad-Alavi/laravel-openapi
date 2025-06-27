@@ -9,7 +9,7 @@ use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\Securi
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\PathsBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\ServerBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\TagBuilder;
-use MohammadAlavi\LaravelOpenApi\Services\RouteCollector;
+use MohammadAlavi\LaravelOpenApi\Support\RouteCollector;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;

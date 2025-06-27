@@ -1,11 +1,11 @@
 <?php
 
-use MohammadAlavi\LaravelOpenApi\Services\ClassMapGenerator;
+use MohammadAlavi\LaravelOpenApi\Support\ClassMapGenerator;
 use Tests\IntegrationTestCase;
 use Tests\src\Support\Doubles\Dummies\Services\ClassToBeFound;
 use Tests\UnitTestCase;
 
-describe('ClassMapGenerator', function (): void {
+describe(class_basename(ClassMapGenerator::class), function (): void {
     dataset('expectations', function (): array {
         $div = DIRECTORY_SEPARATOR;
 
@@ -26,7 +26,7 @@ describe('ClassMapGenerator', function (): void {
     });
 
     it('creates a class map from a directory', function (string $key, string $value): void {
-        $dir = __DIR__ . '/../../../';
+        $dir = __DIR__ . '/../../../../tests/';
         $map = ClassMapGenerator::createMap($dir);
 
         expect($map)->toBeArray()
@@ -35,7 +35,7 @@ describe('ClassMapGenerator', function (): void {
     })->with('expectations');
 
     it('creates a class map from an iterator', function (string $key, string $value): void {
-        $dir = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/../../../'));
+        $dir = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/../../../../tests/'));
         $map = ClassMapGenerator::createMap($dir);
 
         expect($map)->toBeArray()

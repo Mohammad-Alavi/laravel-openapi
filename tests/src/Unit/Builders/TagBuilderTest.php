@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\src\Unit\Collectors;
+namespace Tests\src\Unit\Builders;
 
 use MohammadAlavi\LaravelOpenApi\Builders\TagBuilder;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;

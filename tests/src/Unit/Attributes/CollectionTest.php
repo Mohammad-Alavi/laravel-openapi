@@ -4,7 +4,7 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Generator;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestStringable;
 
-describe('Collection', function (): void {
+describe(class_basename(Collection::class), function (): void {
     it('can fall back to default collection', function (): void {
         $collection = new Collection();
         expect($collection->name)->toBe([Generator::COLLECTION_DEFAULT]);

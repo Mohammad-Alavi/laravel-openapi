@@ -1,11 +1,12 @@
 <?php
 
-namespace MohammadAlavi\LaravelOpenApi\Services;
+namespace MohammadAlavi\LaravelOpenApi\Support;
 
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection as CollectionAttribute;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\FilterStrategy;
 use MohammadAlavi\LaravelOpenApi\Generator;
+use MohammadAlavi\LaravelOpenApi\Support\ClassMapGenerator;
 
 final class ComponentCollector
 {

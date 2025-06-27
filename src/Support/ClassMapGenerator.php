@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\LaravelOpenApi\Services;
+namespace MohammadAlavi\LaravelOpenApi\Support;
 
 use Webmozart\Assert\Assert;
 

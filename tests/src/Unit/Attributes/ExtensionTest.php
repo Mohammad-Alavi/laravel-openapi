@@ -4,7 +4,7 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Extension;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestExtensionFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestExtensionFactoryInvalid;
 
-describe('Extension', function (): void {
+describe(class_basename(Extension::class), function (): void {
     it('can handle null factory', function (): void {
         $extension = new Extension();
         expect($extension->factory)->toBeNull();

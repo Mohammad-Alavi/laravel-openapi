@@ -2,11 +2,11 @@
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
+use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use Tests\src\Support\Doubles\Stubs\Objects\InvocableController;
 use Tests\src\Support\Doubles\Stubs\Objects\MultiActionController;
 
-describe('RouteInformation', function (): void {
+describe(class_basename(RouteInfo::class), function (): void {
     it('can be created with all parameters', function (): void {
         $routeInformation = RouteInfo::create(
             Route::get('/example', static fn (): string => 'example')

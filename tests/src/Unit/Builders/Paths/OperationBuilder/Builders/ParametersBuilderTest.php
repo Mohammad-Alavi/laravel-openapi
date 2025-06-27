@@ -3,13 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Attributes\Parameters as ParameterAttribute;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\ParametersBuilder;
-use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
+use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestParameterFactory;
 use Tests\src\Support\Doubles\Stubs\Collectors\Paths\Operations\TestController;
 
-describe('ParameterBuilder', function (): void {
+describe(class_basename(ParametersBuilder::class), function (): void {
     it('can be created', function (): void {
         $routeInformation = RouteInfo::create(
             Route::get('/example', static fn (): string => 'example'),

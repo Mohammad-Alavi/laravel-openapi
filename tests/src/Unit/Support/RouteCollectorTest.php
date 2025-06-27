@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use MohammadAlavi\LaravelOpenApi\Objects\RouteInfo;
-use MohammadAlavi\LaravelOpenApi\Services\RouteCollector;
+use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
+use MohammadAlavi\LaravelOpenApi\Support\RouteCollector;
 use Pest\Expectation;
 use Tests\src\Support\Doubles\Stubs\CollectibleClass;
 use Tests\src\Support\Doubles\Stubs\Collectors\ControllerWithoutOperationStub;

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\PathsBuilder;
-use MohammadAlavi\LaravelOpenApi\Services\RouteCollector;
+use MohammadAlavi\LaravelOpenApi\Support\RouteCollector;
 use Tests\src\Support\Doubles\Stubs\Collectors\ControllerWithPathItemAndOperationStub;
 
 describe(class_basename(PathsBuilder::class), function (): void {

@@ -9,7 +9,7 @@ use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ReusableRe
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ReusableResponseFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ReusableSchemaFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ReusableSecuritySchemeFilter;
-use MohammadAlavi\LaravelOpenApi\Services\ComponentCollector;
+use MohammadAlavi\LaravelOpenApi\Support\ComponentCollector;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 
 // TODO: add protection against invalid or duplicate component names
