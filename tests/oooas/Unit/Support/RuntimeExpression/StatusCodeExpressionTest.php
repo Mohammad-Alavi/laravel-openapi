@@ -2,7 +2,7 @@
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\StatusCodeExpression;
 
-describe('StatusCodeExpression', function (): void {
+describe(class_basename(StatusCodeExpression::class), function (): void {
     it('can be created with default value', function (): void {
         $statusCodeExpression = StatusCodeExpression::create();
 
@@ -16,7 +16,9 @@ describe('StatusCodeExpression', function (): void {
     });
 
     it('throws an exception for an invalid value', function (): void {
-        expect(fn (): StatusCodeExpression => StatusCodeExpression::create('invalid'))->toThrow(
+        expect(function (): StatusCodeExpression {
+            return StatusCodeExpression::create('invalid');
+        })->toThrow(
             InvalidArgumentException::class,
             'StatusCode expression must be "$statusCode", got "invalid"',
         );

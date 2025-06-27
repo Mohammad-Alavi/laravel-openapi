@@ -168,10 +168,10 @@ describe('Generator', function (): void {
                     ],
                     'callbacks' => [
                         'ExplicitCollectionCallback' => [
-                            '/explicit-collection-callback' => [],
+                            'https://example.com/explicit-collection-callback' => [],
                         ],
                         'MultiCollectionCallback' => [
-                            '/multi-collection-callback' => [],
+                            'https://example.com/multi-collection-callback' => [],
                         ],
                     ],
                 ],
@@ -254,10 +254,10 @@ describe('Generator', function (): void {
                     ],
                     'callbacks' => [
                         'MultiCollectionCallback' => [
-                            '/multi-collection-callback' => [],
+                            'https://example.com/multi-collection-callback' => [],
                         ],
                         'ImplicitDefaultCallback' => [
-                            '/implicit-default-callback' => [],
+                            'https://example.com/implicit-default-callback' => [],
                         ],
                     ],
                 ],

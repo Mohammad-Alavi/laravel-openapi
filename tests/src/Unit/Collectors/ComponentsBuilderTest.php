@@ -92,10 +92,10 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                     ],
                     'callbacks' => [
                         'ExplicitCollectionCallback' => [
-                            '/explicit-collection-callback' => [],
+                            'https://example.com/explicit-collection-callback' => [],
                         ],
                         'MultiCollectionCallback' => [
-                            '/multi-collection-callback' => [],
+                            'https://example.com/multi-collection-callback' => [],
                         ],
                     ],
                 ],
@@ -135,10 +135,10 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                     ],
                     'callbacks' => [
                         'MultiCollectionCallback' => [
-                            '/multi-collection-callback' => [],
+                            'https://example.com/multi-collection-callback' => [],
                         ],
                         'ImplicitDefaultCallback' => [
-                            '/implicit-default-callback' => [],
+                            'https://example.com/implicit-default-callback' => [],
                         ],
                     ],
                 ],

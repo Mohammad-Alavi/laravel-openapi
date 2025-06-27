@@ -3,10 +3,11 @@
 namespace Tests\src\Support\Doubles\Stubs\Collectors\Components\Callback;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 
-class ImplicitDefaultCallback extends CallbackFactory
+class ImplicitDefaultCallback extends CallbackFactory implements ShouldBeReferenced
 {
     public function component(): Callback
     {

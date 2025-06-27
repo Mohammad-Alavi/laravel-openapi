@@ -101,7 +101,7 @@ describe(class_basename(Operation::class), function (): void {
                 ],
                 'callbacks' => [
                     'CallbackFactory' => [
-                        '/' => [],
+                        'https://example.com/' => [],
                     ],
                 ],
             ]);

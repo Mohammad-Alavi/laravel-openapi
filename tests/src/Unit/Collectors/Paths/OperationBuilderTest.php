@@ -174,7 +174,7 @@ describe(class_basename(OperationBuilder::class), function (): void {
                         ],
                         'callbacks' => [
                             'CallbackFactory' => [
-                                '/' => [],
+                                'https://example.com/' => [],
                             ],
                         ],
                         'x-key' => 'value',

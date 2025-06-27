@@ -2,23 +2,25 @@
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\Request\RequestPathExpression;
 
-describe('RequestPathExpression', function (): void {
+describe(class_basename(RequestPathExpression::class), function (): void {
     it('can be created with a name', function (): void {
         $requestPathExpression = RequestPathExpression::create('id');
 
-        expect($requestPathExpression->value())->toBe('$request.path.id');
-        expect($requestPathExpression->name())->toBe('id');
+        expect($requestPathExpression->value())->toBe('$request.path.id')
+            ->and($requestPathExpression->name())->toBe('id');
     });
 
     it('can be created with a full expression', function (): void {
         $requestPathExpression = RequestPathExpression::create('$request.path.userId');
 
-        expect($requestPathExpression->value())->toBe('$request.path.userId');
-        expect($requestPathExpression->name())->toBe('userId');
+        expect($requestPathExpression->value())->toBe('$request.path.userId')
+            ->and($requestPathExpression->name())->toBe('userId');
     });
 
     it('throws an exception for an empty name', function (): void {
-        expect(fn (): RequestPathExpression => RequestPathExpression::create(''))->toThrow(
+        expect(function (): RequestPathExpression {
+            return RequestPathExpression::create('');
+        })->toThrow(
             InvalidArgumentException::class,
             'Name cannot be empty',
         );

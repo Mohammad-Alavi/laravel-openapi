@@ -9,27 +9,24 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Callback extends ExtensibleObject
 {
-    private string $key;
-
     private function __construct(
-        private readonly RuntimeExpressionAbstract $expression,
+        private readonly string|RuntimeExpressionAbstract $expression,
         private readonly PathItem $pathItem,
+        private readonly string|null $name = null,
     ) {
     }
 
-    // TODO: I don't believe callback key is mandatory if callback is reusable/reference
-    public static function create(RuntimeExpressionAbstract $expression, PathItem $pathItem, string $key = ''): self
-    {
-        $instance = new self($expression, $pathItem);
-
-        $instance->key = $key;
-
-        return $instance;
+    public static function create(
+        string|RuntimeExpressionAbstract $expression,
+        PathItem $pathItem,
+        string|null $name = null,
+    ): self {
+        return new self($expression, $pathItem, $name);
     }
 
-    public function key(): string
+    public function name(): string
     {
-        return $this->key;
+        return when(blank($this->name), class_basename($this), $this->name);
     }
 
     protected function toArray(): array

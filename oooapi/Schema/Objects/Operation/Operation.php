@@ -166,10 +166,12 @@ final class Operation extends ExtensibleObject
         $callbacks = [];
         foreach ($this->callbacks ?? [] as $callback) {
             if ($callback instanceof CallbackFactory) {
-                $object = $callback->component();
-                $callbacks[$object->key()] = $object;
-            } else {
-                $callbacks[$callback->key()] = $callback;
+                $component = $callback->component();
+                $callbacks[$component->name()] = $component;
+            }
+
+            if ($callback instanceof Callback) {
+                $callbacks[$callback->name()] = $callback;
             }
         }
 
@@ -185,7 +187,7 @@ final class Operation extends ExtensibleObject
             'deprecated' => $this->deprecated,
             'security' => $this->security,
             'servers' => $this->servers,
-            'callbacks' => [] !== $callbacks ? $callbacks : null,
+            'callbacks' => when(blank($callbacks), null, $callbacks),
         ]);
     }
 }

@@ -2,23 +2,25 @@
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\Request\RequestQueryExpression;
 
-describe('RequestQueryExpression', function (): void {
+describe(class_basename(RequestQueryExpression::class), function (): void {
     it('can be created with a name', function (): void {
         $requestQueryExpression = RequestQueryExpression::create('filter');
 
-        expect($requestQueryExpression->value())->toBe('$request.query.filter');
-        expect($requestQueryExpression->name())->toBe('filter');
+        expect($requestQueryExpression->value())->toBe('$request.query.filter')
+            ->and($requestQueryExpression->name())->toBe('filter');
     });
 
     it('can be created with a full expression', function (): void {
         $requestQueryExpression = RequestQueryExpression::create('$request.query.sort');
 
-        expect($requestQueryExpression->value())->toBe('$request.query.sort');
-        expect($requestQueryExpression->name())->toBe('sort');
+        expect($requestQueryExpression->value())->toBe('$request.query.sort')
+            ->and($requestQueryExpression->name())->toBe('sort');
     });
 
     it('throws an exception for an empty name', function (): void {
-        expect(fn (): RequestQueryExpression => RequestQueryExpression::create(''))->toThrow(
+        expect(function (): RequestQueryExpression {
+            return RequestQueryExpression::create('');
+        })->toThrow(
             InvalidArgumentException::class,
             'Name cannot be empty',
         );

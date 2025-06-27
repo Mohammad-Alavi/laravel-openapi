@@ -2,7 +2,7 @@
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\URLExpression;
 
-describe('URLExpression', function (): void {
+describe(class_basename(URLExpression::class), function (): void {
     it('can be created with default value', function (): void {
         $urlExpression = URLExpression::create();
 
@@ -16,7 +16,9 @@ describe('URLExpression', function (): void {
     });
 
     it('throws an exception for an invalid value', function (): void {
-        expect(fn (): URLExpression => URLExpression::create('invalid'))->toThrow(
+        expect(function (): URLExpression {
+            return URLExpression::create('invalid');
+        })->toThrow(
             InvalidArgumentException::class,
             'URL expression must be "$url", got "invalid"',
         );

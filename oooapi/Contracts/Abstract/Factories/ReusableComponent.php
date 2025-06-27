@@ -43,7 +43,20 @@ abstract class ReusableComponent implements \JsonSerializable, OASObject
 
     protected static function uri(): string
     {
-        return self::baseNamespace() . static::componentNamespace() . '/' . static::name();
+        $name = static::name();
+        self::validateName($name);
+
+        return self::baseNamespace() . static::componentNamespace() . '/' . $name;
+    }
+
+    public static function name(): string
+    {
+        return class_basename(static::class);
+    }
+
+    final protected static function validateName(string $name): void
+    {
+        Assert::regex($name, '/^[a-zA-Z0-9.\-_]+$/');
     }
 
     private static function baseNamespace(): string
@@ -52,15 +65,6 @@ abstract class ReusableComponent implements \JsonSerializable, OASObject
     }
 
     abstract protected static function componentNamespace(): string;
-
-    public static function name(): string
-    {
-        $key = class_basename(static::class);
-
-        Assert::regex($key, '/^[a-zA-Z0-9.\-_]+$/');
-
-        return $key;
-    }
 
     abstract public function component(): JSONSchema|OASObject;
 }

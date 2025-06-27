@@ -2,7 +2,7 @@
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\MethodExpression;
 
-describe('MethodExpression', function (): void {
+describe(class_basename(MethodExpression::class), function (): void {
     it('can be created with default value', function (): void {
         $methodExpression = MethodExpression::create();
 
@@ -16,7 +16,9 @@ describe('MethodExpression', function (): void {
     });
 
     it('throws an exception for an invalid value', function (): void {
-        expect(fn (): MethodExpression => MethodExpression::create('invalid'))->toThrow(
+        expect(function (): MethodExpression {
+            return MethodExpression::create('invalid');
+        })->toThrow(
             InvalidArgumentException::class,
             'Method expression must be "$method", got "invalid"',
         );
