@@ -10,6 +10,6 @@ class ImplicitDefaultCallback extends CallbackFactory
 {
     public function component(): Callback
     {
-        return Callback::create('/implicit-default-callback', PathItem::create(), 'test');
+        return Callback::create('https://example.com/implicit-default-callback', PathItem::create(), 'test');
     }
 }

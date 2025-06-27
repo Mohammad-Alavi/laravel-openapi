@@ -12,6 +12,6 @@ class ExplicitCollectionCallback extends CallbackFactory
 {
     public function component(): Callback
     {
-        return Callback::create('/explicit-collection-callback', PathItem::create(), 'test');
+        return Callback::create('https://example.com/explicit-collection-callback', PathItem::create(), 'test');
     }
 }

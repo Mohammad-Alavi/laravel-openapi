@@ -10,6 +10,6 @@ class TestCallbackFactory extends CallbackFactory
 {
     public function component(): Callback
     {
-        return Callback::create('/', PathItem::create(), 'CallbackFactory');
+        return Callback::create('https://example.com/', PathItem::create(), 'CallbackFactory');
     }
 }
