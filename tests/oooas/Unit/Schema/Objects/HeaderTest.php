@@ -31,7 +31,7 @@ describe(class_basename(Header::class), function (): void {
                 ),
             );
 
-        $response = $header->asArray();
+        $response = $header->unserializeToArray();
 
         expect($response)->toBe([
             'description' => 'Lorem ipsum',

@@ -2,11 +2,11 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields\ExternalValue;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields\ExternalValue;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use Webmozart\Assert\Assert;
 
 final class Example extends ExtensibleObject

@@ -2,7 +2,6 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Map;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
 use Webmozart\Assert\Assert;
 
 /**

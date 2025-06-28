@@ -3,9 +3,9 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
 
 final class Parameters extends Generatable
 {

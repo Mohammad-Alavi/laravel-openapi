@@ -44,7 +44,7 @@ describe(class_basename(Callback::class), function (): void {
                 'MyEvent',
             );
 
-            expect($callback)->asArray()->toBe([
+            expect($callback)->unserializeToArray()->toBe([
                 '{$request.query.callbackUrl}' => [
                     $method->value => [
                         'requestBody' => [

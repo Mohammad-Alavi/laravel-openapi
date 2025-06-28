@@ -164,7 +164,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 'paths' => [
                     $route => $actionData,
                 ], ...$collectionData,
-            ], $openApi->asArray());
+            ], $openApi->unserializeToArray());
         },
     )->with(
         [
@@ -813,7 +813,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 'components' => $expectedJson['components'],
                 'security' => $expectedJson['security'],
             ];
-            $this->assertSame($expected, $openApi->asArray());
+            $this->assertSame($expected, $openApi->unserializeToArray());
         },
     )->with([
         'JWT authentication only' => [
@@ -1050,7 +1050,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 ],
             ],
         ];
-        $this->assertSame($expected, $openApi->asArray());
+        $this->assertSame($expected, $openApi->unserializeToArray());
     });
 
     it('can add operation security using builder', function (): void {
@@ -1134,6 +1134,6 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             ],
         ];
 
-        expect($openApi->asArray())->toBe($expected);
+        expect($openApi->unserializeToArray())->toBe($expected);
     });
 })->covers(SecurityBuilder::class);

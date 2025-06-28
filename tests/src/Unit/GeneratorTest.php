@@ -7,8 +7,8 @@ use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestComplexMultiSecurityFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestEmptySecurityFactory;
@@ -113,7 +113,7 @@ describe('Generator', function (): void {
 
         $openApi = $generator->generate($collection);
 
-        expect($openApi->asArray())->toEqual($expectation);
+        expect($openApi->unserializeToArray())->toEqual($expectation);
     })->with([
         'test collection' => [
             'collection' => 'test',

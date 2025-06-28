@@ -13,7 +13,7 @@ describe(class_basename(ExternalDocumentation::class), function (): void {
             Description::create('example Repo'),
         );
 
-        expect($externalDocumentation->asArray())->toBe([
+        expect($externalDocumentation->unserializeToArray())->toBe([
             'url' => 'https://laragen.io',
             'description' => 'example Repo',
         ]);

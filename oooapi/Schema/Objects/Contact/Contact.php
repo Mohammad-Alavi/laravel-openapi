@@ -2,11 +2,11 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Contact extends ExtensibleObject
 {

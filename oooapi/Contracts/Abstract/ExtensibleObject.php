@@ -5,7 +5,6 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extensions;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
 
 // TODO: Can we make this and all it's driven classes immutable/readonly?
 abstract class ExtensibleObject extends Generatable

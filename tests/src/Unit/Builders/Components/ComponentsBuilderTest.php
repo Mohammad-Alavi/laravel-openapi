@@ -50,7 +50,7 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
         /** @var Components|null $result */
         $result = $componentsBuilder->build($collection);
 
-        expect($result?->asArray())->unless(
+        expect($result?->unserializeToArray())->unless(
             is_null($result),
             function (Expectation $xp) use ($expectation): Expectation {
                 return $xp->toEqual($expectation);

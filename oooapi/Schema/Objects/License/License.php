@@ -2,11 +2,11 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Identifier;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Identifier;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use Webmozart\Assert\Assert;
 
 final class License extends ExtensibleObject

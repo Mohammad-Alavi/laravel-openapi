@@ -23,7 +23,7 @@ describe(class_basename(Info::class), function (): void {
             ->contact(Contact::create())
             ->license(License::create(Name::create('MIT')));
 
-        expect($info->asArray())->toBe([
+        expect($info->unserializeToArray())->toBe([
             'title' => 'Pretend API',
             'summary' => 'Some Arrays!',
             'description' => 'A pretend API',

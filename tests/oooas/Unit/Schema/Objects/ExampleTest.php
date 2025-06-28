@@ -14,7 +14,7 @@ describe(class_basename(Example::class), function (): void {
             ->description(Description::create('Description ipsum'))
             ->value('Value');
 
-        $response = $example->asArray();
+        $response = $example->unserializeToArray();
 
         expect($response)->toBe([
             'summary' => 'Summary ipsum',
@@ -29,7 +29,7 @@ describe(class_basename(Example::class), function (): void {
                 ExternalValue::create('https://laragen.io/example.json'),
             );
 
-        $response = $example->asArray();
+        $response = $example->unserializeToArray();
 
         expect($response)->toBe([
             'externalValue' => 'https://laragen.io/example.json',

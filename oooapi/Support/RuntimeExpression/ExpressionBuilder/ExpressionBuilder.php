@@ -2,8 +2,6 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\ExpressionBuilder;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\ExpressionBuilder\PathParameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\ExpressionBuilder\QueryParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\RuntimeExpressionAbstract;
 
 final class ExpressionBuilder

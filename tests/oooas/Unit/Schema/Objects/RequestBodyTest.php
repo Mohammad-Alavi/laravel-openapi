@@ -17,7 +17,7 @@ describe(class_basename(RequestBody::class), function (): void {
                 ),
             )->required();
 
-        expect($requestBody->asArray())->toBe([
+        expect($requestBody->unserializeToArray())->toBe([
             'description' => 'Standard request',
             'content' => [
                 'application/json' => [],

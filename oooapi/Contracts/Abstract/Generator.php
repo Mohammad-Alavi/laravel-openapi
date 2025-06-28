@@ -3,8 +3,6 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract;
 
 use Illuminate\Support\Facades\File;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGenerator;
 
 trait Generator
 {
@@ -51,7 +49,7 @@ trait Generator
      *
      * @throws \JsonException
      */
-    public function asArray(): array
+    public function unserializeToArray(): array
     {
         return json_decode($this->toJson(), true, 512, JSON_THROW_ON_ERROR);
     }

@@ -2,8 +2,6 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\RuntimeExpressionAbstract;
-
 /**
  * Represents a Method runtime expression ($method).
  * This expression refers to the HTTP method of the request.

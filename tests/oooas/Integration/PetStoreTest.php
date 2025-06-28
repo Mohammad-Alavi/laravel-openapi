@@ -241,7 +241,7 @@ describe('PetStoreTest', function (): void {
 
         $this->assertEquals(
             File::json(realpath(__DIR__ . '/../Support/Doubles/Stubs/petstore_expanded.json')),
-            $openApi->asArray(),
+            $openApi->unserializeToArray(),
         );
     });
 })->coversNothing();

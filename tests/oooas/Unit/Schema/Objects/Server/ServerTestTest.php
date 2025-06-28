@@ -32,7 +32,7 @@ class ServerTestTest extends UnitTestCase
                     'default' => 'Default value',
                 ],
             ],
-        ], $server->asArray());
+        ], $server->unserializeToArray());
     }
 
     public function testVariablesAreSupported(): void
@@ -53,7 +53,7 @@ class ServerTestTest extends UnitTestCase
                     ],
                 ],
             ],
-            $server->asArray(),
+            $server->unserializeToArray(),
         );
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use Tests\oooas\Support\Doubles\Fakes\ExtensibleObjectFake;
 
 describe(class_basename(ExtensibleObject::class), function (): void {
@@ -48,7 +48,7 @@ describe(class_basename(ExtensibleObject::class), function (): void {
         $extension2 = Extension::create('x-foo', 'bar');
         $object = $object->addExtension($extension1, $extension2);
 
-        $result = $object->asArray();
+        $result = $object->unserializeToArray();
 
         expect($result)->toBe([
             'x-test' => 'value',

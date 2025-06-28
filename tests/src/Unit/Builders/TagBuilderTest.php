@@ -3,9 +3,6 @@
 namespace Tests\src\Unit\Builders;
 
 use MohammadAlavi\LaravelOpenApi\Builders\TagBuilder;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -78,7 +75,7 @@ class TagBuilderTest extends TestCase
         $tagBuilder = app(TagBuilder::class);
         $tags = $tagBuilder->build($factories);
 
-        $this->assertSameAssociativeArray($expected[0], $tags[0]->asArray());
+        $this->assertSameAssociativeArray($expected[0], $tags[0]->unserializeToArray());
     }
 
     /**
@@ -113,7 +110,7 @@ class TagBuilderTest extends TestCase
         $this->assertSame(
             $expected,
             collect($tags)
-                ->map(static fn (Tag $tag): array => $tag->asArray())
+                ->map(static fn (Tag $tag): array => $tag->unserializeToArray())
                 ->toArray(),
         );
     }

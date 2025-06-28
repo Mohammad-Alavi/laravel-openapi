@@ -159,6 +159,6 @@ describe(class_basename(InfoBuilder::class), function (): void {
         $infoBuilder = new InfoBuilder();
         $info = $infoBuilder->build($config);
 
-        expect($info->asArray())->toEqualCanonicalizing($expected);
+        expect($info->unserializeToArray())->toEqualCanonicalizing($expected);
     })->with('contact_dataset');
 })->covers(InfoBuilder::class);

@@ -95,7 +95,7 @@
     "prefer-stable": true,
     "scripts": {
         "fixer": [
-            "php ./vendor/bin/php-cs-fixer fix --parallel"
+            "php ./vendor/bin/php-cs-fixer fix"
         ],
         "cs": [
             "php ./vendor/bin/phpcbf --standard=phpcs.xml"

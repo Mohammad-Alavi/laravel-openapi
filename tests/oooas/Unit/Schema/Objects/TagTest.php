@@ -1,10 +1,10 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 
 describe('Tag', function (): void {
     it('can be created with all parameters', function (): void {
@@ -17,7 +17,7 @@ describe('Tag', function (): void {
             ),
         );
 
-        expect($tag->asArray())->toBe([
+        expect($tag->unserializeToArray())->toBe([
             'name' => 'Users',
             'description' => 'All user endpoints',
             'externalDocs' => [

@@ -2,8 +2,6 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\RuntimeExpressionAbstract;
-
 /**
  * Represents a Response runtime expression ($response.{source}).
  * This expression refers to a value from the response.

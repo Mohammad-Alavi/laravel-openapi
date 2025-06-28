@@ -58,7 +58,7 @@ describe(class_basename(ParametersBuilder::class), function (): void {
         $parameters = $builder->build($routeInformation);
 
         $typeHintedParam = $parameters->all()[0];
-        expect($parameters->asArray())->toHaveCount(2)
-            ->and($typeHintedParam->asArray()['schema']['type'])->toBe(Type::integer()->value());
+        expect($parameters->unserializeToArray())->toHaveCount(2)
+            ->and($typeHintedParam->unserializeToArray()['schema']['type'])->toBe(Type::integer()->value());
     });
 })->covers(ParametersBuilder::class);

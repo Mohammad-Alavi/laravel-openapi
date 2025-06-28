@@ -37,6 +37,6 @@ class ServerVariableTest extends UnitTestCase
                     'description' => 'The planet the server is running on',
                 ],
             ],
-        ], $server->asArray());
+        ], $server->unserializeToArray());
     }
 }

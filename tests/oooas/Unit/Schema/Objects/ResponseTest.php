@@ -48,7 +48,7 @@ describe('Response', function (): void {
             LinkEntry::create('MyLink', $link),
         );
 
-        expect($response->asArray())->toBe([
+        expect($response->unserializeToArray())->toBe([
             'description' => 'A response indicating success',
             'headers' => [
                 'HeaderName' => [

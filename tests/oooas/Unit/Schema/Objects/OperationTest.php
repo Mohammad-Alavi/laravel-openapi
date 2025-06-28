@@ -12,12 +12,12 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestCallbackFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
@@ -26,7 +26,7 @@ describe(class_basename(Operation::class), function (): void {
     it('can be created with no parameters', function (): void {
         $operation = Operation::create();
 
-        expect($operation->asArray())->toBeEmpty();
+        expect($operation->unserializeToArray())->toBeEmpty();
     });
 
     it(
@@ -62,7 +62,7 @@ describe(class_basename(Operation::class), function (): void {
                 ->servers(Server::default())
                 ->callbacks(TestCallbackFactory::create());
 
-            expect($operation->asArray())->toBe([
+            expect($operation->unserializeToArray())->toBe([
                 'tags' => ['Users'],
                 'summary' => 'Lorem ipsum',
                 'description' => 'Dolar sit amet',
@@ -117,7 +117,7 @@ describe(class_basename(Operation::class), function (): void {
             )
             ->tags(...$tag);
 
-        expect($operation->asArray())->toBe([
+        expect($operation->unserializeToArray())->toBe([
             'tags' => $expectation,
             'responses' => [
                 '200' => [

@@ -30,7 +30,7 @@ describe('PetStore', function (): void {
         Route::put('/nestedSecuritySecondTest', [PetController::class, 'nestedSecuritySecond']);
 
         Config::set('openapi.collections.default.servers', $servers['classes']);
-        $spec = app(Generator::class)->generate()->asArray();
+        $spec = app(Generator::class)->generate()->unserializeToArray();
 
         expect(\Safe\json_encode($spec['servers']))->toBe(\Safe\json_encode($servers['expectation']))
             ->and($spec['paths'])->toHaveKey($path)

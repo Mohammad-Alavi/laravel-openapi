@@ -53,7 +53,7 @@ describe(class_basename(PathItem::class), function (): void {
             ),
         );
 
-        expect($paths->asArray())->toBe([
+        expect($paths->unserializeToArray())->toBe([
             '/users' => [
                 'summary' => 'User endpoints',
                 'description' => 'Get the users',

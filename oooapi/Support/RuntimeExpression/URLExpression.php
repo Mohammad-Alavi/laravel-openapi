@@ -2,8 +2,6 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\RuntimeExpressionAbstract;
-
 /**
  * Represents a URL runtime expression ($url).
  * This expression refers to the request URL.

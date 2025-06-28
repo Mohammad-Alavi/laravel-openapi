@@ -17,7 +17,7 @@ describe('Discriminator', function (): void {
             ),
         );
 
-        expect($discriminator->asArray())->toBe([
+        expect($discriminator->unserializeToArray())->toBe([
             'propertyName' => 'Discriminator Name',
             'mapping' => [
                 'cat' => 'value',
@@ -29,7 +29,7 @@ describe('Discriminator', function (): void {
     it('will have no mapping if no mapping is passed', function (): void {
         $discriminator = Discriminator::create(PropertyName::create('something'));
 
-        expect($discriminator->asArray())->toBe([
+        expect($discriminator->unserializeToArray())->toBe([
             'propertyName' => 'something',
         ]);
     });

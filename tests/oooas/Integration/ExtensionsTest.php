@@ -2,14 +2,13 @@
 
 namespace Tests\oooas\Unit\Support;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use Webmozart\Assert\InvalidArgumentException;
 
@@ -22,24 +21,35 @@ describe(class_basename(Extension::class), function (): void {
     ];
     dataset('extensibleObjectSet', [
         [
-            fn (): Components => Components::create(), $expectations,
+            function (): Components {
+                return Components::create();
+            }, $expectations,
         ],
         [
-            fn (): Operation => Operation::create(), $expectations,
+            function (): Operation {
+                return Operation::create();
+            }, $expectations,
         ],
         [
-            fn (): PathItem => PathItem::create(), $expectations,
+            function (): PathItem {
+                return PathItem::create();
+            }, $expectations,
         ],
         [
-            fn (): Response => Response::create(Description::create('OK')), $expectations + [
+            function (): Response {
+                return Response::create(Description::create('OK'));
+            }, $expectations + [
                 'description' => 'OK',
             ],
         ],
-        [
-            fn (): JSONSchema => Schema::object(), $expectations + [
-                'type' => 'object',
-            ],
-        ],
+        // TODO: make JSONSchema extensible
+        // [
+        //     function (): JSONSchema {
+        //         return Schema::object();
+        //     }, $expectations + [
+        //         'type' => 'object',
+        //     ],
+        // ],
     ]);
 
     it(
@@ -56,7 +66,7 @@ describe(class_basename(Extension::class), function (): void {
                 ->addExtension($extension3)
                 ->addExtension($extension4);
 
-            expect($sut->asArray())->toEqual($expectations);
+            expect($sut->unserializeToArray())->toEqual($expectations);
         },
     )->with('extensibleObjectSet');
 
@@ -73,7 +83,7 @@ describe(class_basename(Extension::class), function (): void {
             'x-baz' => null,
             'type' => 'object',
         ]);
-    });
+    })->todo();
 
     it('gets single extension', function (ExtensibleObject $extensibleObject): void {
         $extension = Extension::create('x-foo', 'bar');
@@ -82,11 +92,14 @@ describe(class_basename(Extension::class), function (): void {
         expect($object)->getExtension('x-foo')->equals($extension)->toBeTrue();
     })->with('extensibleObjectSet');
 
-    it('throws exception when extension dont exist', function (ExtensibleObject $extensibleObject): void {
-        expect(function () use ($extensibleObject): void {
-            $extensibleObject->getExtension('x-key');
-        })->toThrow(InvalidArgumentException::class);
-    })->with('extensibleObjectSet');
+    it(
+        'throws exception when extension dont exist',
+        function (ExtensibleObject $extensibleObject): void {
+            expect(function () use ($extensibleObject): void {
+                $extensibleObject->getExtension('x-key');
+            })->toThrow(InvalidArgumentException::class);
+        },
+    )->with('extensibleObjectSet');
 
     it('gets all extensions', function (ExtensibleObject $extensibleObject): void {
         expect($extensibleObject->extensions())->toBeArray()
@@ -111,4 +124,4 @@ describe(class_basename(Extension::class), function (): void {
             })->toThrow(InvalidArgumentException::class, 'Extension not found: x-key');
         },
     )->with('extensibleObjectSet');
-})->coversNothing()->todo();
+})->coversNothing();

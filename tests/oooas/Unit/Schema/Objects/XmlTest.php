@@ -1,10 +1,10 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\Prefix;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\XmlNamespace;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Xml;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
 describe(class_basename(Xml::class), function (): void {
     it('it can be creates with basic property', function (): void {

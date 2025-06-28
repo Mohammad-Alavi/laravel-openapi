@@ -39,7 +39,7 @@ describe('Extension', function (): void {
     it('can serialize extension', function (): void {
         $extension = Extension::create('x-test', 'value');
 
-        $result = $extension->asArray();
+        $result = $extension->unserializeToArray();
 
         expect($result)->toBe(['x-test' => 'value']);
     });

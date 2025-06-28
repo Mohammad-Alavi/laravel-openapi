@@ -18,7 +18,7 @@ describe(class_basename(ResponsesBuilder::class), function (): void {
 
         $responses = $builder->build($routeInformation->responsesAttribute());
 
-        expect($responses->asArray())->toBe([
+        expect($responses->unserializeToArray())->toBe([
             '200' => [
                 'description' => 'OK',
             ],

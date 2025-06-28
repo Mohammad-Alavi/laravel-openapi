@@ -48,7 +48,7 @@ describe(class_basename(Encoding::class), function (): void {
         $mediaType = MediaType::create()
             ->encoding($encoding);
 
-        expect($mediaType->asArray())->toBe([
+        expect($mediaType->unserializeToArray())->toBe([
             'encoding' => [
                 'EncodingName' => [
                     'contentType' => 'application/json',

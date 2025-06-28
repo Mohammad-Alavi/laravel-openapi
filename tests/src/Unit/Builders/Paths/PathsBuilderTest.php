@@ -14,8 +14,8 @@ describe(class_basename(PathsBuilder::class), function (): void {
 
         $paths = $pathsBuilder->build($routeInfo);
 
-        expect($paths->asArray())->toHaveCount(1)
-            ->and($paths->asArray())->toBe([
+        expect($paths->unserializeToArray())->toHaveCount(1)
+            ->and($paths->unserializeToArray())->toBe([
                 '/has-both-pathItem-and-operation' => [
                     'get' => [],
                 ],

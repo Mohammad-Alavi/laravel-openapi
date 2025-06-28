@@ -2,8 +2,6 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Map;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
-
 /**
  * @template TValue
  */

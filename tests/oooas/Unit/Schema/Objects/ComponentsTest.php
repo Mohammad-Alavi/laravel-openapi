@@ -133,7 +133,7 @@ describe(class_basename(Components::class), function (): void {
             ->links(LinkEntry::create('LinkExample', $link))
             ->callbacks($callback);
 
-        expect($components->asArray())->toBe([
+        expect($components->unserializeToArray())->toBe([
             'schemas' => [
                 'ExampleSchema' => [
                     'type' => 'object',

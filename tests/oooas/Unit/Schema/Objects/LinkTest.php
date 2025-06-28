@@ -10,7 +10,7 @@ describe('Link', function (): void {
     it('can be created with no parameters', function (): void {
         $link = Link::create();
 
-        expect($link->asArray())->toBeEmpty();
+        expect($link->unserializeToArray())->toBeEmpty();
     });
 
     it('can be created with all parameters', function (): void {
@@ -21,11 +21,11 @@ describe('Link', function (): void {
             ->description(Description::create('Some descriptions'))
             ->server($server);
 
-        expect($link->asArray())->toBe([
+        expect($link->unserializeToArray())->toBe([
             'operationRef' => 'testRef',
             'operationId' => 'testId',
             'description' => 'Some descriptions',
-            'server' => $server->asArray(),
+            'server' => $server->unserializeToArray(),
         ]);
     });
 })->covers(Link::class);

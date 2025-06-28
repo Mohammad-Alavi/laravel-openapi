@@ -2,8 +2,6 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\RuntimeExpressionAbstract;
-
 /**
  * Represents a StatusCode runtime expression ($statusCode).
  * This expression refers to the HTTP status code of the response.

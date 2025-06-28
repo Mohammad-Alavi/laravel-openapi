@@ -47,7 +47,7 @@ describe('Parameter', function (): void {
                 ->deprecated()
                 ->allowEmptyValue();
 
-            expect($parameter->asArray())->toBe([
+            expect($parameter->unserializeToArray())->toBe([
                 'name' => 'user',
                 'in' => 'cookie',
                 'description' => 'User ID',
@@ -99,7 +99,7 @@ describe('Parameter', function (): void {
                 ->deprecated()
                 ->allowEmptyValue();
 
-            expect($parameter->asArray())->toBe([
+            expect($parameter->unserializeToArray())->toBe([
                 'name' => 'user',
                 'in' => 'header',
                 'description' => 'User ID',
@@ -144,7 +144,7 @@ describe('Parameter', function (): void {
                 ->required()
                 ->allowEmptyValue();
 
-            expect($parameter->asArray())->toBe([
+            expect($parameter->unserializeToArray())->toBe([
                 'name' => 'user',
                 'in' => 'path',
                 'description' => 'User ID',
@@ -199,7 +199,7 @@ describe('Parameter', function (): void {
                 ->required()
                 ->deprecated();
 
-            expect($parameter->asArray())->toBe([
+            expect($parameter->unserializeToArray())->toBe([
                 'name' => 'user',
                 'in' => 'query',
                 'description' => 'User ID',
@@ -256,7 +256,7 @@ describe('Parameter', function (): void {
                 ->required()
                 ->deprecated();
 
-            expect($parameter->asArray())->toBe([
+            expect($parameter->unserializeToArray())->toBe([
                 'name' => 'user',
                 'in' => 'query',
                 'description' => 'User ID',

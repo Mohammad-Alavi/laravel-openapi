@@ -5,7 +5,6 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMap;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\HeaderEntry;
 
 /**
  * @implements StringMap<OASObject>

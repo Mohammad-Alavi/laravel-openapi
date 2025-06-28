@@ -3,9 +3,9 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class ExternalDocumentation extends ExtensibleObject
 {
