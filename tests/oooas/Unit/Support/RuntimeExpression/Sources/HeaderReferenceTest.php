@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\Sources\HeaderReference;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Sources\HeaderReference;
 
 describe(class_basename(HeaderReference::class), function (): void {
     it('can be created with a valid token', function (): void {

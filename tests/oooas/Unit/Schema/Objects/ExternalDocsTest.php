@@ -3,8 +3,8 @@
 namespace Tests\oooas\Unit\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\URL;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 
 describe(class_basename(ExternalDocumentation::class), function (): void {
     it('can be created with all parameters', function (): void {

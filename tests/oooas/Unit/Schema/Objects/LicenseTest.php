@@ -6,8 +6,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Identifier;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\UnitTestCase;
 

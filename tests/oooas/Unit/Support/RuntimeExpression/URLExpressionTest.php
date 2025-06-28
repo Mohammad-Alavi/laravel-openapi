@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\URLExpression;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\URLExpression;
 
 describe(class_basename(URLExpression::class), function (): void {
     it('can be created with default value', function (): void {

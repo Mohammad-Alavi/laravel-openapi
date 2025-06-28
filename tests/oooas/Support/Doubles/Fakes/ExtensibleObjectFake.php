@@ -2,7 +2,7 @@
 
 namespace Tests\oooas\Support\Doubles\Fakes;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 
 final class ExtensibleObjectFake extends ExtensibleObject
 {

@@ -2,9 +2,9 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers\HeaderEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Headers\Headers;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\HeaderEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\Headers;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Encoding extends ExtensibleObject

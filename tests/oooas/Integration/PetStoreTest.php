@@ -8,23 +8,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Name;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description as InfoDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\TermsOfService;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Name as LicenseName;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\URL as LicenseURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Description as OperationDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\Form;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
@@ -34,9 +26,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\Availabl
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Fields\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\Fields\Description as RequestBodyDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description as ResponseDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
@@ -45,8 +35,11 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Formats\IntegerFor
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL as ServerURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\ContentEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 
 describe('PetStoreTest', function (): void {
     test('PetStore Example', function (): void {
@@ -55,8 +48,8 @@ describe('PetStoreTest', function (): void {
             ->email(Email::create('apiteam@swagger.io'))
             ->url(URL::create('https://swagger.io'));
 
-        $license = License::create(LicenseName::create('Apache 2.0'))
-            ->url(LicenseURL::create('https://www.apache.org/licenses/LICENSE-2.0.html'));
+        $license = License::create(Name::create('Apache 2.0'))
+            ->url(URL::create('https://www.apache.org/licenses/LICENSE-2.0.html'));
 
         $server = Server::create(ServerURL::create('https://petstore.swagger.io/api'));
 
@@ -64,7 +57,7 @@ describe('PetStoreTest', function (): void {
             Title::create('Swagger Petstore'),
             Version::create('1.0.0'),
         )->description(
-            InfoDescription::create(
+            Description::create(
                 'A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification',
             ),
         )->termsOfService(TermsOfService::create('https://swagger.io/terms/'))
@@ -72,7 +65,7 @@ describe('PetStoreTest', function (): void {
             ->license($license);
 
         $tagsParameter = Parameter::query(
-            ParamName::create('tags'),
+            Name::create('tags'),
             SchemaSerializedQuery::create(
                 Schema::array()->items(
                     Schema::string(),
@@ -82,7 +75,7 @@ describe('PetStoreTest', function (): void {
         )->description(Description::create('tags to filter by'));
 
         $limitParameter = Parameter::query(
-            ParamName::create('limit'),
+            Name::create('limit'),
             SchemaSerializedQuery::create(
                 Schema::integer()->format(IntegerFormat::INT32),
             ),
@@ -94,7 +87,7 @@ describe('PetStoreTest', function (): void {
         $responseEntry = ResponseEntry::create(
             HTTPStatusCode::ok(),
             Response::create(
-                ResponseDescription::create('pet response'),
+                Description::create('pet response'),
             )->content(
                 ContentEntry::json(
                     MediaType::create()->schema(Pet::create()),
@@ -105,7 +98,7 @@ describe('PetStoreTest', function (): void {
         $petListingResponse = ResponseEntry::create(
             HTTPStatusCode::ok(),
             Response::create(
-                ResponseDescription::create('pet response'),
+                Description::create('pet response'),
             )->content(
                 ContentEntry::json(
                     MediaType::create()->schema(
@@ -120,7 +113,7 @@ describe('PetStoreTest', function (): void {
         $defaultErrorResponse = ResponseEntry::create(
             HTTPStatusCode::internalServerError(),
             Response::create(
-                ResponseDescription::create('unexpected error'),
+                Description::create('unexpected error'),
             )->content(
                 ContentEntry::json(
                     MediaType::create()->schema(ValidationError::create()),
@@ -130,7 +123,7 @@ describe('PetStoreTest', function (): void {
 
         $operation = Operation::create()
             ->description(
-                OperationDescription::create(
+                Description::create(
                     'Returns all pets from the system that the user has access to Nam sed condimentum est. 
                     Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet.
                      Aenean at gravida augue, ac iaculis sem. 
@@ -162,13 +155,13 @@ describe('PetStoreTest', function (): void {
 
         $addPet = Operation::create()
             ->description(
-                OperationDescription::create(
+                Description::create(
                     'Creates a new pet in the store.  Duplicates are allowed',
                 ),
             )->operationId(OperationId::create('addPet'))
             ->requestBody(
                 RequestBody::create()
-                    ->description(RequestBodyDescription::create('Pet to add to the store'))
+                    ->description(Description::create('Pet to add to the store'))
                     ->required()
                     ->content(
                         ContentEntry::json(
@@ -196,7 +189,7 @@ describe('PetStoreTest', function (): void {
         );
 
         $petIdParameter = Parameter::path(
-            ParamName::create('id'),
+            Name::create('id'),
             SchemaSerializedPath::create(
                 Schema::integer()->format(IntegerFormat::INT64),
             ),
@@ -205,7 +198,7 @@ describe('PetStoreTest', function (): void {
 
         $findPetById = Operation::create()
             ->description(
-                OperationDescription::create(
+                Description::create(
                     'Returns a user based on a single ID, if the user does not have access to the pet',
                 ),
             )->operationId(OperationId::create('find pet by id'))
@@ -214,11 +207,11 @@ describe('PetStoreTest', function (): void {
 
         $petDeletedResponse = ResponseEntry::create(
             HTTPStatusCode::noContent(),
-            Response::create(ResponseDescription::create('pet deleted')),
+            Response::create(Description::create('pet deleted')),
         );
 
         $deletePetById = Operation::create()
-            ->description(OperationDescription::create('deletes a single pet based on the ID supplied'))
+            ->description(Description::create('deletes a single pet based on the ID supplied'))
             ->operationId(OperationId::create('deletePet'))
             ->parameters(
                 Parameters::create(

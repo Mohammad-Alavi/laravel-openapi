@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Generatable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
 use Tests\oooas\Support\Doubles\Fakes\GeneratableFake;
 
 describe(class_basename(Generatable::class), function (): void {

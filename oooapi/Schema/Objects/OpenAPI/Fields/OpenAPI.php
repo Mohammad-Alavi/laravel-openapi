@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\StringField;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
 use Webmozart\Assert\Assert;
 
 final readonly class OpenAPI extends StringField

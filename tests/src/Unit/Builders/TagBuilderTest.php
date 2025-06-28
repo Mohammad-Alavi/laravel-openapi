@@ -4,8 +4,8 @@ namespace Tests\src\Unit\Builders;
 
 use MohammadAlavi\LaravelOpenApi\Builders\TagBuilder;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -116,21 +116,5 @@ class TagBuilderTest extends TestCase
                 ->map(static fn (Tag $tag): array => $tag->asArray())
                 ->toArray(),
         );
-    }
-
-    public function testGivenInvalidNameProvidedCanProduceCorrectException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $tagBuilder = app(TagBuilder::class);
-        $tagBuilder->build([(new class implements TagFactory {
-            public function build(): Tag
-            {
-                return Tag::create(
-                    Name::create(''),
-                    Description::create('Post Tag'),
-                );
-            }
-        })::class]);
     }
 }

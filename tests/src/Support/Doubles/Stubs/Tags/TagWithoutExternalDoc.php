@@ -3,8 +3,8 @@
 namespace Tests\src\Support\Doubles\Stubs\Tags;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 
 class TagWithoutExternalDoc implements TagFactory

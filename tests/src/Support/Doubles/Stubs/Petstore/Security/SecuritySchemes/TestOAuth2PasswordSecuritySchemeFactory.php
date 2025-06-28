@@ -3,12 +3,12 @@
 namespace Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Flows\Password;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\OAuthFlows;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\ScopeCollection;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\OAuth2;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\Scopes\OrderItemScope;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\Scopes\OrderPaymentScope;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\Scopes\OrderScope;

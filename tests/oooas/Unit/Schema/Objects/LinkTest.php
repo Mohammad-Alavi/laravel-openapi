@@ -1,10 +1,10 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Fields\OperationId;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Fields\OperationRef;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
 describe('Link', function (): void {
     it('can be created with no parameters', function (): void {

@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\StringField;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
 
 final readonly class PropertyName extends StringField
 {

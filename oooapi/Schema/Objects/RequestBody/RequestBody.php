@@ -2,17 +2,16 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\Fields\Required;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\Content;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\Content;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class RequestBody extends ExtensibleObject
 {
     private Description|null $description = null;
-    private Required|null $required = null;
+    private true|null $required = null;
     private Content|null $content = null;
 
     public function description(Description|null $description): self
@@ -28,7 +27,7 @@ final class RequestBody extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->required = Required::yes();
+        $clone->required = true;
 
         return $clone;
     }

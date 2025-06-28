@@ -4,11 +4,11 @@ namespace Tests\oooas\Unit\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Name;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\UnitTestCase;
 

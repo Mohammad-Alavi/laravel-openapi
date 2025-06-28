@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\Sources\PathReference;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Sources\PathReference;
 
 describe(class_basename(PathReference::class), function (): void {
     it('can be created with a valid name', function (): void {

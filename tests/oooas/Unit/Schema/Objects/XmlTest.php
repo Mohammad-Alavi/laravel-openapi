@@ -1,7 +1,7 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\Prefix;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\XmlNamespace;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Xml;

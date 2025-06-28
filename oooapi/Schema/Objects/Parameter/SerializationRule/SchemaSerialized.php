@@ -4,8 +4,8 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Serializa
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Style;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\Examples;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\Examples;
 
 abstract readonly class SchemaSerialized implements SerializationRule
 {

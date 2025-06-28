@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\Sources\QueryReference;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Sources\QueryReference;
 
 describe(class_basename(QueryReference::class), function (): void {
     it('can be created with a valid name', function (): void {

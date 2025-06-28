@@ -2,11 +2,9 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Explode;
-
 abstract class Base implements Style
 {
-    private Explode|null $explode = null;
+    private true|null $explode = null;
 
     abstract protected function value(): string;
 
@@ -23,7 +21,7 @@ abstract class Base implements Style
     {
         $clone = clone $this;
 
-        $clone->explode = Explode::yes();
+        $clone->explode = true;
 
         return $clone;
     }

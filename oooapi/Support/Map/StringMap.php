@@ -2,13 +2,15 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Map;
 
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
+
 /**
  * @template TValue
  */
 interface StringMap extends \JsonSerializable
 {
     /**
-     * @param array<int, StringMapEntry<TValue>> $entries
+     * @param StringMapEntry $entries
      */
     public function __construct(array $entries);
 
@@ -20,7 +22,7 @@ interface StringMap extends \JsonSerializable
     public function keys(): array;
 
     /**
-     * @return array<int, StringMapEntry<TValue>>
+     * @return StringMapEntry
      */
     public function entries(): array;
 

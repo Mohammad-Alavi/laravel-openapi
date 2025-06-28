@@ -2,7 +2,7 @@
 
 namespace Tests\oooas\Support\Doubles\Fakes;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Generatable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
 
 class GeneratableFake extends Generatable
 {

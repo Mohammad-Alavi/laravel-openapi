@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\Response\ResponseHeaderExpression;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Response\ResponseHeaderExpression;
 
 describe(class_basename(ResponseHeaderExpression::class), function (): void {
     it('can be created with a token', function (): void {

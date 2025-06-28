@@ -70,7 +70,7 @@
         }
     },
     "files": [
-        "oooapi/Support/helpers.php"
+      "oooapi/Schema/Objects/Support/helpers.php"
     ],
     "config": {
         "optimize-autoloader": true,
@@ -95,7 +95,7 @@
     "prefer-stable": true,
     "scripts": {
         "fixer": [
-            "php ./vendor/bin/php-cs-fixer fix"
+            "php ./vendor/bin/php-cs-fixer fix --parallel"
         ],
         "cs": [
             "php ./vendor/bin/phpcbf --standard=phpcs.xml"

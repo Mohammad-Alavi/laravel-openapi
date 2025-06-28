@@ -3,7 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Fields\Path;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringKeyedMap;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
 

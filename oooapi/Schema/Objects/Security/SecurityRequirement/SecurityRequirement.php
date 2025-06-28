@@ -4,7 +4,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRe
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Scope;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\ReadonlyGenerator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGenerator;
 
 final readonly class SecurityRequirement extends ReadonlyGenerator
 {

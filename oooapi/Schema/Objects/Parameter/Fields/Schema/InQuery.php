@@ -4,13 +4,13 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Sc
 
 trait InQuery
 {
-    private AllowReserved|null $allowReserved = null;
+    private true|null $allowReserved = null;
 
     public function allowReserved(): self
     {
         $clone = clone $this;
 
-        $clone->allowReserved = AllowReserved::yes();
+        $clone->allowReserved = true;
 
         return $clone;
     }

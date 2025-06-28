@@ -3,13 +3,13 @@
 namespace Tests\src\Support\Doubles\Stubs\Attributes;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ParametersFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedCookie;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedHeader;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 use Tests\src\Support\Doubles\Stubs\Concerns\TestParameter;
 
 class TestParameterFactory implements ParametersFactory

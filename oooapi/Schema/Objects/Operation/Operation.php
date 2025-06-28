@@ -6,16 +6,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Deprecated;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
@@ -30,7 +29,7 @@ final class Operation extends ExtensibleObject
     private Parameters|null $parameters = null;
     private RequestBody|RequestBodyFactory|null $requestBody = null;
     private Responses|null $responses = null;
-    private Deprecated|null $deprecated = null;
+    private true|null $deprecated = null;
     private Security|null $security = null;
     /** @var Server[]|null */
     private array|null $servers = null;
@@ -129,7 +128,7 @@ final class Operation extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->deprecated = Deprecated::yes();
+        $clone->deprecated = true;
 
         return $clone;
     }

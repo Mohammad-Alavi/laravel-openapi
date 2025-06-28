@@ -22,7 +22,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\Availabl
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Fields\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
@@ -30,6 +29,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\RequiredSecurity;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\SecurityRequirement;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecurityRequirements\TestApiKeySecurityRequirementFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecurityRequirements\TestBearerSecurityRequirementFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestApiKeySecuritySchemeFactory;

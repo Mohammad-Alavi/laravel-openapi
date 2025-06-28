@@ -7,7 +7,7 @@ use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestComplexMultiSecurityFactory;

@@ -3,9 +3,9 @@
 namespace Tests\oooas\Unit\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields\ExternalValue;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields\Summary;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 
 describe(class_basename(Example::class), function (): void {
     it('can be created', function (): void {

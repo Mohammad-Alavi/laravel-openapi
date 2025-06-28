@@ -2,6 +2,6 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Exceptions;
 
-class ExtensionDoesNotExistException extends \Exception
+final class ExtensionDoesNotExistException extends \Exception
 {
 }

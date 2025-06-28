@@ -5,8 +5,8 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Composable\SecurityRequirementFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\SecurityRequirement;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Generatable;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\ReadonlyGenerator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGenerator;
 
 final class Security extends Generatable
 {

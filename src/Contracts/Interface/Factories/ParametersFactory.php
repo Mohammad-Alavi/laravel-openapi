@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 
 interface ParametersFactory
 {

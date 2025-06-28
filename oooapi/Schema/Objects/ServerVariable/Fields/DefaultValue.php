@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\StringField;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
 
 final readonly class DefaultValue extends StringField
 {

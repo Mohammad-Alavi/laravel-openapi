@@ -2,6 +2,6 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Exceptions;
 
-class PropertyDoesNotExistException extends \Exception
+final class PropertyDoesNotExistException extends \Exception
 {
 }

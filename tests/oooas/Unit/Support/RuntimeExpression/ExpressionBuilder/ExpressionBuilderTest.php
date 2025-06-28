@@ -1,12 +1,12 @@
 @ -1,114 +0,0 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\ExpressionBuilder\ExpressionBuilder;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\ExpressionBuilder\PathParameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\ExpressionBuilder\QueryParameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\Request\RequestBodyExpression;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\Request\RequestPathExpression;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\URLExpression;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\ExpressionBuilder\ExpressionBuilder;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\ExpressionBuilder\PathParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\ExpressionBuilder\QueryParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Request\RequestBodyExpression;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Request\RequestPathExpression;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\URLExpression;
 
 describe(class_basename(ExpressionBuilder::class), function (): void {
     it(class_basename(ExpressionBuilder::class) . ' raw value', function (): void {

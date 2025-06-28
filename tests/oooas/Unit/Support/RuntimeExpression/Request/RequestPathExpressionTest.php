@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\Request\RequestPathExpression;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Request\RequestPathExpression;
 
 describe(class_basename(RequestPathExpression::class), function (): void {
     it('can be created with a name', function (): void {

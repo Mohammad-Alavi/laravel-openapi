@@ -3,9 +3,9 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Identifier;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Name;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use Webmozart\Assert\Assert;
 

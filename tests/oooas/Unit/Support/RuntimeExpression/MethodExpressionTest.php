@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\MethodExpression;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\MethodExpression;
 
 describe(class_basename(MethodExpression::class), function (): void {
     it('can be created with default value', function (): void {

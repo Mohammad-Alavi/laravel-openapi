@@ -6,15 +6,13 @@ use Illuminate\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Name;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Name as LicenseName;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\URL as LicenseURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 
 class InfoBuilder
 {
@@ -83,11 +81,11 @@ class InfoBuilder
     protected function buildLicense(array $config): License
     {
         return License::create(
-            LicenseName::create(Arr::get($config, 'name')),
+            Name::create(Arr::get($config, 'name')),
             optional(
                 Arr::get($config, 'url'),
-                static function (string|null $value): LicenseURL {
-                    return LicenseURL::create($value);
+                static function (string|null $value): URL {
+                    return URL::create($value);
                 },
             ),
         );

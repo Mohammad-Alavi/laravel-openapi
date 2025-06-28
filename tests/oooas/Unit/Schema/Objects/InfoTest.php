@@ -3,14 +3,14 @@
 namespace Tests\oooas\Unit\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\TermsOfService;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 
 describe(class_basename(Info::class), function (): void {
     it('should set all parameters', function (): void {

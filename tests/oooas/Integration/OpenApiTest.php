@@ -5,25 +5,15 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Prope
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Name;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\Description as ExtDescription;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\URL as ExtURL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Description as InfoDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\Name as LicenseName;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\Fields\URL as LicenseURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
@@ -33,7 +23,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMeth
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Fields\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description as ResponseDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
@@ -42,10 +31,12 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL as ServerURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\ContentEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Parameters;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description as TagDescription;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name as TagName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use Pest\Expectation;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecurityRequirements\TestBearerSecurityRequirementFactory;
@@ -60,8 +51,8 @@ afterAll(
 describe('OpenApi', function (): void {
     it('can generate valid OpenAPI v3.1.0 docs', function (): void {
         $tag = Tag::create(
-            TagName::create('Audits'),
-            TagDescription::create('All the audits'),
+            Name::create('Audits'),
+            Description::create('All the audits'),
         );
         $contact = Contact::create()
             ->name(Name::create('Example'))
@@ -70,12 +61,12 @@ describe('OpenApi', function (): void {
         $info = Info::create(
             Title::create('API Specification'),
             Version::create('v1'),
-        )->description(InfoDescription::create('For using the Example App API'))
+        )->description(Description::create('For using the Example App API'))
             ->contact($contact)
             ->license(
                 License::create(
-                    LicenseName::create('MIT'),
-                    LicenseURL::create('https://github.com/laragen'),
+                    Name::create('MIT'),
+                    URL::create('https://github.com/laragen'),
                 ),
             );
         $schema = Schema::object()
@@ -96,7 +87,7 @@ describe('OpenApi', function (): void {
             ResponseEntry::create(
                 HTTPStatusCode::ok(),
                 Response::create(
-                    ResponseDescription::create('OK'),
+                    Description::create('OK'),
                 )->content(
                     ContentEntry::json(
                         MediaType::create()->schema($schema),
@@ -106,7 +97,7 @@ describe('OpenApi', function (): void {
             ResponseEntry::create(
                 HTTPStatusCode::unprocessableEntity(),
                 Response::create(
-                    ResponseDescription::create('Unprocessable Entity'),
+                    Description::create('Unprocessable Entity'),
                 )->content(
                     ContentEntry::json(
                         MediaType::create()->schema($schema),
@@ -143,11 +134,11 @@ describe('OpenApi', function (): void {
             ->parameters(
                 Parameters::create(
                     Parameter::path(
-                        ParamName::create('audit'),
+                        Name::create('audit'),
                         SchemaSerializedPath::create($stringDescriptor),
                     )->required(),
                     Parameter::query(
-                        ParamName::create('format'),
+                        Name::create('format'),
                         SchemaSerializedQuery::create($enumDescriptor),
                     )->description(Description::create('The format of the appointments')),
                 ),
@@ -185,8 +176,8 @@ describe('OpenApi', function (): void {
         $components = Components::create()->securitySchemes(TestBearerSecuritySchemeFactory::create());
         $security = Security::create(TestBearerSecurityRequirementFactory::create());
         $externalDocumentation = ExternalDocumentation::create(
-            ExtURL::create('https://laragen.io/docs'),
-            ExtDescription::create('Example'),
+            URL::create('https://laragen.io/docs'),
+            Description::create('Example'),
         );
         $openApi = OpenAPI::v311($info)
             ->paths($paths)

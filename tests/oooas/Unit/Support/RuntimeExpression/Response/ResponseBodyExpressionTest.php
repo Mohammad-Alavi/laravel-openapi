@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\Response\ResponseBodyExpression;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Response\ResponseBodyExpression;
 
 describe(class_basename(ResponseBodyExpression::class), function (): void {
     it('can be created with no JSON pointer', function (): void {

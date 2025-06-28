@@ -2,11 +2,9 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\Attribute;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\Prefix;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\Wrapped;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\XmlNamespace;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
@@ -15,8 +13,8 @@ final class Xml extends ExtensibleObject
     private Name|null $name = null;
     private XmlNamespace|null $namespace = null;
     private Prefix|null $prefix = null;
-    private Attribute|null $attribute = null;
-    private Wrapped|null $wrapped = null;
+    private true|null $attribute = null;
+    private true|null $wrapped = null;
 
     public static function create(): self
     {
@@ -54,7 +52,7 @@ final class Xml extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->attribute = Attribute::yes();
+        $clone->attribute = true;
 
         return $clone;
     }
@@ -63,7 +61,7 @@ final class Xml extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->wrapped = Wrapped::yes();
+        $clone->wrapped = true;
 
         return $clone;
     }

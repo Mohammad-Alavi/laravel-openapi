@@ -1,25 +1,22 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\URL as ExtURL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Description as OperationDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name as ParamName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Fields\Description as ResponseDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Parameters;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestCallbackFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
@@ -42,13 +39,13 @@ describe(class_basename(Operation::class), function (): void {
                         Description::create('Lorem ipsum'),
                     ),
                 )->summary(Summary::create('Lorem ipsum'))
-                ->description(OperationDescription::create('Dolar sit amet'))
-                ->externalDocs(ExternalDocumentation::create(ExtURL::create('https://laragen.io/docs')))
+                ->description(Description::create('Dolar sit amet'))
+                ->externalDocs(ExternalDocumentation::create(URL::create('https://laragen.io/docs')))
                 ->operationId(OperationId::create('users.show'))
                 ->parameters(
                     Parameters::create(
                         Parameter::query(
-                            ParamName::create('id'),
+                            Name::create('id'),
                             SchemaSerializedQuery::create(Schema::string()),
                         ),
                     ),
@@ -57,7 +54,7 @@ describe(class_basename(Operation::class), function (): void {
                     Responses::create(
                         ResponseEntry::create(
                             HTTPStatusCode::ok(),
-                            Response::create(ResponseDescription::create('OK')),
+                            Response::create(Description::create('OK')),
                         ),
                     ),
                 )->deprecated()
@@ -114,7 +111,7 @@ describe(class_basename(Operation::class), function (): void {
                 Responses::create(
                     ResponseEntry::create(
                         HTTPStatusCode::ok(),
-                        Response::create(ResponseDescription::create('OK')),
+                        Response::create(Description::create('OK')),
                     ),
                 ),
             )

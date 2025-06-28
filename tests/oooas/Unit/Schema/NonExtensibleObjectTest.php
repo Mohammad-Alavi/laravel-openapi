@@ -1,7 +1,7 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\NonExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Generatable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\NonExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
 use Tests\oooas\Support\Doubles\Fakes\NonExtensibleObjectFake;
 
 describe('NonExtensibleObject', function (): void {

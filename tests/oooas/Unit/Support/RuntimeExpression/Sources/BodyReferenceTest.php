@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\RuntimeExpression\Sources\BodyReference;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Sources\BodyReference;
 
 describe(class_basename(BodyReference::class), function (): void {
     it('can be created with no JSON pointer', function (): void {

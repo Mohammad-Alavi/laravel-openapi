@@ -2,27 +2,24 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\AllowEmptyValue;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Deprecated;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\In;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Name;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\Required;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\ContentSerialized;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedCookie;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedHeader;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SerializationRule;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Parameter extends ExtensibleObject
 {
-    private Required|null $required = null;
+    private true|null $required = null;
     private Description|null $description = null;
-    private Deprecated|null $deprecated = null;
-    private AllowEmptyValue|null $allowEmptyValue = null;
+    private true|null $deprecated = null;
+    private true|null $allowEmptyValue = null;
 
     private function __construct(
         private readonly Name $name,
@@ -72,7 +69,7 @@ final class Parameter extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->required = Required::yes();
+        $clone->required = true;
 
         return $clone;
     }
@@ -81,7 +78,7 @@ final class Parameter extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->deprecated = Deprecated::yes();
+        $clone->deprecated = true;
 
         return $clone;
     }
@@ -90,7 +87,7 @@ final class Parameter extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->allowEmptyValue = AllowEmptyValue::yes();
+        $clone->allowEmptyValue = true;
 
         return $clone;
     }

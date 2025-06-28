@@ -3,21 +3,19 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Deprecated;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Fields\Required;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\Content;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Content\ContentEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\ExampleEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\SharedFields\Examples\Examples;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\Content;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\Examples;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final class Header extends ExtensibleObject
 {
     private Description|null $description = null;
-    private Required|null $required = null;
-    private Deprecated|null $deprecated = null;
+    private true|null $required = null;
+    private true|null $deprecated = null;
     private string|null $style = null;
     private bool|null $explode = null;
     private JSONSchema|null $schema = null;
@@ -37,7 +35,7 @@ final class Header extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->required = Required::yes();
+        $clone->required = true;
 
         return $clone;
     }
@@ -46,7 +44,7 @@ final class Header extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->deprecated = Deprecated::yes();
+        $clone->deprecated = true;
 
         return $clone;
     }

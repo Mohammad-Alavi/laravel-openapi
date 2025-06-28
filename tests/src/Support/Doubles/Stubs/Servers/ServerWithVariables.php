@@ -3,13 +3,12 @@
 namespace Tests\src\Support\Doubles\Stubs\Servers;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\VariableEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\DefaultValue;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\Description as ServerVarDescription;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\ServerVariable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
 class ServerWithVariables implements ServerFactory
 {
@@ -21,9 +20,7 @@ class ServerWithVariables implements ServerFactory
                 VariableEntry::create(
                     'variable_name',
                     ServerVariable::create(DefaultValue::create('variable_default'))
-                        ->description(
-                            ServerVarDescription::create('variable_description'),
-                        ),
+                        ->description(Description::create('variable_description')),
                 ),
             );
     }

@@ -1,7 +1,7 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Support\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 use Tests\oooas\Support\Doubles\Fakes\ExtensibleObjectFake;
 
 describe(class_basename(ExtensibleObject::class), function (): void {

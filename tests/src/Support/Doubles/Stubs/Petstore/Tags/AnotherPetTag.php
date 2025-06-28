@@ -4,10 +4,9 @@ namespace Tests\src\Support\Doubles\Stubs\Petstore\Tags;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\Description as ExtDescription;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\Fields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Fields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 
 class AnotherPetTag implements TagFactory
@@ -21,7 +20,7 @@ class AnotherPetTag implements TagFactory
                 URL::create(
                     'https://swagger.io',
                 ),
-                ExtDescription::create('Find out more'),
+                Description::create('Find out more'),
             ),
         );
     }
