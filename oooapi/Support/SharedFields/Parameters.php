@@ -21,18 +21,19 @@ final class Parameters extends Generatable
     {
         $selfParams = collect($parameter)
             ->filter(static fn ($param): bool => $param instanceof self)
-            ->map(static fn (self $param): array => $param->all())
-            ->flatten();
+            ->map(static fn (self $param): array => $param->all())->flatten();
 
         $parameters = collect($parameter)
             ->reject(static fn ($param): bool => $param instanceof self)
             ->merge($selfParams)
             ->map(
-                static fn (
-                    $param,
-                ): Reference|self|Parameter => $param instanceof ParameterFactory
-                    ? $param::reference()
-                    : $param,
+                static function ($param): Reference|self|Parameter {
+                    if ($param instanceof ParameterFactory) {
+                        return $param::reference();
+                    }
+
+                    return $param;
+                },
             )->toArray();
 
         return new self($parameters);

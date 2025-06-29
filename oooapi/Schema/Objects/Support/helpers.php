@@ -60,17 +60,25 @@ if (!function_exists('when')) {
     /**
      * Return a value if the given condition is true.
      *
-     * @param Closure|mixed $value
-     * @param Closure|mixed $default
+     * @template TValue
+     * @template TDefault
+     *
+     * @param (Closure(): bool)|bool $condition
+     * @param Closure|TValue $value
+     * @param Closure|TDefault $default
+     *
+     * @phpstan-assert bool $condition
+     *
+     * @return ($condition is true ? TValue : TDefault)
      */
-    function when($condition, $value, $default = null)
+    function when(Closure|bool $condition, $value, $default = null)
     {
-        $condition = $condition instanceof Closure ? $condition() : $condition;
+        $result = is_bool($condition) ? $condition : $condition();
 
-        if ($condition) {
-            return value($value, $condition);
+        if ($result) {
+            return value($value, $result);
         }
 
-        return value($default, $condition);
+        return value($default, $result);
     }
 }

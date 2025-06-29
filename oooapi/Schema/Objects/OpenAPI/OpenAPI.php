@@ -20,11 +20,13 @@ final class OpenAPI extends ExtensibleObject
     private Paths|null $paths = null;
     private Components|null $components = null;
     private Security|null $security = null;
+    private ExternalDocumentation|null $externalDocs = null;
+
     /** @var Server[] */
     private array $servers = [];
+
     /** @var Tag[]|null */
     private array|null $tags = null;
-    private ExternalDocumentation|null $externalDocs = null;
 
     private function __construct(
         private OpenAPIField $openAPIField,
@@ -133,21 +135,12 @@ final class OpenAPI extends ExtensibleObject
             'openapi' => $this->openAPIField,
             'info' => $this->info,
             'jsonSchemaDialect' => $this->jsonSchemaDialect,
-            'servers' => $this->serversOrDefault(),
+            'servers' => when(blank($this->servers), [Server::default()], $this->servers),
             'paths' => $this->toObjectIfEmpty($this->paths),
             'components' => $this->toObjectIfEmpty($this->components),
             'security' => $this->security,
             'tags' => $this->tags,
             'externalDocs' => $this->externalDocs,
         ]);
-    }
-
-    private function serversOrDefault(): array
-    {
-        if ([] === $this->servers) {
-            return [Server::default()];
-        }
-
-        return $this->servers;
     }
 }

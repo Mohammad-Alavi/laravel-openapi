@@ -16,8 +16,10 @@ final class PathItem extends ExtensibleObject
     private Summary|null $summary = null;
     private Description|null $description = null;
     private Operations|null $operations = null;
+
     /** @var Server[]|null */
     private array|null $servers = null;
+
     /** @var Parameter[]|null */
     private array|null $parameters = null;
 

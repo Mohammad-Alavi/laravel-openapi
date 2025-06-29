@@ -20,8 +20,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 
 final class Operation extends ExtensibleObject
 {
-    /** @var string[]|null */
-    private array|null $tags = null;
     private Summary|null $summary = null;
     private Description|null $description = null;
     private ExternalDocumentation|null $externalDocs = null;
@@ -29,10 +27,15 @@ final class Operation extends ExtensibleObject
     private Parameters|null $parameters = null;
     private RequestBody|RequestBodyFactory|null $requestBody = null;
     private Responses|null $responses = null;
-    private true|null $deprecated = null;
     private Security|null $security = null;
+    private true|null $deprecated = null;
+
+    /** @var string[]|null */
+    private array|null $tags = null;
+
     /** @var Server[]|null */
     private array|null $servers = null;
+
     /** @var Callback[]|null */
     private array|null $callbacks = null;
 
