@@ -4,9 +4,14 @@ if (!function_exists('blank')) {
     /**
      * Determine if the given value is "blank".
      *
-     * @phpstan-assert-if-false !=null|'' $value
+     * @template TValue
      *
-     * @phpstan-assert-if-true !=numeric|bool $value
+     * @param TValue $value
+     *
+     * @phpstan-assert-if-false !null|''|non-empty-array $value
+     *
+     * @phpstan-assert-if-true !numeric|bool $value
+     * @phpstan-assert-if-true null|''|non-empty-array $value
      */
     function blank($value): bool
     {
@@ -63,22 +68,18 @@ if (!function_exists('when')) {
      * @template TValue
      * @template TDefault
      *
-     * @param (Closure(): bool)|bool $condition
+     * @param bool $condition
      * @param Closure|TValue $value
      * @param Closure|TDefault $default
      *
-     * @phpstan-assert bool $condition
-     *
      * @return ($condition is true ? TValue : TDefault)
      */
-    function when(Closure|bool $condition, $value, $default = null)
+    function when(bool $condition, $value, $default = null)
     {
-        $result = is_bool($condition) ? $condition : $condition();
-
-        if ($result) {
-            return value($value, $result);
+        if ($condition) {
+            return value($value, $condition);
         }
 
-        return value($default, $result);
+        return value($default, $condition);
     }
 }

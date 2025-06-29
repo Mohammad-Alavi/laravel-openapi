@@ -5,7 +5,7 @@ use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody as RequestBodyAttribute;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\RequestBodyBuilder;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
-use Tests\src\Support\Doubles\Stubs\Collectors\Paths\Operations\TestRequestBodyFactory;
+use Tests\src\Support\Doubles\Stubs\Builders\Paths\Operations\TestRequestBodyFactory;
 
 describe(class_basename(RequestBodyBuilder::class), function (): void {
     it('can be created', function (): void {

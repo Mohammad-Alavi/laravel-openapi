@@ -3,12 +3,12 @@
 namespace MohammadAlavi\LaravelOpenApi\Builders\Components;
 
 use Illuminate\Support\Collection;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ReusableCallbackFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ReusableParameterFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ReusableRequestBodyFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ReusableResponseFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ReusableSchemaFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ReusableSecuritySchemeFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\CallbackFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ParameterFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\RequestBodyFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ResponseFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\SchemaFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\SecuritySchemeFilter;
 use MohammadAlavi\LaravelOpenApi\Support\ComponentCollector;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 
@@ -26,27 +26,27 @@ final readonly class ComponentsBuilder
         // TODO: Separate the collecting logic into a separate class
         $callbacks = $this->componentCollector
             ->in($this->getPathsFromConfig('callbacks'))
-            ->use(new ReusableCallbackFilter())
+            ->use(new CallbackFilter())
             ->collect($collection);
         $parameters = $this->componentCollector
             ->in($this->getPathsFromConfig('parameters'))
-            ->use(new ReusableParameterFilter())
+            ->use(new ParameterFilter())
             ->collect($collection);
         $requestBodies = $this->componentCollector
             ->in($this->getPathsFromConfig('request_bodies'))
-            ->use(new ReusableRequestBodyFilter())
+            ->use(new RequestBodyFilter())
             ->collect($collection);
         $responses = $this->componentCollector
             ->in($this->getPathsFromConfig('responses'))
-            ->use(new ReusableResponseFilter())
+            ->use(new ResponseFilter())
             ->collect($collection);
         $schemas = $this->componentCollector
             ->in($this->getPathsFromConfig('schemas'))
-            ->use(new ReusableSchemaFilter())
+            ->use(new SchemaFilter())
             ->collect($collection);
         $securitySchemes = $this->componentCollector
             ->in($this->getPathsFromConfig('security_schemes'))
-            ->use(new ReusableSecuritySchemeFilter())
+            ->use(new SecuritySchemeFilter())
             ->collect($collection);
 
         $components = Components::create();

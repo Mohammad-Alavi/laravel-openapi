@@ -7,7 +7,7 @@ use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestParameterFactory;
-use Tests\src\Support\Doubles\Stubs\Collectors\Paths\Operations\TestController;
+use Tests\src\Support\Doubles\Stubs\Builders\Paths\Operations\TestController;
 
 describe(class_basename(ParametersBuilder::class), function (): void {
     it('can be created', function (): void {

@@ -26,19 +26,19 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
             ],
             'locations' => [
                 'callbacks' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Collectors/Components/Callback',
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Callback',
                 ],
                 'request_bodies' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Collectors/Components/RequestBody',
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/RequestBody',
                 ],
                 'responses' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Collectors/Components/Response',
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Response',
                 ],
                 'schemas' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Collectors/Components/Schema',
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Schema',
                 ],
-                'security' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Collectors/Components/SecurityScheme',
+                'security_schemes' => [
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/SecurityScheme',
                 ],
             ],
         ]);
@@ -103,6 +103,16 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                             'https://laragen.io/multi-collection-callback' => [],
                         ],
                     ],
+                    'securitySchemes' => [
+                        'MultiCollectionSecurityScheme' => [
+                            'type' => 'http',
+                            'scheme' => 'basic',
+                        ],
+                        'ExplicitCollectionSecurityScheme' => [
+                            'type' => 'http',
+                            'scheme' => 'basic',
+                        ],
+                    ],
                 ],
             ],
             'explicit default collection' => [
@@ -144,6 +154,16 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         ],
                         'ImplicitDefaultCallback' => [
                             'https://laragen.io/implicit-default-callback' => [],
+                        ],
+                    ],
+                    'securitySchemes' => [
+                        'MultiCollectionSecurityScheme' => [
+                            'type' => 'http',
+                            'scheme' => 'basic',
+                        ],
+                        'ImplicitCollectionSecurityScheme' => [
+                            'type' => 'http',
+                            'scheme' => 'basic',
                         ],
                     ],
                 ],

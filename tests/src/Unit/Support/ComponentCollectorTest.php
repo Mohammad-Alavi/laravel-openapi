@@ -8,7 +8,7 @@ use Pest\Expectation;
 describe(class_basename(ComponentCollector::class), function (): void {
     it('can collect specific collections', function (): void {
         $sut = new ComponentCollector([
-            __DIR__ . '/../../Support/Doubles/Stubs/Collectors/Components',
+            __DIR__ . '/../../Support/Doubles/Stubs/Builders/Components',
         ]);
 
         $result = $sut->collect('test')->map(static fn ($component) => $component::class);

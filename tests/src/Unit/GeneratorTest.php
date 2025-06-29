@@ -89,19 +89,19 @@ beforeEach(function (): void {
         ],
         'locations' => [
             'callbacks' => [
-                __DIR__ . '/../Support/Doubles/Stubs/Collectors/Components/Callback',
+                __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Callback',
             ],
             'request_bodies' => [
-                __DIR__ . '/../Support/Doubles/Stubs/Collectors/Components/RequestBody',
+                __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/RequestBody',
             ],
             'responses' => [
-                __DIR__ . '/../Support/Doubles/Stubs/Collectors/Components/Response',
+                __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Response',
             ],
             'schemas' => [
-                __DIR__ . '/../Support/Doubles/Stubs/Collectors/Components/Schema',
+                __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Schema',
             ],
             'security' => [
-                __DIR__ . '/../Support/Doubles/Stubs/Collectors/Components/SecurityScheme',
+                __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/SecurityScheme',
             ],
         ],
     ]);

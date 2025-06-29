@@ -3,7 +3,6 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ReusableComponent;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 
 abstract class SecuritySchemeFactory extends ReusableComponent
@@ -13,5 +12,5 @@ abstract class SecuritySchemeFactory extends ReusableComponent
         return '/securitySchemes';
     }
 
-    abstract public function component(): SecurityScheme|Reference;
+    abstract public function component(): SecurityScheme;
 }

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\PathsBuilder;
 use MohammadAlavi\LaravelOpenApi\Support\RouteCollector;
-use Tests\src\Support\Doubles\Stubs\Collectors\ControllerWithPathItemAndOperationStub;
+use Tests\src\Support\Doubles\Stubs\Builders\ControllerWithPathItemAndOperationStub;
 
 describe(class_basename(PathsBuilder::class), function (): void {
     it('can be created', function (): void {
