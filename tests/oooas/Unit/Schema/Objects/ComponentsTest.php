@@ -6,6 +6,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ExampleFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\HeaderFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\LinkFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
@@ -32,9 +33,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\S
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Request\RequestQueryExpression;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\HeaderEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Links\LinkEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
 describe(class_basename(Components::class), function (): void {
@@ -127,7 +125,17 @@ describe(class_basename(Components::class), function (): void {
             }
         };
 
-        $link = Link::create();
+        $link = new class extends LinkFactory {
+            public function component(): Link
+            {
+                return Link::create();
+            }
+
+            public static function name(): string
+            {
+                return 'LinkExample';
+            }
+        };
 
         $callback = new class extends CallbackFactory {
             public function component(): Callback
@@ -173,7 +181,7 @@ describe(class_basename(Components::class), function (): void {
             ->requestBodies($requestBody)
             ->headers($header)
             ->securitySchemes($securityScheme)
-            ->links(LinkEntry::create('LinkExample', $link))
+            ->links($link)
             ->callbacks($callback);
 
         expect($components->unserializeToArray())->toBe([

@@ -3,14 +3,14 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\ReusableComponent;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
 
-abstract class ExampleFactory extends ReusableComponent
+abstract class LinkFactory extends ReusableComponent
 {
     final protected static function componentNamespace(): string
     {
-        return '/examples';
+        return '/links';
     }
 
-    abstract public function component(): Example;
+    abstract public function component(): Link;
 }

@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\CallbackFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ExampleFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\HeaderFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\LinkFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ParameterFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\RequestBodyFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ResponseFilter;
@@ -54,6 +55,10 @@ final readonly class ComponentsBuilder
             ->in($this->getPathsFromConfig('security_schemes'))
             ->use(new SecuritySchemeFilter())
             ->collect($collection);
+        $links = $this->componentCollector
+            ->in($this->getPathsFromConfig('links'))
+            ->use(new LinkFilter())
+            ->collect($collection);
         $callbacks = $this->componentCollector
             ->in($this->getPathsFromConfig('callbacks'))
             ->use(new CallbackFilter())
@@ -99,6 +104,12 @@ final readonly class ComponentsBuilder
         if (count($securitySchemes) > 0) {
             $hasAnyObjects = true;
             $components = $components->securitySchemes(...$securitySchemes);
+        }
+
+        if (count($links) > 0) {
+            $hasAnyObjects = true;
+
+            $components = $components->links(...$links);
         }
 
         if (count($callbacks) > 0) {

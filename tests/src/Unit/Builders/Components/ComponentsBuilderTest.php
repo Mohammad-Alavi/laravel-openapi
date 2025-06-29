@@ -43,11 +43,14 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                 'headers' => [
                     __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Header',
                 ],
-                'callbacks' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Callback',
-                ],
                 'security_schemes' => [
                     __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/SecurityScheme',
+                ],
+                'links' => [
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Link',
+                ],
+                'callbacks' => [
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Callback',
                 ],
             ],
         ]);
@@ -132,14 +135,6 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         'MultiCollectionHeader' => [],
                         'ExplicitCollectionHeader' => [],
                     ],
-                    'callbacks' => [
-                        'ExplicitCollectionCallback' => [
-                            'https://laragen.io/explicit-collection-callback' => [],
-                        ],
-                        'MultiCollectionCallback' => [
-                            'https://laragen.io/multi-collection-callback' => [],
-                        ],
-                    ],
                     'securitySchemes' => [
                         'MultiCollectionSecurityScheme' => [
                             'type' => 'http',
@@ -148,6 +143,18 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         'ExplicitCollectionSecurityScheme' => [
                             'type' => 'http',
                             'scheme' => 'basic',
+                        ],
+                    ],
+                    'links' => [
+                        'MultiCollectionLink' => [],
+                        'ExplicitCollectionLink' => [],
+                    ],
+                    'callbacks' => [
+                        'ExplicitCollectionCallback' => [
+                            'https://laragen.io/explicit-collection-callback' => [],
+                        ],
+                        'MultiCollectionCallback' => [
+                            'https://laragen.io/multi-collection-callback' => [],
                         ],
                     ],
                 ],
@@ -213,14 +220,6 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         'MultiCollectionHeader' => [],
                         'ImplicitCollectionHeader' => [],
                     ],
-                    'callbacks' => [
-                        'MultiCollectionCallback' => [
-                            'https://laragen.io/multi-collection-callback' => [],
-                        ],
-                        'ImplicitDefaultCallback' => [
-                            'https://laragen.io/implicit-default-callback' => [],
-                        ],
-                    ],
                     'securitySchemes' => [
                         'MultiCollectionSecurityScheme' => [
                             'type' => 'http',
@@ -229,6 +228,18 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         'ImplicitCollectionSecurityScheme' => [
                             'type' => 'http',
                             'scheme' => 'basic',
+                        ],
+                    ],
+                    'links' => [
+                        'MultiCollectionLink' => [],
+                        'ImplicitCollectionLink' => [],
+                    ],
+                    'callbacks' => [
+                        'MultiCollectionCallback' => [
+                            'https://laragen.io/multi-collection-callback' => [],
+                        ],
+                        'ImplicitDefaultCallback' => [
+                            'https://laragen.io/implicit-default-callback' => [],
                         ],
                     ],
                 ],

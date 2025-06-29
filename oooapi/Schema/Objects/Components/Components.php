@@ -7,6 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ExampleFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\HeaderFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\LinkFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
@@ -15,40 +16,40 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Links\LinkEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Links\Links;
 
 final class Components extends ExtensibleObject
 {
-    /** @var JSONSchema[]|null */
+    /** @var array<string, JSONSchema>|null */
     private array|null $schemas = null;
 
-    /** @var Response[]|null */
+    /** @var array<string, Response>|null */
     private array|null $responses = null;
 
-    /** @var Parameter[]|null */
+    /** @var array<string, Parameter>|null */
     private array|null $parameters = null;
 
-    /** @var Example[]|null */
+    /** @var array<string, Example>|null */
     private array|null $examples = null;
 
-    /** @var RequestBody[]|null */
+    /** @var array<string, RequestBody>|null */
     private array|null $requestBodies = null;
 
-    /** @var Header[]|null */
+    /** @var array<string, Header>|null */
     private array|null $headers = null;
 
-    /** @var SecurityScheme[]|null */
+    /** @var array<string, Link>|null */
+    private array|null $links = null;
+
+    /** @var array<string, SecurityScheme>|null */
     private array|null $securitySchemes = null;
 
-    private Links|null $links = null;
-
-    /** @var Callback[]|null */
+    /** @var array<string, Callback>|null */
     private array|null $callbacks = null;
 
     public function schemas(SchemaFactory ...$schemaFactory): self
@@ -91,6 +92,7 @@ final class Components extends ExtensibleObject
         foreach ($exampleFactory as $factory) {
             $clone->examples[$factory::name()] = $factory->component();
         }
+
         return $clone;
     }
 
@@ -116,11 +118,6 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
-    public static function create(): self
-    {
-        return new self();
-    }
-
     public function securitySchemes(SecuritySchemeFactory ...$securitySchemeFactory): self
     {
         $clone = clone $this;
@@ -132,13 +129,20 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
-    public function links(LinkEntry ...$linkEntry): self
+    public function links(LinkFactory ...$linkFactory): self
     {
         $clone = clone $this;
 
-        $clone->links = Links::create(...$linkEntry);
+        foreach ($linkFactory as $factory) {
+            $clone->links[$factory::name()] = $factory->component();
+        }
 
         return $clone;
+    }
+
+    public static function create(): self
+    {
+        return new self();
     }
 
     public function callbacks(CallbackFactory ...$callbackFactory): self
