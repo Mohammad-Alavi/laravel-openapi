@@ -9,7 +9,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\HeaderEntry;
 
@@ -18,7 +17,7 @@ describe(class_basename(Encoding::class), function (): void {
         $header = HeaderEntry::create(
             'HeaderName',
             Header::create()
-                ->description(Description::create('Lorem ipsum'))
+                ->description('Lorem ipsum')
                 ->required()
                 ->deprecated()
                 ->schema(Schema::string())

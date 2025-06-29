@@ -1,10 +1,7 @@
 <?php
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Fields\OperationId;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Fields\OperationRef;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
 describe('Link', function (): void {
     it('can be created with no parameters', function (): void {
@@ -16,9 +13,9 @@ describe('Link', function (): void {
     it('can be created with all parameters', function (): void {
         $server = Server::default();
         $link = Link::create()
-            ->operationRef(OperationRef::create('testRef'))
-            ->operationId(OperationId::create('testId'))
-            ->description(Description::create('Some descriptions'))
+            ->operationRef('testRef')
+            ->operationId('testId')
+            ->description('Some descriptions')
             ->server($server);
 
         expect($link->unserializeToArray())->toBe([

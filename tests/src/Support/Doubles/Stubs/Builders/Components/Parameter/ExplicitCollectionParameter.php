@@ -8,7 +8,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
 #[Collection('test')]
 class ExplicitCollectionParameter extends ParameterFactory implements ShouldBeReferenced
@@ -16,7 +15,7 @@ class ExplicitCollectionParameter extends ParameterFactory implements ShouldBeRe
     public function component(): Parameter
     {
         return Parameter::path(
-            Name::create('user_id'),
+            'user_id',
             SchemaSerializedPath::create(Schema::string()),
         );
     }

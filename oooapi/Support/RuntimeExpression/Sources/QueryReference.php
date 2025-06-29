@@ -16,6 +16,18 @@ final readonly class QueryReference
     }
 
     /**
+     * Validate that the name is valid according to the ABNF syntax.
+     *
+     * name = *( CHAR )
+     */
+    private function validateName(string $name): void
+    {
+        if ('' === $name || '0' === $name) {
+            throw new \InvalidArgumentException('Name cannot be empty');
+        }
+    }
+
+    /**
      * Create a new query reference.
      */
     public static function create(string $name): self
@@ -37,17 +49,5 @@ final readonly class QueryReference
     public function toString(): string
     {
         return self::PREFIX . $this->name;
-    }
-
-    /**
-     * Validate that the name is valid according to the ABNF syntax.
-     *
-     * name = *( CHAR )
-     */
-    private function validateName(string $name): void
-    {
-        if ('' === $name || '0' === $name) {
-            throw new \InvalidArgumentException('Name cannot be empty');
-        }
     }
 }

@@ -6,8 +6,6 @@ abstract class Base implements Style
 {
     private true|null $explode = null;
 
-    abstract protected function value(): string;
-
     final protected function __construct()
     {
     }
@@ -33,4 +31,6 @@ abstract class Base implements Style
             'explode' => $this->explode,
         ];
     }
+
+    abstract protected function value(): string;
 }

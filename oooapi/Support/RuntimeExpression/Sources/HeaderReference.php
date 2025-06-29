@@ -16,6 +16,25 @@ final readonly class HeaderReference
     }
 
     /**
+     * Validate that the token is valid according to the ABNF syntax.
+     *
+     * token = 1*tchar
+     * tchar = "!" / "#" / "$" / "%" / "&" / "'" / "*" / "+" / "-" / "."
+     *       / "^" / "_" / "`" / "|" / "~" / DIGIT / ALPHA
+     */
+    private function validateToken(string $token): void
+    {
+        if ('' === $token || '0' === $token) {
+            throw new \InvalidArgumentException('Token cannot be empty');
+        }
+
+        // Check that the token contains only valid characters
+        if (in_array(preg_match('/^[a-zA-Z0-9!#$%&\'*+\-.^_`|~]+$/', $token), [0, false], true)) {
+            throw new \InvalidArgumentException(sprintf('Token contains invalid characters: "%s"', $token));
+        }
+    }
+
+    /**
      * Create a new header reference.
      */
     public static function create(string $token): self
@@ -37,24 +56,5 @@ final readonly class HeaderReference
     public function toString(): string
     {
         return self::PREFIX . $this->token;
-    }
-
-    /**
-     * Validate that the token is valid according to the ABNF syntax.
-     *
-     * token = 1*tchar
-     * tchar = "!" / "#" / "$" / "%" / "&" / "'" / "*" / "+" / "-" / "."
-     *       / "^" / "_" / "`" / "|" / "~" / DIGIT / ALPHA
-     */
-    private function validateToken(string $token): void
-    {
-        if ('' === $token || '0' === $token) {
-            throw new \InvalidArgumentException('Token cannot be empty');
-        }
-
-        // Check that the token contains only valid characters
-        if (in_array(preg_match('/^[a-zA-Z0-9!#$%&\'*+\-.^_`|~]+$/', $token), [0, false], true)) {
-            throw new \InvalidArgumentException(sprintf('Token contains invalid characters: "%s"', $token));
-        }
     }
 }

@@ -1,90 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Config;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
+use MohammadAlavi\LaravelOpenApi\Factories\ExampleFactory;
 use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\Fields\JsonSchemaDialect;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestComplexMultiSecurityFactory;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestEmptySecurityFactory;
+use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestOAuth2PasswordSecuritySchemeFactory;
 
 beforeEach(function (): void {
     Config::set('openapi', [
         'collections' => [
             'default' => [
-                'info' => [
-                    'title' => 'Test Default API',
-                    'description' => 'Test Default API description',
-                    'version' => '1.0.0',
-                    'contact' => [
-                        'name' => 'Mohammad Alavi',
-                    ],
-                ],
-                'servers' => [
-                    (new class implements ServerFactory {
-                        public function build(): Server
-                        {
-                            return Server::create(URL::create('https://laragen.io'));
-                        }
-                    })::class,
-                ],
-                'tags' => [
-                    (new class implements TagFactory {
-                        public function build(): Tag
-                        {
-                            return Tag::create(Name::create('test'));
-                        }
-                    })::class,
-                ],
-                'security' => TestEmptySecurityFactory::class,
+                'openapi' => ExampleFactory::class,
             ],
             'test' => [
-                'info' => [
-                    'title' => 'Test API',
-                    'description' => 'Test API description',
-                    'version' => '2.0.0',
-                    'contact' => [
-                        'name' => 'Mohammad Alavi the second',
-                    ],
-                ],
-                'servers' => [
-                    (new class implements ServerFactory {
-                        public function build(): Server
-                        {
-                            return Server::create(URL::create('https://test.com'));
-                        }
-                    })::class,
-                    (new class implements ServerFactory {
-                        public function build(): Server
-                        {
-                            return Server::create(URL::create('https://local.com'));
-                        }
-                    })::class,
-                ],
-                'tags' => [
-                    (new class implements TagFactory {
-                        public function build(): Tag
-                        {
-                            return Tag::create(Name::create('test'));
-                        }
-                    })::class,
-                ],
-                'security' => TestComplexMultiSecurityFactory::class,
-                'extensions' => [
-                    'x-tagGroups' => [
-                        [
-                            'name' => 'General',
-                            'tags' => [
-                                'user',
-                            ],
-                        ],
-                    ],
-                ],
+                'openapi' => ExampleFactory::class,
             ],
         ],
         'locations' => [
@@ -99,9 +29,6 @@ beforeEach(function (): void {
             ],
             'schemas' => [
                 __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Schema',
-            ],
-            'security' => [
-                __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/SecurityScheme',
             ],
         ],
     ]);
@@ -120,19 +47,23 @@ describe('Generator', function (): void {
             'expectation' => [
                 'openapi' => '3.1.1',
                 'info' => [
-                    'title' => 'Test API',
-                    'description' => 'Test API description',
+                    'title' => 'https://laragen.io',
+                    'description' => 'This is the default OpenAPI specification for the application.',
                     'contact' => [
-                        'name' => 'Mohammad Alavi the second',
+                        'name' => 'Example Contact',
+                        'url' => 'https://example.com/',
+                        'email' => 'example@example.com',
                     ],
-                    'version' => '2.0.0',
+                    'version' => '1.0.0',
+                    'summary' => 'Default OpenAPI Specification',
+                    'license' => [
+                        'name' => 'MIT',
+                        'url' => 'https://github.com/',
+                    ],
                 ],
                 'servers' => [
                     [
-                        'url' => 'https://test.com',
-                    ],
-                    [
-                        'url' => 'https://local.com',
+                        'url' => 'https://laragen.io',
                     ],
                 ],
                 'components' => [
@@ -181,7 +112,7 @@ describe('Generator', function (): void {
                     ],
                     [
                         TestBearerSecuritySchemeFactory::name() => [],
-                        'OAuth2Password' => [
+                        TestOAuth2PasswordSecuritySchemeFactory::name() => [
                             'order:shipping:address',
                             'order:shipping:status',
                         ],
@@ -192,16 +123,14 @@ describe('Generator', function (): void {
                         'name' => 'test',
                     ],
                 ],
-                'x-tagGroups' => [
-                    [
-                        'name' => 'General',
-                        'tags' => [
-                            'user',
-                        ],
-                    ],
-                ],
                 'paths' => [],
                 'jsonSchemaDialect' => JsonSchemaDialect::v31x()->value(),
+                'x-example' => [
+                    'name' => 'General',
+                    'tags' => [
+                        'user',
+                    ],
+                ],
             ],
         ],
         'default collection' => [
@@ -209,12 +138,19 @@ describe('Generator', function (): void {
             'expectation' => [
                 'openapi' => '3.1.1',
                 'info' => [
-                    'title' => 'Test Default API',
-                    'description' => 'Test Default API description',
+                    'title' => 'https://laragen.io',
+                    'description' => 'This is the default OpenAPI specification for the application.',
                     'contact' => [
-                        'name' => 'Mohammad Alavi',
+                        'name' => 'Example Contact',
+                        'url' => 'https://example.com/',
+                        'email' => 'example@example.com',
                     ],
                     'version' => '1.0.0',
+                    'summary' => 'Default OpenAPI Specification',
+                    'license' => [
+                        'name' => 'MIT',
+                        'url' => 'https://github.com/',
+                    ],
                 ],
                 'servers' => [
                     [
@@ -261,7 +197,18 @@ describe('Generator', function (): void {
                         ],
                     ],
                 ],
-                'security' => [],
+                'security' => [
+                    [
+                        TestBearerSecuritySchemeFactory::name() => [],
+                    ],
+                    [
+                        TestBearerSecuritySchemeFactory::name() => [],
+                        TestOAuth2PasswordSecuritySchemeFactory::name() => [
+                            'order:shipping:address',
+                            'order:shipping:status',
+                        ],
+                    ],
+                ],
                 'tags' => [
                     [
                         'name' => 'test',
@@ -269,6 +216,12 @@ describe('Generator', function (): void {
                 ],
                 'paths' => [],
                 'jsonSchemaDialect' => JsonSchemaDialect::v31x()->value(),
+                'x-example' => [
+                    'name' => 'General',
+                    'tags' => [
+                        'user',
+                    ],
+                ],
             ],
         ],
     ]);

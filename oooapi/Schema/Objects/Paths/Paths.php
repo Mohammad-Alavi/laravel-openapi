@@ -22,13 +22,13 @@ final class Paths extends ExtensibleObject implements StringMap
         return self::put(...$path);
     }
 
-    public function jsonSerialize(): array
-    {
-        return $this->jsonSerializeTrait() ?? [];
-    }
-
     public function toArray(): array
     {
         return $this->jsonSerialize() ?? [];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->jsonSerializeTrait() ?? [];
     }
 }

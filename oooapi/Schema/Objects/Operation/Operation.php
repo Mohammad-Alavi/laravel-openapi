@@ -39,11 +39,6 @@ final class Operation extends ExtensibleObject
     /** @var Callback[]|null */
     private array|null $callbacks = null;
 
-    public static function create(): self
-    {
-        return new self();
-    }
-
     public function tags(Tag|string ...$tags): self
     {
         $allStringTags = array_map(
@@ -64,20 +59,25 @@ final class Operation extends ExtensibleObject
         return $clone;
     }
 
-    public function summary(Summary $summary): self
+    public function summary(string $summary): self
     {
         $clone = clone $this;
 
-        $clone->summary = $summary;
+        $clone->summary = Summary::create($summary);
 
         return $clone;
     }
 
-    public function description(Description $description): self
+    public static function create(): self
+    {
+        return new self();
+    }
+
+    public function description(string $description): self
     {
         $clone = clone $this;
 
-        $clone->description = $description;
+        $clone->description = Description::create($description);
 
         return $clone;
     }
@@ -91,11 +91,11 @@ final class Operation extends ExtensibleObject
         return $clone;
     }
 
-    public function operationId(OperationId $operationId): self
+    public function operationId(string $operationId): self
     {
         $clone = clone $this;
 
-        $clone->operationId = $operationId;
+        $clone->operationId = OperationId::create($operationId);
 
         return $clone;
     }
@@ -109,7 +109,7 @@ final class Operation extends ExtensibleObject
         return $clone;
     }
 
-    public function requestBody(RequestBody|RequestBodyFactory|null $requestBody): self
+    public function requestBody(RequestBody|RequestBodyFactory $requestBody): self
     {
         $clone = clone $this;
 
@@ -118,7 +118,7 @@ final class Operation extends ExtensibleObject
         return $clone;
     }
 
-    public function responses(Responses|null $responses): self
+    public function responses(Responses $responses): self
     {
         $clone = clone $this;
 

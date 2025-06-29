@@ -38,7 +38,7 @@ final class Encoding extends ExtensibleObject
         return new self();
     }
 
-    public function style(string|null $style): self
+    public function style(string $style): self
     {
         $clone = clone $this;
 
@@ -47,11 +47,11 @@ final class Encoding extends ExtensibleObject
         return $clone;
     }
 
-    public function explode(bool|null $explode = true): self
+    public function explode(): self
     {
         $clone = clone $this;
 
-        $clone->explode = $explode;
+        $clone->explode = true;
 
         return $clone;
     }

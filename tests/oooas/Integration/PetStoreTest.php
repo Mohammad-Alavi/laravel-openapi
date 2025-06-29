@@ -7,15 +7,10 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\TermsOfService;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\Form;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
@@ -33,53 +28,46 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Formats\IntegerFormat;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL as ServerURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 
 describe('PetStoreTest', function (): void {
     test('PetStore Example', function (): void {
         $contact = Contact::create()
-            ->name(Name::create('Swagger API Team'))
-            ->email(Email::create('apiteam@swagger.io'))
-            ->url(URL::create('https://swagger.io'));
+            ->name('Swagger API Team')
+            ->email('apiteam@swagger.io')
+            ->url('https://swagger.io');
 
-        $license = License::create(Name::create('Apache 2.0'))
-            ->url(URL::create('https://www.apache.org/licenses/LICENSE-2.0.html'));
+        $license = License::create('Apache 2.0')
+            ->url('https://www.apache.org/licenses/LICENSE-2.0.html');
 
-        $server = Server::create(ServerURL::create('https://petstore.swagger.io/api'));
+        $server = Server::create('https://petstore.swagger.io/api');
 
         $info = Info::create(
-            Title::create('Swagger Petstore'),
-            Version::create('1.0.0'),
-        )->description(
-            Description::create(
-                'A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification',
-            ),
-        )->termsOfService(TermsOfService::create('https://swagger.io/terms/'))
+            'Swagger Petstore',
+            '1.0.0',
+        )->description('A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification')
+            ->termsOfService('https://swagger.io/terms/')
             ->contact($contact)
             ->license($license);
 
         $tagsParameter = Parameter::query(
-            Name::create('tags'),
+            'tags',
             SchemaSerializedQuery::create(
                 Schema::array()->items(
                     Schema::string(),
                 ),
                 Form::create(),
             ),
-        )->description(Description::create('tags to filter by'));
+        )->description('tags to filter by');
 
         $limitParameter = Parameter::query(
-            Name::create('limit'),
+            'limit',
             SchemaSerializedQuery::create(
                 Schema::integer()->format(IntegerFormat::INT32),
             ),
-        )->description(Description::create('maximum number of results to return'));
+        )->description('maximum number of results to return');
 
         $components = Components::create()
             ->schemas(Pet::create(), Animal::create(), ValidationError::create());
@@ -87,7 +75,7 @@ describe('PetStoreTest', function (): void {
         $responseEntry = ResponseEntry::create(
             HTTPStatusCode::ok(),
             Response::create(
-                Description::create('pet response'),
+                'pet response',
             )->content(
                 ContentEntry::json(
                     MediaType::create()->schema(Pet::create()),
@@ -98,7 +86,7 @@ describe('PetStoreTest', function (): void {
         $petListingResponse = ResponseEntry::create(
             HTTPStatusCode::ok(),
             Response::create(
-                Description::create('pet response'),
+                'pet response',
             )->content(
                 ContentEntry::json(
                     MediaType::create()->schema(
@@ -113,7 +101,7 @@ describe('PetStoreTest', function (): void {
         $defaultErrorResponse = ResponseEntry::create(
             HTTPStatusCode::internalServerError(),
             Response::create(
-                Description::create('unexpected error'),
+                'unexpected error',
             )->content(
                 ContentEntry::json(
                     MediaType::create()->schema(ValidationError::create()),
@@ -123,8 +111,7 @@ describe('PetStoreTest', function (): void {
 
         $operation = Operation::create()
             ->description(
-                Description::create(
-                    'Returns all pets from the system that the user has access to Nam sed condimentum est. 
+                'Returns all pets from the system that the user has access to Nam sed condimentum est. 
                     Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet.
                      Aenean at gravida augue, ac iaculis sem. 
                      Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. 
@@ -148,20 +135,17 @@ describe('PetStoreTest', function (): void {
                      Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. 
                      Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. 
                      Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.',
-                ),
-            )->operationId(OperationId::create('findPets'))
+            )->operationId('findPets')
             ->parameters(Parameters::create($tagsParameter, $limitParameter))
             ->responses(Responses::create($petListingResponse, $defaultErrorResponse));
 
         $addPet = Operation::create()
             ->description(
-                Description::create(
-                    'Creates a new pet in the store.  Duplicates are allowed',
-                ),
-            )->operationId(OperationId::create('addPet'))
+                'Creates a new pet in the store.  Duplicates are allowed',
+            )->operationId('addPet')
             ->requestBody(
                 RequestBody::create()
-                    ->description(Description::create('Pet to add to the store'))
+                    ->description('Pet to add to the store')
                     ->required()
                     ->content(
                         ContentEntry::json(
@@ -189,33 +173,31 @@ describe('PetStoreTest', function (): void {
         );
 
         $petIdParameter = Parameter::path(
-            Name::create('id'),
+            'id',
             SchemaSerializedPath::create(
                 Schema::integer()->format(IntegerFormat::INT64),
             ),
-        )->description(Description::create('ID of pet to fetch'))
+        )->description('ID of pet to fetch')
             ->required();
 
         $findPetById = Operation::create()
             ->description(
-                Description::create(
-                    'Returns a user based on a single ID, if the user does not have access to the pet',
-                ),
-            )->operationId(OperationId::create('find pet by id'))
+                'Returns a user based on a single ID, if the user does not have access to the pet',
+            )->operationId('find pet by id')
             ->parameters(Parameters::create($petIdParameter))
             ->responses(Responses::create($responseEntry, $defaultErrorResponse));
 
         $petDeletedResponse = ResponseEntry::create(
             HTTPStatusCode::noContent(),
-            Response::create(Description::create('pet deleted')),
+            Response::create('pet deleted'),
         );
 
         $deletePetById = Operation::create()
-            ->description(Description::create('deletes a single pet based on the ID supplied'))
-            ->operationId(OperationId::create('deletePet'))
+            ->description('deletes a single pet based on the ID supplied')
+            ->operationId('deletePet')
             ->parameters(
                 Parameters::create(
-                    $petIdParameter->description(Description::create('ID of pet to delete')),
+                    $petIdParameter->description('ID of pet to delete'),
                 ),
             )->responses(Responses::create($petDeletedResponse, $defaultErrorResponse));
 

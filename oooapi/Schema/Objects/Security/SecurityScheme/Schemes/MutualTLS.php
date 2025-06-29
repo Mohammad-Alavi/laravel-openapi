@@ -6,10 +6,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\C
 
 final readonly class MutualTLS implements Scheme
 {
-    private function __construct()
-    {
-    }
-
     public static function create(): self
     {
         return new self();

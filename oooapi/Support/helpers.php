@@ -4,13 +4,12 @@ if (!function_exists('blank')) {
     /**
      * Determine if the given value is "blank".
      *
-     * @template TValue
+     * @phpstan-assert-if-false !null $value
+     * @phpstan-assert-if-false '' $value
+     * @phpstan-assert-if-false non-empty-array $value
      *
-     * @param TValue $value
-     *
-     * @phpstan-assert-if-false !null|''|non-empty-array $value
-     *
-     * @phpstan-assert-if-true !numeric|bool $value
+     * @phpstan-assert-if-true !numeric $value
+     * @phpstan-assert-if-true bool $value
      * @phpstan-assert-if-true null|''|non-empty-array $value
      */
     function blank($value): bool

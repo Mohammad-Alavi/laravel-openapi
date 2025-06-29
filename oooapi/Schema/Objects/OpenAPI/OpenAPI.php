@@ -29,8 +29,8 @@ final class OpenAPI extends ExtensibleObject
     private array|null $tags = null;
 
     private function __construct(
-        private OpenAPIField $openAPIField,
-        private Info $info,
+        private readonly OpenAPIField $openAPIField,
+        private readonly Info $info,
     ) {
         $this->jsonSchemaDialect = JsonSchemaDialect::v31x();
     }
@@ -38,41 +38,7 @@ final class OpenAPI extends ExtensibleObject
     public static function v311(
         Info $info,
     ): self {
-        return self::create(OpenAPIField::v311(), $info);
-    }
-
-    public static function create(
-        OpenAPIField $openAPIField,
-        Info $info,
-    ): self {
-        return new self($openAPIField, $info);
-    }
-
-    public function openapi(OpenAPIField $openAPIField): self
-    {
-        $clone = clone $this;
-
-        $clone->openAPIField = $openAPIField;
-
-        return $clone;
-    }
-
-    public function info(Info $info): self
-    {
-        $clone = clone $this;
-
-        $clone->info = $info;
-
-        return $clone;
-    }
-
-    public function jsonSchemaDialect(JsonSchemaDialect $jsonSchemaDialect): self
-    {
-        $clone = clone $this;
-
-        $clone->jsonSchemaDialect = $jsonSchemaDialect;
-
-        return $clone;
+        return new self(OpenAPIField::v311(), $info);
     }
 
     public function servers(Server ...$server): self

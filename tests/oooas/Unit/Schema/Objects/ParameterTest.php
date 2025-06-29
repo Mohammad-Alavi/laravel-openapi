@@ -17,9 +17,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRu
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
 describe('Parameter', function (): void {
     it(
@@ -29,7 +27,7 @@ describe('Parameter', function (): void {
             array $expected,
         ): void {
             $parameter = Parameter::cookie(
-                Name::create('user'),
+                'user',
                 SchemaSerializedCookie::create(
                     Schema::integer(),
                     $style,
@@ -42,7 +40,7 @@ describe('Parameter', function (): void {
                         Example::create(),
                     ),
                 ),
-            )->description(Description::create('User ID'))
+            )->description('User ID')
                 ->required()
                 ->deprecated()
                 ->allowEmptyValue();
@@ -86,7 +84,7 @@ describe('Parameter', function (): void {
             array $expected,
         ): void {
             $parameter = Parameter::header(
-                Name::create('user'),
+                'user',
                 SchemaSerializedHeader::create(
                     Schema::object(),
                     $style,
@@ -95,7 +93,7 @@ describe('Parameter', function (): void {
                         Example::create(),
                     ),
                 ),
-            )->description(Description::create('User ID'))
+            )->description('User ID')
                 ->deprecated()
                 ->allowEmptyValue();
 
@@ -135,12 +133,12 @@ describe('Parameter', function (): void {
             array $expected,
         ): void {
             $parameter = Parameter::path(
-                Name::create('user'),
+                'user',
                 SchemaSerializedPath::create(
                     Schema::string(),
                     $style,
                 ),
-            )->description(Description::create('User ID'))
+            )->description('User ID')
                 ->required()
                 ->allowEmptyValue();
 
@@ -190,12 +188,12 @@ describe('Parameter', function (): void {
             array $expected,
         ): void {
             $parameter = Parameter::query(
-                Name::create('user'),
+                'user',
                 SchemaSerializedQuery::create(
                     Schema::array(),
                     $style,
                 ),
-            )->description(Description::create('User ID'))
+            )->description('User ID')
                 ->required()
                 ->deprecated();
 
@@ -250,9 +248,9 @@ describe('Parameter', function (): void {
         'can serialize content',
         function (ContentSerialized $contentSerialized, array $expected): void {
             $parameter = Parameter::query(
-                Name::create('user'),
+                'user',
                 $contentSerialized,
-            )->description(Description::create('User ID'))
+            )->description('User ID')
                 ->required()
                 ->deprecated();
 

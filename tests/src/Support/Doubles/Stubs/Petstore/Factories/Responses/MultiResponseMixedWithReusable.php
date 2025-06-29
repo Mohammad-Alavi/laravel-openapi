@@ -9,7 +9,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStat
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use Tests\src\Support\Doubles\Stubs\Petstore\Reusable\Response\ValidationErrorResponse;
 use Tests\src\Support\Doubles\Stubs\Petstore\Reusable\Schema\PetSchema;
 
@@ -24,7 +23,7 @@ class MultiResponseMixedWithReusable implements ResponsesFactory
             ),
             ResponseEntry::create(
                 HTTPStatusCode::ok(),
-                Response::create(Description::create('Resource created'))
+                Response::create('Resource created')
                     ->content(
                         ContentEntry::json(
                             MediaType::create()->schema(PetSchema::create()),
@@ -33,7 +32,7 @@ class MultiResponseMixedWithReusable implements ResponsesFactory
             ),
             ResponseEntry::create(
                 HTTPStatusCode::forbidden(),
-                Response::create(Description::create('Forbidden')),
+                Response::create('Forbidden'),
             ),
         );
     }

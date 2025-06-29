@@ -11,7 +11,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 
 class ParametersBuilder
@@ -53,7 +52,7 @@ class ParametersBuilder
                 }
 
                 return Parameter::path(
-                    Name::create($parameter['name']),
+                    $parameter['name'],
                     SchemaSerializedPath::create($schema),
                 )->required();
             });

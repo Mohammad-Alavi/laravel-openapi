@@ -7,7 +7,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\HeaderEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Links\LinkEntry;
@@ -15,7 +14,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Links\LinkEntry;
 describe('Response', function (): void {
     it('creates a response with all parameters', function (): void {
         $header = Header::create()
-            ->description(Description::create('Lorem ipsum'))
+            ->description('Lorem ipsum')
             ->required()
             ->deprecated()
             ->schema(Schema::string())
@@ -34,7 +33,7 @@ describe('Response', function (): void {
         $link = Link::create();
 
         $response = Response::create(
-            Description::create('A response indicating success'),
+            'A response indicating success',
         )->headers(
             HeaderEntry::create(
                 'HeaderName',

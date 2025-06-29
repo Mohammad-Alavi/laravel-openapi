@@ -10,19 +10,36 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
 final class Tag extends ExtensibleObject implements \Stringable
 {
+    private Description|null $description = null;
+    private ExternalDocumentation|null $externalDocumentation = null;
+
     private function __construct(
         private readonly Name $name,
-        private readonly Description|null $description = null,
-        private readonly ExternalDocumentation|null $externalDocumentation = null,
     ) {
     }
 
     public static function create(
-        Name $name,
-        Description|null $description = null,
-        ExternalDocumentation|null $externalDocs = null,
+        string $name,
     ): self {
-        return new self($name, $description, $externalDocs);
+        return new self(Name::create($name));
+    }
+
+    public function description(string $description): self
+    {
+        $clone = clone $this;
+
+        $clone->description = Description::create($description);
+
+        return $clone;
+    }
+
+    public function externalDocs(ExternalDocumentation $externalDocumentation): self
+    {
+        $clone = clone $this;
+
+        $clone->externalDocumentation = $externalDocumentation;
+
+        return $clone;
     }
 
     public function __toString(): string

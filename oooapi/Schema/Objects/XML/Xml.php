@@ -21,29 +21,29 @@ final class Xml extends ExtensibleObject
         return new self();
     }
 
-    public function name(Name|null $name): self
+    public function name(string $name): self
     {
         $clone = clone $this;
 
-        $clone->name = $name;
+        $clone->name = Name::create($name);
 
         return $clone;
     }
 
-    public function namespace(XmlNamespace|null $namespace): self
+    public function namespace(string $namespace): self
     {
         $clone = clone $this;
 
-        $clone->namespace = $namespace;
+        $clone->namespace = XmlNamespace::create($namespace);
 
         return $clone;
     }
 
-    public function prefix(Prefix|null $prefix): self
+    public function prefix(string $prefix): self
     {
         $clone = clone $this;
 
-        $clone->prefix = $prefix;
+        $clone->prefix = Prefix::create($prefix);
 
         return $clone;
     }

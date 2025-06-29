@@ -7,17 +7,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
 class TestParameter extends ParameterFactory implements ShouldBeReferenced
 {
     public function component(): Parameter
     {
         return Parameter::query(
-            Name::create('TestReusableParameter'),
+            'TestReusableParameter',
             SchemaSerializedQuery::create(Schema::string()),
-        )->description(Description::create('ReusableParameterStub description'))
+        )->description('ReusableParameterStub description')
             ->required();
     }
 }

@@ -16,6 +16,18 @@ final readonly class PathReference
     }
 
     /**
+     * Validate that the name is valid according to the ABNF syntax.
+     *
+     * name = *( CHAR )
+     */
+    private function validateName(string $name): void
+    {
+        if ('' === $name || '0' === $name) {
+            throw new \InvalidArgumentException('Name cannot be empty');
+        }
+    }
+
+    /**
      * Create a new path reference.
      */
     public static function create(string $name): self
@@ -37,17 +49,5 @@ final readonly class PathReference
     public function toString(): string
     {
         return self::PREFIX . $this->name;
-    }
-
-    /**
-     * Validate that the name is valid according to the ABNF syntax.
-     *
-     * name = *( CHAR )
-     */
-    private function validateName(string $name): void
-    {
-        if ('' === $name || '0' === $name) {
-            throw new \InvalidArgumentException('Name cannot be empty');
-        }
     }
 }

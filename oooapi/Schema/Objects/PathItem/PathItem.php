@@ -23,25 +23,25 @@ final class PathItem extends ExtensibleObject
     /** @var Parameter[]|null */
     private array|null $parameters = null;
 
+    public function summary(string $summary): self
+    {
+        $clone = clone $this;
+
+        $clone->summary = Summary::create($summary);
+
+        return $clone;
+    }
+
     public static function create(): self
     {
         return new self();
     }
 
-    public function summary(Summary $summary): self
+    public function description(string $description): self
     {
         $clone = clone $this;
 
-        $clone->summary = $summary;
-
-        return $clone;
-    }
-
-    public function description(Description $description): self
-    {
-        $clone = clone $this;
-
-        $clone->description = $description;
+        $clone->description = Description::create($description);
 
         return $clone;
     }

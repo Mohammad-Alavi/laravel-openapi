@@ -17,34 +17,6 @@ final readonly class BodyReference
     }
 
     /**
-     * Create a new body reference.
-     */
-    public static function create(string $jsonPointer = ''): self
-    {
-        return new self($jsonPointer);
-    }
-
-    /**
-     * Get the JSON pointer.
-     */
-    public function jsonPointer(): string
-    {
-        return $this->jsonPointer;
-    }
-
-    /**
-     * Get the full reference string.
-     */
-    public function toString(): string
-    {
-        if ('' === $this->jsonPointer || '0' === $this->jsonPointer) {
-            return self::PREFIX;
-        }
-
-        return self::PREFIX . self::POINTER_PREFIX . $this->jsonPointer;
-    }
-
-    /**
      * Validate that the JSON pointer is valid according to the ABNF syntax.
      *
      * json-pointer    = *( "/" reference-token )
@@ -70,5 +42,33 @@ final readonly class BodyReference
         if (preg_match('/~[^01]/', $jsonPointer)) {
             throw new \InvalidArgumentException(sprintf('JSON pointer contains invalid escape sequence: "%s"', $jsonPointer));
         }
+    }
+
+    /**
+     * Create a new body reference.
+     */
+    public static function create(string $jsonPointer = ''): self
+    {
+        return new self($jsonPointer);
+    }
+
+    /**
+     * Get the JSON pointer.
+     */
+    public function jsonPointer(): string
+    {
+        return $this->jsonPointer;
+    }
+
+    /**
+     * Get the full reference string.
+     */
+    public function toString(): string
+    {
+        if ('' === $this->jsonPointer || '0' === $this->jsonPointer) {
+            return self::PREFIX;
+        }
+
+        return self::PREFIX . self::POINTER_PREFIX . $this->jsonPointer;
     }
 }

@@ -13,9 +13,6 @@ readonly class SecurityBuilder
     {
         Assert::isAOf($securityFactory, SecurityFactory::class);
 
-        /** @var SecurityFactory $factoryInstance */
-        $factoryInstance = app($securityFactory);
-
-        return $factoryInstance->build();
+        return (new $securityFactory())->build();
     }
 }

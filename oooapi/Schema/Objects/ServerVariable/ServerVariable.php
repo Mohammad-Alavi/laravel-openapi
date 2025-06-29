@@ -19,30 +19,30 @@ final class ServerVariable extends ExtensibleObject
     ) {
     }
 
-    public static function create(DefaultValue $defaultValue): self
-    {
-        return new self($defaultValue);
-    }
-
-    public function enum(Enum $enum): self
+    public function enum(string ...$enum): self
     {
         Assert::true(
-            in_array($this->defaultValue->value(), $enum->values(), true),
+            in_array($this->defaultValue->value(), $enum, true),
             'The default value must exist in the enum’s values.',
         );
 
         $clone = clone $this;
 
-        $clone->enum = $enum;
+        $clone->enum = Enum::create(...$enum);
 
         return $clone;
     }
 
-    public function description(Description $description): self
+    public static function create(string $defaultValue): self
+    {
+        return new self(DefaultValue::create($defaultValue));
+    }
+
+    public function description(string $description): self
     {
         $clone = clone $this;
 
-        $clone->description = $description;
+        $clone->description = Description::create($description);
 
         return $clone;
     }

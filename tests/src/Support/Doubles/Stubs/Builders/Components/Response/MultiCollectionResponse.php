@@ -7,13 +7,12 @@ use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
 #[Collection(['test', Generator::COLLECTION_DEFAULT])]
 class MultiCollectionResponse extends ResponseFactory implements ShouldBeReferenced
 {
     public function component(): Response
     {
-        return Response::create(Description::create('OK'));
+        return Response::create('OK');
     }
 }

@@ -1,45 +1,11 @@
 <?php
 
+use MohammadAlavi\LaravelOpenApi\Factories\ExampleFactory;
+
 return [
     'collections' => [
         'default' => [
-            // TODO: change this to use an InfoFactory class.
-            'info' => [
-                'title' => config('app.name'),
-                'description' => null,
-                'version' => '1.0.0',
-                'contact' => [
-                    'name' => null,
-                    'email' => null,
-                    'url' => null,
-                ],
-            ],
-
-            'servers' => [
-                // Servers should extend `MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory` class.
-                // ExampleServer::class
-            ],
-
-            'tags' => [
-                // Tags should extend `MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory` class.
-                // ExampleTag::class,
-            ],
-
-            // TODO: add an example for security factory.
-            'security' => null,
-
-            // Non-standard attributes used by code/doc generation tools can be added here
-            'extensions' => [
-                // 'x-tagGroups' => [
-                //     [
-                //         'name' => 'General',
-                //         'tags' => [
-                //             'user',
-                //         ],
-                //     ],
-                // ],
-            ],
-
+            'openapi' => ExampleFactory::class,
             // Route for exposing specification.
             // Leave uri null to disable.
             'route' => [

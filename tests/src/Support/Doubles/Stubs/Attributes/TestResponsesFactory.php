@@ -7,7 +7,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
 class TestResponsesFactory implements ResponsesFactoryAbstract
 {
@@ -17,7 +16,7 @@ class TestResponsesFactory implements ResponsesFactoryAbstract
             ResponseEntry::create(
                 HTTPStatusCode::ok(),
                 Response::create(
-                    Description::create('OK'),
+                    'OK',
                 ),
             ),
         );

@@ -27,6 +27,11 @@ final readonly class Extension extends ReadonlyGeneratable
         return new self($name, $value);
     }
 
+    public static function isExtension(string $value): bool
+    {
+        return 0 === mb_strpos($value, self::EXTENSION_PREFIX);
+    }
+
     public function name(): string
     {
         return $this->name;
@@ -35,11 +40,6 @@ final readonly class Extension extends ReadonlyGeneratable
     public function value(): mixed
     {
         return $this->value;
-    }
-
-    public static function isExtension(string $value): bool
-    {
-        return 0 === mb_strpos($value, self::EXTENSION_PREFIX);
     }
 
     public function equals(self $extension): bool

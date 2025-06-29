@@ -14,34 +14,34 @@ final class Contact extends ExtensibleObject
     private URL|null $url = null;
     private Email|null $email = null;
 
+    public function name(string $name): self
+    {
+        $clone = clone $this;
+
+        $clone->name = Name::create($name);
+
+        return $clone;
+    }
+
     public static function create(): self
     {
         return new self();
     }
 
-    public function name(Name|null $name): self
+    public function url(string $url): self
     {
         $clone = clone $this;
 
-        $clone->name = $name;
+        $clone->url = URL::create($url);
 
         return $clone;
     }
 
-    public function url(URL|null $url): self
+    public function email(string $email): self
     {
         $clone = clone $this;
 
-        $clone->url = $url;
-
-        return $clone;
-    }
-
-    public function email(Email|null $email): self
-    {
-        $clone = clone $this;
-
-        $clone->email = $email;
+        $clone->email = Email::create($email);
 
         return $clone;
     }

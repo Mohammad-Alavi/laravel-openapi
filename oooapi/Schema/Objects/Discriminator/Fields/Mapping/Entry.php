@@ -14,7 +14,7 @@ final readonly class Entry implements StringMapEntry
     /** @use StringKeyedMapEntry<StringField> */
     use StringKeyedMapEntry;
 
-    public static function create(string $payloadValue, SchemaName|SchemaURL $nameOrUrl): self
+    public static function create(string $payloadValue, Name|URL $nameOrUrl): self
     {
         return new self($payloadValue, $nameOrUrl);
     }

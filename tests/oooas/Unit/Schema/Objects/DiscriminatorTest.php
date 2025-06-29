@@ -2,18 +2,17 @@
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Discriminator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\Entry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\Mapping;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\SchemaName;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\SchemaURL;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\PropertyName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\URL;
 
 describe('Discriminator', function (): void {
     it('can be created with all parameters', function (): void {
         $discriminator = Discriminator::create(
-            PropertyName::create('Discriminator Name'),
-            Mapping::create(
-                Entry::create('cat', SchemaName::create('value')),
-                Entry::create('dog', SchemaURL::create('https://laragen.io/dog')),
+            'Discriminator Name',
+            Entry::create('cat', Name::create('value')),
+            Entry::create(
+                'dog',
+                URL::create('https://laragen.io/dog'),
             ),
         );
 
@@ -27,7 +26,7 @@ describe('Discriminator', function (): void {
     });
 
     it('will have no mapping if no mapping is passed', function (): void {
-        $discriminator = Discriminator::create(PropertyName::create('something'));
+        $discriminator = Discriminator::create('something');
 
         expect($discriminator->unserializeToArray())->toBe([
             'propertyName' => 'something',

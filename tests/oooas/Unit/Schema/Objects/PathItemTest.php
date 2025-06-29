@@ -15,11 +15,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStat
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 
 describe(class_basename(PathItem::class), function (): void {
     it('can be created with all parameters', function (): void {
@@ -27,8 +23,8 @@ describe(class_basename(PathItem::class), function (): void {
             Path::create(
                 '/users',
                 PathItem::create()
-                    ->summary(Summary::create('User endpoints'))
-                    ->description(Description::create('Get the users'))
+                    ->summary('User endpoints')
+                    ->description('Get the users')
                     ->operations(
                         AvailableOperation::create(
                             HttpMethod::GET,
@@ -37,16 +33,16 @@ describe(class_basename(PathItem::class), function (): void {
                                     Responses::create(
                                         ResponseEntry::create(
                                             HTTPStatusCode::ok(),
-                                            Response::create(Description::create('OK')),
+                                            Response::create('OK'),
                                         ),
                                     ),
                                 ),
                         ),
                     )
-                    ->servers(Server::create(URL::create('https://laragen.io')))
+                    ->servers(Server::create('https://laragen.io'))
                     ->parameters(
                         Parameter::query(
-                            Name::create('test_parameter'),
+                            'test_parameter',
                             SchemaSerializedQuery::create(Schema::string()),
                         ),
                     ),

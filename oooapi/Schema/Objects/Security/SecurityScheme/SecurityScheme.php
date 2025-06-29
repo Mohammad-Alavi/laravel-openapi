@@ -15,35 +15,45 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
 final class SecurityScheme extends ExtensibleObject
 {
+    private Description|null $description = null;
+
     private function __construct(
         private readonly Scheme $scheme,
-        private readonly Description|null $description,
     ) {
     }
 
-    public static function apiKey(ApiKey $apiKey, Description|null $description = null): self
+    public static function apiKey(ApiKey $apiKey): self
     {
-        return new self($apiKey, $description);
+        return new self($apiKey);
     }
 
-    public static function http(Http $http, Description|null $description = null): self
+    public static function http(Http $http): self
     {
-        return new self($http, $description);
+        return new self($http);
     }
 
-    public static function mutualTLS(MutualTLS $mutualTLS, Description|null $description = null): self
+    public static function mutualTLS(MutualTLS $mutualTLS): self
     {
-        return new self($mutualTLS, $description);
+        return new self($mutualTLS);
     }
 
-    public static function oAuth2(OAuth2 $OAuth2, Description|null $description = null): self
+    public static function oAuth2(OAuth2 $oAuth2): self
     {
-        return new self($OAuth2, $description);
+        return new self($oAuth2);
     }
 
-    public static function openIdConnect(OpenIdConnectUrl $openIdConnectUrl, Description|null $description = null): self
+    public static function openIdConnect(string $openIdConnectUrl): self
     {
-        return new self(OpenIdConnect::create($openIdConnectUrl), $description);
+        return new self(OpenIdConnect::create(OpenIdConnectUrl::create($openIdConnectUrl)));
+    }
+
+    public function description(string $description): self
+    {
+        $clone = clone $this;
+
+        $clone->description = Description::create($description);
+
+        return $clone;
     }
 
     public function toArray(): array

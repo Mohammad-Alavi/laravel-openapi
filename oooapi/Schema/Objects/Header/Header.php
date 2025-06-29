@@ -22,13 +22,18 @@ final class Header extends ExtensibleObject
     private Examples|null $examples = null;
     private Content|null $content = null;
 
-    public function description(Description|null $description): self
+    public function description(string $description): self
     {
         $clone = clone $this;
 
-        $clone->description = $description;
+        $clone->description = Description::create($description);
 
         return $clone;
+    }
+
+    public static function create(): self
+    {
+        return new self();
     }
 
     public function required(): self
@@ -49,7 +54,7 @@ final class Header extends ExtensibleObject
         return $clone;
     }
 
-    public function style(string|null $style): self
+    public function style(string $style): self
     {
         $clone = clone $this;
 
@@ -58,16 +63,16 @@ final class Header extends ExtensibleObject
         return $clone;
     }
 
-    public function explode(bool|null $explode = true): self
+    public function explode(): self
     {
         $clone = clone $this;
 
-        $clone->explode = $explode;
+        $clone->explode = true;
 
         return $clone;
     }
 
-    public function schema(JSONSchema|null $schema): self
+    public function schema(JSONSchema $schema): self
     {
         $clone = clone $this;
 
@@ -83,11 +88,6 @@ final class Header extends ExtensibleObject
         $clone->examples = Examples::create(...$exampleEntry);
 
         return $clone;
-    }
-
-    public static function create(): self
-    {
-        return new self();
     }
 
     public function content(ContentEntry ...$contentEntry): self

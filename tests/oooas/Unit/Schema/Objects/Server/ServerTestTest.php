@@ -2,12 +2,9 @@
 
 namespace Tests\oooas\Unit\Schema\Objects\Server;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\VariableEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fields\DefaultValue;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\ServerVariable;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\UnitTestCase;
 
@@ -16,10 +13,10 @@ class ServerTestTest extends UnitTestCase
 {
     public function testCreateWithAllParametersWorks(): void
     {
-        $serverVariable = ServerVariable::create(DefaultValue::create('Default value'));
+        $serverVariable = ServerVariable::create('Default value');
 
-        $server = Server::create(URL::create('https://api.example.con/v1'))
-            ->description(Description::create('Core API'))
+        $server = Server::create('https://api.example.con/v1')
+            ->description('Core API')
             ->variables(
                 VariableEntry::create('ServerVariableName', $serverVariable),
             );
@@ -37,9 +34,9 @@ class ServerTestTest extends UnitTestCase
 
     public function testVariablesAreSupported(): void
     {
-        $serverVariable = ServerVariable::create(DefaultValue::create('demo'));
+        $serverVariable = ServerVariable::create('demo');
 
-        $server = Server::create(URL::create('https://api.example.con/v1'))
+        $server = Server::create('https://api.example.con/v1')
             ->variables(
                 VariableEntry::create('username', $serverVariable),
             );

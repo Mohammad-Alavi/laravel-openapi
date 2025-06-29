@@ -11,8 +11,18 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
 final class Link extends ExtensibleObject
 {
-    private function __construct()
+    private OperationRef|null $operationRef = null;
+    private OperationId|null $operationId = null;
+    private Description|null $description = null;
+    private Server|null $server = null;
+
+    public function operationRef(string $operationRef): self
     {
+        $clone = clone $this;
+
+        $clone->operationRef = OperationRef::create($operationRef);
+
+        return $clone;
     }
 
     public static function create(): self
@@ -20,39 +30,25 @@ final class Link extends ExtensibleObject
         return new self();
     }
 
-    private OperationRef|null $operationRef = null;
-    private OperationId|null $operationId = null;
-    private Description|null $description = null;
-    private Server|null $server = null;
-
-    public function operationRef(OperationRef|null $operationRef): self
+    public function operationId(string $operationId): self
     {
         $clone = clone $this;
 
-        $clone->operationRef = $operationRef;
+        $clone->operationId = OperationId::create($operationId);
 
         return $clone;
     }
 
-    public function operationId(OperationId|null $operationId): self
+    public function description(string $description): self
     {
         $clone = clone $this;
 
-        $clone->operationId = $operationId;
+        $clone->description = Description::create($description);
 
         return $clone;
     }
 
-    public function description(Description|null $description): self
-    {
-        $clone = clone $this;
-
-        $clone->description = $description;
-
-        return $clone;
-    }
-
-    public function server(Server|null $server): self
+    public function server(Server $server): self
     {
         $clone = clone $this;
 

@@ -3,15 +3,12 @@
 namespace Tests\oooas\Unit\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Fields\ExternalValue;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 
 describe(class_basename(Example::class), function (): void {
     it('can be created', function (): void {
         $example = Example::create()
-            ->summary(Summary::create('Summary ipsum'))
-            ->description(Description::create('Description ipsum'))
+            ->summary('Summary ipsum')
+            ->description('Description ipsum')
             ->value('Value');
 
         $response = $example->unserializeToArray();
@@ -25,9 +22,7 @@ describe(class_basename(Example::class), function (): void {
 
     it('can be created with external value', function (): void {
         $example = Example::create()
-            ->externalValue(
-                ExternalValue::create('https://laragen.io/example.json'),
-            );
+            ->externalValue('https://laragen.io/example.json');
 
         $response = $example->unserializeToArray();
 
@@ -40,7 +35,7 @@ describe(class_basename(Example::class), function (): void {
         expect(fn () => Example::create()
             ->value('Value')
             ->externalValue(
-                ExternalValue::create('https://laragen.io/example.json'),
+                'https://laragen.io/example.json',
             ))->toThrow(\InvalidArgumentException::class);
     });
 })->covers(Example::class);

@@ -15,34 +15,25 @@ final class Server extends ExtensibleObject
     private Variables|null $variables = null;
 
     private function __construct(
-        private URL $url,
+        private readonly URL $url,
     ) {
     }
 
     public static function default(): self
     {
-        return new self(URL::create('/'));
+        return self::create('/');
     }
 
-    public static function create(URL $url): self
+    public static function create(string $url): self
     {
-        return new self($url);
+        return new self(URL::create($url));
     }
 
-    public function url(URL $url): self
-    {
-        $clone = clone $this;
-
-        $clone->url = $url;
-
-        return $clone;
-    }
-
-    public function description(Description|null $description): self
+    public function description(string $description): self
     {
         $clone = clone $this;
 
-        $clone->description = $description;
+        $clone->description = Description::create($description);
 
         return $clone;
     }

@@ -4,15 +4,11 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
@@ -29,15 +25,10 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\URL as ServerURL;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 use Pest\Expectation;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecurityRequirements\TestBearerSecurityRequirementFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
@@ -50,24 +41,16 @@ afterAll(
 
 describe('OpenApi', function (): void {
     it('can generate valid OpenAPI v3.1.0 docs', function (): void {
-        $tag = Tag::create(
-            Name::create('Audits'),
-            Description::create('All the audits'),
-        );
+        $tag = Tag::create('Audits')->description('All the audits');
         $contact = Contact::create()
-            ->name(Name::create('Example'))
-            ->url(URL::create('https://laragen.io'))
-            ->email(Email::create('hello@laragen.io'));
-        $info = Info::create(
-            Title::create('API Specification'),
-            Version::create('v1'),
-        )->description(Description::create('For using the Example App API'))
+            ->name('Example')
+            ->url('https://laragen.io')
+            ->email('hello@laragen.io');
+        $info = Info::create('API Specification', 'v1')
+            ->description('For using the Example App API')
             ->contact($contact)
             ->license(
-                License::create(
-                    Name::create('MIT'),
-                    URL::create('https://github.com/laragen'),
-                ),
+                License::create('MIT')->url('https://github.com/laragen'),
             );
         $schema = Schema::object()
             ->properties(
@@ -86,35 +69,33 @@ describe('OpenApi', function (): void {
         $responses = Responses::create(
             ResponseEntry::create(
                 HTTPStatusCode::ok(),
-                Response::create(
-                    Description::create('OK'),
-                )->content(
-                    ContentEntry::json(
-                        MediaType::create()->schema($schema),
+                Response::create('OK')
+                    ->content(
+                        ContentEntry::json(
+                            MediaType::create()->schema($schema),
+                        ),
                     ),
-                ),
             ),
             ResponseEntry::create(
                 HTTPStatusCode::unprocessableEntity(),
-                Response::create(
-                    Description::create('Unprocessable Entity'),
-                )->content(
-                    ContentEntry::json(
-                        MediaType::create()->schema($schema),
+                Response::create('Unprocessable Entity')
+                    ->content(
+                        ContentEntry::json(
+                            MediaType::create()->schema($schema),
+                        ),
                     ),
-                ),
             ),
         );
         $indexOperation = Operation::create()
             ->responses($responses)
             ->tags($tag)
-            ->summary(Summary::create('List all audits'))
-            ->operationId(OperationId::create('audits.index'));
+            ->summary('List all audits')
+            ->operationId('audits.index');
         $postOperation = Operation::create()
             ->responses($responses)
             ->tags($tag)
-            ->summary(Summary::create('Create an audit'))
-            ->operationId(OperationId::create('audits.store'))
+            ->summary('Create an audit')
+            ->operationId('audits.store')
             ->requestBody(
                 RequestBody::create()
                     ->content(
@@ -129,18 +110,18 @@ describe('OpenApi', function (): void {
         $getOperation = Operation::create()
             ->responses($responses)
             ->tags($tag)
-            ->summary(Summary::create('View an audit'))
-            ->operationId(OperationId::create('audits.show'))
+            ->summary('View an audit')
+            ->operationId('audits.show')
             ->parameters(
                 Parameters::create(
                     Parameter::path(
-                        Name::create('audit'),
+                        'audit',
                         SchemaSerializedPath::create($stringDescriptor),
                     )->required(),
                     Parameter::query(
-                        Name::create('format'),
+                        'format',
                         SchemaSerializedQuery::create($enumDescriptor),
-                    )->description(Description::create('The format of the appointments')),
+                    )->description('The format of the appointments'),
                 ),
             );
         $paths = Paths::create(
@@ -170,15 +151,15 @@ describe('OpenApi', function (): void {
             ),
         );
         $servers = [
-            Server::create(ServerURL::create('https://api.laragen.io/v1')),
-            Server::create(ServerURL::create('https://api.laragen.io/v2')),
+            Server::create('https://api.laragen.io/v1'),
+            Server::create('https://api.laragen.io/v2'),
         ];
         $components = Components::create()->securitySchemes(TestBearerSecuritySchemeFactory::create());
         $security = Security::create(TestBearerSecurityRequirementFactory::create());
-        $externalDocumentation = ExternalDocumentation::create(
-            URL::create('https://laragen.io/docs'),
-            Description::create('Example'),
-        );
+        $externalDocumentation = ExternalDocumentation::create('https://laragen.io/docs')
+            ->description(
+                'Example',
+            );
         $openApi = OpenAPI::v311($info)
             ->paths($paths)
             ->servers(...$servers)

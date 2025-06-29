@@ -8,7 +8,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRu
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedHeader;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 use Tests\src\Support\Doubles\Stubs\Concerns\TestParameter;
 
@@ -18,16 +17,16 @@ class TestParameterFactory implements ParametersFactory
     {
         return Parameters::create(
             Parameter::header(
-                Name::create('param_a'),
+                'param_a',
                 SchemaSerializedHeader::create(Schema::string()),
             ),
             Parameter::path(
-                Name::create('param_b'),
+                'param_b',
                 SchemaSerializedPath::create(Schema::string()),
             ),
             TestParameter::create(),
             Parameter::cookie(
-                Name::create('param_c'),
+                'param_c',
                 SchemaSerializedCookie::create(Schema::string()),
             ),
         );

@@ -14,13 +14,18 @@ final class RequestBody extends ExtensibleObject
     private true|null $required = null;
     private Content|null $content = null;
 
-    public function description(Description|null $description): self
+    public function description(string $description): self
     {
         $clone = clone $this;
 
-        $clone->description = $description;
+        $clone->description = Description::create($description);
 
         return $clone;
+    }
+
+    public static function create(): self
+    {
+        return new self();
     }
 
     public function required(): self
@@ -39,11 +44,6 @@ final class RequestBody extends ExtensibleObject
         $clone->content = Content::create(...$contentEntry);
 
         return $clone;
-    }
-
-    public static function create(): self
-    {
-        return new self();
     }
 
     public function toArray(): array

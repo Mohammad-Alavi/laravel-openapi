@@ -9,17 +9,25 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 
 final class ExternalDocumentation extends ExtensibleObject
 {
+    private Description|null $description = null;
+
     private function __construct(
         private readonly URL $url,
-        private readonly Description|null $description = null,
     ) {
     }
 
-    public static function create(
-        URL $url,
-        Description|null $description = null,
-    ): self {
-        return new self($url, $description);
+    public function description(string $description): self
+    {
+        $clone = clone $this;
+
+        $clone->description = Description::create($description);
+
+        return $clone;
+    }
+
+    public static function create(string $url): self
+    {
+        return new self(URL::create($url));
     }
 
     public function toArray(): array

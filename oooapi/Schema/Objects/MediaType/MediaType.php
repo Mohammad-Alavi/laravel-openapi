@@ -17,7 +17,7 @@ final class MediaType extends ExtensibleObject
     private Examples|null $examples = null;
     private Encoding|null $encoding = null;
 
-    public function schema(JSONSchema|SchemaFactory|null $schema): self
+    public function schema(JSONSchema|SchemaFactory $schema): self
     {
         $clone = clone $this;
 

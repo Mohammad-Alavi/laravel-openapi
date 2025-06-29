@@ -12,8 +12,6 @@ use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\SecurityFactory;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
@@ -29,7 +27,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\RequiredSecurity;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\SecurityRequirement;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecurityRequirements\TestApiKeySecurityRequirementFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecurityRequirements\TestBearerSecurityRequirementFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestApiKeySecuritySchemeFactory;
@@ -110,10 +107,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             $operation = app(OperationBuilder::class)->build($routeInformation);
 
             $openApi = OpenAPI::v311(
-                Info::create(
-                    Title::create('Example API'),
-                    Version::create('1.0'),
-                ),
+                Info::create('Example API', '1.0'),
             )->components($components)
                 ->paths(
                     Paths::create(
@@ -766,8 +760,8 @@ describe(class_basename(SecurityBuilder::class), function (): void {
 
             $openApi = OpenAPI::v311(
                 Info::create(
-                    Title::create('Example API'),
-                    Version::create('1.0'),
+                    'Example API',
+                    '1.0',
                 ),
             )->security(
                 is_a(
@@ -993,7 +987,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     Responses::create(
                         ResponseEntry::create(
                             HTTPStatusCode::ok(),
-                            Response::create(Description::create('OK')),
+                            Response::create('OK'),
                         ),
                     ),
                 ),
@@ -1001,8 +995,8 @@ describe(class_basename(SecurityBuilder::class), function (): void {
 
         $openApi = OpenAPI::v311(
             Info::create(
-                Title::create('Example API'),
-                Version::create('1.0'),
+                'Example API',
+                '1.0',
             ),
         )->security(app(TestSingleHTTPBearerSchemeSecurityFactory::class)->build())
             ->components($components)
@@ -1073,7 +1067,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     Responses::create(
                         ResponseEntry::create(
                             HTTPStatusCode::ok(),
-                            Response::create(Description::create('OK')),
+                            Response::create('OK'),
                         ),
                     ),
                 )->security(
@@ -1085,8 +1079,8 @@ describe(class_basename(SecurityBuilder::class), function (): void {
 
         $openApi = OpenAPI::v311(
             Info::create(
-                Title::create('Example API'),
-                Version::create('1.0'),
+                'Example API',
+                '1.0',
             ),
         )->components($components)
             ->paths(

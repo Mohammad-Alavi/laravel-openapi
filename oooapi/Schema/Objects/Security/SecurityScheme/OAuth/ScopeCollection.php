@@ -36,16 +36,6 @@ final readonly class ScopeCollection extends ReadonlyGeneratable
         return false;
     }
 
-    public function merge(self $scopeCollection): self
-    {
-        return new self(...$this->scopeFactories, ...$scopeCollection->scopeFactories());
-    }
-
-    public function scopeFactories(): array
-    {
-        return $this->scopeFactories;
-    }
-
     /**
      * Get all scopes.
      *
@@ -56,14 +46,25 @@ final readonly class ScopeCollection extends ReadonlyGeneratable
         return $this->buildScopes(...$this->scopeFactories);
     }
 
-    public function names()
-    {
-    }
-
-    // TODO: extract into a builder class
     private function buildScopes(ScopeFactory ...$scopeFactory): array
     {
         return array_map(static fn (ScopeFactory $scopeFactory): Scope => $scopeFactory->build(), $scopeFactory);
+    }
+
+    public function merge(self $scopeCollection): self
+    {
+        return new self(...$this->scopeFactories, ...$scopeCollection->scopeFactories());
+    }
+
+    public function scopeFactories(): array
+    {
+        return $this->scopeFactories;
+    }
+
+    // TODO: extract into a builder class
+
+    public function names()
+    {
     }
 
     public function toArray(): array

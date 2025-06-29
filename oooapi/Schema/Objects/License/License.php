@@ -15,31 +15,11 @@ final class License extends ExtensibleObject
     private URL|null $url = null;
 
     private function __construct(
-        private Name $name,
-        Identifier|URL|null $license = null,
+        private readonly Name $name,
     ) {
-        if ($license instanceof Identifier) {
-            $this->identifier = $license;
-        } elseif ($license instanceof URL) {
-            $this->url = $license;
-        }
     }
 
-    public static function create(Name $name, Identifier|URL|null $license = null): self
-    {
-        return new self($name, $license);
-    }
-
-    public function name(Name $name): self
-    {
-        $clone = clone $this;
-
-        $clone->name = $name;
-
-        return $clone;
-    }
-
-    public function identifier(Identifier|null $identifier): self
+    public function identifier(string $identifier): self
     {
         Assert::null(
             $this->url,
@@ -48,12 +28,17 @@ final class License extends ExtensibleObject
 
         $clone = clone $this;
 
-        $clone->identifier = $identifier;
+        $clone->identifier = Identifier::create($identifier);
 
         return $clone;
     }
 
-    public function url(URL|null $url): self
+    public static function create(string $name): self
+    {
+        return new self(Name::create($name));
+    }
+
+    public function url(string $url): self
     {
         Assert::null(
             $this->identifier,
@@ -62,7 +47,7 @@ final class License extends ExtensibleObject
 
         $clone = clone $this;
 
-        $clone->url = $url;
+        $clone->url = URL::create($url);
 
         return $clone;
     }
@@ -71,20 +56,8 @@ final class License extends ExtensibleObject
     {
         return Arr::filter([
             'name' => $this->name,
-            ...$this->eitherIdentifierOrUrl(),
+            'identifier' => $this->identifier,
+            'url' => $this->url,
         ]);
-    }
-
-    private function eitherIdentifierOrUrl(): array
-    {
-        if (!is_null($this->identifier)) {
-            return ['identifier' => $this->identifier];
-        }
-
-        if (!is_null($this->url)) {
-            return ['url' => $this->url];
-        }
-
-        return [];
     }
 }

@@ -9,7 +9,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedCookie;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
 #[Collection(['test', Generator::COLLECTION_DEFAULT])]
 class MultiCollectionParameter extends ParameterFactory implements ShouldBeReferenced
@@ -17,7 +16,7 @@ class MultiCollectionParameter extends ParameterFactory implements ShouldBeRefer
     public function component(): Parameter
     {
         return Parameter::cookie(
-            Name::create('test'),
+            'test',
             SchemaSerializedCookie::create(Schema::string()),
         );
     }

@@ -10,24 +10,38 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 
 final class Reference extends NonExtensibleObject
 {
+    private Summary|null $summary = null;
+    private Description|null $description = null;
+
     // TODO: description and summary by default SHOULD override that of the referenced component.
     // This is not possible with the current implementation.
     // This is specially importance for the Response object.
     private function __construct(
         private readonly Ref $ref,
-        private readonly Summary|null $summary,
-        private readonly Description|null $description,
     ) {
     }
 
-    public static function create(Ref $ref, Summary|null $summary = null, Description|null $description = null): self
+    public function description(string $description): self
     {
-        return new self($ref, $summary, $description);
+        $clone = clone $this;
+
+        $clone->description = Description::create($description);
+
+        return $clone;
     }
 
-    public function ref(): string
+    public static function create(string $ref): self
     {
-        return $this->ref->value();
+        return new self(Ref::create($ref));
+    }
+
+    public function summary(string $summary): self
+    {
+        $clone = clone $this;
+
+        $clone->summary = Summary::create($summary);
+
+        return $clone;
     }
 
     public function toArray(): array

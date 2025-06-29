@@ -33,8 +33,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\Http;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Request\RequestQueryExpression;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
 describe(class_basename(Components::class), function (): void {
     it('can be create with all parameters', function (): void {
@@ -53,7 +51,7 @@ describe(class_basename(Components::class), function (): void {
         $response = new class extends ResponseFactory {
             public function component(): Response
             {
-                return Response::create(Description::create('Deleted'));
+                return Response::create('Deleted');
             }
 
             public static function name(): string
@@ -66,7 +64,7 @@ describe(class_basename(Components::class), function (): void {
             public function component(): Parameter
             {
                 return Parameter::query(
-                    Name::create('page'),
+                    'page',
                     SchemaSerializedQuery::create(Schema::string()),
                 );
             }
@@ -151,14 +149,14 @@ describe(class_basename(Components::class), function (): void {
                                     ->requestBody(
                                         RequestBody::create()
                                             ->description(
-                                                Description::create('something happened'),
+                                                'something happened',
                                             ),
                                     )->responses(
                                         Responses::create(
                                             ResponseEntry::create(
                                                 HTTPStatusCode::ok(),
                                                 Response::create(
-                                                    Description::create('OK'),
+                                                    'OK',
                                                 ),
                                             ),
                                         ),

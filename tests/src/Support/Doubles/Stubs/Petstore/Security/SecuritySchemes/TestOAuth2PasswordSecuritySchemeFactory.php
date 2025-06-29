@@ -8,7 +8,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\O
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\ScopeCollection;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\OAuth2;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\Scopes\OrderItemScope;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\Scopes\OrderPaymentScope;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\Scopes\OrderScope;
@@ -40,7 +39,6 @@ class TestOAuth2PasswordSecuritySchemeFactory extends SecuritySchemeFactory
                     ),
                 ),
             ),
-            Description::create('OAuth2 Password Security'),
-        );
+        )->description('OAuth2 Password Security');
     }
 }

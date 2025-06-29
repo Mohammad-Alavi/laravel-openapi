@@ -11,7 +11,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
 final class SingleResponse implements ResponsesFactory
 {
@@ -21,7 +20,7 @@ final class SingleResponse implements ResponsesFactory
             ResponseEntry::create(
                 HTTPStatusCode::unprocessableEntity(),
                 Response::create(
-                    Description::create('Unprocessable Entity'),
+                    'Unprocessable Entity',
                 )->content(
                     ContentEntry::json(
                         MediaType::create()->schema(

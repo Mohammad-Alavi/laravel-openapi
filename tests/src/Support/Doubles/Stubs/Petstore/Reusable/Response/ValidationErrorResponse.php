@@ -9,7 +9,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
 final class ValidationErrorResponse extends ResponseFactory implements ShouldBeReferenced
 {
@@ -29,7 +28,7 @@ final class ValidationErrorResponse extends ResponseFactory implements ShouldBeR
         );
 
         return Response::create(
-            Description::create('Unprocessable Entity'),
+            'Unprocessable Entity',
         )->content(
             ContentEntry::json(
                 MediaType::create()->schema($objectDescriptor),

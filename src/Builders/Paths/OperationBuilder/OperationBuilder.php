@@ -14,12 +14,9 @@ use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\Securi
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\ServerBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\TagBuilder;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 
 final readonly class OperationBuilder
 {
@@ -45,13 +42,13 @@ final readonly class OperationBuilder
         if (!is_null($operationAttr)) {
             $operation = $operation->tags(...$this->tagBuilder->build(Arr::wrap($operationAttr->tags)));
             if (!is_null($operationAttr->summary)) {
-                $operation = $operation->summary(Summary::create($operationAttr->summary));
+                $operation = $operation->summary($operationAttr->summary);
             }
             if (!is_null($operationAttr->description)) {
-                $operation = $operation->description(Description::create($operationAttr->description));
+                $operation = $operation->description($operationAttr->description);
             }
             if (!is_null($operationAttr->operationId)) {
-                $operation = $operation->operationId(OperationId::create($operationAttr->operationId));
+                $operation = $operation->operationId($operationAttr->operationId);
             }
             if (!blank($operationAttr->security)) {
                 $operation = $operation->security($this->securityBuilder->build($operationAttr->security));
@@ -61,19 +58,23 @@ final readonly class OperationBuilder
             }
             $servers = $this->serverBuilder->build(Arr::wrap($operationAttr->servers));
         }
-        $parameters = $this->parametersBuilder->build($routeInfo);
-        $requestBody = $routeInfo->requestBodyAttribute() instanceof RequestBody
-            ? $this->requestBodyBuilder->build($routeInfo->requestBodyAttribute())
-            : null;
-        $responses = $routeInfo->responsesAttribute() instanceof Responses
-            ? $this->responsesBuilder->build($routeInfo->responsesAttribute())
-            : null;
+
+        if ($routeInfo->requestBodyAttribute() instanceof RequestBody) {
+            $operation = $operation->requestBody(
+                $this->requestBodyBuilder->build($routeInfo->requestBodyAttribute()),
+            );
+        }
+
+        if ($routeInfo->responsesAttribute() instanceof Responses) {
+            $operation = $operation->responses(
+                $this->responsesBuilder->build($routeInfo->responsesAttribute()),
+            );
+        }
+
         $callbacks = $this->callbackBuilder->build($routeInfo->callbackAttributes());
 
         $operation = $operation->servers(...$servers)
-            ->parameters($parameters)
-            ->requestBody($requestBody)
-            ->responses($responses)
+            ->parameters($this->parametersBuilder->build($routeInfo))
             ->callbacks(...$callbacks);
 
         $this->extensionBuilder->build($operation, $routeInfo->extensionAttributes());

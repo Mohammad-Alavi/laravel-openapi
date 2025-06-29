@@ -29,38 +29,38 @@ final class Parameter extends ExtensibleObject
     }
 
     public static function cookie(
-        Name $name,
+        string $name,
         ContentSerialized|SchemaSerializedCookie $serialization,
     ): self {
-        return new self($name, In::cookie(), $serialization);
+        return new self(Name::create($name), In::cookie(), $serialization);
     }
 
     public static function header(
-        Name $name,
+        string $name,
         ContentSerialized|SchemaSerializedHeader $serialization,
     ): self {
-        return new self($name, In::header(), $serialization);
+        return new self(Name::create($name), In::header(), $serialization);
     }
 
     public static function path(
-        Name $name,
+        string $name,
         ContentSerialized|SchemaSerializedPath $serialization,
     ): self {
-        return new self($name, In::path(), $serialization);
+        return new self(Name::create($name), In::path(), $serialization);
     }
 
     public static function query(
-        Name $name,
+        string $name,
         ContentSerialized|SchemaSerializedQuery $serialization,
     ): self {
-        return new self($name, In::query(), $serialization);
+        return new self(Name::create($name), In::query(), $serialization);
     }
 
-    public function description(Description|null $description): self
+    public function description(string $description): self
     {
         $clone = clone $this;
 
-        $clone->description = $description;
+        $clone->description = Description::create($description);
 
         return $clone;
     }

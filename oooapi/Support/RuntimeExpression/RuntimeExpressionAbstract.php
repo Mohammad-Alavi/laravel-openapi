@@ -22,14 +22,14 @@ abstract readonly class RuntimeExpressionAbstract implements \JsonSerializable, 
         // Base validation will be implemented in child classes
     }
 
-    final public function __toString(): string
-    {
-        return $this->value();
-    }
-
     public function embeddable(): string
     {
         return '{' . $this->__toString() . '}';
+    }
+
+    final public function __toString(): string
+    {
+        return $this->value();
     }
 
     /**

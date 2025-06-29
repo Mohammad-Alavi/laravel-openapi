@@ -5,7 +5,6 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields\Ref;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 use Webmozart\Assert\Assert;
 
@@ -31,9 +30,7 @@ abstract class ReusableComponent implements \JsonSerializable, OASObject
 
     final public static function reference(): Reference
     {
-        return Reference::create(
-            Ref::create(static::uri()),
-        );
+        return Reference::create(static::uri());
     }
 
     final public static function create(): static

@@ -21,61 +21,49 @@ final class Info extends ExtensibleObject
     private License|null $license = null;
 
     private function __construct(
-        private Title $title,
-        private Version $version,
+        private readonly Title $title,
+        private readonly Version $version,
     ) {
-    }
-
-    public static function create(
-        Title $title,
-        Version $version,
-    ): self {
-        return new self($title, $version);
-    }
-
-    /**
-     * The title of the API.
-     */
-    public function title(Title $title): self
-    {
-        $clone = clone $this;
-
-        $clone->title = $title;
-
-        return $clone;
     }
 
     /**
      * A short summary of the API.
      */
-    public function summary(Summary|null $summary): self
+    public function summary(string $summary): self
     {
         $clone = clone $this;
 
-        $clone->summary = $summary;
+        $clone->summary = Summary::create($summary);
 
         return $clone;
     }
 
-    public function description(Description|null $description): self
+    public static function create(
+        string $title,
+        string $version,
+    ): self {
+        return new self(Title::create($title), Version::create($version));
+    }
+
+    public function description(string $description): self
     {
         $clone = clone $this;
 
-        $clone->description = $description;
+        $clone->description = Description::create($description);
 
         return $clone;
     }
 
-    public function termsOfService(TermsOfService|null $termsOfService): self
+    public function termsOfService(string $termsOfService): self
     {
         $clone = clone $this;
 
-        $clone->termsOfService = $termsOfService;
+        $clone->termsOfService = TermsOfService::create($termsOfService);
 
         return $clone;
     }
 
-    public function contact(Contact|null $contact): self
+    public function contact(Contact $contact): self
     {
         $clone = clone $this;
 
@@ -84,20 +72,11 @@ final class Info extends ExtensibleObject
         return $clone;
     }
 
-    public function license(License|null $license): self
+    public function license(License $license): self
     {
         $clone = clone $this;
 
         $clone->license = $license;
-
-        return $clone;
-    }
-
-    public function version(Version $version): self
-    {
-        $clone = clone $this;
-
-        $clone->version = $version;
 
         return $clone;
     }

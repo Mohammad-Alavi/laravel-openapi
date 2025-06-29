@@ -3,12 +3,7 @@
 namespace Tests\oooas\Unit\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields\Email;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Title;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields\Version;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\UnitTestCase;
 
@@ -18,14 +13,12 @@ class ContactTest extends UnitTestCase
     public function testCreateWithAllParametersWorks(): void
     {
         $contact = Contact::create()
-            ->name(Name::create('Example'))
-            ->url(URL::create('https://laragen.io'))
-            ->email(Email::create('hello@laragen.io'));
+            ->name('Example')
+            ->url('https://laragen.io')
+            ->email('hello@laragen.io');
 
-        $info = Info::create(
-            Title::create('API Specification'),
-            Version::create('v1'),
-        )->contact($contact);
+        $info = Info::create('API Specification', 'v1')
+            ->contact($contact);
 
         $this->assertSame([
             'title' => 'API Specification',

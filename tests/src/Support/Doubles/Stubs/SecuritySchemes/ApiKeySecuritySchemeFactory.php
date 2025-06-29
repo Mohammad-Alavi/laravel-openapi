@@ -5,7 +5,6 @@ namespace Tests\src\Support\Doubles\Stubs\SecuritySchemes;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\ApiKey;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
 class ApiKeySecuritySchemeFactory extends SecuritySchemeFactory
 {
@@ -16,6 +15,7 @@ class ApiKeySecuritySchemeFactory extends SecuritySchemeFactory
 
     public function component(): SecurityScheme
     {
-        return SecurityScheme::apiKey(ApiKey::query('header'), Description::create('Api Key Security'));
+        return SecurityScheme::apiKey(ApiKey::query('header'))
+            ->description('Api Key Security');
     }
 }

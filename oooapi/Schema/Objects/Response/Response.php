@@ -34,9 +34,9 @@ final class Response extends ExtensibleObject
         return $clone;
     }
 
-    public static function create(Description $description): self
+    public static function create(string $description): self
     {
-        return new self($description);
+        return new self(Description::create($description));
     }
 
     public function content(ContentEntry ...$contentEntry): self

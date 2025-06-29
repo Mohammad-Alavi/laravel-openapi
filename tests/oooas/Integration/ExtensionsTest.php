@@ -9,7 +9,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use Webmozart\Assert\InvalidArgumentException;
 
 describe(class_basename(Extension::class), function (): void {
@@ -37,7 +36,7 @@ describe(class_basename(Extension::class), function (): void {
         ],
         [
             function (): Response {
-                return Response::create(Description::create('OK'));
+                return Response::create('OK');
             }, $expectations + [
                 'description' => 'OK',
             ],

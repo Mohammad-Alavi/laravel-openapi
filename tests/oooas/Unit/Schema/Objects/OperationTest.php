@@ -1,7 +1,6 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Fields\OperationId;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
@@ -13,11 +12,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestCallbackFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
@@ -34,18 +29,15 @@ describe(class_basename(Operation::class), function (): void {
         function (): void {
             $operation = Operation::create()
                 ->tags(
-                    Tag::create(
-                        Name::create('Users'),
-                        Description::create('Lorem ipsum'),
-                    ),
-                )->summary(Summary::create('Lorem ipsum'))
-                ->description(Description::create('Dolar sit amet'))
-                ->externalDocs(ExternalDocumentation::create(URL::create('https://laragen.io/docs')))
-                ->operationId(OperationId::create('users.show'))
+                    Tag::create('Users')->description('Lorem ipsum'),
+                )->summary('Lorem ipsum')
+                ->description('Dolar sit amet')
+                ->externalDocs(ExternalDocumentation::create('https://laragen.io/docs'))
+                ->operationId('users.show')
                 ->parameters(
                     Parameters::create(
                         Parameter::query(
-                            Name::create('id'),
+                            'id',
                             SchemaSerializedQuery::create(Schema::string()),
                         ),
                     ),
@@ -54,7 +46,7 @@ describe(class_basename(Operation::class), function (): void {
                     Responses::create(
                         ResponseEntry::create(
                             HTTPStatusCode::ok(),
-                            Response::create(Description::create('OK')),
+                            Response::create('OK'),
                         ),
                     ),
                 )->deprecated()
@@ -111,7 +103,7 @@ describe(class_basename(Operation::class), function (): void {
                 Responses::create(
                     ResponseEntry::create(
                         HTTPStatusCode::ok(),
-                        Response::create(Description::create('OK')),
+                        Response::create('OK'),
                     ),
                 ),
             )
@@ -134,15 +126,15 @@ describe(class_basename(Operation::class), function (): void {
             ['Users', 'Admins'],
         ],
         'one object tag' => [
-            [Tag::create(Name::create('Users'))],
+            [Tag::create('Users')],
             ['Users'],
         ],
         'multiple object tags' => [
-            [Tag::create(Name::create('Users')), Tag::create(Name::create('Admins'))],
+            [Tag::create('Users'), Tag::create('Admins')],
             ['Users', 'Admins'],
         ],
         'mixed tags' => [
-            ['Users', Tag::create(Name::create('Admins'))],
+            ['Users', Tag::create('Admins')],
             ['Users', 'Admins'],
         ],
     ]);

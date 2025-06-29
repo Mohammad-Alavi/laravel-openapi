@@ -11,7 +11,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStat
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Request\RequestQueryExpression;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
 describe(class_basename(Callback::class), function (): void {
     it(
@@ -27,14 +26,14 @@ describe(class_basename(Callback::class), function (): void {
                                 ->requestBody(
                                     RequestBody::create()
                                         ->description(
-                                            Description::create('something happened'),
+                                            'something happened',
                                         ),
                                 )->responses(
                                     Responses::create(
                                         ResponseEntry::create(
                                             HTTPStatusCode::unauthorized(),
                                             Response::create(
-                                                Description::create('Unauthorized'),
+                                                'Unauthorized',
                                             ),
                                         ),
                                     ),

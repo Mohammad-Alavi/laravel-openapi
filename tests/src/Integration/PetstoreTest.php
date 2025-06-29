@@ -8,12 +8,9 @@ use MohammadAlavi\LaravelOpenApi\Generator;
 use Tests\src\Support\Doubles\Stubs\Petstore\PetController;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestApiKeySecuritySchemeFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
-use Tests\src\Support\Doubles\Stubs\Servers\ServerWithMultipleVariableFormatting;
-use Tests\src\Support\Doubles\Stubs\Servers\ServerWithoutVariables;
-use Tests\src\Support\Doubles\Stubs\Servers\ServerWithVariables;
 
 describe('PetStore', function (): void {
-    it('can be generated', function (array $servers, string $path, string $method, array $expectation): void {
+    it('can be generated', function (string $path, string $method, array $expectation): void {
         Config::set('openapi.locations', [
             'schemas' => [
                 __DIR__ . '/../Support/Doubles/Stubs/Petstore/Reusable/Schema',
@@ -23,17 +20,14 @@ describe('PetStore', function (): void {
             ],
         ]);
 
-        putenv('APP_URL=https://petstore.swagger.io/v1');
         Route::get('/pets', [PetController::class, 'index']);
         Route::post('/multiPetTag', [PetController::class, 'multiPetTag']);
         Route::delete('/nestedSecurityFirstTest', [PetController::class, 'nestedSecurityFirst']);
         Route::put('/nestedSecuritySecondTest', [PetController::class, 'nestedSecuritySecond']);
 
-        Config::set('openapi.collections.default.servers', $servers['classes']);
         $spec = app(Generator::class)->generate()->unserializeToArray();
 
-        expect(\Safe\json_encode($spec['servers']))->toBe(\Safe\json_encode($servers['expectation']))
-            ->and($spec['paths'])->toHaveKey($path)
+        expect($spec['paths'])->toHaveKey($path)
             ->and($spec['paths'][$path])->toHaveKey($method)
             ->and(\Safe\json_encode($spec['paths'][$path][$method]))->toBe(\Safe\json_encode($expectation))
             ->and($spec)->toHaveKey('components')
@@ -97,15 +91,6 @@ describe('PetStore', function (): void {
             ]);
     })->with([
         [
-            'servers' => [
-                'classes' => [ServerWithoutVariables::class],
-                'expectation' => [
-                    [
-                        'url' => 'https://laragen.io',
-                        'description' => 'sample_description',
-                    ],
-                ],
-            ],
             'path' => '/pets',
             'method' => 'get',
             'expectation' => [
@@ -135,21 +120,6 @@ describe('PetStore', function (): void {
             ],
         ],
         [
-            'servers' => [
-                'classes' => [ServerWithVariables::class],
-                'expectation' => [
-                    [
-                        'url' => 'https://laragen.io',
-                        'description' => 'sample_description',
-                        'variables' => [
-                            'variable_name' => [
-                                'default' => 'variable_default',
-                                'description' => 'variable_description',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
             'path' => '/multiPetTag',
             'method' => 'post',
             'expectation' => [
@@ -197,26 +167,6 @@ describe('PetStore', function (): void {
             ],
         ],
         [
-            'servers' => [
-                'classes' => [ServerWithMultipleVariableFormatting::class],
-                'expectation' => [
-                    [
-                        'url' => 'https://laragen.io',
-                        'description' => 'sample_description',
-                        'variables' => [
-                            'ServerVariableA' => [
-                                'enum' => ['A', 'B'],
-                                'default' => 'B',
-                                'description' => 'variable_description',
-                            ],
-                            'ServerVariableB' => [
-                                'default' => 'sample',
-                                'description' => 'sample_description',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
             'path' => '/nestedSecurityFirstTest',
             'method' => 'delete',
             'expectation' => [
@@ -282,36 +232,6 @@ describe('PetStore', function (): void {
             ],
         ],
         [
-            'servers' => [
-                'classes' => [ServerWithVariables::class, ServerWithMultipleVariableFormatting::class],
-                'expectation' => [
-                    [
-                        'url' => 'https://laragen.io',
-                        'description' => 'sample_description',
-                        'variables' => [
-                            'variable_name' => [
-                                'default' => 'variable_default',
-                                'description' => 'variable_description',
-                            ],
-                        ],
-                    ],
-                    [
-                        'url' => 'https://laragen.io',
-                        'description' => 'sample_description',
-                        'variables' => [
-                            'ServerVariableA' => [
-                                'enum' => ['A', 'B'],
-                                'default' => 'B',
-                                'description' => 'variable_description',
-                            ],
-                            'ServerVariableB' => [
-                                'default' => 'sample',
-                                'description' => 'sample_description',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
             'path' => '/nestedSecuritySecondTest',
             'method' => 'put',
             'expectation' => [

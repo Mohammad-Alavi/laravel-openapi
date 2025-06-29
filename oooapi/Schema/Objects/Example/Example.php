@@ -16,25 +16,25 @@ final class Example extends ExtensibleObject
     private mixed $value = null;
     private ExternalValue|null $externalValue = null;
 
+    public function summary(string $summary): self
+    {
+        $clone = clone $this;
+
+        $clone->summary = Summary::create($summary);
+
+        return $clone;
+    }
+
     public static function create(): self
     {
         return new self();
     }
 
-    public function summary(Summary $summary): self
+    public function description(string $description): self
     {
         $clone = clone $this;
 
-        $clone->summary = $summary;
-
-        return $clone;
-    }
-
-    public function description(Description $description): self
-    {
-        $clone = clone $this;
-
-        $clone->description = $description;
+        $clone->description = Description::create($description);
 
         return $clone;
     }
@@ -53,7 +53,7 @@ final class Example extends ExtensibleObject
         return $clone;
     }
 
-    public function externalValue(ExternalValue|null $externalValue): self
+    public function externalValue(string $externalValue): self
     {
         Assert::null(
             $this->value,
@@ -62,7 +62,7 @@ final class Example extends ExtensibleObject
 
         $clone = clone $this;
 
-        $clone->externalValue = $externalValue;
+        $clone->externalValue = ExternalValue::create($externalValue);
 
         return $clone;
     }

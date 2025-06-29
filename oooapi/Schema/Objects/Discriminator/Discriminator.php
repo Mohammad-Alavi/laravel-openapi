@@ -3,6 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\Entry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\Mapping;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\PropertyName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
@@ -16,10 +17,13 @@ final class Discriminator extends ExtensibleObject
     }
 
     public static function create(
-        PropertyName $propertyName,
-        Mapping|null $mapping = null,
+        string $propertyName,
+        Entry ...$entry,
     ): self {
-        return new self($propertyName, $mapping);
+        return new self(
+            PropertyName::create($propertyName),
+            when(blank($entry), null, Mapping::create(...$entry)),
+        );
     }
 
     public function toArray(): array
