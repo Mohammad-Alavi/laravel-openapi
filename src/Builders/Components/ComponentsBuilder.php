@@ -8,6 +8,7 @@ use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ExampleFil
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\HeaderFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\LinkFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ParameterFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\PathItemFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\RequestBodyFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ResponseFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\SchemaFilter;
@@ -63,6 +64,10 @@ final readonly class ComponentsBuilder
             ->in($this->getPathsFromConfig('callbacks'))
             ->use(new CallbackFilter())
             ->collect($collection);
+        $pathItems = $this->componentCollector
+            ->in($this->getPathsFromConfig('path_items'))
+            ->use(new PathItemFilter())
+            ->collect($collection);
 
         $components = Components::create();
 
@@ -116,6 +121,12 @@ final readonly class ComponentsBuilder
             $hasAnyObjects = true;
 
             $components = $components->callbacks(...$callbacks);
+        }
+
+        if (count($pathItems) > 0) {
+            $hasAnyObjects = true;
+
+            $components = $components->pathItems(...$pathItems);
         }
 
         if (!$hasAnyObjects) {

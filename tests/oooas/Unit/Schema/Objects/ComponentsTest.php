@@ -8,6 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\HeaderFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\LinkFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\PathItemFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
@@ -173,6 +174,18 @@ describe(class_basename(Components::class), function (): void {
             }
         };
 
+        $pathItem = new class extends PathItemFactory {
+            public function component(): PathItem
+            {
+                return PathItem::create();
+            }
+
+            public static function name(): string
+            {
+                return 'PathItemExample';
+            }
+        };
+
         $components = Components::create()
             ->schemas($schema)
             ->responses($response)
@@ -182,7 +195,8 @@ describe(class_basename(Components::class), function (): void {
             ->headers($header)
             ->securitySchemes($securityScheme)
             ->links($link)
-            ->callbacks($callback);
+            ->callbacks($callback)
+            ->pathItems($pathItem);
 
         expect($components->unserializeToArray())->toBe([
             'schemas' => [
@@ -239,6 +253,9 @@ describe(class_basename(Components::class), function (): void {
                         ],
                     ],
                 ],
+            ],
+            'pathItems' => [
+                'PathItemExample' => [],
             ],
         ]);
     });

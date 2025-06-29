@@ -52,6 +52,9 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                 'callbacks' => [
                     __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Callback',
                 ],
+                'path_items' => [
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/PathItem',
+                ],
             ],
         ]);
     });
@@ -157,6 +160,10 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                             'https://laragen.io/multi-collection-callback' => [],
                         ],
                     ],
+                    'pathItems' => [
+                        'MultiCollectionPathItem' => [],
+                        'ExplicitCollectionPathItem' => [],
+                    ],
                 ],
             ],
             'explicit default collection' => [
@@ -241,6 +248,10 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         'ImplicitDefaultCallback' => [
                             'https://laragen.io/implicit-default-callback' => [],
                         ],
+                    ],
+                    'pathItems' => [
+                        'MultiCollectionPathItem' => [],
+                        'ImplicitCollectionPathItem' => [],
                     ],
                 ],
             ],

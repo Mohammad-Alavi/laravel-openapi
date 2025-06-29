@@ -12,7 +12,7 @@ describe(class_basename(ComponentCollector::class), function (): void {
 
         $result = $sut->collect('test')->map(static fn ($component) => $component::class);
 
-        expect($result)->toHaveCount(18)
+        expect($result)->toHaveCount(20)
             ->each(function (Expectation $expectation) {
                 return $expectation->toHaveAttribute(Collection::class);
             });

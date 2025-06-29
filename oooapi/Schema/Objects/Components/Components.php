@@ -9,6 +9,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\HeaderFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\LinkFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\PathItemFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
@@ -18,6 +19,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
@@ -51,6 +53,14 @@ final class Components extends ExtensibleObject
 
     /** @var array<string, Callback>|null */
     private array|null $callbacks = null;
+
+    /** @var array<string, PathItem>|null */
+    private array|null $pathItems = null;
+
+    public static function create(): self
+    {
+        return new self();
+    }
 
     public function schemas(SchemaFactory ...$schemaFactory): self
     {
@@ -140,17 +150,23 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
-    public static function create(): self
-    {
-        return new self();
-    }
-
     public function callbacks(CallbackFactory ...$callbackFactory): self
     {
         $clone = clone $this;
 
         foreach ($callbackFactory as $factory) {
             $clone->callbacks[$factory::name()] = $factory->component();
+        }
+
+        return $clone;
+    }
+
+    public function pathItems(PathItemFactory ...$pathItemFactory): self
+    {
+        $clone = clone $this;
+
+        foreach ($pathItemFactory as $factory) {
+            $clone->pathItems[$factory::name()] = $factory->component();
         }
 
         return $clone;
@@ -168,7 +184,7 @@ final class Components extends ExtensibleObject
             'securitySchemes' => $this->securitySchemes,
             'links' => $this->links,
             'callbacks' => $this->callbacks,
-            // TODO: add extensions
+            'pathItems' => $this->pathItems,
         ]);
     }
 }
