@@ -41,10 +41,6 @@ final readonly class ComponentsBuilder
             ->in($this->getPathsFromConfig('examples'))
             ->use(new ExampleFilter())
             ->collect($collection);
-        $callbacks = $this->componentCollector
-            ->in($this->getPathsFromConfig('callbacks'))
-            ->use(new CallbackFilter())
-            ->collect($collection);
         $requestBodies = $this->componentCollector
             ->in($this->getPathsFromConfig('request_bodies'))
             ->use(new RequestBodyFilter())
@@ -52,6 +48,10 @@ final readonly class ComponentsBuilder
         $securitySchemes = $this->componentCollector
             ->in($this->getPathsFromConfig('security_schemes'))
             ->use(new SecuritySchemeFilter())
+            ->collect($collection);
+        $callbacks = $this->componentCollector
+            ->in($this->getPathsFromConfig('callbacks'))
+            ->use(new CallbackFilter())
             ->collect($collection);
 
         $components = Components::create();
@@ -79,12 +79,6 @@ final readonly class ComponentsBuilder
             $components = $components->examples(...$examples);
         }
 
-        if (count($callbacks) > 0) {
-            $hasAnyObjects = true;
-
-            $components = $components->callbacks(...$callbacks);
-        }
-
         if (count($requestBodies) > 0) {
             $hasAnyObjects = true;
 
@@ -94,6 +88,12 @@ final readonly class ComponentsBuilder
         if (count($securitySchemes) > 0) {
             $hasAnyObjects = true;
             $components = $components->securitySchemes(...$securitySchemes);
+        }
+
+        if (count($callbacks) > 0) {
+            $hasAnyObjects = true;
+
+            $components = $components->callbacks(...$callbacks);
         }
 
         if (!$hasAnyObjects) {

@@ -93,11 +93,6 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
-    public static function create(): self
-    {
-        return new self();
-    }
-
     public function requestBodies(RequestBodyFactory ...$requestBodyFactory): self
     {
         $clone = clone $this;
@@ -116,6 +111,11 @@ final class Components extends ExtensibleObject
         $clone->headers = Headers::create(...$headerEntry);
 
         return $clone;
+    }
+
+    public static function create(): self
+    {
+        return new self();
     }
 
     public function securitySchemes(SecuritySchemeFactory ...$securitySchemeFactory): self
