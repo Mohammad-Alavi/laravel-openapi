@@ -5,6 +5,7 @@ namespace MohammadAlavi\LaravelOpenApi\Builders\Components;
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\CallbackFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ExampleFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\HeaderFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ParameterFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\RequestBodyFilter;
 use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ResponseFilter;
@@ -45,6 +46,10 @@ final readonly class ComponentsBuilder
             ->in($this->getPathsFromConfig('request_bodies'))
             ->use(new RequestBodyFilter())
             ->collect($collection);
+        $headers = $this->componentCollector
+            ->in($this->getPathsFromConfig('headers'))
+            ->use(new HeaderFilter())
+            ->collect($collection);
         $securitySchemes = $this->componentCollector
             ->in($this->getPathsFromConfig('security_schemes'))
             ->use(new SecuritySchemeFilter())
@@ -83,6 +88,12 @@ final readonly class ComponentsBuilder
             $hasAnyObjects = true;
 
             $components = $components->requestBodies(...$requestBodies);
+        }
+
+        if (count($headers) > 0) {
+            $hasAnyObjects = true;
+
+            $components = $components->headers(...$headers);
         }
 
         if (count($securitySchemes) > 0) {

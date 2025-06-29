@@ -6,6 +6,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ExampleFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\HeaderFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
@@ -13,13 +14,12 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\HeaderEntry;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\Headers;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Links\LinkEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Links\Links;
 
@@ -40,7 +40,8 @@ final class Components extends ExtensibleObject
     /** @var RequestBody[]|null */
     private array|null $requestBodies = null;
 
-    private Headers|null $headers = null;
+    /** @var Header[]|null */
+    private array|null $headers = null;
 
     /** @var SecurityScheme[]|null */
     private array|null $securitySchemes = null;
@@ -104,11 +105,13 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
-    public function headers(HeaderEntry ...$headerEntry): self
+    public function headers(HeaderFactory ...$headerFactory): self
     {
         $clone = clone $this;
 
-        $clone->headers = Headers::create(...$headerEntry);
+        foreach ($headerFactory as $factory) {
+            $clone->headers[$factory::name()] = $factory->component();
+        }
 
         return $clone;
     }

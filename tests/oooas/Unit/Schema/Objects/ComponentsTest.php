@@ -5,6 +5,7 @@ namespace Tests\oooas\Unit\Schema\Objects;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ExampleFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\HeaderFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
@@ -102,10 +103,17 @@ describe(class_basename(Components::class), function (): void {
             }
         };
 
-        $header = HeaderEntry::create(
-            'HeaderExample',
-            Header::create(),
-        );
+        $header = new class extends HeaderFactory {
+            public function component(): Header
+            {
+                return Header::create();
+            }
+
+            public static function name(): string
+            {
+                return 'HeaderExample';
+            }
+        };
 
         $securityScheme = new class extends SecuritySchemeFactory {
             public function component(): SecurityScheme

@@ -40,6 +40,9 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                 'request_bodies' => [
                     __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/RequestBody',
                 ],
+                'headers' => [
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Header',
+                ],
                 'callbacks' => [
                     __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Callback',
                 ],
@@ -125,6 +128,10 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         'MultiCollectionRequestBody' => [],
                         'ExplicitCollectionRequestBody' => [],
                     ],
+                    'headers' => [
+                        'MultiCollectionHeader' => [],
+                        'ExplicitCollectionHeader' => [],
+                    ],
                     'callbacks' => [
                         'ExplicitCollectionCallback' => [
                             'https://laragen.io/explicit-collection-callback' => [],
@@ -201,6 +208,10 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                     'requestBodies' => [
                         'MultiCollectionRequestBody' => [],
                         'ImplicitCollectionRequestBody' => [],
+                    ],
+                    'headers' => [
+                        'MultiCollectionHeader' => [],
+                        'ImplicitCollectionHeader' => [],
                     ],
                     'callbacks' => [
                         'MultiCollectionCallback' => [
