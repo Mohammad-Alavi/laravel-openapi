@@ -47,7 +47,7 @@ trait StringKeyedMap
     /** @return array<string, TValue>|null */
     final public function jsonSerialize(): array|null
     {
-        if ([] === $this->entries()) {
+        if (blank($this->entries())) {
             return null;
         }
 

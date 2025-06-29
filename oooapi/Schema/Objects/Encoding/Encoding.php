@@ -65,7 +65,7 @@ final class Encoding extends ExtensibleObject
         return $clone;
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'contentType' => $this->contentType,

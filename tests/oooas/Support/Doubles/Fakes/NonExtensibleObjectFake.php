@@ -6,7 +6,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
 
 class NonExtensibleObjectFake extends Generatable
 {
-    protected function toArray(): array
+    public function toArray(): array
     {
         return [];
     }

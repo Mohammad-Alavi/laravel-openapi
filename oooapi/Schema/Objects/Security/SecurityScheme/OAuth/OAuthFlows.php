@@ -86,7 +86,7 @@ final class OAuthFlows extends Generatable
         return $clone;
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'implicit' => $this->implicit,

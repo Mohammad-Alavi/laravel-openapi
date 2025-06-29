@@ -115,7 +115,7 @@ final class OpenAPI extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->tags = [] !== $tag ? $tag : null;
+        $clone->tags = when(blank($tag), null, $tag);
 
         return $clone;
     }
@@ -129,7 +129,7 @@ final class OpenAPI extends ExtensibleObject
         return $clone;
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'openapi' => $this->openAPIField,

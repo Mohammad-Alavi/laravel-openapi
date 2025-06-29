@@ -22,7 +22,7 @@ final class ExternalDocumentation extends ExtensibleObject
         return new self($url, $description);
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'url' => $this->url,

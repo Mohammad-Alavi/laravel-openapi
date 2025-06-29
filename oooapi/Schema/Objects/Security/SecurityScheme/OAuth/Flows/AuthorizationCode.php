@@ -26,7 +26,7 @@ final readonly class AuthorizationCode extends Flow
         return new self($authorizationUrl, $tokenUrl, $refreshUrl, $scopeCollection);
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'authorizationUrl' => $this->authorizationUrl,

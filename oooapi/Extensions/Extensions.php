@@ -60,10 +60,10 @@ final class Extensions extends Generatable
 
     public function isEmpty(): bool
     {
-        return [] === $this->extensions;
+        return blank($this->extensions);
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return array_reduce(
             $this->extensions,

@@ -30,7 +30,7 @@ final class Tag extends ExtensibleObject implements \Stringable
         return $this->name->value();
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'name' => $this->name,

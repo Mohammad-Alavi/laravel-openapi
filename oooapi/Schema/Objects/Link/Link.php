@@ -61,7 +61,7 @@ final class Link extends ExtensibleObject
         return $clone;
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'operationRef' => $this->operationRef,

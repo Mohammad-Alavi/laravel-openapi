@@ -23,7 +23,7 @@ final class Path extends ExtensibleObject implements StringMapEntry
         return new self($path, $pathItem);
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return [];
     }

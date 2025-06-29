@@ -30,7 +30,7 @@ final class Reference extends NonExtensibleObject
         return $this->ref->value();
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             '$ref' => $this->ref,

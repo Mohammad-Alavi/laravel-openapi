@@ -67,7 +67,7 @@ final class Example extends ExtensibleObject
         return $clone;
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'summary' => $this->summary,

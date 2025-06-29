@@ -27,7 +27,7 @@ final class Paths extends ExtensibleObject implements StringMap
         return $this->jsonSerializeTrait() ?? [];
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return $this->jsonSerialize() ?? [];
     }

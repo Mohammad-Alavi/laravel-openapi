@@ -92,7 +92,7 @@ final class Parameter extends ExtensibleObject
         return $clone;
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'name' => $this->name,

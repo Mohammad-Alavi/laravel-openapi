@@ -12,23 +12,26 @@ trait Generator
      * @param string|null $path path without trailing slash. If null, the file will be saved in the root directory.
      * @param string $name the name of the file
      */
-    public function toJsonFile(string|null $path = null, string $name = 'openapi'): bool|int
-    {
+    public function toJsonFile(
+        string $name,
+        string|null $path = null,
+        int $options = JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
+    ): bool|int {
         if (!is_null($path) && '' !== $path && '0' !== $path) {
             return File::put(
                 $path . sprintf('/%s.json', $name),
-                $this->toJson(),
+                $this->toJson($options),
             );
         }
 
         return File::put(
             $name . '.json',
-            $this->toJson(),
+            $this->toJson($options),
         );
     }
 
     public function toJson(
-        $options = JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
+        int $options = JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
     ): string {
         return \Safe\json_encode($this->jsonSerialize(), $options);
     }
@@ -42,7 +45,7 @@ trait Generator
         return $this->toArray();
     }
 
-    abstract protected function toArray(): array;
+    abstract public function toArray(): array;
 
     /**
      * Returns the object as an array.
@@ -55,26 +58,22 @@ trait Generator
     }
 
     public function toObjectIfEmpty(
-        Generatable|ReadonlyGenerator|array|null $generatable,
-    ): Generatable|ReadonlyGenerator|\stdClass {
-        if (empty($generatable) || $generatable->isEmpty()) {
+        Generatable|ReadonlyGeneratable|array|null $value,
+    ): Generatable|ReadonlyGeneratable|\stdClass {
+        $orgValue = $value;
+        if ($value instanceof Generatable || $value instanceof ReadonlyGeneratable) {
+            $value = $value->toArray();
+        }
+
+        if (blank($value)) {
             return new \stdClass();
         }
 
-        return $generatable;
+        return $orgValue;
     }
 
-    public function isEmpty(): bool
+    public function toNullIfEmpty(): static|null
     {
-        return empty($this->toArray());
-    }
-
-    public function toNullIfEmpty(): Generatable|ReadonlyGenerator|null
-    {
-        if ($this->isEmpty()) {
-            return null;
-        }
-
-        return $this;
+        return when(blank($this->toArray()), null, $this);
     }
 }

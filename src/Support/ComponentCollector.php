@@ -29,11 +29,11 @@ final class ComponentCollector
                 $reflectionClass = new \ReflectionClass($class);
                 $collectionAttributes = $reflectionClass->getAttributes(CollectionAttribute::class);
 
-                if (Generator::COLLECTION_DEFAULT === $collection && [] === $collectionAttributes) {
+                if (Generator::COLLECTION_DEFAULT === $collection && blank($collectionAttributes)) {
                     return true;
                 }
 
-                if ([] === $collectionAttributes) {
+                if (blank($collectionAttributes)) {
                     return false;
                 }
 

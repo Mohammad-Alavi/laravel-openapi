@@ -2,10 +2,10 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGenerator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGeneratable;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
-final readonly class ScopeCollection extends ReadonlyGenerator
+final readonly class ScopeCollection extends ReadonlyGeneratable
 {
     private array $scopeFactories;
 
@@ -66,7 +66,7 @@ final readonly class ScopeCollection extends ReadonlyGenerator
         return array_map(static fn (ScopeFactory $scopeFactory): Scope => $scopeFactory->build(), $scopeFactory);
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         $scopes = array_reduce($this->all(), static function (array $carry, Scope $scope) {
             $carry[$scope->name()] = $scope->description();

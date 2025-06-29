@@ -21,7 +21,7 @@ final class Responses extends ExtensibleObject
         );
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return $this->responseMap->jsonSerialize() ?? [];
     }

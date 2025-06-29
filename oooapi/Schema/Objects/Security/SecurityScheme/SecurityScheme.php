@@ -46,7 +46,7 @@ final class SecurityScheme extends ExtensibleObject
         return new self(OpenIdConnect::create($openIdConnectUrl), $description);
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'type' => $this->scheme->type(),

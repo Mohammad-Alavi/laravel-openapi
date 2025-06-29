@@ -2,11 +2,11 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGenerator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGeneratable;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Scope;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
-final readonly class SecurityRequirement extends ReadonlyGenerator
+final readonly class SecurityRequirement extends ReadonlyGeneratable
 {
     /**
      * @param RequiredSecurity[] $requiredSecurities
@@ -21,7 +21,7 @@ final readonly class SecurityRequirement extends ReadonlyGenerator
         return new self($requiredSecurity);
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         $requiredSecurities = [];
         foreach ($this->requiredSecurities as $security) {

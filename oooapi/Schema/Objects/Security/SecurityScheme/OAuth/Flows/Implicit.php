@@ -24,7 +24,7 @@ final readonly class Implicit extends Flow
         return new self($authorizationUrl, $refreshUrl, $scopeCollection);
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'authorizationUrl' => $this->authorizationUrl,

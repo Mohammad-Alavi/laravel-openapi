@@ -2,9 +2,9 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGenerator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGeneratable;
 
-abstract readonly class Flow extends ReadonlyGenerator
+abstract readonly class Flow extends ReadonlyGeneratable
 {
     protected ScopeCollection $scopeCollection;
 

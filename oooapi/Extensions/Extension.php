@@ -2,10 +2,10 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Extensions;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGenerator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGeneratable;
 use Webmozart\Assert\Assert;
 
-final readonly class Extension extends ReadonlyGenerator
+final readonly class Extension extends ReadonlyGeneratable
 {
     private const EXTENSION_PREFIX = 'x-';
 
@@ -47,7 +47,7 @@ final readonly class Extension extends ReadonlyGenerator
         return $this->name === $extension->name && $this->value === $extension->value;
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return [$this->name => $this->value];
     }

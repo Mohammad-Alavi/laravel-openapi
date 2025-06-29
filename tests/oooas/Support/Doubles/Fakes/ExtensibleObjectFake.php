@@ -11,7 +11,7 @@ final class ExtensibleObjectFake extends ExtensibleObject
         return new self();
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return [];
     }

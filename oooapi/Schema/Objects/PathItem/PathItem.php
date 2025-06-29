@@ -59,7 +59,7 @@ final class PathItem extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->servers = [] !== $server ? $server : null;
+        $clone->servers = when(blank($server), null, $server);
 
         return $clone;
     }
@@ -69,12 +69,12 @@ final class PathItem extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->parameters = [] !== $parameter ? $parameter : null;
+        $clone->parameters = when(blank($parameter), null, $parameter);
 
         return $clone;
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter(
             [

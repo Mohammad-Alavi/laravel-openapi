@@ -33,7 +33,7 @@ final class Callback extends ExtensibleObject
         return when(blank($this->name), class_basename($this), $this->name);
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             (string) $this->expression => $this->pathItem,

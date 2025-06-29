@@ -56,7 +56,7 @@ final class Server extends ExtensibleObject
         return $clone;
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'url' => $this->url,

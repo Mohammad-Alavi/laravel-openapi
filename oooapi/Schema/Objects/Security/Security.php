@@ -4,7 +4,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Composable\SecurityRequirementFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGenerator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGeneratable;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\SecurityRequirement;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
@@ -45,11 +45,11 @@ final class Security extends Generatable
         return new self(...$securityRequirements);
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter(
             array_map(
-                function (SecurityRequirement $securityRequirement): Generatable|ReadonlyGenerator|\stdClass {
+                function (SecurityRequirement $securityRequirement): Generatable|ReadonlyGeneratable|\stdClass {
                     return $this->toObjectIfEmpty(
                         $securityRequirement,
                     );

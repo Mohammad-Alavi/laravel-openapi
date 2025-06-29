@@ -22,7 +22,7 @@ final class Discriminator extends ExtensibleObject
         return new self($propertyName, $mapping);
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'propertyName' => $this->propertyName,

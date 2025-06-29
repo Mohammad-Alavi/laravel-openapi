@@ -187,7 +187,7 @@ describe('OpenApi', function (): void {
             ->tags($tag)
             ->externalDocs($externalDocumentation);
 
-        file_put_contents('openapi.json', $openApi->toJson(JSON_PRETTY_PRINT));
+        $openApi->toJsonFile('openapi', options: JSON_PRETTY_PRINT);
 
         $output = [];
         $returnVar = 0;

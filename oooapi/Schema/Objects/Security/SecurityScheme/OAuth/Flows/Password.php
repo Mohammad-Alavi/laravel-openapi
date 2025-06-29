@@ -24,7 +24,7 @@ final readonly class Password extends Flow
         return new self($tokenUrl, $refreshUrl, $scopeCollection);
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return Arr::filter([
             'tokenUrl' => $this->tokenUrl,

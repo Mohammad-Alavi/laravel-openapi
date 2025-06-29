@@ -5,12 +5,11 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
 
 final class Parameters extends Generatable
 {
     /**
-     * @param (Parameter|Reference)[] $parameters
+     * @param (Parameter|ParameterFactory)[] $parameters
      */
     private function __construct(
         private readonly array $parameters,
@@ -19,35 +18,30 @@ final class Parameters extends Generatable
 
     public static function create(Parameter|ParameterFactory|self ...$parameter): self
     {
-        $selfParams = collect($parameter)
-            ->filter(static fn ($param): bool => $param instanceof self)
-            ->map(static fn (self $param): array => $param->all())->flatten();
+        $selfInstances = array_filter(
+            $parameter,
+            static fn (Parameter|ParameterFactory|self $param): bool => $param instanceof self,
+        );
+        /** @var (Parameter|ParameterFactory)[] $selfParams */
+        $selfParams = array_reduce(
+            $selfInstances,
+            static function (array $carry, self $param): array {
+                return array_merge($carry, $param->toArray());
+            },
+            [],
+        );
+        $parameters = array_filter(
+            $parameter,
+            static fn (Parameter|ParameterFactory|self $param): bool => !($param instanceof self),
+        );
 
-        $parameters = collect($parameter)
-            ->reject(static fn ($param): bool => $param instanceof self)
-            ->merge($selfParams)
-            ->map(
-                static function ($param): Reference|self|Parameter {
-                    if ($param instanceof ParameterFactory) {
-                        return $param::reference();
-                    }
-
-                    return $param;
-                },
-            )->toArray();
-
-        return new self($parameters);
+        return new self(array_merge($parameters, $selfParams));
     }
 
     /**
-     * @return (Parameter|Reference)[]
+     * @return (Parameter|ParameterFactory)[]
      */
-    public function all(): array
-    {
-        return $this->parameters;
-    }
-
-    protected function toArray(): array
+    public function toArray(): array
     {
         return $this->parameters;
     }
