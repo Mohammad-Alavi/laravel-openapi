@@ -4,10 +4,10 @@ use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Support\RouteCollector;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use Pest\Expectation;
-use Tests\src\Support\Doubles\Stubs\CollectibleClass;
 use Tests\src\Support\Doubles\Stubs\Builders\ControllerWithoutOperationStub;
 use Tests\src\Support\Doubles\Stubs\Builders\ControllerWithoutPathItemStub;
 use Tests\src\Support\Doubles\Stubs\Builders\ControllerWithPathItemAndOperationStub;
+use Tests\src\Support\Doubles\Stubs\CollectibleClass;
 
 describe(class_basename(RouteCollector::class), function (): void {
     it('can collect all routes', function (): void {

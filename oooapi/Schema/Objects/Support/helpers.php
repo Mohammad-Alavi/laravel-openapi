@@ -68,7 +68,6 @@ if (!function_exists('when')) {
      * @template TValue
      * @template TDefault
      *
-     * @param bool $condition
      * @param Closure|TValue $value
      * @param Closure|TDefault $default
      *

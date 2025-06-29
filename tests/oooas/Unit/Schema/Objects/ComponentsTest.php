@@ -2,7 +2,9 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ExampleFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
@@ -36,53 +38,86 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
 describe(class_basename(Components::class), function (): void {
     it('can be create with all parameters', function (): void {
-        $mock = \Mockery::mock(SchemaFactory::class);
-        $mock->allows('name')
-            ->andReturn('ExampleSchema');
-        $mock->expects('component')
-            ->andReturn(Schema::object());
+        $schema = new class extends SchemaFactory {
+            public function component(): JSONSchema
+            {
+                return Schema::object();
+            }
 
-        $response = \Mockery::mock(ResponseFactory::class);
-        $response->allows('name')
-            ->andReturn('ReusableResponse');
-        $response->expects('component')
-            ->andReturn(Response::create(Description::create('Deleted')));
+            public static function name(): string
+            {
+                return 'ExampleSchema';
+            }
+        };
 
-        $parameter = \Mockery::mock(ParameterFactory::class);
-        $parameter->allows('name')
-            ->andReturn('Page');
-        $parameter->expects('component')
-            ->andReturn(
-                Parameter::query(
+        $response = new class extends ResponseFactory {
+            public function component(): Response
+            {
+                return Response::create(Description::create('Deleted'));
+            }
+
+            public static function name(): string
+            {
+                return 'ReusableResponse';
+            }
+        };
+
+        $parameter = new class extends ParameterFactory {
+            public function component(): Parameter
+            {
+                return Parameter::query(
                     Name::create('page'),
                     SchemaSerializedQuery::create(Schema::string()),
-                ),
-            );
+                );
+            }
 
-        $example = ExampleEntry::create(
-            'Page',
-            Example::create()
-                ->value(5),
-        );
+            public static function name(): string
+            {
+                return 'Page';
+            }
+        };
 
-        $requestBody = \Mockery::mock(RequestBodyFactory::class);
-        $requestBody->allows('name')
-            ->andReturn('CreateResource');
-        $requestBody->expects('component')
-            ->andReturn(RequestBody::create());
+        $example = new class extends ExampleFactory {
+            public function component(): Example
+            {
+                return Example::create()
+                    ->value(5);
+            }
+
+            public static function name(): string
+            {
+                return 'Example';
+            }
+        };
+
+        $requestBody = new class extends RequestBodyFactory {
+            public function component(): RequestBody
+            {
+                return RequestBody::create();
+            }
+
+            public static function name(): string
+            {
+                return 'CreateResource';
+            }
+        };
 
         $header = HeaderEntry::create(
             'HeaderExample',
             Header::create(),
         );
 
-        $securityScheme = \Mockery::mock(SecuritySchemeFactory::class);
-        $securityScheme->allows('name')
-            ->andReturn('basic');
-        $securityScheme->expects('component')
-            ->andReturn(
-                SecurityScheme::http(Http::basic()),
-            );
+        $securityScheme = new class extends SecuritySchemeFactory {
+            public function component(): SecurityScheme
+            {
+                return SecurityScheme::http(Http::basic());
+            }
+
+            public static function name(): string
+            {
+                return 'basic';
+            }
+        };
 
         $link = Link::create();
 
@@ -123,7 +158,7 @@ describe(class_basename(Components::class), function (): void {
         };
 
         $components = Components::create()
-            ->schemas($mock)
+            ->schemas($schema)
             ->responses($response)
             ->parameters($parameter)
             ->examples($example)
@@ -154,7 +189,7 @@ describe(class_basename(Components::class), function (): void {
                 ],
             ],
             'examples' => [
-                'Page' => [
+                'Example' => [
                     'value' => 5,
                 ],
             ],

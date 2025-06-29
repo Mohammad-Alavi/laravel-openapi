@@ -25,17 +25,20 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                 ],
             ],
             'locations' => [
-                'callbacks' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Callback',
-                ],
-                'request_bodies' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/RequestBody',
+                'schemas' => [
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Schema',
                 ],
                 'responses' => [
                     __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Response',
                 ],
-                'schemas' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Schema',
+                'examples' => [
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Example',
+                ],
+                'request_bodies' => [
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/RequestBody',
+                ],
+                'callbacks' => [
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Callback',
                 ],
                 'security_schemes' => [
                     __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/SecurityScheme',
@@ -113,6 +116,14 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                             'scheme' => 'basic',
                         ],
                     ],
+                    'examples' => [
+                        'MultiCollectionExample' => [
+                            'value' => 'Example Value',
+                        ],
+                        'ExplicitCollectionExample' => [
+                            'value' => 'Example Value',
+                        ],
+                    ],
                 ],
             ],
             'explicit default collection' => [
@@ -164,6 +175,14 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         'ImplicitCollectionSecurityScheme' => [
                             'type' => 'http',
                             'scheme' => 'basic',
+                        ],
+                    ],
+                    'examples' => [
+                        'MultiCollectionExample' => [
+                            'value' => 'Example Value',
+                        ],
+                        'ImplicitCollectionExample' => [
+                            'externalValue' => 'Example External Value',
                         ],
                     ],
                 ],
