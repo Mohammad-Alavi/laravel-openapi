@@ -31,6 +31,9 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                 'responses' => [
                     __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Response',
                 ],
+                'parameters' => [
+                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Parameter',
+                ],
                 'examples' => [
                     __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Example',
                 ],
@@ -94,6 +97,30 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                             'description' => 'OK',
                         ],
                     ],
+                    'parameters' => [
+                        'MultiCollectionParameter' => [
+                            'name' => 'test',
+                            'in' => 'cookie',
+                            'schema' => [
+                                'type' => 'string',
+                            ],
+                        ],
+                        'ExplicitCollectionParameter' => [
+                            'name' => 'user_id',
+                            'in' => 'path',
+                            'schema' => [
+                                'type' => 'string',
+                            ],
+                        ],
+                    ],
+                    'examples' => [
+                        'MultiCollectionExample' => [
+                            'value' => 'Example Value',
+                        ],
+                        'ExplicitCollectionExample' => [
+                            'value' => 'Example Value',
+                        ],
+                    ],
                     'requestBodies' => [
                         'MultiCollectionRequestBody' => [],
                         'ExplicitCollectionRequestBody' => [],
@@ -114,14 +141,6 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         'ExplicitCollectionSecurityScheme' => [
                             'type' => 'http',
                             'scheme' => 'basic',
-                        ],
-                    ],
-                    'examples' => [
-                        'MultiCollectionExample' => [
-                            'value' => 'Example Value',
-                        ],
-                        'ExplicitCollectionExample' => [
-                            'value' => 'Example Value',
                         ],
                     ],
                 ],
@@ -155,6 +174,30 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                             'description' => 'OK',
                         ],
                     ],
+                    'parameters' => [
+                        'MultiCollectionParameter' => [
+                            'name' => 'test',
+                            'in' => 'cookie',
+                            'schema' => [
+                                'type' => 'string',
+                            ],
+                        ],
+                        'ImplicitCollectionParameter' => [
+                            'name' => 'limit',
+                            'in' => 'query',
+                            'schema' => [
+                                'type' => 'integer',
+                            ],
+                        ],
+                    ],
+                    'examples' => [
+                        'MultiCollectionExample' => [
+                            'value' => 'Example Value',
+                        ],
+                        'ImplicitCollectionExample' => [
+                            'externalValue' => 'Example External Value',
+                        ],
+                    ],
                     'requestBodies' => [
                         'MultiCollectionRequestBody' => [],
                         'ImplicitCollectionRequestBody' => [],
@@ -175,14 +218,6 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         'ImplicitCollectionSecurityScheme' => [
                             'type' => 'http',
                             'scheme' => 'basic',
-                        ],
-                    ],
-                    'examples' => [
-                        'MultiCollectionExample' => [
-                            'value' => 'Example Value',
-                        ],
-                        'ImplicitCollectionExample' => [
-                            'externalValue' => 'Example External Value',
                         ],
                     ],
                 ],
