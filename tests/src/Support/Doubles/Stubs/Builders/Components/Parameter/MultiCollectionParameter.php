@@ -7,7 +7,7 @@ use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedCookie;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\CookieParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 #[Collection(['test', Generator::COLLECTION_DEFAULT])]
@@ -17,7 +17,7 @@ class MultiCollectionParameter extends ParameterFactory implements ShouldBeRefer
     {
         return Parameter::cookie(
             'test',
-            SchemaSerializedCookie::create(Schema::string()),
+            CookieParameter::create(Schema::string()),
         );
     }
 }

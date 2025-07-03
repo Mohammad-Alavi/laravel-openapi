@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\LaravelOpenApi\Builders\Paths;
+namespace MohammadAlavi\LaravelOpenApi\Builders;
 
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
@@ -21,14 +21,13 @@ final readonly class PathsBuilder
                 return $routeInfo->uri();
             },
         )->map(
-            function (Collection $routeInformation, string $url): Path {
+            function (Collection $routeInfo, string $url): Path {
                 return Path::create(
                     $url,
-                    $this->pathItemBuilder->build(...$routeInformation),
+                    $this->pathItemBuilder->build(...$routeInfo),
                 );
             },
-        )->values()
-            ->toArray();
+        )->values();
 
         return Paths::create(...$paths);
     }

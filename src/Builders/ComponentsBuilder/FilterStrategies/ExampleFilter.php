@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies;
+namespace MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\FilterStrategies;
 
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\FilterStrategy;

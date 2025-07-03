@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody as RequestBodyAttribute;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\RequestBodyBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\RequestBodyBuilder;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 use Tests\src\Support\Doubles\Stubs\Builders\Paths\Operations\TestRequestBodyFactory;

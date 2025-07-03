@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 use MohammadAlavi\LaravelOpenApi\Attributes\Callback;
 use MohammadAlavi\LaravelOpenApi\Attributes\Extension;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
-use MohammadAlavi\LaravelOpenApi\Attributes\Parameters;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
 use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
@@ -28,9 +27,6 @@ class RouteInfo
 
     /** @var string|class-string<Controller> */
     private string $controller = 'Closure';
-
-    /** @var Collection<int, Parameters>|null */
-    private Collection|null $parameters = null;
 
     /** @var Collection<int, \Attribute>|null */
     private Collection|null $controllerAttributes = null;
@@ -53,16 +49,6 @@ class RouteInfo
         );
 
         return tap(new static(), static function (self $instance) use ($route, $method): void {
-            preg_match_all('/{(.*?)}/', $route->uri, $parameters);
-            $parameters = collect($parameters[1]);
-
-            if (count($parameters) > 0) {
-                $parameters = $parameters->map(static fn (string $parameter): array => [
-                    'name' => Str::replaceLast('?', '', $parameter),
-                    'required' => !Str::endsWith($parameter, '?'),
-                ]);
-            }
-
             if (static::isControllerAction($route)) {
                 [$controller, $action] = Str::parseCallback($route->getAction('uses'));
                 $instance->action = $action;
@@ -75,7 +61,6 @@ class RouteInfo
                 $instance->action = 'Closure';
             }
 
-            $instance->parameters = collect();
             $instance->actionAttributes = collect();
             if ('Closure' !== $instance->controller) {
                 $reflectionClass = new \ReflectionClass($instance->controller);
@@ -97,11 +82,6 @@ class RouteInfo
                     );
             }
 
-            $containsControllerLevelParameter = $instance->actionAttributes->contains(
-                static fn (object $value): bool => $value instanceof Parameters,
-            );
-
-            $instance->parameters = $containsControllerLevelParameter ? collect() : $parameters;
             $instance->domain = $route->domain();
             $instance->method = $method;
             $instance->uri = Str::start($route->uri(), '/');
@@ -156,11 +136,6 @@ class RouteInfo
         return $this->name;
     }
 
-    public function parameters(): Collection
-    {
-        return $this->parameters ?? collect();
-    }
-
     public function actionParameters(): array
     {
         return $this->actionParameters;
@@ -181,14 +156,6 @@ class RouteInfo
     {
         return $this->actionAttributes()
             ->filter(static fn (object $attribute): bool => $attribute instanceof Callback);
-    }
-
-    public function parametersAttribute(): Parameters|null
-    {
-        return $this->actionAttributes()
-            ->first(
-                static fn (object $attribute): bool => $attribute instanceof Parameters,
-            );
     }
 
     public function pathItemAttribute(): PathItem|null

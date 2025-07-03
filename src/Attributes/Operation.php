@@ -2,6 +2,8 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Attributes;
 
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ExternalDocumentationFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ParametersFactory;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\SecurityFactory;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
@@ -10,30 +12,46 @@ use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
 final readonly class Operation
 {
     /**
-     * TODO: move this to docs
-     * Security requirements can "AND" or "OR" together.
-     * For example, [['BearerAuth', 'BasicAuth'], 'ApiKeyAuth', ['JWTAuth', BasicAuth]] translates to:
-     * (BearerAuth AND BasicAuth) OR ApiKeyAuth OR (JWTAuth AND BasicAuth).
-     * null -> use top level security
-     * [] -> remove top level security
-     * [[]] -> optional security.
-     *
      * @param class-string<TagFactory>|array<array-key, class-string<TagFactory>>|null $tags
+     * @param class-string<ParametersFactory>|null $parameters
+     * @param class-string<ExternalDocumentationFactory>|null $externalDocs
      * @param class-string<SecurityFactory>|null $security
      * @param class-string<ServerFactory>|array<array-key, class-string<ServerFactory>>|null $servers
      */
     public function __construct(
-        public string|null $operationId = null,
-        public string|array|null $tags = null,
-        public string|null $security = null,
-        public string|array|null $servers = null,
+        private string|array|null $tags = null,
         public string|null $summary = null,
         public string|null $description = null,
+        public string|null $parameters = null,
+        public string|null $externalDocs = null,
         public bool|null $deprecated = null,
+        public string|null $security = null,
+        private string|array|null $servers = null,
+        public string|null $operationId = null,
     ) {
-        // TODO: maybe we should validate class-strings like $security, $tags, $servers here?
-        // If not here, then where?
-        // Should we skip the validation and let the factory throw an exception?
-        // When we try to generate the docs we will get an exception anyway.
+    }
+
+    /**
+     * @return array<array-key, class-string<TagFactory>>
+     */
+    public function getTags(): array
+    {
+        if (is_string($this->tags)) {
+            return [$this->tags];
+        }
+
+        return when(blank($this->tags), [], $this->tags);
+    }
+
+    /**
+     * @return array<array-key, class-string<ServerFactory>>
+     */
+    public function getServers(): array
+    {
+        if (is_string($this->servers)) {
+            return [$this->servers];
+        }
+
+        return when(blank($this->servers), [], $this->servers);
     }
 }

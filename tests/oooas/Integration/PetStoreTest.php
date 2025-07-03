@@ -14,8 +14,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\Form;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\PathParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
@@ -54,7 +54,7 @@ describe('PetStoreTest', function (): void {
 
         $tagsParameter = Parameter::query(
             'tags',
-            SchemaSerializedQuery::create(
+            QueryParameter::create(
                 Schema::array()->items(
                     Schema::string(),
                 ),
@@ -64,7 +64,7 @@ describe('PetStoreTest', function (): void {
 
         $limitParameter = Parameter::query(
             'limit',
-            SchemaSerializedQuery::create(
+            QueryParameter::create(
                 Schema::integer()->format(IntegerFormat::INT32),
             ),
         )->description('maximum number of results to return');
@@ -174,7 +174,7 @@ describe('PetStoreTest', function (): void {
 
         $petIdParameter = Parameter::path(
             'id',
-            SchemaSerializedPath::create(
+            PathParameter::create(
                 Schema::integer()->format(IntegerFormat::INT64),
             ),
         )->description('ID of pet to fetch')

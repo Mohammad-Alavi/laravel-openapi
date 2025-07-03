@@ -6,7 +6,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\Form;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 
-final readonly class SchemaSerializedCookie extends SchemaSerialized
+final readonly class CookieParameter extends SchemaSerialized
 {
     public static function create(
         JSONSchema $jsonSchema,

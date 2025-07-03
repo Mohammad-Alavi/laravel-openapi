@@ -21,8 +21,9 @@ final readonly class RouteCollector
     public function whereInCollection(string $collection): Collection
     {
         return $this->all()->filter(
-            fn (RouteInfo $routeInfo): bool => $this
-                ->isInCollection($routeInfo, $collection),
+            function (RouteInfo $routeInfo) use ($collection): bool {
+                return $this->isInCollection($routeInfo, $collection);
+            },
         );
     }
 
@@ -63,7 +64,7 @@ final readonly class RouteCollector
         // -------
         // $collection comes in from documentation config types
         // It is the name of the current collection being built
-        return (!$collectionAttribute && Generator::COLLECTION_DEFAULT === $collection)
-            || ($collectionAttribute && in_array($collection, $collectionAttribute->name, true));
+        return (is_null($collectionAttribute) && Generator::COLLECTION_DEFAULT === $collection)
+            || (!is_null($collectionAttribute) && in_array($collection, $collectionAttribute->name, true));
     }
 }

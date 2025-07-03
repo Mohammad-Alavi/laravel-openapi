@@ -4,7 +4,7 @@ namespace Tests\src\Support\Doubles\Stubs\Petstore\Parameters;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ParametersFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Formats\IntegerFormat;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
@@ -16,7 +16,7 @@ class ListPetsParameters implements ParametersFactory
         return Parameters::create(
             Parameter::query(
                 'limit',
-                SchemaSerializedQuery::create(
+                QueryParameter::create(
                     Schema::integer()
                         ->format(IntegerFormat::INT32),
                 ),

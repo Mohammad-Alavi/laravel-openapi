@@ -3,7 +3,6 @@
 namespace Tests\src\Support\Doubles\Stubs\Petstore;
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
-use MohammadAlavi\LaravelOpenApi\Attributes\Parameters;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
 use Tests\src\Support\Doubles\Stubs\Petstore\Factories\Responses\MultiResponseMixedWithReusable;
@@ -20,54 +19,54 @@ use Tests\src\Support\Doubles\Stubs\Petstore\Tags\PetTag;
 class PetController
 {
     #[Operation(
-        operationId: 'listPets',
         tags: PetTag::class,
         summary: 'List all pets.',
         description: 'List all pets from the database.',
+        parameters: ListPetsParameters::class,
         deprecated: true,
+        operationId: 'listPets',
     )]
-    #[Parameters(ListPetsParameters::class)]
     #[Responses(SingleResponseUsingReusable::class)]
     public function index(): void
     {
     }
 
     #[Operation(
-        operationId: 'multiPetTag',
         tags: [PetTag::class, AnotherPetTag::class],
-        security: TestSingleHTTPBearerSchemeSecurityFactory::class,
         summary: 'List all pets.',
         description: 'List all pets from the database.',
+        parameters: ListPetsParameters::class,
         deprecated: false,
+        security: TestSingleHTTPBearerSchemeSecurityFactory::class,
+        operationId: 'multiPetTag',
     )]
-    #[Parameters(ListPetsParameters::class)]
     #[Responses(MultiResponseMixedWithReusable::class)]
-    public function multiPetTag(): void
+    public function multiTag(): void
     {
     }
 
     #[Operation(
-        operationId: 'nestedSecurityFirstTest',
         tags: [PetTag::class],
-        security: TestSimpleMultiSecurityFactory::class,
         summary: 'List all pets.',
         description: 'List all pets from the database.',
+        parameters: ListPetsParameters::class,
+        deprecated: null,
+        security: TestSimpleMultiSecurityFactory::class,
+        operationId: 'nestedSecurityFirstTest',
     )]
-    #[Parameters(ListPetsParameters::class)]
     #[Responses(SingleResponse::class)]
-    public function nestedSecurityFirst(): void
+    public function nestedSecurity(): void
     {
     }
 
     #[Operation(
-        operationId: 'nestedSecuritySecondTest',
         tags: AnotherPetTag::class,
-        security: TestComplexMultiSecurityFactory::class,
         summary: 'List all pets.',
         description: 'List all pets from the database.',
-        deprecated: null,
+        security: TestComplexMultiSecurityFactory::class,
+        operationId: 'nestedSecuritySecondTest',
     )]
-    public function nestedSecuritySecond(): void
+    public function anotherNestedSecurity(): void
     {
     }
 }

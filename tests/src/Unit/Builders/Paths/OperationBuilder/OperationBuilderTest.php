@@ -5,14 +5,13 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Callback;
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Extension;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation as OperationAttribute;
-use MohammadAlavi\LaravelOpenApi\Attributes\Parameters;
 use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\OperationBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\OperationBuilder;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestCallbackFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestExtensionFactory;
-use Tests\src\Support\Doubles\Stubs\Attributes\TestParameterFactory;
+use Tests\src\Support\Doubles\Stubs\Attributes\TestParametersFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestRequestBodyFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestResponsesFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
@@ -37,13 +36,13 @@ describe(class_basename(OperationBuilder::class), function (): void {
                 );
                 $routeInfo->actionAttributes = collect([
                     new OperationAttribute(
-                        operationId: 'test',
                         tags: [],
-                        security: null,
-                        servers: [],
                         summary: '',
                         description: '',
                         deprecated: false,
+                        security: null,
+                        servers: [],
+                        operationId: 'test',
                     ),
                 ]);
 
@@ -62,13 +61,13 @@ describe(class_basename(OperationBuilder::class), function (): void {
                 );
                 $routeInfo->actionAttributes = collect([
                     new OperationAttribute(
-                        operationId: 'test',
                         tags: [TagWithoutExternalDoc::class],
-                        security: null,
-                        servers: [],
                         summary: 'summary',
                         description: 'description',
                         deprecated: true,
+                        security: null,
+                        servers: [],
+                        operationId: 'test',
                     ),
                 ]);
 
@@ -92,15 +91,15 @@ describe(class_basename(OperationBuilder::class), function (): void {
                     new Collection('test'),
                     new Extension(TestExtensionFactory::class),
                     new OperationAttribute(
-                        operationId: 'test',
                         tags: [TagWithExternalObjectDoc::class],
-                        security: TestSingleHTTPBearerSchemeSecurityFactory::class,
-                        servers: [ServerWithMultipleVariableFormatting::class],
                         summary: 'summary',
                         description: 'description',
+                        parameters: TestParametersFactory::class,
                         deprecated: true,
+                        security: TestSingleHTTPBearerSchemeSecurityFactory::class,
+                        servers: [ServerWithMultipleVariableFormatting::class],
+                        operationId: 'test',
                     ),
-                    new Parameters(TestParameterFactory::class),
                     new RequestBody(TestRequestBodyFactory::class),
                     new Responses(TestResponsesFactory::class),
                 ]);

@@ -8,7 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
-final class Tag extends ExtensibleObject implements \Stringable
+final class Tag extends ExtensibleObject
 {
     private Description|null $description = null;
     private ExternalDocumentation|null $externalDocumentation = null;
@@ -42,7 +42,7 @@ final class Tag extends ExtensibleObject implements \Stringable
         return $clone;
     }
 
-    public function __toString(): string
+    public function name(): string
     {
         return $this->name->value();
     }

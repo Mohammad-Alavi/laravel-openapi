@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Config;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\ComponentsBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\ComponentsBuilder;
 use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;

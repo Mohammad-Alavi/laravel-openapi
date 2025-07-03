@@ -1,18 +1,9 @@
 <?php
 
-namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder;
+namespace MohammadAlavi\LaravelOpenApi\Builders;
 
-use Illuminate\Support\Arr;
 use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
-use MohammadAlavi\LaravelOpenApi\Builders\ExtensionBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\CallbackBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\ParametersBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\RequestBodyBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\ResponsesBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\SecurityBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\ServerBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\TagBuilder;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
@@ -21,13 +12,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMeth
 final readonly class OperationBuilder
 {
     public function __construct(
-        private CallbackBuilder $callbackBuilder,
+        private TagBuilder $tagBuilder,
         private ParametersBuilder $parametersBuilder,
         private RequestBodyBuilder $requestBodyBuilder,
         private ResponsesBuilder $responsesBuilder,
+        private ExternalDocumentationBuilder $externalDocumentationBuilder,
+        private CallbackBuilder $callbackBuilder,
         private SecurityBuilder $securityBuilder,
         private ServerBuilder $serverBuilder,
-        private TagBuilder $tagBuilder,
         private ExtensionBuilder $extensionBuilder,
     ) {
     }
@@ -35,28 +27,35 @@ final readonly class OperationBuilder
     // TODO: maybe we can abstract the usage of RouteInformation everywhere and use an interface instead
     public function build(RouteInfo $routeInfo): AvailableOperation
     {
-        $servers = null;
         $operation = Operation::create();
-        $operationAttr = $routeInfo->operationAttribute();
+        $attribute = $routeInfo->operationAttribute();
 
-        if (!is_null($operationAttr)) {
-            $operation = $operation->tags(...$this->tagBuilder->build(Arr::wrap($operationAttr->tags)));
-            if (!is_null($operationAttr->summary)) {
-                $operation = $operation->summary($operationAttr->summary);
+        if (!is_null($attribute)) {
+            if (!is_null($attribute->summary)) {
+                $operation = $operation->summary($attribute->summary);
             }
-            if (!is_null($operationAttr->description)) {
-                $operation = $operation->description($operationAttr->description);
+            if (!is_null($attribute->description)) {
+                $operation = $operation->description($attribute->description);
             }
-            if (!is_null($operationAttr->operationId)) {
-                $operation = $operation->operationId($operationAttr->operationId);
+            if (!is_null($attribute->operationId)) {
+                $operation = $operation->operationId($attribute->operationId);
             }
-            if (!blank($operationAttr->security)) {
-                $operation = $operation->security($this->securityBuilder->build($operationAttr->security));
+            if (!is_null($attribute->parameters)) {
+                $operation = $operation->parameters($this->parametersBuilder->build($routeInfo));
             }
-            if (true === $operationAttr->deprecated) {
+            if (!is_null($attribute->externalDocs)) {
+                $operation = $operation->externalDocs(
+                    $this->externalDocumentationBuilder->build($attribute->externalDocs),
+                );
+            }
+            if (!blank($attribute->security)) {
+                $operation = $operation->security($this->securityBuilder->build($attribute->security));
+            }
+            if (true === $attribute->deprecated) {
                 $operation = $operation->deprecated();
             }
-            $servers = $this->serverBuilder->build(Arr::wrap($operationAttr->servers));
+            $operation = $operation->servers(...$this->serverBuilder->build(...$attribute->getServers()));
+            $operation = $operation->tags(...$this->tagBuilder->build(...$attribute->getTags()));
         }
 
         if ($routeInfo->requestBodyAttribute() instanceof RequestBody) {
@@ -73,8 +72,7 @@ final readonly class OperationBuilder
 
         $callbacks = $this->callbackBuilder->build($routeInfo->callbackAttributes());
 
-        $operation = $operation->servers(...$servers)
-            ->parameters($this->parametersBuilder->build($routeInfo))
+        $operation = $operation->parameters($this->parametersBuilder->build($routeInfo))
             ->callbacks(...$callbacks);
 
         $this->extensionBuilder->build($operation, $routeInfo->extensionAttributes());

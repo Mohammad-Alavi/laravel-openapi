@@ -3,8 +3,8 @@
 namespace MohammadAlavi\LaravelOpenApi;
 
 use Illuminate\Support\Arr;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\ComponentsBuilder;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\PathsBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\ComponentsBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\PathsBuilder;
 use MohammadAlavi\LaravelOpenApi\Factories\OpenAPIFactory;
 use MohammadAlavi\LaravelOpenApi\Support\RouteCollector;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;

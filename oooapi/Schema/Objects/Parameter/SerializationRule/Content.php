@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntr
 /**
  * @implements StringMap<MediaType>
  */
-final readonly class ContentSerialized implements SerializationRule, StringMap
+final readonly class Content implements SerializationRule, StringMap
 {
     /** @use StringKeyedMap<MediaType> */
     use StringKeyedMap {

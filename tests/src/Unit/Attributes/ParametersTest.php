@@ -1,13 +1,13 @@
 <?php
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Parameters;
-use Tests\src\Support\Doubles\Stubs\Attributes\TestParameterFactory;
+use Tests\src\Support\Doubles\Stubs\Attributes\TestParametersFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestParametersFactoryInvalid;
 
 describe(class_basename(Parameters::class), function (): void {
     it('can set valid factory', function (): void {
-        $parameters = new Parameters(factory: TestParameterFactory::class);
-        expect($parameters->factory)->toBe(TestParameterFactory::class);
+        $parameters = new Parameters(factory: TestParametersFactory::class);
+        expect($parameters->factory)->toBe(TestParametersFactory::class);
     });
 
     it('can handle invalid factory', function (): void {

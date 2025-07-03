@@ -4,23 +4,30 @@ namespace MohammadAlavi\LaravelOpenApi\Builders;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
+use Webmozart\Assert\Assert;
 
-class TagBuilder
+final readonly class TagBuilder
 {
     /**
-     * @param array<array-key, class-string<Tag>> $tagFactories
+     * @param array<array-key, class-string<TagFactory>> $factory
      *
      * @return Tag[]
      */
-    public function build(array $tagFactories): array
+    public function build(string ...$factory): array
     {
-        return collect($tagFactories)
-            ->filter(static fn (string $tag): bool => is_a($tag, TagFactory::class, true))
-            ->map(static function (string $tagFactory): Tag {
-                /** @var TagFactory $tagFactoryInstance */
-                $tagFactoryInstance = app($tagFactory);
+        Assert::allIsAOf($factory, TagFactory::class);
 
-                return $tagFactoryInstance->build();
-            })->toArray();
+        /** @var Tag[] $tags */
+        $tags = collect($factory)
+            ->map(
+                /**
+                 * @param class-string<TagFactory> $factory
+                 */
+                static function (string $factory): Tag {
+                    return (new $factory())->build();
+                },
+            )->toArray();
+
+        return $tags;
     }
 }

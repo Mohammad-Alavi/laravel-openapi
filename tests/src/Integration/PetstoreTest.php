@@ -21,9 +21,9 @@ describe('PetStore', function (): void {
         ]);
 
         Route::get('/pets', [PetController::class, 'index']);
-        Route::post('/multiPetTag', [PetController::class, 'multiPetTag']);
-        Route::delete('/nestedSecurityFirstTest', [PetController::class, 'nestedSecurityFirst']);
-        Route::put('/nestedSecuritySecondTest', [PetController::class, 'nestedSecuritySecond']);
+        Route::post('/multiPetTag', [PetController::class, 'multiTag']);
+        Route::delete('/nestedSecurityFirstTest', [PetController::class, 'nestedSecurity']);
+        Route::put('/nestedSecuritySecondTest', [PetController::class, 'anotherNestedSecurity']);
 
         $spec = app(Generator::class)->generate()->unserializeToArray();
 

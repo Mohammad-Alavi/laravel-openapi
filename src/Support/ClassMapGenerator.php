@@ -4,6 +4,7 @@ namespace MohammadAlavi\LaravelOpenApi\Support;
 
 use Webmozart\Assert\Assert;
 
+// TODO: Refactor to use ComposerClassMap package
 class ClassMapGenerator
 {
     /**

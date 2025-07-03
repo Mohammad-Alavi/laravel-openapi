@@ -1,18 +1,18 @@
 <?php
 
-namespace MohammadAlavi\LaravelOpenApi\Builders\Components;
+namespace MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder;
 
 use Illuminate\Support\Collection;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\CallbackFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ExampleFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\HeaderFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\LinkFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ParameterFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\PathItemFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\RequestBodyFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\ResponseFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\SchemaFilter;
-use MohammadAlavi\LaravelOpenApi\Builders\Components\FilterStrategies\SecuritySchemeFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\FilterStrategies\CallbackFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\FilterStrategies\ExampleFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\FilterStrategies\HeaderFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\FilterStrategies\LinkFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\FilterStrategies\ParameterFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\FilterStrategies\PathItemFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\FilterStrategies\RequestBodyFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\FilterStrategies\ResponseFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\FilterStrategies\SchemaFilter;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\FilterStrategies\SecuritySchemeFilter;
 use MohammadAlavi\LaravelOpenApi\Support\ComponentCollector;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 

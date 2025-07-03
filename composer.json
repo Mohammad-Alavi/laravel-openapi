@@ -43,9 +43,11 @@
         "pestphp/pest-plugin-type-coverage": "^3.0",
         "php-standard-library/psalm-plugin": "^2.3",
         "phpmd/phpmd": "@stable",
+        "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
+        "phpstan/phpstan-webmozart-assert": "^2.0",
         "psalm/plugin-laravel": "^3.0",
         "psalm/plugin-mockery": "^1.2",
         "psalm/plugin-phpunit": "^0.19.2",
@@ -81,7 +83,8 @@
         ],
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
         }
     },
     "extra": {

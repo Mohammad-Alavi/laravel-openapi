@@ -4,11 +4,11 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\In;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\ContentSerialized;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedCookie;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedHeader;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\Content;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\CookieParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\HeaderParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\PathParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SerializationRule;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
@@ -30,28 +30,28 @@ final class Parameter extends ExtensibleObject
 
     public static function cookie(
         string $name,
-        ContentSerialized|SchemaSerializedCookie $serialization,
+        Content|CookieParameter $serialization,
     ): self {
         return new self(Name::create($name), In::cookie(), $serialization);
     }
 
     public static function header(
         string $name,
-        ContentSerialized|SchemaSerializedHeader $serialization,
+        Content|HeaderParameter $serialization,
     ): self {
         return new self(Name::create($name), In::header(), $serialization);
     }
 
     public static function path(
         string $name,
-        ContentSerialized|SchemaSerializedPath $serialization,
+        Content|PathParameter $serialization,
     ): self {
         return new self(Name::create($name), In::path(), $serialization);
     }
 
     public static function query(
         string $name,
-        ContentSerialized|SchemaSerializedQuery $serialization,
+        Content|QueryParameter $serialization,
     ): self {
         return new self(Name::create($name), In::query(), $serialization);
     }
@@ -92,6 +92,16 @@ final class Parameter extends ExtensibleObject
         return $clone;
     }
 
+    public function getName(): string
+    {
+        return $this->name->value();
+    }
+
+    public function getLocation(): string
+    {
+        return $this->in->value();
+    }
+
     public function toArray(): array
     {
         return Arr::filter([
@@ -101,7 +111,7 @@ final class Parameter extends ExtensibleObject
             'required' => $this->required,
             'deprecated' => $this->deprecated,
             'allowEmptyValue' => $this->allowEmptyValue,
-            ...$this->serializationRule->jsonSerialize(),
+            ...$this->serializationRule->jsonSerialize(), // TODO: Improve? This is different from the usual way of handling serialization rules.
         ]);
     }
 }

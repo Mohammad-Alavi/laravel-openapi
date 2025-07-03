@@ -15,20 +15,18 @@ describe(class_basename(RouteInfo::class), function (): void {
         );
 
         expect($routeInformation)->toBeInstanceOf(RouteInfo::class)
-            ->and($routeInformation->domain())->toBe('laragen.io')
-            ->and($routeInformation->method())->toBe('get')
-            ->and($routeInformation->uri())->toBe('/example')
-            ->and($routeInformation->name())->toBe('example')
-            ->and($routeInformation->controller())->toBe('Closure')
-            ->and($routeInformation->parameters())->toBeInstanceOf(Collection::class)
-            ->and($routeInformation->parameters())->toHaveCount(0)
-            ->and($routeInformation->controllerAttributes())->toBeInstanceOf(Collection::class)
-            ->and($routeInformation->controllerAttributes())->toHaveCount(0)
-            ->and($routeInformation->action())->toBe('Closure')
-            ->and($routeInformation->actionParameters())->toBeArray()
-            ->and($routeInformation->actionParameters())->toHaveCount(0)
-            ->and($routeInformation->actionAttributes())->toBeInstanceOf(Collection::class)
-            ->and($routeInformation->actionAttributes())->toHaveCount(0);
+            ->domain()->toBe('laragen.io')
+            ->method()->toBe('get')
+            ->uri()->toBe('/example')
+            ->name()->toBe('example')
+            ->controller()->toBe('Closure')
+            ->controllerAttributes()->toBeInstanceOf(Collection::class)
+            ->controllerAttributes()->toHaveCount(0)
+            ->action()->toBe('Closure')
+            ->actionParameters()->toBeArray()
+            ->actionParameters()->toHaveCount(0)
+            ->actionAttributes()->toBeInstanceOf(Collection::class)
+            ->actionAttributes()->toHaveCount(0);
     });
 
     it('can handle unsupported http method', function (string $method): void {
@@ -111,92 +109,6 @@ describe(class_basename(RouteInfo::class), function (): void {
         'mixed valid & invalid' => [
             ['POST', 'HEAD'],
             'actions' => $possibleActions,
-        ],
-    ]);
-
-    it('doesnt extract route parameters if there are none', function (): void {
-        $routeInformation = RouteInfo::create(
-            Route::get(
-                '/example',
-                static fn (): string => 'example',
-            ),
-        );
-
-        expect($routeInformation->parameters())->toHaveCount(0);
-    });
-
-    it('can extract route parameters', function (string $endpoint, int $count, Collection $expectation): void {
-        $routeInformation = RouteInfo::create(
-            Route::get(
-                $endpoint,
-                static fn (): string => 'example',
-            ),
-        );
-
-        expect($routeInformation->parameters())->toHaveCount($count)
-            ->and($routeInformation->parameters())->toEqual($expectation);
-    })->with([
-        'single parameter' => [
-            '/example/{id}',
-            1,
-            collect([
-                [
-                    'name' => 'id',
-                    'required' => true,
-                ],
-            ]),
-        ],
-        'multiple parameters' => [
-            '/example/{id}/{name}',
-            2,
-            collect([
-                [
-                    'name' => 'id',
-                    'required' => true,
-                ],
-                [
-                    'name' => 'name',
-                    'required' => true,
-                ],
-            ]),
-        ],
-        'optional parameter' => [
-            '/example/{id?}',
-            1,
-            collect([
-                [
-                    'name' => 'id',
-                    'required' => false,
-                ],
-            ]),
-        ],
-        'mixed parameters' => [
-            '/example/{id}/{name?}',
-            2,
-            collect([
-                [
-                    'name' => 'id',
-                    'required' => true,
-                ],
-                [
-                    'name' => 'name',
-                    'required' => false,
-                ],
-            ]),
-        ],
-        'mixed parameters with different order' => [
-            '/example/{name?}/{id}',
-            2,
-            collect([
-                [
-                    'name' => 'name',
-                    'required' => false,
-                ],
-                [
-                    'name' => 'id',
-                    'required' => true,
-                ],
-            ]),
         ],
     ]);
 

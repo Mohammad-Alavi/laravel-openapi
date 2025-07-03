@@ -10,11 +10,11 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\S
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\Simple;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\SpaceDelimited;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\ContentSerialized;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedCookie;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedHeader;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedPath;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\Content;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\CookieParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\HeaderParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\PathParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
@@ -28,7 +28,7 @@ describe('Parameter', function (): void {
         ): void {
             $parameter = Parameter::cookie(
                 'user',
-                SchemaSerializedCookie::create(
+                CookieParameter::create(
                     Schema::integer(),
                     $style,
                     ExampleEntry::create(
@@ -85,7 +85,7 @@ describe('Parameter', function (): void {
         ): void {
             $parameter = Parameter::header(
                 'user',
-                SchemaSerializedHeader::create(
+                HeaderParameter::create(
                     Schema::object(),
                     $style,
                     ExampleEntry::create(
@@ -134,7 +134,7 @@ describe('Parameter', function (): void {
         ): void {
             $parameter = Parameter::path(
                 'user',
-                SchemaSerializedPath::create(
+                PathParameter::create(
                     Schema::string(),
                     $style,
                 ),
@@ -189,7 +189,7 @@ describe('Parameter', function (): void {
         ): void {
             $parameter = Parameter::query(
                 'user',
-                SchemaSerializedQuery::create(
+                QueryParameter::create(
                     Schema::array(),
                     $style,
                 ),
@@ -246,7 +246,7 @@ describe('Parameter', function (): void {
 
     it(
         'can serialize content',
-        function (ContentSerialized $contentSerialized, array $expected): void {
+        function (Content $contentSerialized, array $expected): void {
             $parameter = Parameter::query(
                 'user',
                 $contentSerialized,
@@ -265,7 +265,7 @@ describe('Parameter', function (): void {
         },
     )->with([
         'contentSerialized' => [
-            ContentSerialized::create(
+            Content::create(
                 ContentEntry::pdf(
                     MediaType::create(),
                 ),

@@ -35,7 +35,7 @@ final class Parameters extends Generatable
             static fn (Parameter|ParameterFactory|self $param): bool => !($param instanceof self),
         );
 
-        return new self(array_merge($parameters, $selfParams));
+        return new self(self::removeDuplicate(array_merge($parameters, $selfParams)));
     }
 
     /**
@@ -44,5 +44,32 @@ final class Parameters extends Generatable
     public function toArray(): array
     {
         return $this->parameters;
+    }
+
+    /**
+     * A unique parameter is defined by a combination of a name and location.
+     *
+     * @param (Parameter|ParameterFactory)[] $parameters
+     *
+     * @return (Parameter|ParameterFactory)[]
+     */
+    private static function removeDuplicate(array $parameters): array
+    {
+        $uniqueParameters = [];
+        foreach ($parameters as $parameter) {
+            if ($parameter instanceof Parameter) {
+                $key = $parameter->getName() . ':' . $parameter->getLocation();
+            } elseif ($parameter instanceof ParameterFactory) {
+                $key = $parameter->component()->getName() . ':' . $parameter->component()->getLocation();
+            } else {
+                continue;
+            }
+
+            if (!isset($uniqueParameters[$key])) {
+                $uniqueParameters[$key] = $parameter;
+            }
+        }
+
+        return array_values($uniqueParameters);
     }
 }

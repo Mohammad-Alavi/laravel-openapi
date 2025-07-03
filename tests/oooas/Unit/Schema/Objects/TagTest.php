@@ -26,6 +26,6 @@ describe('Tag', function (): void {
     it('can be cast to string', function (): void {
         $tag = Tag::create('Users');
 
-        expect((string) $tag)->toBe('Users');
+        expect($tag)->name()->toBe('Users');
     });
 })->covers(Tag::class);

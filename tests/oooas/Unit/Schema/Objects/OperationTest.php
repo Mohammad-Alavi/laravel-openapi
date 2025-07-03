@@ -3,7 +3,7 @@
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
@@ -30,6 +30,7 @@ describe(class_basename(Operation::class), function (): void {
             $operation = Operation::create()
                 ->tags(
                     Tag::create('Users')->description('Lorem ipsum'),
+                    Tag::create('Admins'),
                 )->summary('Lorem ipsum')
                 ->description('Dolar sit amet')
                 ->externalDocs(ExternalDocumentation::create('https://laragen.io/docs'))
@@ -38,7 +39,7 @@ describe(class_basename(Operation::class), function (): void {
                     Parameters::create(
                         Parameter::query(
                             'id',
-                            SchemaSerializedQuery::create(Schema::string()),
+                            QueryParameter::create(Schema::string()),
                         ),
                     ),
                 )->requestBody(RequestBody::create())
@@ -55,7 +56,7 @@ describe(class_basename(Operation::class), function (): void {
                 ->callbacks(TestCallbackFactory::create());
 
             expect($operation->unserializeToArray())->toBe([
-                'tags' => ['Users'],
+                'tags' => ['Users', 'Admins'],
                 'summary' => 'Lorem ipsum',
                 'description' => 'Dolar sit amet',
                 'externalDocs' => [
@@ -96,46 +97,4 @@ describe(class_basename(Operation::class), function (): void {
             ]);
         },
     );
-
-    it('can accepts tags in multiple ways', function (array $tag, $expectation): void {
-        $operation = Operation::create()
-            ->responses(
-                Responses::create(
-                    ResponseEntry::create(
-                        HTTPStatusCode::ok(),
-                        Response::create('OK'),
-                    ),
-                ),
-            )
-            ->tags(...$tag);
-
-        expect($operation->unserializeToArray())->toBe([
-            'tags' => $expectation,
-            'responses' => [
-                '200' => [
-                    'description' => 'OK',
-                ],
-            ],
-        ]);
-    })->with([
-        'one string tag' => [
-            ['Users'],
-            ['Users']],
-        'multiple string tags' => [
-            ['Users', 'Admins'],
-            ['Users', 'Admins'],
-        ],
-        'one object tag' => [
-            [Tag::create('Users')],
-            ['Users'],
-        ],
-        'multiple object tags' => [
-            [Tag::create('Users'), Tag::create('Admins')],
-            ['Users', 'Admins'],
-        ],
-        'mixed tags' => [
-            ['Users', Tag::create('Admins')],
-            ['Users', 'Admins'],
-        ],
-    ]);
 })->covers(Operation::class);

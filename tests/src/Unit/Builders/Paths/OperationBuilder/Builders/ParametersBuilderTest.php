@@ -1,12 +1,13 @@
 <?php
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use MohammadAlavi\LaravelOpenApi\Attributes\Parameters as ParameterAttribute;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\ParametersBuilder;
+use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
+use MohammadAlavi\LaravelOpenApi\Builders\ParametersBuilder;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
-use Tests\src\Support\Doubles\Stubs\Attributes\TestParameterFactory;
+use Tests\src\Support\Doubles\Stubs\Attributes\TestParametersFactory;
 use Tests\src\Support\Doubles\Stubs\Builders\Paths\Operations\TestController;
 
 describe(class_basename(ParametersBuilder::class), function (): void {
@@ -14,9 +15,7 @@ describe(class_basename(ParametersBuilder::class), function (): void {
         $routeInformation = RouteInfo::create(
             Route::get('/example', static fn (): string => 'example'),
         );
-        $routeInformation->actionAttributes = collect([
-            new ParameterAttribute(TestParameterFactory::class),
-        ]);
+        $routeInformation->actionAttributes = collect([new Operation(parameters: TestParametersFactory::class)]);
         $builder = new ParametersBuilder();
 
         $parameters = $builder->build($routeInformation);
@@ -40,7 +39,7 @@ describe(class_basename(ParametersBuilder::class), function (): void {
             ->and($urlParam)->toBeInstanceOf(Parameter::class);
     })->with([
         'with action params' => [
-            'params' => [new ParameterAttribute(TestParameterFactory::class)],
+            'params' => [new Operation(parameters: TestParametersFactory::class)],
             'count' => 5,
         ],
         'without action params' => [
@@ -61,4 +60,86 @@ describe(class_basename(ParametersBuilder::class), function (): void {
         expect($parameters->unserializeToArray())->toHaveCount(2)
             ->and($typeHintedParam->unserializeToArray()['schema']['type'])->toBe(Type::integer()->value());
     });
+
+    it('doesnt extract path parameters if there are none', function (): void {
+        $builder = new ParametersBuilder();
+
+        $parameters = $builder->pathParameters('/example');
+
+        expect($parameters)->toHaveCount(0);
+    });
+
+    it(
+        'can extract path parameters',
+        function (string $endpoint, int $count, Collection $expectation): void {
+            $builder = new ParametersBuilder();
+
+            $parameters = $builder->pathParameters($endpoint);
+
+            expect($parameters)->toEqual($expectation);
+        },
+    )->with([
+        'single parameter' => [
+            '/example/{id}',
+            1,
+            collect([
+                [
+                    'name' => 'id',
+                    'required' => true,
+                ],
+            ]),
+        ],
+        'multiple parameters' => [
+            '/example/{id}/{name}',
+            2,
+            collect([
+                [
+                    'name' => 'id',
+                    'required' => true,
+                ],
+                [
+                    'name' => 'name',
+                    'required' => true,
+                ],
+            ]),
+        ],
+        'optional parameter' => [
+            '/example/{id?}',
+            1,
+            collect([
+                [
+                    'name' => 'id',
+                    'required' => false,
+                ],
+            ]),
+        ],
+        'mixed parameters' => [
+            '/example/{id}/{name?}',
+            2,
+            collect([
+                [
+                    'name' => 'id',
+                    'required' => true,
+                ],
+                [
+                    'name' => 'name',
+                    'required' => false,
+                ],
+            ]),
+        ],
+        'mixed parameters with different order' => [
+            '/example/{name?}/{id}',
+            2,
+            collect([
+                [
+                    'name' => 'name',
+                    'required' => false,
+                ],
+                [
+                    'name' => 'id',
+                    'required' => true,
+                ],
+            ]),
+        ],
+    ]);
 })->covers(ParametersBuilder::class);

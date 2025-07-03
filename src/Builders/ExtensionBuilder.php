@@ -9,7 +9,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 
 // TODO: refactor this class to use the ExtensionFactory interface
-class ExtensionBuilder
+final readonly class ExtensionBuilder
 {
     public function build(ExtensibleObject $extensibleObject, Collection $attributes): void
     {

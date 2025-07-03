@@ -3,12 +3,12 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\Operations;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 
 final class PathItem extends ExtensibleObject
@@ -20,8 +20,7 @@ final class PathItem extends ExtensibleObject
     /** @var Server[]|null */
     private array|null $servers = null;
 
-    /** @var Parameter[]|null */
-    private array|null $parameters = null;
+    private Parameters|null $parameters = null;
 
     public function summary(string $summary): self
     {
@@ -64,12 +63,11 @@ final class PathItem extends ExtensibleObject
         return $clone;
     }
 
-    // TODO: change this to use Parameters object instead of an array of Parameters
-    public function parameters(Parameter ...$parameter): self
+    public function parameters(Parameters $parameters): self
     {
         $clone = clone $this;
 
-        $clone->parameters = when(blank($parameter), null, $parameter);
+        $clone->parameters = $parameters->toNullIfEmpty();
 
         return $clone;
     }
@@ -80,7 +78,7 @@ final class PathItem extends ExtensibleObject
             [
                 'summary' => $this->summary,
                 'description' => $this->description,
-                ...($this->operations?->jsonSerialize() ?? []),
+                ...($this->operations?->jsonSerialize() ?? []), // TODO: Improve? This is different from the way we handle other fields
                 'servers' => $this->servers,
                 'parameters' => $this->parameters,
             ],

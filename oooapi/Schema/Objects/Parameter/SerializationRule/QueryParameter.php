@@ -9,7 +9,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\S
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\SpaceDelimited;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 
-final readonly class SchemaSerializedQuery extends SchemaSerialized
+final readonly class QueryParameter extends SchemaSerialized
 {
     public static function create(
         JSONSchema $jsonSchema,

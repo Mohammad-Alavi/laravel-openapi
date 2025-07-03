@@ -4,24 +4,30 @@ namespace MohammadAlavi\LaravelOpenApi\Builders;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
+use Webmozart\Assert\Assert;
 
-class ServerBuilder
+final readonly class ServerBuilder
 {
     /**
-     * @param array<array-key, class-string<ServerFactory>> $serverFactories
+     * @param array<array-key, class-string<ServerFactory>> $factory
      *
      * @return Server[]
      */
-    public function build(array $serverFactories): array
+    public function build(string ...$factory): array
     {
-        return collect($serverFactories)
-            ->filter(static fn (string $serverFactory): bool => app($serverFactory) instanceof ServerFactory)
-            ->map(static function (string $serverFactory): Server {
-                /** @var Server $server */
-                $server = app($serverFactory)->build();
+        Assert::allIsAOf($factory, ServerFactory::class);
 
-                return $server;
-            })
-            ->toArray();
+        /** @var Server[] $servers */
+        $servers = collect($factory)
+            ->map(
+                /**
+                 * @param class-string<ServerFactory> $factory
+                 */
+                static function (string $factory): Server {
+                    return (new $factory())->build();
+                },
+            )->toArray();
+
+        return $servers;
     }
 }

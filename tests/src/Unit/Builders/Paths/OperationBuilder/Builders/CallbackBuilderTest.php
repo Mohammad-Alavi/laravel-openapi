@@ -1,7 +1,7 @@
 <?php
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Callback as CallbackAttribute;
-use MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders\CallbackBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\CallbackBuilder;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestCallbackFactory;
 use Tests\src\Support\Doubles\Stubs\Builders\Paths\Operations\AnotherTestCallbackFactory;

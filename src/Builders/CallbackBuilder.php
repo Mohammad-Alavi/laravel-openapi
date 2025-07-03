@@ -1,12 +1,12 @@
 <?php
 
-namespace MohammadAlavi\LaravelOpenApi\Builders\Paths\OperationBuilder\Builders;
+namespace MohammadAlavi\LaravelOpenApi\Builders;
 
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Callback as CallbackAttribute;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 
-class CallbackBuilder
+final readonly class CallbackBuilder
 {
     public function build(Collection $callbacks): array
     {
@@ -17,7 +17,6 @@ class CallbackBuilder
 
                 return $factory::create();
             },
-        )->values()
-            ->toArray();
+        )->values()->toArray();
     }
 }

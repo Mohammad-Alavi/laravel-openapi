@@ -4,7 +4,7 @@ namespace Tests\oooas\Unit\Schema\Objects;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SchemaSerializedQuery;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
@@ -16,6 +16,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 
 describe(class_basename(PathItem::class), function (): void {
     it('can be created with all parameters', function (): void {
@@ -41,9 +42,11 @@ describe(class_basename(PathItem::class), function (): void {
                     )
                     ->servers(Server::create('https://laragen.io'))
                     ->parameters(
-                        Parameter::query(
-                            'test_parameter',
-                            SchemaSerializedQuery::create(Schema::string()),
+                        Parameters::create(
+                            Parameter::query(
+                                'test_parameter',
+                                QueryParameter::create(Schema::string()),
+                            ),
                         ),
                     ),
             ),

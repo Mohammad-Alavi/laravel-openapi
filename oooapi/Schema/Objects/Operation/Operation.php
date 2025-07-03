@@ -39,22 +39,18 @@ final class Operation extends ExtensibleObject
     /** @var Callback[]|null */
     private array|null $callbacks = null;
 
-    public function tags(Tag|string ...$tags): self
+    public function tags(Tag ...$tag): self
     {
-        $allStringTags = array_map(
-            static function (Tag|string $tag): string {
-                if ($tag instanceof Tag) {
-                    return (string) $tag;
-                }
-
-                return $tag;
+        $tags = array_map(
+            static function (Tag $tag): string {
+                return $tag->name();
             },
-            $tags,
+            $tag,
         );
 
         $clone = clone $this;
 
-        $clone->tags = when(blank($allStringTags), null, $allStringTags);
+        $clone->tags = when(blank($tags), null, $tags);
 
         return $clone;
     }
