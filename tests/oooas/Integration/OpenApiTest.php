@@ -29,15 +29,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
-use Pest\Expectation;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecurityRequirements\TestBearerSecurityRequirementFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
-
-afterAll(
-    function (): void {
-        \Safe\unlink('openapi.json');
-    },
-);
 
 describe('OpenApi', function (): void {
     it('can generate valid OpenAPI v3.1.0 docs', function (): void {
@@ -170,20 +163,7 @@ describe('OpenApi', function (): void {
 
         $openApi->toJsonFile('openapi', options: JSON_PRETTY_PRINT);
 
-        $output = [];
-        $returnVar = 0;
-        $successful = exec(
-            'npx redocly lint --format stylish --extends recommended-strict openapi.json 2>&1',
-            $output,
-            $returnVar,
-        );
-
-        expect($successful)->unless(
-            $successful,
-            function (Expectation $expectation) use ($output, $returnVar): Expectation {
-                return $expectation->toBeEmpty(implode("\n", $output))
-                    ->and($returnVar)->toBe(0);
-            },
-        );
+        expect('openapi.json')->toBeValidJsonSchema();
+        $this->pushCleanupCallback(fn () => \Safe\unlink('openapi.json'));
     });
 })->coversNothing();

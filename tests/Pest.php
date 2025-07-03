@@ -1,5 +1,6 @@
 <?php
 
+use Pest\Expectation;
 use Tests\IntegrationTestCase;
 use Tests\UnitTestCase;
 
@@ -18,12 +19,12 @@ pest()->extends(IntegrationTestCase::class)->in(
     'src/Integration',
     'oooas/Integration',
     'JSONSchema/Integration',
-);
+)->afterEach(fn () => cleanup($this->cleanupCallbacks));
 pest()->extends(UnitTestCase::class)->in(
     'src/Unit',
     'oooas/Unit',
     'JSONSchema/Unit',
-);
+)->afterEach(fn () => cleanup($this->cleanupCallbacks));
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,22 @@ expect()->extend('toBeImmutable', function (): void {
         'The class ' . $this->value . ' is not immutable.',
     );
 });
+expect()->extend(
+    'toBeValidJsonSchema',
+    function (): void {
+        exec(
+            "npx redocly lint --format stylish --extends recommended-strict $this->value 2>&1",
+            $output,
+            $result_code,
+        );
+        $this->when(
+            $result_code,
+            function (Expectation $expectation) use ($output): Expectation {
+                return $expectation->toBeEmpty(implode("\n", $output));
+            },
+        );
+    },
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -56,7 +73,9 @@ expect()->extend('toBeImmutable', function (): void {
 |
 */
 
-function something(): void
+function cleanup(array $callbacks): void
 {
-    // ..
+    foreach ($callbacks as $callback) {
+        $callback();
+    }
 }

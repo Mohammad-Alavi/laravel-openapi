@@ -61,7 +61,7 @@ final readonly class ExampleFactory extends OpenAPIFactory
                 ),
             ),
         )->tags(
-            Tag::create('test'),
+            Tag::create('test')->description('This is a test tag.'),
         )->addExtension(
             Extension::create('x-example', [
                 'name' => 'General',

@@ -121,6 +121,7 @@ describe('Generator', function (): void {
                 'tags' => [
                     [
                         'name' => 'test',
+                        'description' => 'This is a test tag.',
                     ],
                 ],
                 'paths' => [],
@@ -212,6 +213,7 @@ describe('Generator', function (): void {
                 'tags' => [
                     [
                         'name' => 'test',
+                        'description' => 'This is a test tag.',
                     ],
                 ],
                 'paths' => [],
