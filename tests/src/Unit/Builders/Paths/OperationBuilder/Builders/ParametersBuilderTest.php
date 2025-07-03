@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Builders\ParametersBuilder;
@@ -62,84 +61,114 @@ describe(class_basename(ParametersBuilder::class), function (): void {
     });
 
     it('doesnt extract path parameters if there are none', function (): void {
+        $routeInformation = RouteInfo::create(
+            Route::get('/example', static fn (): string => 'example'),
+        );
         $builder = new ParametersBuilder();
 
-        $parameters = $builder->pathParameters('/example');
+        $parameters = $builder->build($routeInformation);
 
-        expect($parameters)->toHaveCount(0);
+        expect($parameters)->unserializeToArray()->toHaveCount(0);
     });
 
     it(
         'can extract path parameters',
-        function (string $endpoint, int $count, Collection $expectation): void {
+        function (string $endpoint, array $expectation): void {
+            $routeInformation = RouteInfo::create(
+                Route::get($endpoint, static fn (): string => 'example'),
+            );
             $builder = new ParametersBuilder();
 
-            $parameters = $builder->pathParameters($endpoint);
+            $parameters = $builder->build($routeInformation);
 
-            expect($parameters)->toEqual($expectation);
+            expect($parameters)->unserializeToArray()->toEqual($expectation);
         },
     )->with([
         'single parameter' => [
             '/example/{id}',
-            1,
-            collect([
+            [
                 [
                     'name' => 'id',
                     'required' => true,
+                    'in' => 'path',
+                    'schema' => [
+                        'type' => 'string',
+                    ],
                 ],
-            ]),
+            ],
         ],
         'multiple parameters' => [
             '/example/{id}/{name}',
-            2,
-            collect([
+            [
                 [
                     'name' => 'id',
                     'required' => true,
+                    'in' => 'path',
+                    'schema' => [
+                        'type' => 'string',
+                    ],
                 ],
                 [
                     'name' => 'name',
                     'required' => true,
+                    'in' => 'path',
+                    'schema' => [
+                        'type' => 'string',
+                    ],
                 ],
-            ]),
+            ],
         ],
         'optional parameter' => [
             '/example/{id?}',
-            1,
-            collect([
+            [
                 [
                     'name' => 'id',
-                    'required' => false,
+                    'in' => 'path',
+                    'schema' => [
+                        'type' => 'string',
+                    ],
                 ],
-            ]),
+            ],
         ],
         'mixed parameters' => [
             '/example/{id}/{name?}',
-            2,
-            collect([
+            [
                 [
                     'name' => 'id',
                     'required' => true,
+                    'in' => 'path',
+                    'schema' => [
+                        'type' => 'string',
+                    ],
                 ],
                 [
                     'name' => 'name',
-                    'required' => false,
+                    'in' => 'path',
+                    'schema' => [
+                        'type' => 'string',
+                    ],
                 ],
-            ]),
+            ],
         ],
         'mixed parameters with different order' => [
             '/example/{name?}/{id}',
-            2,
-            collect([
+            [
                 [
                     'name' => 'name',
-                    'required' => false,
+                    'in' => 'path',
+                    'schema' => [
+                        'type' => 'string',
+                    ],
                 ],
                 [
                     'name' => 'id',
                     'required' => true,
+                    'in' => 'path',
+                    'schema' => [
+                        'type' => 'string',
+                    ],
                 ],
-            ]),
+            ],
         ],
     ]);
 })->covers(ParametersBuilder::class);
