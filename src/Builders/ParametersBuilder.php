@@ -39,15 +39,13 @@ final readonly class ParametersBuilder
         $params = $this->pathParameters($routeInfo->uri())
             ->map(
                 function (array $parameter) use ($routeInfo): Parameter|null {
-                    [$name, $required] = $parameter;
-
                     $schema = Schema::string();
 
                     /** @var \ReflectionParameter|null $reflectionParameter */
                     $reflectionParameter = collect($routeInfo->actionParameters())
                         ->first(
                             static fn (\ReflectionParameter $reflectionParameter): bool => $reflectionParameter
-                                    ->name === $name,
+                                    ->name === $parameter['name'],
                         );
 
                     if ($reflectionParameter) {
@@ -62,11 +60,11 @@ final readonly class ParametersBuilder
                     }
 
                     $param = Parameter::path(
-                        $name,
+                        $parameter['name'],
                         PathParameter::create($schema),
                     );
 
-                    if ($required) {
+                    if ($parameter['required']) {
                         return $param->required();
                     }
 
