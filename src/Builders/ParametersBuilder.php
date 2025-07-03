@@ -84,8 +84,7 @@ final readonly class ParametersBuilder
         return Parameters::create(...$params);
     }
 
-    // TODO make this method private
-    public function pathParameters(string $uri): Collection
+    private function pathParameters(string $uri): Collection
     {
         preg_match_all('/{(.*?)}/', $uri, $pathParams);
         $pathParams = collect($pathParams[1]);
