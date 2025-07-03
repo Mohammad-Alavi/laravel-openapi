@@ -2,19 +2,16 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Builders;
 
-use MohammadAlavi\LaravelOpenApi\Attributes\Responses as ResponsesAttribute;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ResponsesFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use Webmozart\Assert\Assert;
 
 final readonly class ResponsesBuilder
 {
-    public function build(ResponsesAttribute $responsesAttribute): Responses
+    /** @param class-string<ResponsesFactory> $factory */
+    public function build(string $factory): Responses
     {
-        Assert::isAOf($responsesAttribute->factory, ResponsesFactory::class);
-
-        /** @var class-string<ResponsesFactory> $factory */
-        $factory = $responsesAttribute->factory;
+        Assert::isAOf($factory, ResponsesFactory::class);
 
         return (new $factory())->build();
     }

@@ -5,8 +5,6 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Callback;
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Extension;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation as OperationAttribute;
-use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
-use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
 use MohammadAlavi\LaravelOpenApi\Builders\OperationBuilder;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestCallbackFactory;
@@ -96,12 +94,12 @@ describe(class_basename(OperationBuilder::class), function (): void {
                         description: 'description',
                         parameters: TestParametersFactory::class,
                         requestBody: TestRequestBodyFactory::class,
+                        responses: TestResponsesFactory::class,
                         deprecated: true,
                         security: TestSingleHTTPBearerSchemeSecurityFactory::class,
                         servers: [ServerWithMultipleVariableFormatting::class],
                         operationId: 'test',
                     ),
-                    new Responses(TestResponsesFactory::class),
                 ]);
 
                 return [

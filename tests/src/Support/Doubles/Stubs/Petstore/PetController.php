@@ -4,7 +4,6 @@ namespace Tests\src\Support\Doubles\Stubs\Petstore;
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
-use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
 use Tests\src\Support\Doubles\Stubs\Petstore\Factories\Responses\MultiResponseMixedWithReusable;
 use Tests\src\Support\Doubles\Stubs\Petstore\Factories\Responses\SingleResponse;
 use Tests\src\Support\Doubles\Stubs\Petstore\Factories\Responses\SingleResponseUsingReusable;
@@ -23,10 +22,10 @@ class PetController
         summary: 'List all pets.',
         description: 'List all pets from the database.',
         parameters: ListPetsParameters::class,
+        responses: SingleResponseUsingReusable::class,
         deprecated: true,
         operationId: 'listPets',
     )]
-    #[Responses(SingleResponseUsingReusable::class)]
     public function index(): void
     {
     }
@@ -36,11 +35,11 @@ class PetController
         summary: 'List all pets.',
         description: 'List all pets from the database.',
         parameters: ListPetsParameters::class,
+        responses: MultiResponseMixedWithReusable::class,
         deprecated: false,
         security: TestSingleHTTPBearerSchemeSecurityFactory::class,
         operationId: 'multiPetTag',
     )]
-    #[Responses(MultiResponseMixedWithReusable::class)]
     public function multiTag(): void
     {
     }
@@ -50,11 +49,11 @@ class PetController
         summary: 'List all pets.',
         description: 'List all pets from the database.',
         parameters: ListPetsParameters::class,
+        responses: SingleResponse::class,
         deprecated: null,
         security: TestSimpleMultiSecurityFactory::class,
         operationId: 'nestedSecurityFirstTest',
     )]
-    #[Responses(SingleResponse::class)]
     public function nestedSecurity(): void
     {
     }

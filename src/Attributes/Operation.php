@@ -4,6 +4,7 @@ namespace MohammadAlavi\LaravelOpenApi\Attributes;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ExternalDocumentationFactory;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ParametersFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ResponsesFactory;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\SecurityFactory;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
@@ -16,6 +17,7 @@ final readonly class Operation
      * @param class-string<TagFactory>|array<array-key, class-string<TagFactory>>|null $tags
      * @param class-string<ParametersFactory>|null $parameters
      * @param class-string<RequestBodyFactory>|null $requestBody
+     * @param class-string<ResponsesFactory>|null $responses
      * @param class-string<ExternalDocumentationFactory>|null $externalDocs
      * @param class-string<SecurityFactory>|null $security
      * @param class-string<ServerFactory>|array<array-key, class-string<ServerFactory>>|null $servers
@@ -26,6 +28,7 @@ final readonly class Operation
         public string|null $description = null,
         public string|null $parameters = null,
         public string|null $requestBody = null,
+        public string|null $responses = null,
         public string|null $externalDocs = null,
         public bool|null $deprecated = null,
         public string|null $security = null,

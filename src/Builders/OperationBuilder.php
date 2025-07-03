@@ -2,8 +2,6 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Builders;
 
-use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
-use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
@@ -46,6 +44,9 @@ final readonly class OperationBuilder
             if (!is_null($attribute->requestBody)) {
                 $operation = $operation->requestBody($this->requestBodyBuilder->build($attribute->requestBody));
             }
+            if (!is_null($attribute->responses)) {
+                $operation = $operation->responses($this->responsesBuilder->build($attribute->responses));
+            }
             if (!is_null($attribute->externalDocs)) {
                 $operation = $operation->externalDocs(
                     $this->externalDocumentationBuilder->build($attribute->externalDocs),
@@ -59,12 +60,6 @@ final readonly class OperationBuilder
             }
             $operation = $operation->servers(...$this->serverBuilder->build(...$attribute->getServers()));
             $operation = $operation->tags(...$this->tagBuilder->build(...$attribute->getTags()));
-        }
-
-        if ($routeInfo->responsesAttribute() instanceof Responses) {
-            $operation = $operation->responses(
-                $this->responsesBuilder->build($routeInfo->responsesAttribute()),
-            );
         }
 
         $callbacks = $this->callbackBuilder->build($routeInfo->callbackAttributes());

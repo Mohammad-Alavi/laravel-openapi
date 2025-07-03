@@ -7,7 +7,6 @@ use Webmozart\Assert\Assert;
 
 final readonly class RequestBodyBuilder
 {
-
     /** @param class-string<RequestBodyFactory> $factory */
     public function build(string $factory): RequestBodyFactory
     {
