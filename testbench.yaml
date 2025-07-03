@@ -1,0 +1,9 @@
+workbench:
+  install: true
+laravel: ./workbench
+providers:
+  - Apiato\Foundation\Providers\ApiatoServiceProvider
+  - Illuminate\Foundation\Support\Providers\EventServiceProvider
+  - Vinkla\Hashids\HashidsServiceProvider
+  - Prettus\Repository\Providers\RepositoryServiceProvider
+  - Spatie\Fractal\FractalServiceProvider

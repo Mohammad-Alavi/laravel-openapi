@@ -63,7 +63,8 @@
             "MohammadAlavi\\LaravelOpenApi\\": "src/",
             "Agent\\": "src/Agent/",
             "MohammadAlavi\\ObjectOrientedOpenAPI\\": "oooapi/",
-            "MohammadAlavi\\ObjectOrientedJSONSchema\\": "JSONSchema/"
+            "MohammadAlavi\\ObjectOrientedJSONSchema\\": "JSONSchema/",
+            "Workbench\\App\\": "workbench/app/"
         }
     },
     "autoload-dev": {
