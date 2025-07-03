@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\src\Support\Doubles\Stubs\Builders\Paths\Operations;
+namespace Tests\src\Support\Doubles\Stubs\Builders;
 
 class TestController
 {

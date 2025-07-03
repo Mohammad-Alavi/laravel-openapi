@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\src\Support\Doubles\Stubs\Builders\Paths\Operations;
+namespace Tests\src\Support\Doubles\Stubs\Builders;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback\Callback;

@@ -58,14 +58,10 @@ final readonly class OperationBuilder
             if (true === $attribute->deprecated) {
                 $operation = $operation->deprecated();
             }
-            $operation = $operation->servers(...$this->serverBuilder->build(...$attribute->getServers()));
             $operation = $operation->tags(...$this->tagBuilder->build(...$attribute->getTags()));
+            $operation = $operation->callbacks(...$this->callbackBuilder->build(...$attribute->getCallbacks()));
+            $operation = $operation->servers(...$this->serverBuilder->build(...$attribute->getServers()));
         }
-
-        $callbacks = $this->callbackBuilder->build($routeInfo->callbackAttributes());
-
-        $operation = $operation->parameters($this->parametersBuilder->build($routeInfo))
-            ->callbacks(...$callbacks);
 
         $this->extensionBuilder->build($operation, $routeInfo->extensionAttributes());
 

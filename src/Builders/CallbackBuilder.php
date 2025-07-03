@@ -2,21 +2,31 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Builders;
 
-use Illuminate\Support\Collection;
-use MohammadAlavi\LaravelOpenApi\Attributes\Callback as CallbackAttribute;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
+use Webmozart\Assert\Assert;
 
 final readonly class CallbackBuilder
 {
-    public function build(Collection $callbacks): array
+    /**
+     * @param array<array-key, class-string<CallbackFactory>> $factory
+     *
+     * @return CallbackFactory[]
+     */
+    public function build(string ...$factory): array
     {
-        return $callbacks->map(
-            static function (CallbackAttribute $callbackAttribute) {
-                /** @var CallbackFactory $factory */
-                $factory = $callbackAttribute->factory;
+        Assert::allIsAOf($factory, CallbackFactory::class);
 
-                return $factory::create();
-            },
-        )->values()->toArray();
+        /** @var CallbackFactory[] $servers */
+        $servers = collect($factory)
+            ->map(
+            /**
+             * @param class-string<CallbackFactory> $factory
+             */
+                static function (string $factory): CallbackFactory {
+                    return $factory::create();
+                },
+            )->toArray();
+
+        return $servers;
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use MohammadAlavi\LaravelOpenApi\Attributes\Callback;
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Extension;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation as OperationAttribute;
@@ -12,6 +11,7 @@ use Tests\src\Support\Doubles\Stubs\Attributes\TestExtensionFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestParametersFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestRequestBodyFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestResponsesFactory;
+use Tests\src\Support\Doubles\Stubs\Builders\ExternalDocsFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
 use Tests\src\Support\Doubles\Stubs\Servers\ServerWithMultipleVariableFormatting;
@@ -85,7 +85,6 @@ describe(class_basename(OperationBuilder::class), function (): void {
                     Route::delete('test', static fn (): string => 'test'),
                 );
                 $routeInfo->actionAttributes = collect([
-                    new Callback(TestCallbackFactory::class),
                     new Collection('test'),
                     new Extension(TestExtensionFactory::class),
                     new OperationAttribute(
@@ -95,6 +94,8 @@ describe(class_basename(OperationBuilder::class), function (): void {
                         parameters: TestParametersFactory::class,
                         requestBody: TestRequestBodyFactory::class,
                         responses: TestResponsesFactory::class,
+                        externalDocs: ExternalDocsFactory::class,
+                        callbacks: TestCallbackFactory::class,
                         deprecated: true,
                         security: TestSingleHTTPBearerSchemeSecurityFactory::class,
                         servers: [ServerWithMultipleVariableFormatting::class],
@@ -108,6 +109,10 @@ describe(class_basename(OperationBuilder::class), function (): void {
                         'tags' => ['PostWithExternalObjectDoc'],
                         'summary' => 'summary',
                         'description' => 'description',
+                        'externalDocs' => [
+                            'url' =>  'https://laragen.io/test',
+                            'description' => 'description',
+                        ],
                         'operationId' => 'test',
                         'parameters' => [
                             [

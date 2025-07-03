@@ -7,7 +7,6 @@ use Illuminate\Routing\Route;
 use Illuminate\Routing\RouteAction;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use MohammadAlavi\LaravelOpenApi\Attributes\Callback;
 use MohammadAlavi\LaravelOpenApi\Attributes\Extension;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
@@ -148,12 +147,6 @@ class RouteInfo
     public function actionAttributes(): Collection
     {
         return $this->actionAttributes ?? collect();
-    }
-
-    public function callbackAttributes(): Collection
-    {
-        return $this->actionAttributes()
-            ->filter(static fn (object $attribute): bool => $attribute instanceof Callback);
     }
 
     public function pathItemAttribute(): PathItem|null

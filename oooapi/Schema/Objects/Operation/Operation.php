@@ -36,7 +36,7 @@ final class Operation extends ExtensibleObject
     /** @var Server[]|null */
     private array|null $servers = null;
 
-    /** @var Callback[]|null */
+    /** @var Callback|CallbackFactory[]|null */
     private array|null $callbacks = null;
 
     public function tags(Tag ...$tag): self
@@ -156,7 +156,7 @@ final class Operation extends ExtensibleObject
 
         foreach ($callback as $item) {
             if ($item instanceof CallbackFactory) {
-                $clone->callbacks[$item::name()] = $item->component();
+                $clone->callbacks[$item::name()] = $item;
             }
 
             if ($item instanceof Callback) {
