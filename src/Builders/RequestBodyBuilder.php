@@ -2,15 +2,16 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Builders;
 
-use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
+use Webmozart\Assert\Assert;
 
 final readonly class RequestBodyBuilder
 {
-    public function build(RequestBody $requestBody): RequestBodyFactory
+
+    /** @param class-string<RequestBodyFactory> $factory */
+    public function build(string $factory): RequestBodyFactory
     {
-        /** @var RequestBodyFactory $factory */
-        $factory = $requestBody->factory;
+        Assert::isAOf($factory, RequestBodyFactory::class);
 
         return $factory::create();
     }

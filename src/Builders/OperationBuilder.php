@@ -43,6 +43,9 @@ final readonly class OperationBuilder
             if (!is_null($attribute->parameters)) {
                 $operation = $operation->parameters($this->parametersBuilder->build($routeInfo));
             }
+            if (!is_null($attribute->requestBody)) {
+                $operation = $operation->requestBody($this->requestBodyBuilder->build($attribute->requestBody));
+            }
             if (!is_null($attribute->externalDocs)) {
                 $operation = $operation->externalDocs(
                     $this->externalDocumentationBuilder->build($attribute->externalDocs),
@@ -56,12 +59,6 @@ final readonly class OperationBuilder
             }
             $operation = $operation->servers(...$this->serverBuilder->build(...$attribute->getServers()));
             $operation = $operation->tags(...$this->tagBuilder->build(...$attribute->getTags()));
-        }
-
-        if ($routeInfo->requestBodyAttribute() instanceof RequestBody) {
-            $operation = $operation->requestBody(
-                $this->requestBodyBuilder->build($routeInfo->requestBodyAttribute()),
-            );
         }
 
         if ($routeInfo->responsesAttribute() instanceof Responses) {

@@ -15,8 +15,20 @@ final readonly class PathItem
     public function __construct(
         public string|null $summary = null,
         public string|null $description = null,
-        public string|array|null $servers = null,
+        private string|array|null $servers = null,
         public string|null $parameters = null,
     ) {
+    }
+
+    /**
+     * @return array<array-key, class-string<ServerFactory>>
+     */
+    public function getServers(): array
+    {
+        if (is_string($this->servers)) {
+            return [$this->servers];
+        }
+
+        return when(blank($this->servers), [], $this->servers);
     }
 }

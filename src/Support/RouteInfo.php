@@ -11,7 +11,6 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Callback;
 use MohammadAlavi\LaravelOpenApi\Attributes\Extension;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
-use MohammadAlavi\LaravelOpenApi\Attributes\RequestBody;
 use MohammadAlavi\LaravelOpenApi\Attributes\Responses;
 use Webmozart\Assert\Assert;
 
@@ -179,11 +178,5 @@ class RouteInfo
     {
         return $this->actionAttributes()
             ->first(static fn (object $attribute): bool => $attribute instanceof Responses);
-    }
-
-    public function requestBodyAttribute(): RequestBody|null
-    {
-        return $this->actionAttributes()
-            ->first(static fn (object $attribute): bool => $attribute instanceof RequestBody);
     }
 }

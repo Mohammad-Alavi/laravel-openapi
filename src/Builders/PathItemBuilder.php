@@ -38,8 +38,8 @@ final readonly class PathItemBuilder
             if (!is_null($attribute->description)) {
                 $pathItem->description($attribute->description);
             }
-            //            $pathItem->servers(...$this->serverBuilder->build($attribute->servers));
-            //            $pathItem->parameters($this->parametersBuilder->build($firstRouteInfo));
+            $pathItem->servers(...$this->serverBuilder->build(...$attribute->getServers()));
+            $pathItem->parameters($this->parametersBuilder->build($firstRouteInfo));
         }
 
         return $pathItem;

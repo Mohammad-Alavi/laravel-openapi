@@ -95,12 +95,12 @@ describe(class_basename(OperationBuilder::class), function (): void {
                         summary: 'summary',
                         description: 'description',
                         parameters: TestParametersFactory::class,
+                        requestBody: TestRequestBodyFactory::class,
                         deprecated: true,
                         security: TestSingleHTTPBearerSchemeSecurityFactory::class,
                         servers: [ServerWithMultipleVariableFormatting::class],
                         operationId: 'test',
                     ),
-                    new RequestBody(TestRequestBodyFactory::class),
                     new Responses(TestResponsesFactory::class),
                 ]);
 
