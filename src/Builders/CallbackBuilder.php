@@ -19,9 +19,9 @@ final readonly class CallbackBuilder
         /** @var CallbackFactory[] $servers */
         $servers = collect($factory)
             ->map(
-            /**
-             * @param class-string<CallbackFactory> $factory
-             */
+                /**
+                 * @param class-string<CallbackFactory> $factory
+                 */
                 static function (string $factory): CallbackFactory {
                     return $factory::create();
                 },

@@ -110,7 +110,7 @@ describe(class_basename(OperationBuilder::class), function (): void {
                         'summary' => 'summary',
                         'description' => 'description',
                         'externalDocs' => [
-                            'url' =>  'https://laragen.io/test',
+                            'url' => 'https://laragen.io/test',
                             'description' => 'description',
                         ],
                         'operationId' => 'test',
