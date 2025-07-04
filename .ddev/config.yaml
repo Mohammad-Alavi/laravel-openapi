@@ -1,6 +1,6 @@
 name: laravel-openapi
 type: laravel
-docroot: ""
+docroot: "workbench/public"
 php_version: "8.2"
 webserver_type: nginx-fpm
 xdebug_enabled: false
@@ -10,7 +10,7 @@ database:
     type: postgres
     version: "16"
 upload_dirs:
-    - workbench/storage
+    - ../storage
 use_dns_when_possible: true
 composer_version: "2"
 web_environment: []

@@ -13,7 +13,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 
-final readonly class CreateUserResponse implements ResponsesFactory
+final readonly class UserResponse implements ResponsesFactory
 {
     public function build(): Responses
     {
@@ -21,35 +21,35 @@ final readonly class CreateUserResponse implements ResponsesFactory
             ResponseEntry::create(
                 HTTPStatusCode::ok(),
                 Response::create(
-                    'CreateUserResponse',
+                    'UserResponse',
                 )->content(
                     ContentEntry::json(
                         MediaType::create()->schema(
                             Schema::object()
-                                ->description('Response for creating a user')
+                                ->description('Response for creating or updating a user')
                                 ->properties(
                                     Property::create(
                                         'id',
                                         Schema::string()
-                                            ->description('The unique identifier of the created user')
+                                            ->description('The unique identifier of the user')
                                             ->format(StringFormat::UUID),
                                     ),
                                     Property::create(
                                         'name',
                                         Schema::string()
-                                            ->description('The name of the created user'),
+                                            ->description('The name of the user'),
                                     ),
                                     Property::create(
                                         'email',
                                         Schema::string()
-                                            ->description('The email address of the created user')
+                                            ->description('The email address of the user')
                                             ->format(StringFormat::EMAIL),
                                     ),
                                 )->required('id', 'name', 'email'),
                         ),
                     ),
                 ),
-            )
+            ),
         );
     }
 }

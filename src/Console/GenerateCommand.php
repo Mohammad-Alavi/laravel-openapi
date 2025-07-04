@@ -4,7 +4,6 @@ namespace MohammadAlavi\LaravelOpenApi\Console;
 
 use Illuminate\Console\Command;
 use MohammadAlavi\LaravelOpenApi\Generator;
-use Scalar\ScalarServiceProvider;
 
 class GenerateCommand extends Command
 {

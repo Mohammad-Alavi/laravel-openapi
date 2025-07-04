@@ -2,18 +2,18 @@
 
 namespace Workbench\App\Http\Controllers;
 
-use Workbench\App\Documentation\Responses\CreateUserResponse;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
+use Workbench\App\Documentation\Responses\UserResponse;
 
 #[PathItem]
-final readonly class UserController
+final readonly class UpdateUserController
 {
     #[Operation(
-        summary: 'Test Operation',
-        description: 'This is a test operation.',
-        responses: CreateUserResponse::class,
-        operationId: 'testOperation',
+        summary: 'Update User',
+        description: 'This operation updates a user.',
+        responses: UserResponse::class,
+        operationId: 'updateUserOperation',
     )]
     public function test(): string
     {

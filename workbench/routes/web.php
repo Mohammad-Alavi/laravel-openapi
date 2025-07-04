@@ -1,6 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Workbench\App\Http\Controllers\UserController;
+use Workbench\App\Http\Controllers\UpdateUserController;
 
-Route::get('/', [UserController::class, 'test']);
+Route::get('/sag', [UpdateUserController::class, 'test']);

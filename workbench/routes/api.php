@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Workbench\App\Http\Controllers\UserController;
+use Workbench\App\Http\Controllers\UpdateUserController;
 
-Route::get('/', [UserController::class, 'test']);
+Route::prefix('api')->group(function () {
+    Route::get('/sag', [UpdateUserController::class, 'test']);
+});

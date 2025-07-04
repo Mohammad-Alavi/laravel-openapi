@@ -9,6 +9,7 @@ $finder = Finder::create()
         __DIR__ . '/JSONSchema',
         __DIR__ . '/oooapi',
         __DIR__ . '/tests',
+        __DIR__ . '/workbench',
     ])
     ->name('*.php');
 
