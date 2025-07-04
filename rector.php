@@ -15,6 +15,7 @@ return RectorConfig::configure()
         __DIR__ . '/JSONSchema',
         __DIR__ . '/oooapi',
         __DIR__ . '/tests',
+        __DIR__ . '/workbench',
     ])
     ->withImportNames(importShortClasses: false)
      ->withPhpSets(php82: true)

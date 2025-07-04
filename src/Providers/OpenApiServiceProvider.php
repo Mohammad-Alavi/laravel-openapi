@@ -43,11 +43,9 @@ class OpenApiServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__ . '/../config/openapi.php' => config_path('openapi.php'),
-            ], 'openapi-config');
-        }
+        $this->publishes([
+            __DIR__ . '/../../config/openapi.php' => config_path('openapi.php'),
+        ], 'openapi-config');
 
         // TODO: allow to disable this, so user can register their own routes.
         //  Like how Laravel Passport does it.

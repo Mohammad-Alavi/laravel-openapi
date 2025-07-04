@@ -27,7 +27,8 @@
         "php": "^8.2",
         "doctrine/dbal": "^2.6|^3.0",
         "laravel/framework": "^10.0|^11.0|^12.0",
-        "myclabs/deep-copy": "^1.12"
+        "myclabs/deep-copy": "^1.12",
+        "scalar/laravel": "^0.2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.19.1",
@@ -63,13 +64,13 @@
             "MohammadAlavi\\LaravelOpenApi\\": "src/",
             "Agent\\": "src/Agent/",
             "MohammadAlavi\\ObjectOrientedOpenAPI\\": "oooapi/",
-            "MohammadAlavi\\ObjectOrientedJSONSchema\\": "JSONSchema/",
-            "Workbench\\App\\": "workbench/app/"
+            "MohammadAlavi\\ObjectOrientedJSONSchema\\": "JSONSchema/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/"
         }
     },
     "files": [

@@ -8,6 +8,7 @@ parameters:
 		- oooapi
 		- config
 		- tests
+		- workbench
 		- .php-cs-fixer.dist.php
 	tmpDir: temp/phpstan_cache
 

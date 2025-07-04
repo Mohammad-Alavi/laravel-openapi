@@ -13,6 +13,7 @@
         <directory name="JSONSchema"/>
         <directory name="oooapi"/>
         <directory name="tests"/>
+        <directory name="workbench"/>
         <ignoreFiles>
             <directory name="vendor"/>
             <directory name="node_modules"/>

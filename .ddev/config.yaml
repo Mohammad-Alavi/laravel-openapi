@@ -1,5 +1,5 @@
 name: laravel-openapi
-type: php
+type: laravel
 docroot: ""
 php_version: "8.2"
 webserver_type: nginx-fpm
@@ -9,16 +9,13 @@ additional_fqdns: []
 database:
     type: postgres
     version: "16"
+upload_dirs:
+    - workbench/storage
 use_dns_when_possible: true
 composer_version: "2"
 web_environment: []
 nodejs_version: auto
 corepack_enable: false
-web_extra_exposed_ports:
-    - name: node-vite
-      container_port: 5173
-      http_port: 5172
-      https_port: 5173
 
 # Key features of DDEV's config.yaml:
 

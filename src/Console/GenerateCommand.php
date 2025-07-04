@@ -4,6 +4,7 @@ namespace MohammadAlavi\LaravelOpenApi\Console;
 
 use Illuminate\Console\Command;
 use MohammadAlavi\LaravelOpenApi\Generator;
+use Scalar\ScalarServiceProvider;
 
 class GenerateCommand extends Command
 {
@@ -12,9 +13,7 @@ class GenerateCommand extends Command
 
     public function handle(Generator $generator): void
     {
-        $collectionExists = collect(config('openapi.collections'))->has($this->argument('collection'));
-
-        if (!$collectionExists) {
+        if (!config()->has('openapi.collections.' . $this->argument('collection'))) {
             $this->error('Collection "' . $this->argument('collection') . '" does not exist.');
 
             return;

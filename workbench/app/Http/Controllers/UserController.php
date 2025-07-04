@@ -2,20 +2,20 @@
 
 namespace Workbench\App\Http\Controllers;
 
+use Workbench\App\Documentation\Responses\CreateUserResponse;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
-use Tests\src\Support\Doubles\Stubs\Attributes\TestResponsesFactory;
 
 #[PathItem]
-class UserController
+final readonly class UserController
 {
     #[Operation(
         summary: 'Test Operation',
         description: 'This is a test operation.',
-        responses: TestResponsesFactory::class,
+        responses: CreateUserResponse::class,
         operationId: 'testOperation',
     )]
-    public function __invoke()
+    public function test(): string
     {
         return 'test';
     }

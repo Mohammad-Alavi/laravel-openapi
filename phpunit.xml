@@ -24,6 +24,7 @@
         </include>
         <exclude>
             <directory>./src/Console</directory>
+            <directory>./workbench</directory>
         </exclude>
     </source>
 </phpunit>
