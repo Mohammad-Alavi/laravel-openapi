@@ -5,6 +5,7 @@ parameters:
 	paths:
 		- config
 		- JSONSchema
+		- laragen
 		- oooapi
 		- src
 		- tests

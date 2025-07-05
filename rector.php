@@ -12,6 +12,7 @@ return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/config',
         __DIR__ . '/JSONSchema',
+        __DIR__ . '/laragen',
         __DIR__ . '/oooapi',
         __DIR__ . '/src',
         __DIR__ . '/tests',

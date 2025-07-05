@@ -10,6 +10,7 @@
     <projectFiles>
         <directory name="config"/>
         <directory name="JSONSchema"/>
+        <directory name="laragen"/>
         <directory name="oooapi"/>
         <directory name="src"/>
         <directory name="tests"/>

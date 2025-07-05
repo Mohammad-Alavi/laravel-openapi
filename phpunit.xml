@@ -19,6 +19,7 @@
     <source restrictNotices="true" restrictWarnings="true">
         <include>
             <directory>./JSONSchema</directory>
+            <directory>./laragen</directory>
             <directory>./oooapi</directory>
             <directory>./src</directory>
         </include>

@@ -4,18 +4,21 @@ arch()
     ->coversNothing()
     ->expect('MohammadAlavi\ObjectOrientedJSONSchema')
     ->toOnlyBeUsedIn([
+        'MohammadAlavi\LaravelOpenApi',
+        'MohammadAlavi\Laragen',
         'MohammadAlavi\ObjectOrientedJSONSchema',
         'MohammadAlavi\ObjectOrientedOpenAPI',
-        'MohammadAlavi\LaravelOpenApi',
         'Workbench',
     ])->ignoring('JSONSchema/Trash')
     ->and('MohammadAlavi\ObjectOrientedOpenAPI')
     ->toOnlyBeUsedIn([
-        'MohammadAlavi\ObjectOrientedOpenAPI',
+        'MohammadAlavi\Laragen',
         'MohammadAlavi\LaravelOpenApi',
+        'MohammadAlavi\ObjectOrientedOpenAPI',
         'Workbench',
     ])->and('MohammadAlavi\LaravelOpenApi')
     ->toOnlyBeUsedIn([
+        'MohammadAlavi\Laragen',
         'MohammadAlavi\LaravelOpenApi',
         'Workbench',
     ]);
