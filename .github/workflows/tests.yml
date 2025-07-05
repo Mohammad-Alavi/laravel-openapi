@@ -48,8 +48,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install npm dependencies
-        run: npm install
+      - name: Set up node
+        uses: actions/setup-node@v4
+      - name: Install Redocly CLI # https://redocly.com/blog/consistent-apis-redocly-github-actions
+        run: npm install -g @redocly/cli@latest
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -61,13 +63,11 @@ jobs:
 
       - name: Setup Composer token
         run: composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
-
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --optimize-autoloader
 
       - name: Execute tests with coverage
         run: ./vendor/bin/pest --ci --coverage-clover=coverage.xml
-
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
