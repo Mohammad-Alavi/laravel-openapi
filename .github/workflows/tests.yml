@@ -53,6 +53,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up node
+        uses: actions/setup-node@v4
+      - name: Install Redocly CLI # https://redocly.com/blog/consistent-apis-redocly-github-actions
+        run: npm install -g @redocly/cli@latest
+        
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
