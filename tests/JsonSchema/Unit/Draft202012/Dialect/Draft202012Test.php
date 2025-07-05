@@ -2,56 +2,56 @@
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Dialect\Draft202012;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AdditionalProperties;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AllOf;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Anchor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AnyOf;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Comment;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Constant;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DefaultValue;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Defs\Def;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Defs\Defs;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentRequired\Dependency;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentRequired\DependentRequired;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Deprecated;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Description;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DynamicAnchor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DynamicRef;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Enum;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Examples;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ExclusiveMaximum;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ExclusiveMinimum;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Format;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Id;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IsReadOnly;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IsWriteOnly;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Items;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MaxContains;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Maximum;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MaxItems;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MaxLength;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MaxProperties;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinContains;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Minimum;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinItems;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinLength;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinProperties;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MultipleOf;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\OneOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Pattern;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Properties;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Schema;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Ref;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Comment;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Defs\Def;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Defs\Defs;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Anchor;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DynamicAnchor;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DynamicRef;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Required;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Schema;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Title;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\UnevaluatedItems;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\UnevaluatedProperties;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\UniqueItems;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Vocabulary\Vocab;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Vocabulary\Vocabulary;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\UnevaluatedProperties;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\UnevaluatedItems;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ExclusiveMaximum;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ExclusiveMinimum;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Maximum;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Minimum;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MultipleOf;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MaxContains;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MaxItems;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinContains;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinItems;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\UniqueItems;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Items;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AllOf;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AnyOf;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\OneOf;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AdditionalProperties;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentRequired\Dependency;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentRequired\DependentRequired;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MaxProperties;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinProperties;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Required;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DefaultValue;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Deprecated;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Description;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Examples;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IsReadOnly;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IsWriteOnly;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Title;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Constant;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Enum;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(Draft202012::class), function (): void {
     it('can create id keyword', function (): void {
@@ -132,9 +132,9 @@ describe(class_basename(Draft202012::class), function (): void {
 
         expect($defs)->toBeInstanceOf(Defs::class)
             ->and(
-                Safe\json_encode($defs)
+                Safe\json_encode($defs),
             )->toBe(
-                Safe\json_encode(['foo' => $def->value()])
+                Safe\json_encode(['foo' => $def->value()]),
             );
     });
 
@@ -167,9 +167,9 @@ describe(class_basename(Draft202012::class), function (): void {
 
         expect($vocab)->toBeInstanceOf(Vocabulary::class)
             ->and(
-                Safe\json_encode($vocab)
+                Safe\json_encode($vocab),
             )->toBe(
-                Safe\json_encode(['k1' => true, 'k2' => false])
+                Safe\json_encode(['k1' => true, 'k2' => false]),
             );
     });
 
