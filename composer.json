@@ -61,10 +61,10 @@
     },
     "autoload": {
         "psr-4": {
-            "MohammadAlavi\\LaravelOpenApi\\": "src/",
             "Agent\\": "src/Agent/",
-            "MohammadAlavi\\ObjectOrientedOpenAPI\\": "oooapi/",
-            "MohammadAlavi\\ObjectOrientedJSONSchema\\": "JSONSchema/"
+            "MohammadAlavi\\LaravelOpenApi\\": "src/",
+            "MohammadAlavi\\ObjectOrientedJSONSchema\\": "JSONSchema/",
+            "MohammadAlavi\\ObjectOrientedOpenAPI\\": "oooapi/"
         }
     },
     "autoload-dev": {

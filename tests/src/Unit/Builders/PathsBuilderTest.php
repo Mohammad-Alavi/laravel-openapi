@@ -9,7 +9,7 @@ describe(class_basename(PathsBuilder::class), function (): void {
     it('can be created', function (): void {
         Route::get('/has-both-pathItem-and-operation', ControllerWithPathItemAndOperationStub::class);
         $routeCollector = app(RouteCollector::class);
-        $routeInfo = $routeCollector->all();
+        $routeInfo = $routeCollector->whereInCollection('Another');
         $pathsBuilder = app(PathsBuilder::class);
 
         $paths = $pathsBuilder->build($routeInfo);

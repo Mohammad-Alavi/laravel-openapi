@@ -23,7 +23,7 @@ describe(class_basename(RouteCollector::class), function (): void {
 
         $routes = $routeCollector->all();
 
-        expect($routes)->toHaveCount(5)
+        expect($routes)->toHaveCount(7)
             ->and($routes)
             ->each(
                 fn (Expectation $expectation): Expectation => $expectation->toBeInstanceOf(RouteInfo::class),
@@ -33,7 +33,7 @@ describe(class_basename(RouteCollector::class), function (): void {
     it('can filter routes by collection', function (): void {
         Route::get('/default-collection', ControllerWithPathItemAndOperationStub::class);
         Route::get('/test-collection', CollectibleClass::class);
-        Route::put('/default-collection', ControllerWithPathItemAndOperationStub::class);
+        Route::put('/another-collection', ControllerWithPathItemAndOperationStub::class);
         Route::patch('/default-collection', ControllerWithPathItemAndOperationStub::class);
         Route::delete('/default-collection', ControllerWithPathItemAndOperationStub::class);
         /** @var RouteCollector $routeCollector */

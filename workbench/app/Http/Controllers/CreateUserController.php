@@ -2,11 +2,13 @@
 
 namespace Workbench\App\Http\Controllers;
 
+use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
 use Workbench\App\Documentation\Responses\UserResponse;
 
 #[PathItem]
+#[Collection('laragen')]
 final readonly class CreateUserController
 {
     #[Operation(
@@ -15,7 +17,7 @@ final readonly class CreateUserController
         responses: UserResponse::class,
         operationId: 'createUserOperation',
     )]
-    public function test(): string
+    public function __invoke(): string
     {
         return 'test';
     }

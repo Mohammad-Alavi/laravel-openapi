@@ -5,12 +5,12 @@ use PhpCsFixer\Finder;
 $finder = Finder::create()
     ->in([
         __DIR__ . '/config',
-        __DIR__ . '/src',
         __DIR__ . '/JSONSchema',
         __DIR__ . '/oooapi',
+        __DIR__ . '/src',
         __DIR__ . '/tests',
-        __DIR__ . '/workbench',
     ])
+    ->in(__DIR__ . '/workbench')->exclude(['public', 'storage', 'vendor'])
     ->name('*.php');
 
 return (new PhpCsFixer\Config())

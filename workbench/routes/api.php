@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Workbench\App\Http\Controllers\UpdateUserController;
+use Workbench\App\Http\Controllers\CreateUserController;
 
 Route::prefix('api')->group(function () {
-    Route::get('/sag', [UpdateUserController::class, 'test']);
+    Route::post('/users', [CreateUserController::class, '__invoke']);
 });

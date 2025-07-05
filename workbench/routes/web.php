@@ -1,6 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Workbench\App\Http\Controllers\UpdateUserController;
+use Workbench\App\Http\Controllers\ShowUserController;
 
-Route::get('/sag', [UpdateUserController::class, 'test']);
+Route::get('/users/{id}', [ShowUserController::class, '__invoke']);

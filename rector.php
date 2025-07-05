@@ -11,9 +11,9 @@ use Rector\Set\ValueObject\SetList;
 return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/config',
-        __DIR__ . '/src',
         __DIR__ . '/JSONSchema',
         __DIR__ . '/oooapi',
+        __DIR__ . '/src',
         __DIR__ . '/tests',
         __DIR__ . '/workbench',
     ])

@@ -7,10 +7,15 @@ arch()
         'MohammadAlavi\ObjectOrientedJSONSchema',
         'MohammadAlavi\ObjectOrientedOpenAPI',
         'MohammadAlavi\LaravelOpenApi',
+        'Workbench',
     ])->ignoring('JSONSchema/Trash')
     ->and('MohammadAlavi\ObjectOrientedOpenAPI')
     ->toOnlyBeUsedIn([
         'MohammadAlavi\ObjectOrientedOpenAPI',
         'MohammadAlavi\LaravelOpenApi',
+        'Workbench',
     ])->and('MohammadAlavi\LaravelOpenApi')
-    ->toOnlyBeUsedIn('MohammadAlavi\LaravelOpenApi');
+    ->toOnlyBeUsedIn([
+        'MohammadAlavi\LaravelOpenApi',
+        'Workbench',
+    ]);

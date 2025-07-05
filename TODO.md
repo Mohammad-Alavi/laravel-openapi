@@ -37,3 +37,4 @@ Go through all the classes and try to remove all non-relevant methods and proper
     Maybe move it to a separate class?
     Maybe move all the methods that are not relevant to the class to a separate class?
         Something like Laravels Sts class? And make it also Macroable?
+Add Schema extension

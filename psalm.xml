@@ -9,14 +9,19 @@
 >
     <projectFiles>
         <directory name="config"/>
-        <directory name="src"/>
         <directory name="JSONSchema"/>
         <directory name="oooapi"/>
+        <directory name="src"/>
         <directory name="tests"/>
         <directory name="workbench"/>
         <ignoreFiles>
             <directory name="vendor"/>
             <directory name="node_modules"/>
+        </ignoreFiles>
+        <ignoreFiles allowMissingFiles="true">
+            <directory name="workbench/public"/>
+            <directory name="workbench/storage"/>
+            <directory name="workbench/vendor"/>
         </ignoreFiles>
     </projectFiles>
     <plugins>
