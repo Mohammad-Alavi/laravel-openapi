@@ -12,16 +12,14 @@ class GenerateCommand extends Command
 
     public function handle(Generator $generator): void
     {
-        $collectionExists = collect(config('openapi.collections'))->has($this->argument('collection'));
-
-        if (!$collectionExists) {
+        if (!config()->has('openapi.collections.' . $this->argument('collection'))) {
             $this->error('Collection "' . $this->argument('collection') . '" does not exist.');
 
             return;
         }
 
         $this->line(
-            json_encode(
+            \Safe\json_encode(
                 $generator->generate($this->argument('collection')),
                 JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE,
             ),

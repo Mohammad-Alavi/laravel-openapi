@@ -20,7 +20,7 @@ class ListUsersResponse extends ResponseFactory
     public function build(): Response
     {
         return Response::ok()->description('Successful response')->content(
-            MediaType::json()->schema(UserSchema::ref())
+            MediaType::create()->schema(UserSchema::ref())
         );
     }
 }

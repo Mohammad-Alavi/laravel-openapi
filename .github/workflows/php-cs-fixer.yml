@@ -1,4 +1,4 @@
-name: PHP Style Check
+name: PHP-CS-Fixer
 
 on:
   push:

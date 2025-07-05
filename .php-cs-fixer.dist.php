@@ -5,17 +5,19 @@ use PhpCsFixer\Finder;
 $finder = Finder::create()
     ->in([
         __DIR__ . '/config',
+        __DIR__ . '/JSONSchema',
+        __DIR__ . '/laragen',
+        __DIR__ . '/oooapi',
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ])
+    ->in(__DIR__ . '/workbench')->exclude(['public', 'storage', 'vendor'])
     ->name('*.php');
 
 return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
-        '@PSR12' => true,
         'concat_space' => ['spacing' => 'one'],
-        'class_attributes_separation' => ['elements' => ['const' => 'none', 'property' => 'none']],
         'method_argument_space' => [
             'on_multiline' => 'ensure_fully_multiline',
         ],

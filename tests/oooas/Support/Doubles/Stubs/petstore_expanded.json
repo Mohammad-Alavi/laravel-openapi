@@ -1,0 +1,242 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "Swagger Petstore",
+    "description": "A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification",
+    "termsOfService": "https://swagger.io/terms/",
+    "contact": {
+      "name": "Swagger API Team",
+      "email": "apiteam@swagger.io",
+      "url": "https://swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://petstore.swagger.io/api"
+    }
+  ],
+  "paths": {
+    "/pets": {
+      "get": {
+        "description": "Returns all pets from the system that the user has access to Nam sed condimentum est. \n                    Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet.\n                     Aenean at gravida augue, ac iaculis sem. \n                     Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. \n                     Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. \n                     In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. \n                     Aenean pharetra tempor ante molestie imperdiet. \n                     Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. \n                     Praesent at enim pharetra urna volutpat venenatis eget eget mauris. \n                     In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. \n                     Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. \n                     Morbi euismod sagittis libero sed lacinia. \n                     Sed tempus felis lobortis leo pulvinar rutrum. \n                     Nam mattis velit nisl, eu condimentum ligula luctus nec. \n                     Phasellus semper velit eget aliquet faucibus. \n                     In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. \n                     Ut pellentesque posuere elementum. Sed a varius odio. \n                     Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. \n                     Fusce et sem dui. Aenean nec scelerisque tortor. \n                     Fusce malesuada accumsan magna vel tempus. \n                     Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. \n                     Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. \n                     Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. \n                     Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.",
+        "operationId": "findPets",
+        "parameters": [
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "tags to filter by",
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "maximum number of results to return",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "pet response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new pet in the store.  Duplicates are allowed",
+        "operationId": "addPet",
+        "requestBody": {
+          "description": "Pet to add to the store",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Animal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "pet response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pets/{id}": {
+      "get": {
+        "description": "Returns a user based on a single ID, if the user does not have access to the pet",
+        "operationId": "find pet by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of pet to fetch",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "pet response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "deletes a single pet based on the ID supplied",
+        "operationId": "deletePet",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of pet to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "pet deleted"
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Pet": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Animal"
+          },
+          {
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      },
+      "Animal": {
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Error": {
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "jsonSchemaDialect": "https://spec.openapis.org/oas/3.1/dialect/base"
+}

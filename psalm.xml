@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="4"
+    findUnusedVariablesAndParams="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    cacheDirectory="./temp/psalm_cache"
+>
+    <projectFiles>
+        <directory name="config"/>
+        <directory name="JSONSchema"/>
+        <directory name="laragen"/>
+        <directory name="oooapi"/>
+        <directory name="src"/>
+        <directory name="tests"/>
+        <directory name="workbench"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+            <directory name="node_modules"/>
+        </ignoreFiles>
+        <ignoreFiles allowMissingFiles="true">
+            <directory name="workbench/public"/>
+            <directory name="workbench/storage"/>
+            <directory name="workbench/vendor"/>
+        </ignoreFiles>
+    </projectFiles>
+    <plugins>
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin"/>
+        <pluginClass class="Psalm\MockeryPlugin\Plugin"/>
+        <pluginClass class="Psl\Psalm\Plugin"/>
+    </plugins>
+</psalm>

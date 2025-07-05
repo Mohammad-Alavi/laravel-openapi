@@ -1,5 +1,6 @@
 <?php
 
+use Pest\Expectation;
 use Tests\IntegrationTestCase;
 use Tests\UnitTestCase;
 
@@ -14,8 +15,16 @@ use Tests\UnitTestCase;
 |
 */
 
-pest()->extends(IntegrationTestCase::class)->in('Integration', 'oooas/Integration');
-pest()->extends(UnitTestCase::class)->in('Unit', 'oooas/Unit');
+pest()->extends(IntegrationTestCase::class)->in(
+    'src/Integration',
+    'oooas/Integration',
+    'JSONSchema/Integration',
+)->afterEach(fn () => cleanup($this->cleanupCallbacks));
+pest()->extends(UnitTestCase::class)->in(
+    'src/Unit',
+    'oooas/Unit',
+    'JSONSchema/Unit',
+)->afterEach(fn () => cleanup($this->cleanupCallbacks));
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +38,29 @@ pest()->extends(UnitTestCase::class)->in('Unit', 'oooas/Unit');
 */
 
 expect()->extend('toBeOne', fn () => $this->toBe(1));
+expect()->extend('toBeImmutable', function (): void {
+    $reflection = new ReflectionClass($this->value);
+
+    expect($reflection->isReadOnly())->toBeTrue(
+        'The class ' . $this->value . ' is not immutable.',
+    );
+});
+expect()->extend(
+    'toBeValidJsonSchema',
+    function (): void {
+        exec(
+            "npx redocly lint --format stylish --extends recommended-strict $this->value 2>&1",
+            $output,
+            $result_code,
+        );
+        $this->when(
+            $result_code,
+            function (Expectation $expectation) use ($output): Expectation {
+                return $expectation->toBeEmpty(implode("\n", $output));
+            },
+        );
+    },
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +73,9 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 |
 */
 
-function something(): void
+function cleanup(array $callbacks): void
 {
-    // ..
+    foreach ($callbacks as $callback) {
+        $callback();
+    }
 }

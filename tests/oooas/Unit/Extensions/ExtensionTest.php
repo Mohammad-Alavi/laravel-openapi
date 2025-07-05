@@ -1,13 +1,14 @@
 <?php
 
-use MohammadAlavi\LaravelOpenApi\oooas\Extensions\Extension;
+use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 
-describe('Extension', function (): void {
+describe(class_basename(Extension::class), function (): void {
     it('can create extension with mixed value', function (mixed $value): void {
         $extension = Extension::create('x-test', $value);
 
-        expect($extension->name)->toBe('x-test')
-            ->and($extension->value)->toBe($value);
+        expect($extension)
+            ->name()->toBe('x-test')
+            ->value()->toBe($value);
     })->with([
         'null' => [null],
         'string' => ['test'],
@@ -25,12 +26,17 @@ describe('Extension', function (): void {
             ->and(Extension::isExtension('test'))->toBeFalse();
     });
 
-    it('throws exception if extension name is invalid', function (string $name, string $message): void {
-        expect(fn (): Extension => Extension::create($name, 'value'))->toThrow(
-            InvalidArgumentException::class,
-            $message,
-        );
-    })->with([
+    it(
+        'throws exception if extension name is invalid',
+        function (string $name, string $message): void {
+            expect(function () use ($name): Extension {
+                return Extension::create($name, 'value');
+            })->toThrow(
+                InvalidArgumentException::class,
+                $message,
+            );
+        },
+    )->with([
         'x-oai-' => ['x-oai-', 'Extension name cannot be x-oai-'],
         'x-oas-' => ['x-oas-', 'Extension name cannot be x-oas-'],
         'test' => ['test', 'Extension name must start with x-'],
@@ -39,7 +45,7 @@ describe('Extension', function (): void {
     it('can serialize extension', function (): void {
         $extension = Extension::create('x-test', 'value');
 
-        $result = $extension->jsonSerialize();
+        $result = $extension->unserializeToArray();
 
         expect($result)->toBe(['x-test' => 'value']);
     });
@@ -56,7 +62,7 @@ describe('Extension', function (): void {
     it('can json serialize extension', function (): void {
         $extension = Extension::create('x-test', 'value');
 
-        $result = json_encode($extension);
+        $result = \Safe\json_encode($extension);
 
         expect($result)->toBe('{"x-test":"value"}');
     });

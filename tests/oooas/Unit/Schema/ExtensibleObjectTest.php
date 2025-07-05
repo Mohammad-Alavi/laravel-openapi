@@ -1,19 +1,10 @@
 <?php
 
-use MohammadAlavi\LaravelOpenApi\oooas\Extensions\Extension;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\BaseObject;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOAS\Exceptions\PropertyDoesNotExistException;
-use Tests\oooas\Doubles\Fakes\ExtensibleObjectFake;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
+use Tests\oooas\Support\Doubles\Fakes\ExtensibleObjectFake;
 
-describe('ExtensibleObject', function (): void {
-    it('can be statically created', function (): void {
-        $extensibleObjectFake = ExtensibleObjectFake::create();
-
-        expect($extensibleObjectFake)->toBeInstanceOf(BaseObject::class)
-            ->and($extensibleObjectFake)->toBeInstanceOf(ExtensibleObject::class);
-    });
-
+describe(class_basename(ExtensibleObject::class), function (): void {
     it('can manipulate extensions', function (): void {
         $object = ExtensibleObjectFake::create();
         $extension1 = Extension::create('x-test', 'value');
@@ -25,11 +16,11 @@ describe('ExtensibleObject', function (): void {
         expect($object->extensions())->toHaveCount(1)
             ->and($object->extensions()[0])->equals($extension1)->toBeTrue();
 
-        $result = $object->getExtension($extension1->name);
+        $result = $object->getExtension($extension1->name());
 
         expect($result)->equals($extension1)->toBeTrue();
 
-        $object = $object->removeExtension($extension1->name);
+        $object = $object->removeExtension($extension1->name());
 
         expect($object->extensions())->toBeEmpty();
 
@@ -37,46 +28,31 @@ describe('ExtensibleObject', function (): void {
 
         $object = $object->addExtension($extension1, $extension2);
 
-        $result = $object->getExtension($extension2->name);
+        $result = $object->getExtension($extension2->name());
 
         expect($result)->equals($extension2)->toBeTrue();
 
-        $object = $object->removeExtension($extension2->name);
+        $object = $object->removeExtension($extension2->name());
 
         expect($object->extensions())->toHaveCount(1)
             ->and($object->extensions()[0])->equals($extension1)->toBeTrue();
 
-        $object = $object->removeExtension($extension1->name);
+        $object = $object->removeExtension($extension1->name());
 
         expect($object->extensions())->toBeEmpty();
     });
 
     it('serializes its extensions', function (): void {
-        $object = ExtensibleObjectFake::create('test');
+        $object = ExtensibleObjectFake::create();
         $extension1 = Extension::create('x-test', 'value');
         $extension2 = Extension::create('x-foo', 'bar');
         $object = $object->addExtension($extension1, $extension2);
 
-        $result = $object->jsonSerialize();
+        $result = $object->unserializeToArray();
 
         expect($result)->toBe([
-            'objectId' => 'test',
             'x-test' => 'value',
             'x-foo' => 'bar',
         ]);
-    });
-
-    it('has a magic getter', function (): void {
-        $extensibleObjectFake = ExtensibleObjectFake::create('test');
-
-        $result = $extensibleObjectFake->objectId;
-
-        expect($result)->toBe('test');
-    });
-
-    it('should throw an exception if property does not exist', function (): void {
-        $extensibleObjectFake = ExtensibleObjectFake::create('test');
-
-        expect(static fn () => $extensibleObjectFake->nonExistingProperty)->toThrow(PropertyDoesNotExistException::class);
     });
 })->covers(ExtensibleObject::class);

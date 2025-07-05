@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\SecurityScheme;
+use MohammadAlavi\ObjectOrientedOpenAPI\Objects\SecurityScheme;
 use Vyuldashev\LaravelOpenApi\Factories\SecuritySchemeFactory;
 
 class DummyClass extends SecuritySchemeFactory

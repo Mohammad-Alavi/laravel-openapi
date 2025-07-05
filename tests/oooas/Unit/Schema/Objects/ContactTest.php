@@ -2,8 +2,8 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Contact;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\UnitTestCase;
 
@@ -14,18 +14,20 @@ class ContactTest extends UnitTestCase
     {
         $contact = Contact::create()
             ->name('Example')
-            ->url('https://example.com')
-            ->email('hello@example.com');
+            ->url('https://laragen.io')
+            ->email('hello@laragen.io');
 
-        $info = Info::create()
+        $info = Info::create('API Specification', 'v1')
             ->contact($contact);
 
         $this->assertSame([
+            'title' => 'API Specification',
             'contact' => [
                 'name' => 'Example',
-                'url' => 'https://example.com',
-                'email' => 'hello@example.com',
+                'url' => 'https://laragen.io',
+                'email' => 'hello@laragen.io',
             ],
-        ], $info->jsonSerialize());
+            'version' => 'v1',
+        ], $info->unserializeToArray());
     }
 }

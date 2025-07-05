@@ -3,13 +3,13 @@
          beStrictAboutTestsThatDoNotTestAnything="false"
          bootstrap="vendor/autoload.php"
          colors="true"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          executionOrder="depends,defects"
          requireCoverageMetadata="true"
-         beStrictAboutCoverageMetadata="false"
          beStrictAboutOutputDuringTests="true"
          failOnRisky="true"
          failOnWarning="true"
+         cacheDirectory="./temp/phpunit_cache"
 >
     <testsuites>
         <testsuite name="Tests">
@@ -18,10 +18,14 @@
     </testsuites>
     <source restrictNotices="true" restrictWarnings="true">
         <include>
+            <directory>./JSONSchema</directory>
+            <directory>./laragen</directory>
+            <directory>./oooapi</directory>
             <directory>./src</directory>
         </include>
         <exclude>
             <directory>./src/Console</directory>
+            <directory>./workbench</directory>
         </exclude>
     </source>
 </phpunit>

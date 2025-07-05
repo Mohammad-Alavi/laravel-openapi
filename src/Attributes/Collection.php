@@ -5,7 +5,7 @@ namespace MohammadAlavi\LaravelOpenApi\Attributes;
 use MohammadAlavi\LaravelOpenApi\Generator;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
-readonly class Collection
+final readonly class Collection
 {
     /** @var string|class-string<\Stringable>|(string|class-string<\Stringable>)[] */
     public string|array $name;

@@ -2,15 +2,28 @@
 
 namespace Tests;
 
-use MohammadAlavi\LaravelOpenApi\OpenApiServiceProvider;
+use Illuminate\Foundation\Application;
+use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    protected function getPackageProviders($app): array
+    use WithWorkbench;
+
+    protected array $cleanupCallbacks = [];
+
+    protected function pushCleanupCallback(callable $callback): void
     {
-        return [
-            OpenApiServiceProvider::class,
-        ];
+        $this->cleanupCallbacks[] = $callback;
+    }
+
+    /**
+     * Define environment setup.
+     *
+     * @param Application $app
+     */
+    protected function defineEnvironment($app)
+    {
+        // $app['config']->set('scalar.url', '/openapi.json');
     }
 }

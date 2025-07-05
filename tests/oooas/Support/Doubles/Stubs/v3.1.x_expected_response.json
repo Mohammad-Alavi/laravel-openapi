@@ -1,0 +1,262 @@
+{
+  "openapi": "3.1.0",
+  "jsonSchemaDialect": "https://spec.openapis.org/oas/3.1/dialect/base",
+  "info": {
+    "title": "API Specification",
+    "description": "For using the Example App API",
+    "contact": {
+      "name": "Example",
+      "url": "https://laragen.io",
+      "email": "hello@laragen.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://api.laragen.io/v1"
+    },
+    {
+      "url": "https://api.laragen.io/v2"
+    }
+  ],
+  "paths": {
+    "/audits": {
+      "get": {
+        "tags": [
+          "Audits"
+        ],
+        "summary": "List all audits",
+        "operationId": "audits.index",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "created_at"
+                  ],
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "age": {
+                      "type": "integer",
+                      "example": 60
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "format": "uuid",
+                            "type": "string"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Audits"
+        ],
+        "summary": "Create an audit",
+        "operationId": "audits.store",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "created_at"
+                ],
+                "properties": {
+                  "id": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "created_at": {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  "age": {
+                    "type": "integer",
+                    "example": 60
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "allOf": [
+                        {
+                          "format": "uuid",
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "created_at"
+                  ],
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "age": {
+                      "type": "integer",
+                      "example": 60
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "format": "uuid",
+                            "type": "string"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/audits/{audit}": {
+      "get": {
+        "tags": [
+          "Audits"
+        ],
+        "summary": "View an audit",
+        "operationId": "audits.show",
+        "parameters": [
+          {
+            "name": "audit",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "The format of the appointments",
+            "schema": {
+              "enum": [
+                "json",
+                "ics"
+              ],
+              "default": "json",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "created_at"
+                  ],
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "age": {
+                      "type": "integer",
+                      "example": 60
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "format": "uuid",
+                            "type": "string"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "tokenUrl": "https://api.laragen.io/oauth/authorize"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Audits",
+      "description": "All the audits"
+    }
+  ],
+  "externalDocs": {
+    "description": "Example",
+    "url": "https://laragen.io"
+  }
+}

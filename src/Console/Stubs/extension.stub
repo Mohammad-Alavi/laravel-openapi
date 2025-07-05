@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Objects\Schema;
 use MohammadAlavi\LaravelOpenApi\Factories\ExtensionFactory;
 
 class DummyClass extends ExtensionFactory

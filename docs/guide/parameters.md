@@ -24,7 +24,7 @@ class ListUsersParameters extends ParametersFactory
                 ->name('withTrashed')
                 ->description('Display trashed users too')
                 ->required(false)
-                ->schema(Schema::boolean()),
+                ->schema(Schema::boolean('boolean_test')),
 
         ];
     }

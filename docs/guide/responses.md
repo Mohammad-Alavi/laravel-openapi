@@ -49,11 +49,11 @@ class ErrorValidationResponse extends ResponseFactory implements Reusable
 {
     public function build(): Response
     {
-        $response = Schema::object()->properties(
+        $response = Schema::object('object_test')->properties(
             Schema::string('message')->example('The given data was invalid.'),
             Schema::object('errors')
                 ->additionalProperties(
-                    Schema::array()->items(Schema::string())
+                    Schema::array('array_test')->items(Schema::string('string_test'))
                 )
                 ->example(['field' => ['Something is wrong with this field!']])
         );
@@ -61,7 +61,7 @@ class ErrorValidationResponse extends ResponseFactory implements Reusable
         return Response::create('ErrorValidation')
             ->description('Validation errors')
             ->content(
-                MediaType::json()->schema($response)
+                MediaType::create()->schema($response)
             );
     }
 }

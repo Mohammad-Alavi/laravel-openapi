@@ -1,109 +1,100 @@
 <?php
 
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\ExternalDocs;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Operation;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Parameter;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\PathItem;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\RequestBody;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Response;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\SecurityRequirement;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\SecurityScheme;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Server;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Tag;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
+use Tests\src\Support\Doubles\Stubs\Attributes\TestCallbackFactory;
+use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
+use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
 
-describe('Operation', function (): void {
+describe(class_basename(Operation::class), function (): void {
     it('can be created with no parameters', function (): void {
         $operation = Operation::create();
 
-        expect($operation->jsonSerialize())->toBeEmpty();
+        expect($operation->unserializeToArray())->toBeEmpty();
     });
 
-    it('can can be created with all parameters', function (string $actionMethod, string $operationName): void {
-        $securityScheme = SecurityScheme::create('OAuth2')
-            ->type(SecurityScheme::TYPE_OAUTH2);
-        $pathItem = PathItem::create('MyEvent')
-            ->route('{$request.query.callbackUrl}')
-            ->operations(
-                Operation::$actionMethod()->requestBody(
-                    RequestBody::create()
-                        ->description('something happened'),
-                ),
-            );
-        $operation = Operation::create()
-            ->action(Operation::ACTION_GET)
-            ->tags(Tag::create()->name('Users'))
-            ->summary('Lorem ipsum')
-            ->description('Dolar sit amet')
-            ->externalDocs(ExternalDocs::create())
-            ->operationId('users.show')
-            ->parameters(Parameter::create())
-            ->requestBody(RequestBody::create())
-            ->responses(Response::create())
-            ->deprecated()
-            ->security(SecurityRequirement::create()->securityScheme($securityScheme))
-            ->servers(Server::create())
-            ->callbacks($pathItem);
+    it(
+        'can can be created with all parameters',
+        function (): void {
+            $operation = Operation::create()
+                ->tags(
+                    Tag::create('Users')->description('Lorem ipsum'),
+                    Tag::create('Admins'),
+                )->summary('Lorem ipsum')
+                ->description('Dolar sit amet')
+                ->externalDocs(ExternalDocumentation::create('https://laragen.io/docs'))
+                ->operationId('users.show')
+                ->parameters(
+                    Parameters::create(
+                        Parameter::query(
+                            'id',
+                            QueryParameter::create(Schema::string()),
+                        ),
+                    ),
+                )->requestBody(RequestBody::create())
+                ->responses(
+                    Responses::create(
+                        ResponseEntry::create(
+                            HTTPStatusCode::ok(),
+                            Response::create('OK'),
+                        ),
+                    ),
+                )->deprecated()
+                ->security(app(TestSingleHTTPBearerSchemeSecurityFactory::class)->build())
+                ->servers(Server::default())
+                ->callbacks(TestCallbackFactory::create());
 
-        expect($operation->jsonSerialize())->toBe([
-            'tags' => ['Users'],
-            'summary' => 'Lorem ipsum',
-            'description' => 'Dolar sit amet',
-            'externalDocs' => [],
-            'operationId' => 'users.show',
-            'parameters' => [[]],
-            'requestBody' => [],
-            'responses' => [
-                'default' => [],
-            ],
-            'deprecated' => true,
-            'security' => [
-                ['OAuth2' => []],
-            ],
-            'servers' => [[]],
-            'callbacks' => [
-                'MyEvent' => [
-                    '{$request.query.callbackUrl}' => [
-                        $operationName => [
-                            'requestBody' => [
-                                'description' => 'something happened',
-                            ],
+            expect($operation->unserializeToArray())->toBe([
+                'tags' => ['Users', 'Admins'],
+                'summary' => 'Lorem ipsum',
+                'description' => 'Dolar sit amet',
+                'externalDocs' => [
+                    'url' => 'https://laragen.io/docs',
+                ],
+                'operationId' => 'users.show',
+                'parameters' => [
+                    [
+                        'name' => 'id',
+                        'in' => 'query',
+                        'schema' => [
+                            'type' => 'string',
                         ],
                     ],
                 ],
-            ],
-        ]);
-    })->with([
-        'get action' => ['get', Operation::ACTION_GET],
-        'put action' => ['put', Operation::ACTION_PUT],
-        'post action' => ['post', Operation::ACTION_POST],
-        'delete action' => ['delete', Operation::ACTION_DELETE],
-        'options action' => ['options', Operation::ACTION_OPTIONS],
-        'head action' => ['head', Operation::ACTION_HEAD],
-        'patch action' => ['patch', Operation::ACTION_PATCH],
-        'trace action' => ['trace', Operation::ACTION_TRACE],
-    ]);
-
-    it('can be created with now security', function (): void {
-        $operation = Operation::get()
-            ->noSecurity();
-
-        expect($operation->jsonSerialize())->toBe([
-            'security' => [],
-        ]);
-    });
-
-    it('can accepts tags in multiple ways', function (array $tag, $expectation): void {
-        $operation = Operation::get()
-            ->tags(...$tag);
-
-        expect($operation->jsonSerialize())->toBe([
-            'tags' => $expectation,
-        ]);
-    })->with([
-        'one string tag' => [['Users'], ['Users']],
-        'multiple string tags' => [['Users', 'Admins'], ['Users', 'Admins']],
-        'one object tag' => [[Tag::create()->name('Users')], ['Users']],
-        'multiple object tags' => [[Tag::create()->name('Users'), Tag::create()->name('Admins')], ['Users', 'Admins']],
-        'mixed tags' => [['Users', Tag::create()->name('Admins')], ['Users', 'Admins']],
-    ]);
+                'requestBody' => [],
+                'responses' => [
+                    '200' => [
+                        'description' => 'OK',
+                    ],
+                ],
+                'deprecated' => true,
+                'security' => [
+                    [
+                        TestBearerSecuritySchemeFactory::name() => [],
+                    ],
+                ],
+                'servers' => [
+                    [
+                        'url' => '/',
+                    ],
+                ],
+                'callbacks' => [
+                    'TestCallbackFactory' => [
+                        'https://laragen.io/' => [],
+                    ],
+                ],
+            ]);
+        },
+    );
 })->covers(Operation::class);

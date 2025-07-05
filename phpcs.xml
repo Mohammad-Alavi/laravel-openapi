@@ -7,8 +7,12 @@
     <description>PHP_CodeSniffer configuration</description>
     <arg name="extensions" value="php" />
     <file>./config</file>
+    <file>./JSONSchema</file>
+    <file>./laragen</file>
+    <file>./oooapi</file>
     <file>./src</file>
     <file>./tests</file>
+    <file>./workbench</file>
 
     <rule ref="PSR12"/>
     <rule ref="SlevomatCodingStandard.Commenting.AnnotationName"/>

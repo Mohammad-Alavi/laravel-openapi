@@ -1,46 +1,35 @@
 <?php
 
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Discriminator;
-use MohammadAlavi\ObjectOrientedOAS\Exceptions\InvalidArgumentException;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Discriminator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\Entry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\Name;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapping\URL;
 
 describe('Discriminator', function (): void {
-    it('can be created with no parameters', function (): void {
-        $discriminator = Discriminator::create();
-
-        expect($discriminator->jsonSerialize())->toBeEmpty();
-    });
-
     it('can be created with all parameters', function (): void {
-        $discriminator = Discriminator::create()
-            ->propertyName('Discriminator Name')
-            ->mapping(['key' => 'value']);
+        $discriminator = Discriminator::create(
+            'Discriminator Name',
+            Entry::create('cat', Name::create('value')),
+            Entry::create(
+                'dog',
+                URL::create('https://laragen.io/dog'),
+            ),
+        );
 
-        expect($discriminator->jsonSerialize())->toBe([
+        expect($discriminator->unserializeToArray())->toBe([
             'propertyName' => 'Discriminator Name',
             'mapping' => [
-                'key' => 'value',
+                'cat' => 'value',
+                'dog' => 'https://laragen.io/dog',
             ],
         ]);
     });
 
-    it('throws an exception when mapping is not an [string => string] array', function (array $mapping): void {
-        expect(function () use ($mapping): void {
-            Discriminator::create()->mapping($mapping);
-        })->toThrow(InvalidArgumentException::class, 'Each mapping must have a string key and a string value.');
-    })->with([
-        'no string key' => [[1 => 'value']],
-        'no string value' => [['key' => 1]],
-    ]);
+    it('will have no mapping if no mapping is passed', function (): void {
+        $discriminator = Discriminator::create('something');
 
-    it('will have no mapping if an empty array is passed', function (): void {
-        $discriminator = Discriminator::create()->mapping([]);
-
-        expect($discriminator->jsonSerialize())->toBeEmpty();
-    });
-
-    it('can be create with default (no mapping) mapping', function (): void {
-        $discriminator = Discriminator::create();
-
-        expect($discriminator->jsonSerialize())->toBeEmpty();
+        expect($discriminator->unserializeToArray())->toBe([
+            'propertyName' => 'something',
+        ]);
     });
 })->covers(Discriminator::class);

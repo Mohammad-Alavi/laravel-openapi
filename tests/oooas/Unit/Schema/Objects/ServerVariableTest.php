@@ -2,8 +2,9 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Server;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\ServerVariable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\VariableEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\ServerVariable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\UnitTestCase;
 
@@ -12,15 +13,20 @@ class ServerVariableTest extends UnitTestCase
 {
     public function testCreateWithAllParametersWorks(): void
     {
-        $serverVariable = ServerVariable::create('ServerVariableName')
+        $serverVariable = ServerVariable::create('Earth')
             ->enum('Earth', 'Mars', 'Saturn')
-            ->default('Earth')
             ->description('The planet the server is running on');
 
-        $server = Server::create()
-            ->variables($serverVariable);
+        $server = Server::default()
+            ->variables(
+                VariableEntry::create(
+                    'ServerVariableName',
+                    $serverVariable,
+                ),
+            );
 
         $this->assertSame([
+            'url' => '/',
             'variables' => [
                 'ServerVariableName' => [
                     'enum' => ['Earth', 'Mars', 'Saturn'],
@@ -28,6 +34,6 @@ class ServerVariableTest extends UnitTestCase
                     'description' => 'The planet the server is running on',
                 ],
             ],
-        ], $server->jsonSerialize());
+        ], $server->unserializeToArray());
     }
 }

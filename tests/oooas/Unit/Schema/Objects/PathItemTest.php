@@ -2,46 +2,80 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\LaravelOpenApi\oooas\Enums\OASVersion;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\OpenApi;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Operation;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Parameter;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\PathItem;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Server;
-use PHPUnit\Framework\Attributes\CoversClass;
-use Tests\UnitTestCase;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Fields\Path;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 
-#[CoversClass(PathItem::class)]
-class PathItemTest extends UnitTestCase
-{
-    public function testCreateWithAllParametersWorks(): void
-    {
-        $pathItem = PathItem::create()
-            ->route('/users')
-            ->summary('User endpoints')
-            ->description('Get the users')
-            ->operations(Operation::get())
-            ->servers(Server::create()->url('https://example.com'))
-            ->parameters(Parameter::create()->name('Test parameter'));
+describe(class_basename(PathItem::class), function (): void {
+    it('can be created with all parameters', function (): void {
+        $paths = Paths::create(
+            Path::create(
+                '/users',
+                PathItem::create()
+                    ->summary('User endpoints')
+                    ->description('Get the users')
+                    ->operations(
+                        AvailableOperation::create(
+                            HttpMethod::GET,
+                            Operation::create()
+                                ->responses(
+                                    Responses::create(
+                                        ResponseEntry::create(
+                                            HTTPStatusCode::ok(),
+                                            Response::create('OK'),
+                                        ),
+                                    ),
+                                ),
+                        ),
+                    )
+                    ->servers(Server::create('https://laragen.io'))
+                    ->parameters(
+                        Parameters::create(
+                            Parameter::query(
+                                'test_parameter',
+                                QueryParameter::create(Schema::string()),
+                            ),
+                        ),
+                    ),
+            ),
+        );
 
-        $openApi = OpenApi::create()
-            ->paths($pathItem);
-
-        $this->assertSame([
-            'openapi' => OASVersion::V_3_1_0->value,
-            'paths' => [
-                '/users' => [
-                    'get' => [],
-                    'summary' => 'User endpoints',
-                    'description' => 'Get the users',
-                    'servers' => [
-                        ['url' => 'https://example.com'],
+        expect($paths->unserializeToArray())->toBe([
+            '/users' => [
+                'summary' => 'User endpoints',
+                'description' => 'Get the users',
+                'get' => [
+                    'responses' => [
+                        '200' => [
+                            'description' => 'OK',
+                        ],
                     ],
-                    'parameters' => [
-                        ['name' => 'Test parameter'],
+                ],
+                'servers' => [
+                    ['url' => 'https://laragen.io'],
+                ],
+                'parameters' => [
+                    [
+                        'name' => 'test_parameter',
+                        'in' => 'query',
+                        'schema' => [
+                            'type' => 'string',
+                        ],
                     ],
                 ],
             ],
-        ], $openApi->jsonSerialize());
-    }
-}
+        ]);
+    });
+})->covers(PathItem::class);

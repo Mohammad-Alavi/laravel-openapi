@@ -2,12 +2,12 @@
 
 namespace DummyNamespace;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\MediaType;
+use MohammadAlavi\ObjectOrientedOpenAPI\Objects\MediaType;
 use Vyuldashev\LaravelOpenApi\Objects\Operation;
-use MohammadAlavi\ObjectOrientedOAS\Objects\PathItem;
-use MohammadAlavi\ObjectOrientedOAS\Objects\RequestBody;
-use MohammadAlavi\ObjectOrientedOAS\Objects\Response;
-use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Objects\PathItem;
+use MohammadAlavi\ObjectOrientedOpenAPI\Objects\RequestBody;
+use MohammadAlavi\ObjectOrientedOpenAPI\Objects\Response;
+use MohammadAlavi\ObjectOrientedOpenAPI\Objects\Schema;
 use Vyuldashev\LaravelOpenApi\Factories\CallbackFactory;
 
 class DummyClass extends CallbackFactory
@@ -15,15 +15,15 @@ class DummyClass extends CallbackFactory
     public function build(): PathItem
     {
         return PathItem::create('MyEvent')
-            ->route('{$request.body#/callbackUrl}')
+            ->path('{$request.body#/callbackUrl}')
             ->operations(
                 Operation::post()
                     ->requestBody(
                         RequestBody::create()
                             ->description('something happened')
                             ->content(
-                                MediaType::json()->schema(
-                                    Schema::object()
+                                MediaType::create()->schema(
+                                    Schema::object('object_test')
                                         ->properties(
                                             Schema::string('foo')
                                         )

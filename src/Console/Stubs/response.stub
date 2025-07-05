@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\Response;
+use MohammadAlavi\ObjectOrientedOpenAPI\Objects\Response;
 use Vyuldashev\LaravelOpenApi\Factories\ResponseFactory;
 
 class DummyClass extends ResponseFactory

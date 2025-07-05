@@ -1,8 +1,8 @@
 <?php
 
+use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
+use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extensions;
 use Webmozart\Assert\InvalidArgumentException;
-use MohammadAlavi\LaravelOpenApi\oooas\Extensions\Extension;
-use MohammadAlavi\LaravelOpenApi\oooas\Extensions\Extensions;
 
 describe('Extensions', function (): void {
     it('checks if extension exists', function (): void {
@@ -73,9 +73,8 @@ describe('Extensions', function (): void {
         $extension = Extension::create('x-test', 'test');
         $extensions = $extensions->add($extension);
 
-
-        expect($extensions->jsonSerialize())->toBe(['x-test' => 'test'])
-            ->and($extensions->jsonSerialize())->toBe(['x-test' => 'test']);
+        expect($extensions->unserializeToArray())->toBe(['x-test' => 'test'])
+            ->and($extensions->unserializeToArray())->toBe(['x-test' => 'test']);
     });
 
     it('can return all extensions', function (): void {

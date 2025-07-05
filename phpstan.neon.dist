@@ -1,0 +1,20 @@
+includes:
+	- phar://phpstan.phar/conf/bleedingEdge.neon
+parameters:
+	level: max
+	paths:
+		- config
+		- JSONSchema
+		- laragen
+		- oooapi
+		- src
+		- tests
+		- workbench
+		- .php-cs-fixer.dist.php
+	excludePaths:
+	    analyseAndScan:
+	        - workbench/database
+	        - workbench/public
+	        - workbench/storage
+	        - workbench/vendor
+	tmpDir: temp/phpstan_cache

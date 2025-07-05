@@ -1,55 +1,16 @@
 <?php
 
+use MohammadAlavi\LaravelOpenApi\Factories\ExampleFactory;
+
 return [
     'collections' => [
         'default' => [
-            'info' => [
-                'title' => config('app.name'),
-                'description' => null,
-                'version' => '1.0.0',
-                'contact' => [],
-            ],
-
-            'servers' => [
-                // Servers should extend `MohammadAlavi\LaravelOpenApi\Factories\ServerFactory` class.
-                // ExampleServer::class
-            ],
-
-            'tags' => [
-                // Tags should extend `MohammadAlavi\LaravelOpenApi\Factories\TagFactory` class.
-                // ExampleTag::class,
-            ],
-
-            'security' => [
-                // Security schemes should extend `MohammadAlavi\LaravelOpenApi\Factories\Component\SecuritySchemeFactory` class.
-                // BearerTokenSecurityScheme::class,
-            ],
-
-            // Non-standard attributes used by code/doc generation tools can be added here
-            'extensions' => [
-                // 'x-tagGroups' => [
-                //     [
-                //         'name' => 'General',
-                //         'tags' => [
-                //             'user',
-                //         ],
-                //     ],
-                // ],
-            ],
-
+            'openapi' => ExampleFactory::class,
             // Route for exposing specification.
             // Leave uri null to disable.
             'route' => [
                 'uri' => '/openapi',
                 'middleware' => [],
-            ],
-
-            // Register custom middlewares for different objects.
-            'middlewares' => [
-                'paths' => [
-                ],
-                'components' => [
-                ],
             ],
         ],
     ],

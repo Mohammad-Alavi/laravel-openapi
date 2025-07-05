@@ -3,11 +3,11 @@
 namespace MohammadAlavi\LaravelOpenApi\Http;
 
 use MohammadAlavi\LaravelOpenApi\Generator;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\OpenApi;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 
-class OpenApiController
+final readonly class OpenApiController
 {
-    public function show(Generator $generator): OpenApi
+    public function show(Generator $generator): OpenAPI
     {
         return $generator->generate();
     }

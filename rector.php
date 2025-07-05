@@ -11,11 +11,15 @@ use Rector\Set\ValueObject\SetList;
 return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/config',
+        __DIR__ . '/JSONSchema',
+        __DIR__ . '/laragen',
+        __DIR__ . '/oooapi',
         __DIR__ . '/src',
         __DIR__ . '/tests',
+        __DIR__ . '/workbench',
     ])
     ->withImportNames(importShortClasses: false)
-     ->withPhpSets()
+     ->withPhpSets(php82: true)
     ->withSets([
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
@@ -27,7 +31,7 @@ return RectorConfig::configure()
         SetList::EARLY_RETURN,
         SetList::INSTANCEOF,
         SetList::CARBON,
-        PHPUnitSetList::PHPUNIT_100,
+        PHPUnitSetList::PHPUNIT_110,
         PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
     ])

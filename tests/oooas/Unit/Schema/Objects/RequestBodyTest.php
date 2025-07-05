@@ -2,33 +2,26 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\MediaType;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Operation;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\RequestBody;
-use PHPUnit\Framework\Attributes\CoversClass;
-use Tests\UnitTestCase;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 
-#[CoversClass(RequestBody::class)]
-class RequestBodyTest extends UnitTestCase
-{
-    public function testCreateWithAllParametersWorks(): void
-    {
+describe(class_basename(RequestBody::class), function (): void {
+    it('can be created with all parameters', function (): void {
         $requestBody = RequestBody::create()
             ->description('Standard request')
-            ->content(MediaType::json())
-            ->required();
+            ->content(
+                ContentEntry::json(
+                    MediaType::create(),
+                ),
+            )->required();
 
-        $operation = Operation::create()
-            ->requestBody($requestBody);
-
-        $this->assertEquals([
-            'requestBody' => [
-                'description' => 'Standard request',
-                'content' => [
-                    'application/json' => [],
-                ],
-                'required' => true,
+        expect($requestBody->unserializeToArray())->toBe([
+            'description' => 'Standard request',
+            'content' => [
+                'application/json' => [],
             ],
-        ], $operation->jsonSerialize());
-    }
-}
+            'required' => true,
+        ]);
+    });
+})->covers(RequestBody::class);

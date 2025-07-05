@@ -2,8 +2,8 @@
 
 namespace DummyNamespace;
 
-use MohammadAlavi\ObjectOrientedOAS\Objects\Parameter;
-use MohammadAlavi\ObjectOrientedOAS\Objects\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Objects\Parameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Objects\Schema;
 use Vyuldashev\LaravelOpenApi\Factories\ParametersFactory;
 
 class DummyClass extends ParametersFactory
@@ -19,7 +19,7 @@ class DummyClass extends ParametersFactory
                 ->name('parameter-name')
                 ->description('Parameter description')
                 ->required(false)
-                ->schema(Schema::string()),
+                ->schema(Schema::string('string_test')),
 
         ];
     }

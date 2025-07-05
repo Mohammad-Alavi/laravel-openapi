@@ -73,7 +73,7 @@ To use tags, first set them up in `config/openapi.php`:
            // You may optionally add a link to external documentation like so:
            'externalDocs' => [
                 'description' => 'External API documentation',
-                'url' => 'https://example.com/external-docs',
+                'url' => 'https://laragen.io/external-docs',
             ],
         ],
 
@@ -119,7 +119,7 @@ class UserController extends Controller
      * Updates a user.
      *
      */
-    #[OpenApi\Operation(tags: ['tags'], method: 'PATCH')]
+    #[OpenApi\Operation(tags: ['tags'])]
     public function update(Request $request)
     {
         //

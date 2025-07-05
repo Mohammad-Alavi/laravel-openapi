@@ -2,8 +2,8 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Info;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\License;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\UnitTestCase;
 
@@ -12,18 +12,17 @@ class LicenseTest extends UnitTestCase
 {
     public function testCreateWithAllParametersWorks(): void
     {
-        $license = License::create()
-            ->name('MIT')
-            ->url('https://example.com');
+        $license = License::create('MIT')->identifier('MIT');
 
-        $info = Info::create()
-            ->license($license);
+        $info = Info::create('Example Api', 'v1')->license($license);
 
         $this->assertSame([
+            'title' => 'Example Api',
             'license' => [
                 'name' => 'MIT',
-                'url' => 'https://example.com',
+                'identifier' => 'MIT',
             ],
-        ], $info->jsonSerialize());
+            'version' => 'v1',
+        ], $info->unserializeToArray());
     }
 }

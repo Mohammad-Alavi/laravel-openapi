@@ -1,0 +1,133 @@
+{
+    "openapi": "3.1.1",
+    "info": {
+        "title": "https://laragen.io",
+        "summary": "Default OpenAPI Specification",
+        "description": "This is the default OpenAPI specification for the application.",
+        "contact": {
+            "name": "Example Contact",
+            "url": "https://example.com/",
+            "email": "example@example.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://github.com/"
+        },
+        "version": "1.0.0"
+    },
+    "jsonSchemaDialect": "https://spec.openapis.org/oas/3.1/dialect/base",
+    "servers": [
+        {
+            "url": "https://laragen.io"
+        }
+    ],
+    "paths": {
+        "/api": {
+            "get": {
+                "summary": "Test Operation",
+                "description": "This is a test operation.",
+                "operationId": "testOperation",
+                "responses": {
+                    "200": {
+                        "description": "CreateUserResponse",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Response for creating a user",
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "description": "The unique identifier of the created user",
+                                            "type": "string",
+                                            "format": "uuid"
+                                        },
+                                        "name": {
+                                            "description": "The name of the created user",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "description": "The email address of the created user",
+                                            "type": "string",
+                                            "format": "email"
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "name",
+                                        "email"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "summary": "Test Operation",
+                "description": "This is a test operation.",
+                "operationId": "testOperation",
+                "responses": {
+                    "200": {
+                        "description": "CreateUserResponse",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Response for creating a user",
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "description": "The unique identifier of the created user",
+                                            "type": "string",
+                                            "format": "uuid"
+                                        },
+                                        "name": {
+                                            "description": "The name of the created user",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "description": "The email address of the created user",
+                                            "type": "string",
+                                            "format": "email"
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "name",
+                                        "email"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {},
+    "security": [
+        {
+            "TestBearerSecuritySchemeFactory": []
+        },
+        {
+            "TestBearerSecuritySchemeFactory": [],
+            "OAuth2Password": [
+                "order:shipping:address",
+                "order:shipping:status"
+            ]
+        }
+    ],
+    "tags": [
+        {
+            "name": "test",
+            "description": "This is a test tag."
+        }
+    ],
+    "x-example": {
+        "name": "General",
+        "tags": [
+            "user"
+        ]
+    }
+}

@@ -1,13 +1,12 @@
 <?php
 
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\BaseObject;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\NonExtensibleObject;
-use Tests\oooas\Doubles\Fakes\NonExtensibleObjectFake;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\NonExtensibleObject;
+use Tests\oooas\Support\Doubles\Fakes\NonExtensibleObjectFake;
 
-describe('NonExtensibleObject', function (): void {
+describe(class_basename(NonExtensibleObject::class), function (): void {
     it('can be created', function (): void {
-        $nonExtensibleObjectFake = NonExtensibleObjectFake::create();
-
-        expect($nonExtensibleObjectFake)->toBeInstanceOf(BaseObject::class);
+        expect(NonExtensibleObjectFake::class)
+            ->toExtend(Generatable::class);
     });
 })->covers(NonExtensibleObject::class);

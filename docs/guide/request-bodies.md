@@ -16,7 +16,7 @@ class UserCreateRequestBody extends RequestBodyFactory
         return RequestBody::create('UserCreate')
             ->description('User data')
             ->content(
-                MediaType::json()->schema(UserSchema::ref())
+                MediaType::create()->schema(UserSchema::ref())
             );
     }
 }

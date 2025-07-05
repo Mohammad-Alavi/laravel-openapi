@@ -2,30 +2,16 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\LaravelOpenApi\oooas\Enums\OASVersion;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\ExternalDocs;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\OpenApi;
-use PHPUnit\Framework\Attributes\CoversClass;
-use Tests\UnitTestCase;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
 
-#[CoversClass(ExternalDocs::class)]
-class ExternalDocsTest extends UnitTestCase
-{
-    public function testCreateWithAllParametersWorks(): void
-    {
-        $externalDocs = ExternalDocs::create()
-            ->description('GitHub Repo')
-            ->url('https://example.com');
+describe(class_basename(ExternalDocumentation::class), function (): void {
+    it('can be created with all parameters', function (): void {
+        $externalDocumentation = ExternalDocumentation::create('https://laragen.io')
+            ->description('example Repo');
 
-        $openApi = OpenApi::create()
-            ->externalDocs($externalDocs);
-
-        $this->assertSame([
-            'openapi' => OASVersion::V_3_1_0->value,
-            'externalDocs' => [
-                'description' => 'GitHub Repo',
-                'url' => 'https://example.com',
-            ],
-        ], $openApi->jsonSerialize());
-    }
-}
+        expect($externalDocumentation->unserializeToArray())->toBe([
+            'url' => 'https://laragen.io',
+            'description' => 'example Repo',
+        ]);
+    });
+})->covers(ExternalDocumentation::class);

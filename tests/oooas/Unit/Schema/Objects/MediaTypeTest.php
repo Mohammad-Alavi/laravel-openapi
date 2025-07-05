@@ -1,30 +1,42 @@
 <?php
 
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Encoding;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Example;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\MediaType;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding\Encoding;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\EncodingEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 
-describe('MediaType', function (): void {
+describe(class_basename(MediaType::class), function (): void {
     it('can be created with no parameters', function (): void {
         $mediaType = MediaType::create();
 
-        expect($mediaType->jsonSerialize())->toBeEmpty();
+        expect($mediaType->unserializeToArray())->toBeEmpty();
     });
 
     it('can be created with all parameters', function (): void {
         $mediaType = MediaType::create()
-            ->mediaType(MediaType::MEDIA_TYPE_APPLICATION_JSON)
             ->schema(Schema::object())
-            ->examples(Example::create('ExampleName'), Example::create('ExampleName2'))
-            ->example(Example::create())
-            ->encoding(Encoding::create('EncodingName'));
+            ->examples(
+                ExampleEntry::create(
+                    'ExampleName',
+                    Example::create(),
+                ),
+                ExampleEntry::create(
+                    'ExampleName2',
+                    Example::create(),
+                ),
+            )->encoding(
+                EncodingEntry::create(
+                    'EncodingName',
+                    Encoding::create(),
+                ),
+            );
 
-        expect($mediaType->jsonSerialize())->toBe([
+        expect($mediaType->unserializeToArray())->toBe([
             'schema' => [
                 'type' => 'object',
             ],
-            'example' => [],
             'examples' => [
                 'ExampleName' => [],
                 'ExampleName2' => [],
@@ -34,21 +46,4 @@ describe('MediaType', function (): void {
             ],
         ]);
     });
-
-    it('can be created with predefined media types', function (string $method, string $expectedType): void {
-        $mediaType = MediaType::$method();
-
-        expect($mediaType->mediaType)->toBe($expectedType);
-    })->with([
-        'json' => ['json', MediaType::MEDIA_TYPE_APPLICATION_JSON],
-        'pdf' => ['pdf', MediaType::MEDIA_TYPE_APPLICATION_PDF],
-        'jpeg' => ['jpeg', MediaType::MEDIA_TYPE_IMAGE_JPEG],
-        'png' => ['png', MediaType::MEDIA_TYPE_IMAGE_PNG],
-        'calendar' => ['calendar', MediaType::MEDIA_TYPE_TEXT_CALENDAR],
-        'plainText' => ['plainText', MediaType::MEDIA_TYPE_TEXT_PLAIN],
-        'xml' => ['xml', MediaType::MEDIA_TYPE_TEXT_XML],
-        'formUrlEncoded' => ['formUrlEncoded', MediaType::MEDIA_TYPE_APPLICATION_X_WWW_FORM_URLENCODED],
-    ])->with([
-        'objectId' => ['objectId'],
-    ]);
 })->covers(MediaType::class);

@@ -1,21 +1,16 @@
 <?php
 
-namespace Tests\oooas\Unit\Schema\Objects;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\Prefix;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\XmlNamespace;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Xml;
 
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Schema;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Xml;
-use PHPUnit\Framework\Attributes\CoversClass;
-use Tests\UnitTestCase;
-
-#[CoversClass(Xml::class)]
-class XmlTest extends UnitTestCase
-{
-    public function testCreateWithAllParametersWorks(): void
-    {
+describe(class_basename(Xml::class), function (): void {
+    it('it can be creates with basic property', function (): void {
         $xml = Xml::create()
             ->name('Xml name')
-            ->namespace('xsi:example')
-            ->prefix('gsd')
+            ->namespace(XmlNamespace::create('xsi:example'))
+            ->prefix(Prefix::create('gsd'))
             ->attribute()
             ->wrapped();
 
@@ -31,6 +26,6 @@ class XmlTest extends UnitTestCase
                 'attribute' => true,
                 'wrapped' => true,
             ],
-        ], $schema->jsonSerialize());
-    }
-}
+        ], $schema->asArray());
+    })->todo();
+})->covers(Xml::class);

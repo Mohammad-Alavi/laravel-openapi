@@ -2,40 +2,31 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\LaravelOpenApi\oooas\Enums\OASVersion;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Contact;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Info;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\License;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\OpenApi;
-use PHPUnit\Framework\Attributes\CoversClass;
-use Tests\UnitTestCase;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Contact;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\License\License;
 
-#[CoversClass(Info::class)]
-class InfoTest extends UnitTestCase
-{
-    public function testCreateWithAllParametersWorks(): void
-    {
-        $info = Info::create()
-            ->title('Pretend API')
+describe(class_basename(Info::class), function (): void {
+    it('should set all parameters', function (): void {
+        $info = Info::create(
+            'Pretend API',
+            'v1',
+        )->summary('Some Arrays!')
             ->description('A pretend API')
-            ->termsOfService('https://example.com')
+            ->termsOfService('https://laragen.io')
             ->contact(Contact::create())
-            ->license(License::create())
-            ->version('v1');
+            ->license(License::create('MIT'));
 
-        $openApi = OpenApi::create()
-            ->info($info);
-
-        $this->assertSame([
-            'openapi' => OASVersion::V_3_1_0->value,
-            'info' => [
-                'title' => 'Pretend API',
-                'description' => 'A pretend API',
-                'termsOfService' => 'https://example.com',
-                'contact' => [],
-                'license' => [],
-                'version' => 'v1',
+        expect($info->unserializeToArray())->toBe([
+            'title' => 'Pretend API',
+            'summary' => 'Some Arrays!',
+            'description' => 'A pretend API',
+            'termsOfService' => 'https://laragen.io',
+            'contact' => [],
+            'license' => [
+                'name' => 'MIT',
             ],
-        ], $openApi->jsonSerialize());
-    }
-}
+            'version' => 'v1',
+        ]);
+    });
+})->covers(Info::class);

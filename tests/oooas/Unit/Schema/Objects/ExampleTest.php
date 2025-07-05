@@ -2,32 +2,40 @@
 
 namespace Tests\oooas\Unit\Schema\Objects;
 
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\Example;
-use MohammadAlavi\LaravelOpenApi\oooas\Schema\Objects\MediaType;
-use PHPUnit\Framework\Attributes\CoversClass;
-use Tests\UnitTestCase;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
 
-#[CoversClass(Example::class)]
-class ExampleTest extends UnitTestCase
-{
-    public function testCreateWithAllParametersWorks(): void
-    {
+describe(class_basename(Example::class), function (): void {
+    it('can be created', function (): void {
         $example = Example::create()
             ->summary('Summary ipsum')
             ->description('Description ipsum')
+            ->value('Value');
+
+        $response = $example->unserializeToArray();
+
+        expect($response)->toBe([
+            'summary' => 'Summary ipsum',
+            'description' => 'Description ipsum',
+            'value' => 'Value',
+        ]);
+    });
+
+    it('can be created with external value', function (): void {
+        $example = Example::create()
+            ->externalValue('https://laragen.io/example.json');
+
+        $response = $example->unserializeToArray();
+
+        expect($response)->toBe([
+            'externalValue' => 'https://laragen.io/example.json',
+        ]);
+    });
+
+    it('prevents setting mutually exclusive values', function (): void {
+        expect(fn () => Example::create()
             ->value('Value')
-            ->externalValue('https://example.com/example.json');
-
-        $mediaType = MediaType::json()
-            ->example($example);
-
-        $this->assertSame([
-            'example' => [
-                'summary' => 'Summary ipsum',
-                'description' => 'Description ipsum',
-                'value' => 'Value',
-                'externalValue' => 'https://example.com/example.json',
-            ],
-        ], $mediaType->jsonSerialize());
-    }
-}
+            ->externalValue(
+                'https://laragen.io/example.json',
+            ))->toThrow(\InvalidArgumentException::class);
+    });
+})->covers(Example::class);
