@@ -7,7 +7,6 @@ on:
       - '*.x'
   pull_request:
     types: [ opened, synchronize, reopened ]
-
   workflow_run:
     workflows: [ PHP-CS-Fixer ]
     types:
