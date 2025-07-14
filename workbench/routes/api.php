@@ -9,7 +9,7 @@ Route::prefix('api')->group(
         Route::delete('/users/{id}', [CreateUserController::class, '__invoke']);
         Route::get('/users/{id}/{lang?}', [CreateUserController::class, '__invoke']);
 
-        /**
+        /*
          * Healthcheck
          *
          * Check that the service is up. If everything is okay, you'll get a 200 OK response.

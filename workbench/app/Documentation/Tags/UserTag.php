@@ -7,7 +7,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 
 final readonly class UserTag implements TagFactory
 {
-
     public function build(): Tag
     {
         return Tag::create('User')

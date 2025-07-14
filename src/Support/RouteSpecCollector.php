@@ -174,12 +174,12 @@ final readonly class RouteSpecCollector
 
         foreach ($rules as $rule) {
             if (preg_match('/^(min|max):(\d+)/', $rule, $m)) {
-                $schema['min' === $m[1] ? 'minimum' : 'maximum'] = (int)$m[2];
+                $schema['min' === $m[1] ? 'minimum' : 'maximum'] = (int) $m[2];
             }
 
             if (preg_match('/^between:(\d+),(\d+)/', $rule, $m)) {
-                $schema['minimum'] = (int)$m[1];
-                $schema['maximum'] = (int)$m[2];
+                $schema['minimum'] = (int) $m[1];
+                $schema['maximum'] = (int) $m[2];
             }
 
             if (preg_match('/^in:(.+)$/', $rule, $m)) {

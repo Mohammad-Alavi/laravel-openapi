@@ -36,7 +36,8 @@ describe(class_basename(RouteSpecCollector::class), function () {
                 expect(isset($schema['format']))->toBeFalse();
             }
             // expect(isset($schema['example']))->toBeTrue();
-        })->with([
+        },
+    )->with([
         'integer' => [['integer'], 'integer', null],
         'numeric' => [['numeric'], 'integer', null],
         'boolean' => [['boolean'], 'boolean', null],
@@ -89,9 +90,9 @@ describe(class_basename(RouteSpecCollector::class), function () {
 
         expect($pathParams)->toBe(
             [
-                "foo" => [
-                    "type" => "string",
-                    "required" => true,
+                'foo' => [
+                    'type' => 'string',
+                    'required' => true,
                 ],
             ],
         );
