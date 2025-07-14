@@ -18,6 +18,10 @@ trait Generator
         int $options = JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
     ): bool|int {
         if (!is_null($path) && '' !== $path && '0' !== $path) {
+            if (!File::exists($path)) {
+                File::makeDirectory($path);
+            }
+
             return File::put(
                 $path . sprintf('/%s.json', $name),
                 $this->toJson($options),
