@@ -3,7 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
-use RectorPrefix202506\Webmozart\Assert\Assert;
+use Webmozart\Assert\Assert;
 
 final readonly class Name extends StringField
 {
