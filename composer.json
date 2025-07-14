@@ -25,6 +25,7 @@
     ],
     "require": {
         "php": "^8.2",
+        "composer/class-map-generator": "^1.6",
         "doctrine/dbal": "^2.6|^3.0",
         "knuckleswtf/scribe": "^5.2",
         "laravel/framework": "^10.0|^11.0|^12.0",
@@ -78,7 +79,7 @@
         }
     },
     "files": [
-        "oooapi/Support/helpers.php"
+        "oooapi/Support/Helpers.php"
     ],
     "config": {
         "optimize-autoloader": true,

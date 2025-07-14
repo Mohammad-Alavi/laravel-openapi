@@ -2,6 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Support;
 
+use Composer\ClassMapGenerator\ClassMapGenerator;
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection as CollectionAttribute;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\FilterStrategy;
@@ -17,14 +18,12 @@ final class ComponentCollector
 
     public function collect(string $collection): Collection
     {
-        $result = collect($this->directories)
-            ->map(static function (string $directory): array {
-                // TODO: can we make this dependency clear? And not use it as static? This hides the dependency.
-                $map = ClassMapGenerator::createMap($directory);
+        $generator = new ClassMapGenerator();
+        foreach ($this->directories as $directory) {
+            $generator->scanPaths($directory);
+        }
 
-                return array_keys($map);
-            })
-            ->flatten()
+        $classes = collect(array_keys($generator->getClassMap()->getMap()))
             ->filter(function (string $class) use ($collection): bool {
                 $reflectionClass = new \ReflectionClass($class);
                 $collectionAttributes = $reflectionClass->getAttributes(CollectionAttribute::class);
@@ -49,12 +48,12 @@ final class ComponentCollector
             });
 
         if ($this->filterStrategy instanceof FilterStrategy) {
-            $result = $this->filterStrategy->apply($result);
+            $classes = $this->filterStrategy->apply($classes);
         }
 
         // TODO: refactor: maybe we can decouple this responsibility?
         // you know, instantiating the factories
-        return $result
+        return $classes
             ->map(static function (string $factory) {
                 return app($factory);
             })->values();
