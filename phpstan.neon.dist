@@ -13,8 +13,5 @@ parameters:
 		- .php-cs-fixer.dist.php
 	excludePaths:
 	    analyseAndScan:
-	        - workbench/database
-	        - workbench/public
-	        - workbench/storage
-	        - workbench/vendor
+	        - workbench/*
 	tmpDir: temp/phpstan_cache
