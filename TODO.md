@@ -38,3 +38,14 @@ Go through all the classes and try to remove all non-relevant methods and proper
     Maybe move all the methods that are not relevant to the class to a separate class?
         Something like Laravels Sts class? And make it also Macroable?
 Add Schema extension
+
+## Laragen
+Laragen Slogan -> Modern Docs for web artisans
+
+Allow to provide general API information and defaults (maybe via config?)
+    [Headers](https://scribe.knuckles.wtf/laravel/documenting/headers)
+Allow to manually provide non-existing endpoint to be added to the docs
+Allow Translation via Laravel translation system
+Add hooks for different doc generation life-cycle stages
+Which term to use -> Collection or Group? for grouping Tags!
+    Should we allow SubGroups?

@@ -35,6 +35,11 @@ final readonly class UserResponse implements ResponsesFactory
                                             ->format(StringFormat::UUID),
                                     ),
                                     Property::create(
+                                        'phone',
+                                        Schema::integer()
+                                            ->description('The phone number of the user'),
+                                    ),
+                                    Property::create(
                                         'name',
                                         Schema::string()
                                             ->description('The name of the user'),
