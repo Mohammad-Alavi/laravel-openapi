@@ -12,7 +12,6 @@ workbench:
   sync:
     - from: storage
       to: workbench/storage
-      reverse: true
     - from: public
       to: workbench/public
       reverse: true
