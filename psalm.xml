@@ -14,15 +14,10 @@
         <directory name="oooapi"/>
         <directory name="src"/>
         <directory name="tests"/>
-        <directory name="workbench"/>
+        <directory name="workbench/app"/>
         <ignoreFiles>
             <directory name="vendor"/>
             <directory name="node_modules"/>
-        </ignoreFiles>
-        <ignoreFiles allowMissingFiles="true">
-            <directory name="workbench/public"/>
-            <directory name="workbench/storage"/>
-            <directory name="workbench/vendor"/>
         </ignoreFiles>
     </projectFiles>
     <plugins>
