@@ -30,7 +30,7 @@ final readonly class Generator
         );
         $components = $this->componentsBuilder->build($collection);
 
-        /** @var OpenAPIFactory $openApiFactory */
+        /** @var class-string<OpenAPIFactory> $openApiFactory */
         $openApiFactory = Arr::string(config('openapi'), 'collections.' . $collection . '.openapi');
         Assert::isAOf($openApiFactory, OpenAPIFactory::class);
 
