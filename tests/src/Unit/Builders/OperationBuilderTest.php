@@ -12,11 +12,11 @@ use Tests\src\Support\Doubles\Stubs\Attributes\TestParametersFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestRequestBodyFactory;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestResponsesFactory;
 use Tests\src\Support\Doubles\Stubs\Builders\ExternalDocsFactory;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
 use Tests\src\Support\Doubles\Stubs\Servers\ServerWithMultipleVariableFormatting;
 use Tests\src\Support\Doubles\Stubs\Tags\TagWithExternalObjectDoc;
 use Tests\src\Support\Doubles\Stubs\Tags\TagWithoutExternalDoc;
+use Workbench\App\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
+use Workbench\App\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
 
 describe(class_basename(OperationBuilder::class), function (): void {
     it('can be created with many combinations', function (RouteInfo $routeInfo, array $expected): void {

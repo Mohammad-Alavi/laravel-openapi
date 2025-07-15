@@ -5,18 +5,18 @@ namespace Tests\Integration;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Generator;
-use Tests\src\Support\Doubles\Stubs\Petstore\PetController;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestApiKeySecuritySchemeFactory;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
+use Workbench\App\Petstore\PetController;
+use Workbench\App\Petstore\Security\SecuritySchemes\TestApiKeySecuritySchemeFactory;
+use Workbench\App\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 
 describe('PetStore', function (): void {
     it('can be generated', function (string $path, string $method, array $expectation): void {
         Config::set('openapi.locations', [
             'schemas' => [
-                __DIR__ . '/../Support/Doubles/Stubs/Petstore/Reusable/Schema',
+                __DIR__ . '/../../../workbench/app/Petstore/Reusable/Schema',
             ],
             'responses' => [
-                __DIR__ . '/../Support/Doubles/Stubs/Petstore/Reusable/Response',
+                __DIR__ . '/../../../workbench/app/Petstore/Reusable/Response',
             ],
         ]);
 

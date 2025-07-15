@@ -14,8 +14,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestCallbackFactory;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
+use Workbench\App\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
+use Workbench\App\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
 
 describe(class_basename(Operation::class), function (): void {
     it('can be created with no parameters', function (): void {

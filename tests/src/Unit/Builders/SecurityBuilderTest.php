@@ -27,13 +27,13 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\RequiredSecurity;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\SecurityRequirement;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecurityRequirements\TestApiKeySecurityRequirementFactory;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecurityRequirements\TestBearerSecurityRequirementFactory;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestApiKeySecuritySchemeFactory;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\SecuritySchemes\TestOAuth2PasswordSecuritySchemeFactory;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestEmptySecurityFactory;
-use Tests\src\Support\Doubles\Stubs\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
+use Workbench\App\Petstore\Security\SecurityRequirements\TestApiKeySecurityRequirementFactory;
+use Workbench\App\Petstore\Security\SecurityRequirements\TestBearerSecurityRequirementFactory;
+use Workbench\App\Petstore\Security\SecuritySchemes\TestApiKeySecuritySchemeFactory;
+use Workbench\App\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
+use Workbench\App\Petstore\Security\SecuritySchemes\TestOAuth2PasswordSecuritySchemeFactory;
+use Workbench\App\Petstore\Security\TestEmptySecurityFactory;
+use Workbench\App\Petstore\Security\TestSingleHTTPBearerSchemeSecurityFactory;
 
 describe(class_basename(SecurityBuilder::class), function (): void {
     /** @return string[] */
