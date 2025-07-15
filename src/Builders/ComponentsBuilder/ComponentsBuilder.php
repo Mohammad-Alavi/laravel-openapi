@@ -138,13 +138,13 @@ final readonly class ComponentsBuilder
 
     private function getPathsFromConfig(string $type): array
     {
-        $directories = config('openapi.locations.' . $type, []);
+        $paths = config('openapi.locations.' . $type, []);
 
-        foreach ($directories as &$directory) {
-            $directory = glob($directory, GLOB_ONLYDIR);
+        foreach ($paths as &$path) {
+            $path = glob($path, GLOB_ONLYDIR);
         }
 
-        return Collection::make($directories)
+        return Collection::make($paths)
             ->flatten()
             ->unique()
             ->toArray();

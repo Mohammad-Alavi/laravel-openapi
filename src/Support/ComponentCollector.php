@@ -11,7 +11,7 @@ use MohammadAlavi\LaravelOpenApi\Generator;
 final class ComponentCollector
 {
     public function __construct(
-        private array|null $directories = null,
+        private array|null $paths = null,
         private FilterStrategy|null $filterStrategy = null,
     ) {
     }
@@ -19,8 +19,8 @@ final class ComponentCollector
     public function collect(string $collection): Collection
     {
         $generator = new ClassMapGenerator();
-        foreach ($this->directories as $directory) {
-            $generator->scanPaths($directory);
+        foreach ($this->paths as $path) {
+            $generator->scanPaths($path);
         }
 
         $classes = collect(array_keys($generator->getClassMap()->getMap()))
@@ -68,11 +68,11 @@ final class ComponentCollector
         return $clone;
     }
 
-    public function in(array $directories): self
+    public function in(array $paths): self
     {
         $clone = clone $this;
 
-        $clone->directories = $directories;
+        $clone->paths = $paths;
 
         return $clone;
     }
