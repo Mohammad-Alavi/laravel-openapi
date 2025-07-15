@@ -9,9 +9,6 @@ parameters:
 		- oooapi
 		- src
 		- tests
-		- workbench
+		- workbench/app
 		- .php-cs-fixer.dist.php
-	excludePaths:
-	    analyseAndScan:
-	        - workbench/*
 	tmpDir: temp/phpstan_cache
