@@ -26,18 +26,18 @@ final class ComponentCollector
         $classes = collect(array_keys($generator->getClassMap()->getMap()))
             ->filter(function (string $class) use ($collection): bool {
                 $reflectionClass = new \ReflectionClass($class);
-                $collectionAttributes = $reflectionClass->getAttributes(CollectionAttribute::class);
+                $attributes = $reflectionClass->getAttributes(CollectionAttribute::class);
 
-                if (Generator::COLLECTION_DEFAULT === $collection && blank($collectionAttributes)) {
+                if (Generator::COLLECTION_DEFAULT === $collection && blank($attributes)) {
                     return true;
                 }
 
-                if (blank($collectionAttributes)) {
+                if (blank($attributes)) {
                     return false;
                 }
 
                 /** @var CollectionAttribute $collectionAttribute */
-                $collectionAttribute = $collectionAttributes[0]->newInstance();
+                $collectionAttribute = $attributes[0]->newInstance();
 
                 return ['*'] === $collectionAttribute->name
                     || in_array(
