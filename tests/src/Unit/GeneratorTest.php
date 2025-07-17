@@ -16,7 +16,7 @@ describe('Generator', function (): void {
             'collections' => [
                 'default' => [
                     'openapi' => ExampleFactory::class,
-                    'locations' => [
+                    'components' => [
                         'callbacks' => [
                             __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Callback',
                         ],
@@ -33,7 +33,7 @@ describe('Generator', function (): void {
                 ],
                 'test' => [
                     'openapi' => ExampleFactory::class,
-                    'locations' => [
+                    'components' => [
                         'callbacks' => [
                             __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Callback',
                         ],

@@ -138,7 +138,7 @@ final readonly class ComponentsBuilder
 
     private function getPathsFromConfig(string $collection, string $type): array
     {
-        $paths = config('openapi.locations.' . $collection . $type, []);
+        $paths = config("openapi.collections.{$collection}.components.{$type}", []);
 
         foreach ($paths as &$path) {
             $path = glob($path, GLOB_ONLYDIR);

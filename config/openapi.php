@@ -13,25 +13,45 @@ return [
                 'middleware' => [],
             ],
             // Directories to use for locating OpenAPI object definitions.
-            'locations' => [
-                'callbacks' => [
-                    app_path('OpenApi/Callbacks'),
-                ],
-
-                'request_bodies' => [
-                    app_path('OpenApi/RequestBodies'),
+            'components' => [
+                'schemas' => [
+                    app_path('OpenAPI/Schemas'),
                 ],
 
                 'responses' => [
-                    app_path('OpenApi/Responses'),
+                    app_path('OpenAPI/Responses'),
                 ],
 
-                'schemas' => [
-                    app_path('OpenApi/Schemas'),
+                'parameters' => [
+                    app_path('OpenAPI/Parameters'),
+                ],
+
+                'examples' => [
+                    app_path('OpenAPI/Examples'),
+                ],
+
+                'request_bodies' => [
+                    app_path('OpenAPI/RequestBodies'),
+                ],
+
+                'headers' => [
+                    app_path('OpenAPI/Headers'),
                 ],
 
                 'security_schemes' => [
-                    app_path('OpenApi/SecuritySchemes'),
+                    app_path('OpenAPI/SecuritySchemes'),
+                ],
+
+                'links' => [
+                    app_path('OpenAPI/Links'),
+                ],
+
+                'callbacks' => [
+                    app_path('OpenAPI/Callbacks'),
+                ],
+
+                'path_items' => [
+                    app_path('OpenAPI/PathItems'),
                 ],
             ],
         ],

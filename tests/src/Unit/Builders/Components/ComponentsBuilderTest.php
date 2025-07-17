@@ -11,41 +11,45 @@ use Pest\Expectation;
 
 describe(class_basename(ComponentsBuilder::class), function (): void {
     beforeEach(function (): void {
+        $componentPaths = [
+            'headers' => [
+                __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Header',
+            ],
+            'security_schemes' => [
+                __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/SecurityScheme',
+            ],
+            'links' => [
+                __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Link',
+            ],
+            'callbacks' => [
+                __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Callback',
+            ],
+            'path_items' => [
+                __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/PathItem',
+            ],
+            'schemas' => [
+                __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Schema',
+            ],
+            'responses' => [
+                __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Response',
+            ],
+            'parameters' => [
+                __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Parameter',
+            ],
+            'examples' => [
+                __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Example',
+            ],
+            'request_bodies' => [
+                __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/RequestBody',
+            ],
+        ];
         Config::set('openapi', [
             'collections' => [
+                'default' => [
+                    'components' => $componentPaths,
+                ],
                 'test' => [
-                    'locations' => [
-                        'schemas' => [
-                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Schema',
-                        ],
-                        'responses' => [
-                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Response',
-                        ],
-                        'parameters' => [
-                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Parameter',
-                        ],
-                        'examples' => [
-                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Example',
-                        ],
-                        'request_bodies' => [
-                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/RequestBody',
-                        ],
-                        'headers' => [
-                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Header',
-                        ],
-                        'security_schemes' => [
-                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/SecurityScheme',
-                        ],
-                        'links' => [
-                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Link',
-                        ],
-                        'callbacks' => [
-                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Callback',
-                        ],
-                        'path_items' => [
-                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/PathItem',
-                        ],
-                    ],
+                    'components' => $componentPaths,
                 ],
             ],
         ]);
@@ -57,10 +61,17 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
         /** @var Components|null $result */
         $result = $componentsBuilder->build($collection);
 
-        expect($result?->unserializeToArray())->unless(
-            is_null($result),
-            function (Expectation $xp) use ($expectation): Expectation {
-                return $xp->toEqual($expectation);
+        when(
+            is_null($expectation),
+            function () use ($result): Expectation {
+                return expect($result)->toBeNull();
+            },
+        );
+
+        when(
+            !is_null($expectation),
+            function () use ($result, $expectation): Expectation {
+                return expect($result->unserializeToArray())->toBe($expectation);
             },
         );
     })->with(
@@ -91,10 +102,10 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         ],
                     ],
                     'responses' => [
-                        'ExplicitCollectionResponse' => [
+                        'MultiCollectionResponse' => [
                             'description' => 'OK',
                         ],
-                        'MultiCollectionResponse' => [
+                        'ExplicitCollectionResponse' => [
                             'description' => 'OK',
                         ],
                     ],
@@ -127,15 +138,15 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         'ExplicitCollectionRequestBody' => [],
                     ],
                     'headers' => [
-                        'MultiCollectionHeader' => [],
                         'ExplicitCollectionHeader' => [],
+                        'MultiCollectionHeader' => [],
                     ],
                     'securitySchemes' => [
-                        'MultiCollectionSecurityScheme' => [
+                        'ExplicitCollectionSecurityScheme' => [
                             'type' => 'http',
                             'scheme' => 'basic',
                         ],
-                        'ExplicitCollectionSecurityScheme' => [
+                        'MultiCollectionSecurityScheme' => [
                             'type' => 'http',
                             'scheme' => 'basic',
                         ],
@@ -204,16 +215,16 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         ],
                     ],
                     'examples' => [
-                        'MultiCollectionExample' => [
-                            'value' => 'Example Value',
-                        ],
                         'ImplicitCollectionExample' => [
                             'externalValue' => 'Example External Value',
                         ],
+                        'MultiCollectionExample' => [
+                            'value' => 'Example Value',
+                        ],
                     ],
                     'requestBodies' => [
-                        'MultiCollectionRequestBody' => [],
                         'ImplicitCollectionRequestBody' => [],
+                        'MultiCollectionRequestBody' => [],
                     ],
                     'headers' => [
                         'MultiCollectionHeader' => [],
@@ -234,11 +245,11 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         'ImplicitCollectionLink' => [],
                     ],
                     'callbacks' => [
-                        'MultiCollectionCallback' => [
-                            'https://laragen.io/multi-collection-callback' => [],
-                        ],
                         'ImplicitDefaultCallback' => [
                             'https://laragen.io/implicit-default-callback' => [],
+                        ],
+                        'MultiCollectionCallback' => [
+                            'https://laragen.io/multi-collection-callback' => [],
                         ],
                     ],
                     'pathItems' => [
