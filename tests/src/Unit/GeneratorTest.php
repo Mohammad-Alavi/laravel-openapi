@@ -16,9 +16,37 @@ describe('Generator', function (): void {
             'collections' => [
                 'default' => [
                     'openapi' => ExampleFactory::class,
+                    'locations' => [
+                        'callbacks' => [
+                            __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Callback',
+                        ],
+                        'request_bodies' => [
+                            __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/RequestBody',
+                        ],
+                        'responses' => [
+                            __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Response',
+                        ],
+                        'schemas' => [
+                            __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Schema',
+                        ],
+                    ],
                 ],
                 'test' => [
                     'openapi' => ExampleFactory::class,
+                    'locations' => [
+                        'callbacks' => [
+                            __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Callback',
+                        ],
+                        'request_bodies' => [
+                            __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/RequestBody',
+                        ],
+                        'responses' => [
+                            __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Response',
+                        ],
+                        'schemas' => [
+                            __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Schema',
+                        ],
+                    ],
                 ],
             ],
         ]);

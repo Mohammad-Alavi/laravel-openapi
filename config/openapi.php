@@ -12,29 +12,28 @@ return [
                 'uri' => '/openapi',
                 'middleware' => [],
             ],
-        ],
-    ],
+            // Directories to use for locating OpenAPI object definitions.
+            'locations' => [
+                'callbacks' => [
+                    app_path('OpenApi/Callbacks'),
+                ],
 
-    // Directories to use for locating OpenAPI object definitions.
-    'locations' => [
-        'callbacks' => [
-            app_path('OpenApi/Callbacks'),
-        ],
+                'request_bodies' => [
+                    app_path('OpenApi/RequestBodies'),
+                ],
 
-        'request_bodies' => [
-            app_path('OpenApi/RequestBodies'),
-        ],
+                'responses' => [
+                    app_path('OpenApi/Responses'),
+                ],
 
-        'responses' => [
-            app_path('OpenApi/Responses'),
-        ],
+                'schemas' => [
+                    app_path('OpenApi/Schemas'),
+                ],
 
-        'schemas' => [
-            app_path('OpenApi/Schemas'),
-        ],
-
-        'security_schemes' => [
-            app_path('OpenApi/SecuritySchemes'),
+                'security_schemes' => [
+                    app_path('OpenApi/SecuritySchemes'),
+                ],
+            ],
         ],
     ],
 ];

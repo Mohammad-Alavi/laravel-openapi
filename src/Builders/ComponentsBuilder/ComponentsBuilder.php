@@ -29,43 +29,43 @@ final readonly class ComponentsBuilder
     {
         // TODO: Separate the collecting logic into a separate class
         $schemas = $this->componentCollector
-            ->in($this->getPathsFromConfig('schemas'))
+            ->in($this->getPathsFromConfig($collection, 'schemas'))
             ->use(new SchemaFilter())
             ->collect($collection);
         $responses = $this->componentCollector
-            ->in($this->getPathsFromConfig('responses'))
+            ->in($this->getPathsFromConfig($collection, 'responses'))
             ->use(new ResponseFilter())
             ->collect($collection);
         $parameters = $this->componentCollector
-            ->in($this->getPathsFromConfig('parameters'))
+            ->in($this->getPathsFromConfig($collection, 'parameters'))
             ->use(new ParameterFilter())
             ->collect($collection);
         $examples = $this->componentCollector
-            ->in($this->getPathsFromConfig('examples'))
+            ->in($this->getPathsFromConfig($collection, 'examples'))
             ->use(new ExampleFilter())
             ->collect($collection);
         $requestBodies = $this->componentCollector
-            ->in($this->getPathsFromConfig('request_bodies'))
+            ->in($this->getPathsFromConfig($collection, 'request_bodies'))
             ->use(new RequestBodyFilter())
             ->collect($collection);
         $headers = $this->componentCollector
-            ->in($this->getPathsFromConfig('headers'))
+            ->in($this->getPathsFromConfig($collection, 'headers'))
             ->use(new HeaderFilter())
             ->collect($collection);
         $securitySchemes = $this->componentCollector
-            ->in($this->getPathsFromConfig('security_schemes'))
+            ->in($this->getPathsFromConfig($collection, 'security_schemes'))
             ->use(new SecuritySchemeFilter())
             ->collect($collection);
         $links = $this->componentCollector
-            ->in($this->getPathsFromConfig('links'))
+            ->in($this->getPathsFromConfig($collection, 'links'))
             ->use(new LinkFilter())
             ->collect($collection);
         $callbacks = $this->componentCollector
-            ->in($this->getPathsFromConfig('callbacks'))
+            ->in($this->getPathsFromConfig($collection, 'callbacks'))
             ->use(new CallbackFilter())
             ->collect($collection);
         $pathItems = $this->componentCollector
-            ->in($this->getPathsFromConfig('path_items'))
+            ->in($this->getPathsFromConfig($collection, 'path_items'))
             ->use(new PathItemFilter())
             ->collect($collection);
 
@@ -136,9 +136,9 @@ final readonly class ComponentsBuilder
         return $components;
     }
 
-    private function getPathsFromConfig(string $type): array
+    private function getPathsFromConfig(string $collection, string $type): array
     {
-        $paths = config('openapi.locations.' . $type, []);
+        $paths = config('openapi.locations.' . $collection . $type, []);
 
         foreach ($paths as &$path) {
             $path = glob($path, GLOB_ONLYDIR);

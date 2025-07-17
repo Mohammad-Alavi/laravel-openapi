@@ -14,46 +14,38 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
         Config::set('openapi', [
             'collections' => [
                 'test' => [
-                    'security' => [
-                        (new class extends SecuritySchemeFactory {
-                            public function component(): SecurityScheme
-                            {
-                                return SecurityScheme::http(Http::bearer());
-                            }
-                        })::class,
+                    'locations' => [
+                        'schemas' => [
+                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Schema',
+                        ],
+                        'responses' => [
+                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Response',
+                        ],
+                        'parameters' => [
+                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Parameter',
+                        ],
+                        'examples' => [
+                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Example',
+                        ],
+                        'request_bodies' => [
+                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/RequestBody',
+                        ],
+                        'headers' => [
+                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Header',
+                        ],
+                        'security_schemes' => [
+                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/SecurityScheme',
+                        ],
+                        'links' => [
+                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Link',
+                        ],
+                        'callbacks' => [
+                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Callback',
+                        ],
+                        'path_items' => [
+                            __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/PathItem',
+                        ],
                     ],
-                ],
-            ],
-            'locations' => [
-                'schemas' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Schema',
-                ],
-                'responses' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Response',
-                ],
-                'parameters' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Parameter',
-                ],
-                'examples' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Example',
-                ],
-                'request_bodies' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/RequestBody',
-                ],
-                'headers' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Header',
-                ],
-                'security_schemes' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/SecurityScheme',
-                ],
-                'links' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Link',
-                ],
-                'callbacks' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/Callback',
-                ],
-                'path_items' => [
-                    __DIR__ . '/../../../Support/Doubles/Stubs/Builders/Components/PathItem',
                 ],
             ],
         ]);
