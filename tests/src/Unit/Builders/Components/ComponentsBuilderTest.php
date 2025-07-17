@@ -3,10 +3,7 @@
 use Illuminate\Support\Facades\Config;
 use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\ComponentsBuilder;
 use MohammadAlavi\LaravelOpenApi\Generator;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\Http;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 use Pest\Expectation;
 
 describe(class_basename(ComponentsBuilder::class), function (): void {

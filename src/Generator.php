@@ -2,10 +2,11 @@
 
 namespace MohammadAlavi\LaravelOpenApi;
 
-use Illuminate\Support\Arr;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\ComponentsBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\PathsBuilder;
 use MohammadAlavi\LaravelOpenApi\Factories\OpenAPIFactory;
 use MohammadAlavi\LaravelOpenApi\Support\RouteCollector;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use Webmozart\Assert\Assert;
 
@@ -15,6 +16,7 @@ final readonly class Generator
     public const COLLECTION_DEFAULT = 'default';
 
     public function __construct(
+        private ComponentsBuilder $componentsBuilder,
         private PathsBuilder $pathsBuilder,
         private RouteCollector $routeCollector,
     ) {
@@ -22,21 +24,21 @@ final readonly class Generator
 
     public function generate(string $collection = self::COLLECTION_DEFAULT): OpenAPI
     {
-        $key = 'collections.' . $collection . '.openapi';
-        Assert::false(
-            Arr::exists(config('openapi'), $key),
-            "OpenAPI factory for collection `{$collection}` is not defined in the configuration file.",
-        );
-
         /** @var class-string<OpenAPIFactory> $openApiFactory */
-        $openApiFactory = Arr::string(config('openapi'), $key);
+        $openApiFactory = config()->string('openapi.collections.' . $collection . '.openapi');
         Assert::isAOf($openApiFactory, OpenAPIFactory::class);
 
         $paths = $this->pathsBuilder->build(
             $this->routeCollector->whereInCollection($collection),
         );
 
-        // TODO: add support for including components from the configuration file
-        return $openApiFactory::create()->paths($paths);
+        $openApi = $openApiFactory::create()->paths($paths);
+
+        $components = $this->componentsBuilder->build($collection);
+        if ($components instanceof Components) {
+            return $openApi->components($components);
+        }
+
+        return $openApi;
     }
 }

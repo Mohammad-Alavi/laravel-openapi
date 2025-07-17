@@ -5,12 +5,15 @@ namespace Tests\src\Support\Doubles\Stubs\Objects;
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
+use Workbench\App\Petstore\Factories\Responses\SingleResponseUsingReusable;
 
 #[PathItem]
 #[Collection('example')]
 class MultiActionController
 {
-    #[Operation]
+    #[Operation(
+        responses: SingleResponseUsingReusable::class,
+    )]
     public function anotherExample(): void
     {
     }
