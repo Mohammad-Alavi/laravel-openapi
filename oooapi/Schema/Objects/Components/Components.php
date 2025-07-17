@@ -14,10 +14,12 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ResponseFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
@@ -57,9 +59,68 @@ final class Components extends ExtensibleObject
     /** @var array<string, PathItem>|null */
     private array|null $pathItems = null;
 
+    public static function from(OpenAPI $openAPI, self|null $use = null): self
+    {
+        $instance = $use ?? self::create();
+
+        foreach ($instance->collectReferenceables($openAPI) as $ref) {
+            $instance = match (true) {
+                $ref instanceof SchemaFactory => $instance->schemas($ref::create()),
+                $ref instanceof ResponseFactory => $instance->responses($ref::create()),
+                $ref instanceof ParameterFactory => $instance->parameters($ref::create()),
+                $ref instanceof ExampleFactory => $instance->examples($ref::create()),
+                $ref instanceof RequestBodyFactory => $instance->requestBodies($ref::create()),
+                $ref instanceof HeaderFactory => $instance->headers($ref::create()),
+                $ref instanceof SecuritySchemeFactory => $instance->securitySchemes($ref::create()),
+                $ref instanceof LinkFactory => $instance->links($ref::create()),
+                $ref instanceof CallbackFactory => $instance->callbacks($ref::create()),
+                $ref instanceof PathItemFactory => $instance->pathItems($ref::create()),
+            };
+        }
+
+        return $instance;
+    }
+
     public static function create(): self
     {
         return new self();
+    }
+
+    /**
+     * @return ShouldBeReferenced[]
+     */
+    private function collectReferenceables(OpenAPI $root): array
+    {
+        $crawl = static function (mixed $node) use (&$crawl): \Generator {
+            static $seen = [];
+
+            if (is_object($node)) {
+                if (isset($seen[$id = spl_object_id($node)])) {
+                    return;
+                }
+                $seen[$id] = true;
+
+                if ($node instanceof ShouldBeReferenced) {
+                    yield $node;
+                }
+
+                foreach ((array) $node as $child) {
+                    yield from $crawl($child);
+                }
+
+                if ($node instanceof \Traversable) {
+                    foreach ($node as $child) {
+                        yield from $crawl($child);
+                    }
+                }
+            } elseif (is_array($node)) {
+                foreach ($node as $child) {
+                    yield from $crawl($child);
+                }
+            }
+        };
+
+        return iterator_to_array($crawl($root), false);
     }
 
     public function schemas(SchemaFactory ...$schemaFactory): self

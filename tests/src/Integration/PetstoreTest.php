@@ -2,7 +2,6 @@
 
 namespace Tests\Integration;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Generator;
 use Workbench\App\Petstore\PetController;
@@ -11,15 +10,6 @@ use Workbench\App\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFact
 
 describe('PetStore', function (): void {
     it('can be generated', function (string $path, string $method, array $expectation): void {
-        Config::set('openapi.locations', [
-            'schemas' => [
-                __DIR__ . '/../../../workbench/app/Petstore/Reusable/Schema',
-            ],
-            'responses' => [
-                __DIR__ . '/../../../workbench/app/Petstore/Reusable/Response',
-            ],
-        ]);
-
         Route::get('/pets', [PetController::class, 'index']);
         Route::post('/multiPetTag', [PetController::class, 'multiTag']);
         Route::delete('/nestedSecurityFirstTest', [PetController::class, 'nestedSecurity']);
@@ -100,17 +90,7 @@ describe('PetStore', function (): void {
                 'summary' => 'List all pets.',
                 'description' => 'List all pets from the database.',
                 'operationId' => 'listPets',
-                'parameters' => [
-                    [
-                        'name' => 'limit',
-                        'in' => 'query',
-                        'description' => 'How many items to return at one time (max 100)',
-                        'schema' => [
-                            'type' => 'integer',
-                            'format' => 'int32',
-                        ],
-                    ],
-                ],
+                'parameters' => getParams(),
                 'responses' => [
                     422 => [
                         '$ref' => '#/components/responses/ValidationErrorResponse',
@@ -130,17 +110,7 @@ describe('PetStore', function (): void {
                 'summary' => 'List all pets.',
                 'description' => 'List all pets from the database.',
                 'operationId' => 'multiPetTag',
-                'parameters' => [
-                    [
-                        'name' => 'limit',
-                        'in' => 'query',
-                        'description' => 'How many items to return at one time (max 100)',
-                        'schema' => [
-                            'type' => 'integer',
-                            'format' => 'int32',
-                        ],
-                    ],
-                ],
+                'parameters' => getParams(),
                 'responses' => [
                     422 => [
                         '$ref' => '#/components/responses/ValidationErrorResponse',
@@ -176,17 +146,7 @@ describe('PetStore', function (): void {
                 'summary' => 'List all pets.',
                 'description' => 'List all pets from the database.',
                 'operationId' => 'nestedSecurityFirstTest',
-                'parameters' => [
-                    [
-                        'name' => 'limit',
-                        'in' => 'query',
-                        'description' => 'How many items to return at one time (max 100)',
-                        'schema' => [
-                            'type' => 'integer',
-                            'format' => 'int32',
-                        ],
-                    ],
-                ],
+                'parameters' => getParams(),
                 'responses' => [
                     422 => [
                         'description' => 'Unprocessable Entity',
@@ -257,3 +217,25 @@ describe('PetStore', function (): void {
         ],
     ]);
 })->coversNothing();
+
+function getParams(): array
+{
+    return [
+        [
+            'name' => 'limit',
+            'in' => 'query',
+            'description' => 'How many items to return at one time (max 100)',
+            'schema' => [
+                'type' => 'integer',
+                'format' => 'int32',
+            ],
+        ],
+        [
+            'name' => 'pet',
+            'in' => 'query',
+            'schema' => [
+                '$ref' => '#/components/schemas/PetSchema',
+            ],
+        ],
+    ];
+}

@@ -2,12 +2,14 @@
 
 namespace Workbench\App\Http\Controllers;
 
+use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
 use Workbench\App\Documentation\Responses\UserResponse;
 use Workbench\App\Documentation\Tags\UserTag;
 use Workbench\App\Http\Requests\CreateUserRequest;
 
+#[Collection('Workbench')]
 #[PathItem]
 final readonly class CreateUserController
 {

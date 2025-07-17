@@ -95,6 +95,20 @@ final class OpenAPI extends ExtensibleObject
         return $clone;
     }
 
+    public function jsonSerialize(): array
+    {
+        $this->beforeSerialization();
+
+        return parent::jsonSerialize();
+    }
+
+    private function beforeSerialization(): void
+    {
+        // Ensure that the Components object is properly initialized with references to all reusable components
+        //  used in the OpenAPI document.
+        $this->components = Components::from($this, $this->components);
+    }
+
     public function toArray(): array
     {
         return Arr::filter([

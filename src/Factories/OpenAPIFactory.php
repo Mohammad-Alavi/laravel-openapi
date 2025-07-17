@@ -12,8 +12,8 @@ abstract readonly class OpenAPIFactory
 
     final public static function create(): OpenAPI
     {
-        return (new static())->object();
+        return (new static())->instance();
     }
 
-    abstract public function object(): OpenAPI;
+    abstract public function instance(): OpenAPI;
 }

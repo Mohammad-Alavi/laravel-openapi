@@ -23,7 +23,7 @@ describe(class_basename(RouteCollector::class), function (): void {
 
         $routes = $routeCollector->all();
 
-        expect($routes)->toHaveCount(7)
+        expect($routes)->toHaveCount(9)
             ->and($routes)
             ->each(
                 fn (Expectation $expectation): Expectation => $expectation->toBeInstanceOf(RouteInfo::class),

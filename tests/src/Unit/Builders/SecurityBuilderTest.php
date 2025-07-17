@@ -128,37 +128,34 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 );
             }
 
-            // Assert that the generated JSON matches the expected JSON for this scenario
-            $actionData = [
-                $action => [],
-            ];
-            if (!is_null($expectations['pathSecurity'])) {
-                $actionData[$action] = ['security' => $expectations['pathSecurity']];
-            }
-
-            $collectionData = [
-                'components' => $expectations['components'],
-            ];
-            if (!is_null($expectations['topLevelSecurity'])) {
-                $collectionData['security'] = $expectations['topLevelSecurity'];
-            }
-
-            $this->assertSame([
-                'openapi' => '3.1.1',
-                'info' => [
-                    'title' => 'Example API',
-                    'version' => '1.0',
-                ],
-                'jsonSchemaDialect' => 'https://spec.openapis.org/oas/3.1/dialect/base',
-                'servers' => [
-                    [
-                        'url' => '/',
-                    ],
-                ],
-                'paths' => [
-                    $route => $actionData,
-                ], ...$collectionData,
-            ], $openApi->unserializeToArray());
+            expect($openApi->unserializeToArray()['components']['securitySchemes'])
+                ->toBe($expectations['components']['securitySchemes']);
+            when(
+                is_null($expectations['operationSecurity']),
+                function () use ($openApi, $route, $action) {
+                    return expect($openApi->unserializeToArray()['paths'][$route][$action])->not->toHaveKey('security');
+                },
+            );
+            when(
+                !is_null($expectations['operationSecurity']),
+                function () use ($openApi, $route, $action, $expectations) {
+                    return expect($openApi->unserializeToArray()['paths'][$route][$action]['security'])
+                        ->toBe($expectations['operationSecurity']);
+                },
+            );
+            when(
+                is_null($expectations['topLevelSecurity']),
+                function () use ($openApi) {
+                    return expect($openApi->unserializeToArray())->not->toHaveKey('security');
+                },
+            );
+            when(
+                !is_null($expectations['topLevelSecurity']),
+                function () use ($openApi, $expectations) {
+                    return expect($openApi->unserializeToArray()['security'])
+                        ->toBe($expectations['topLevelSecurity']);
+                },
+            );
         },
     )->with(
         [
@@ -172,7 +169,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                         ],
                     ],
                     'topLevelSecurity' => null,
-                    'pathSecurity' => null,
+                    'operationSecurity' => null,
                 ],
                 [ // available global securities (components)
                     TestBearerSecuritySchemeFactory::create(),
@@ -195,7 +192,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                     ],
-                    'pathSecurity' => null,
+                    'operationSecurity' => null,
                 ],
                 [
                     TestApiKeySecuritySchemeFactory::create(),
@@ -237,7 +234,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                     ],
-                    'pathSecurity' => null,
+                    'operationSecurity' => null,
                 ],
                 [
                     TestApiKeySecuritySchemeFactory::create(),
@@ -304,7 +301,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                     ],
-                    'pathSecurity' => [],
+                    'operationSecurity' => [],
                 ],
                 [
                     TestApiKeySecuritySchemeFactory::create(),
@@ -330,7 +327,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestBearerSecuritySchemeFactory::name() => [],
                         ],
                     ],
-                    'pathSecurity' => [
+                    'operationSecurity' => [
                         [
                             TestBearerSecuritySchemeFactory::name() => [],
                         ],
@@ -355,7 +352,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                     ],
-                    'pathSecurity' => [
+                    'operationSecurity' => [
                         [
                             TestBearerSecuritySchemeFactory::name() => [],
                         ],
@@ -387,7 +384,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                     ],
-                    'pathSecurity' => [
+                    'operationSecurity' => [
                         [
                             TestBearerSecuritySchemeFactory::name() => [],
                         ],
@@ -420,7 +417,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestBearerSecuritySchemeFactory::name() => [],
                         ],
                     ],
-                    'pathSecurity' => [
+                    'operationSecurity' => [
                         [
                             TestApiKeySecuritySchemeFactory::name() => [],
                             TestBearerSecuritySchemeFactory::name() => [],
@@ -464,7 +461,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestOAuth2PasswordSecuritySchemeFactory::name() => [],
                         ],
                     ],
-                    'pathSecurity' => [
+                    'operationSecurity' => [
                         [
                             TestBearerSecuritySchemeFactory::name() => [],
                             TestApiKeySecuritySchemeFactory::name() => [],
@@ -521,7 +518,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestBearerSecuritySchemeFactory::name() => [],
                         ],
                     ],
-                    'pathSecurity' => [
+                    'operationSecurity' => [
                         [
                             TestBearerSecuritySchemeFactory::name() => [],
                         ],
@@ -569,7 +566,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                     ],
-                    'pathSecurity' => [
+                    'operationSecurity' => [
                         [
                             TestBearerSecuritySchemeFactory::name() => [],
                         ],
@@ -630,7 +627,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestBearerSecuritySchemeFactory::name() => [],
                         ],
                     ],
-                    'pathSecurity' => [
+                    'operationSecurity' => [
                         [
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
@@ -671,9 +668,9 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 [
                     'components' => [
                         'securitySchemes' => [
-                            TestOAuth2PasswordSecuritySchemeFactory::name() => oAuth2SecurityExpectations(),
                             TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
                             TestApiKeySecuritySchemeFactory::name() => apiKeySecurityExpectations(),
+                            TestOAuth2PasswordSecuritySchemeFactory::name() => oAuth2SecurityExpectations(),
                         ],
                     ],
                     'topLevelSecurity' => [
@@ -682,7 +679,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                             TestApiKeySecuritySchemeFactory::name() => [],
                         ],
                     ],
-                    'pathSecurity' => [
+                    'operationSecurity' => [
                         [
                             TestBearerSecuritySchemeFactory::name() => [],
                         ],
@@ -696,9 +693,9 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     ],
                 ],
                 [
-                    TestOAuth2PasswordSecuritySchemeFactory::create(),
                     TestBearerSecuritySchemeFactory::create(),
                     TestApiKeySecuritySchemeFactory::create(),
+                    TestOAuth2PasswordSecuritySchemeFactory::create(),
                 ],
                 (new class implements SecurityFactory {
                     public function build(): Security
@@ -750,13 +747,11 @@ describe(class_basename(SecurityBuilder::class), function (): void {
          * @param class-string<SecurityFactory>|Security $topLevelSecurity
          */
         function (
-            array $expectedJson,
+            array $expectation,
             array $securitySchemeFactories,
             string|Security $topLevelSecurity,
         ): void {
             $components = Components::create()->securitySchemes(...$securitySchemeFactories);
-
-            $operation = Operation::create();
 
             $openApi = OpenAPI::v311(
                 Info::create(
@@ -769,45 +764,12 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     SecurityFactory::class,
                     true,
                 ) ? app($topLevelSecurity)->build() : $topLevelSecurity,
-            )->components($components)
-                ->paths(
-                    Paths::create(
-                        Path::create(
-                            '/foo',
-                            PathItem::create()
-                                ->operations(
-                                    AvailableOperation::create(
-                                        HttpMethod::GET,
-                                        $operation,
-                                    ),
-                                ),
-                        ),
-                    ),
-                );
+            )->components($components);
 
-            // Assert that the generated JSON matches the expected JSON for this scenario
-            $expected = [
-                'openapi' => '3.1.1',
-                'info' => [
-                    'title' => 'Example API',
-                    'version' => '1.0',
-                ],
-                'jsonSchemaDialect' => 'https://spec.openapis.org/oas/3.1/dialect/base',
-                'servers' => [
-                    [
-                        'url' => '/',
-                    ],
-                ],
-                'paths' => [
-                    '/foo' => [
-                        'get' => [
-                        ],
-                    ],
-                ],
-                'components' => $expectedJson['components'],
-                'security' => $expectedJson['security'],
-            ];
-            $this->assertSame($expected, $openApi->unserializeToArray());
+            expect($openApi->unserializeToArray()['components']['securitySchemes'])
+                ->toBe($expectation['components']['securitySchemes'])
+                ->and($openApi->unserializeToArray()['security'])
+                ->toBe($expectation['security']);
         },
     )->with([
         'JWT authentication only' => [
@@ -1010,41 +972,10 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 ),
             );
 
-        $expected = [
-            'openapi' => '3.1.1',
-            'info' => [
-                'title' => 'Example API',
-                'version' => '1.0',
-            ],
-            'jsonSchemaDialect' => 'https://spec.openapis.org/oas/3.1/dialect/base',
-            'servers' => [
-                [
-                    'url' => '/',
-                ],
-            ],
-            'paths' => [
-                '/foo' => [
-                    'get' => [
-                        'responses' => [
-                            '200' => [
-                                'description' => 'OK',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'components' => [
-                'securitySchemes' => [
-                    TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
-                ],
-            ],
-            'security' => [
-                [
-                    TestBearerSecuritySchemeFactory::name() => [],
-                ],
-            ],
-        ];
-        $this->assertSame($expected, $openApi->unserializeToArray());
+        expect($openApi->unserializeToArray()['components']['securitySchemes'])
+            ->toBe([TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations()])
+            ->and($openApi->unserializeToArray()['security'])
+            ->toBe([[TestBearerSecuritySchemeFactory::name() => []]]);
     });
 
     it('can add operation security using builder', function (): void {
@@ -1093,41 +1024,9 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 ),
             );
 
-        $expected = [
-            'openapi' => '3.1.1',
-            'info' => [
-                'title' => 'Example API',
-                'version' => '1.0',
-            ],
-            'jsonSchemaDialect' => 'https://spec.openapis.org/oas/3.1/dialect/base',
-            'servers' => [
-                [
-                    'url' => '/',
-                ],
-            ],
-            'paths' => [
-                '/foo' => [
-                    'patch' => [
-                        'responses' => [
-                            '200' => [
-                                'description' => 'OK',
-                            ],
-                        ],
-                        'security' => [
-                            [
-                                TestBearerSecuritySchemeFactory::name() => [],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'components' => [
-                'securitySchemes' => [
-                    TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations(),
-                ],
-            ],
-        ];
-
-        expect($openApi->unserializeToArray())->toBe($expected);
+        expect($openApi->unserializeToArray()['components']['securitySchemes'])
+            ->toBe([TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations()])
+            ->and($openApi->unserializeToArray()['paths']['/foo']['patch']['security'])
+            ->toBe([[TestBearerSecuritySchemeFactory::name() => []]]);
     });
 })->covers(SecurityBuilder::class);

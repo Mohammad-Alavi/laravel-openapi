@@ -2,6 +2,7 @@
 
 namespace Workbench\App\Http\Controllers;
 
+use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
 use Workbench\App\Documentation\Responses\UserResponse;
@@ -17,6 +18,7 @@ final readonly class ShowUserController
         responses: UserResponse::class,
         operationId: 'showUserOperation',
     )]
+    #[Collection('Workbench')]
     public function __invoke(): string
     {
         return 'test';

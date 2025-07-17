@@ -8,34 +8,21 @@ use Workbench\App\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFact
 use Workbench\App\Petstore\Security\SecuritySchemes\TestOAuth2PasswordSecuritySchemeFactory;
 
 beforeEach(function (): void {
-    Config::set('openapi', [
-        'collections' => [
-            'default' => [
-                'openapi' => ExampleFactory::class,
-            ],
-            'test' => [
-                'openapi' => ExampleFactory::class,
-            ],
-        ],
-        'locations' => [
-            'callbacks' => [
-                __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Callback',
-            ],
-            'request_bodies' => [
-                __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/RequestBody',
-            ],
-            'responses' => [
-                __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Response',
-            ],
-            'schemas' => [
-                __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Schema',
-            ],
-        ],
-    ]);
 });
 
 describe('Generator', function (): void {
     it('should generate OpenApi object', function (string $collection, array $expectation): void {
+        Config::set('openapi', [
+            'collections' => [
+                'default' => [
+                    'openapi' => ExampleFactory::class,
+                ],
+                'test' => [
+                    'openapi' => ExampleFactory::class,
+                ],
+            ],
+        ]);
+
         $generator = app(Generator::class);
 
         $openApi = $generator->generate($collection);
@@ -66,46 +53,7 @@ describe('Generator', function (): void {
                         'url' => 'https://laragen.io',
                     ],
                 ],
-                'components' => [
-                    'schemas' => [
-                        'ExplicitCollectionSchema' => [
-                            'type' => 'object',
-                            'properties' => [
-                                'id' => [
-                                    'type' => 'integer',
-                                ],
-                            ],
-                        ],
-                        'MultiCollectionSchema' => [
-                            'type' => 'object',
-                            'properties' => [
-                                'id' => [
-                                    'type' => 'integer',
-                                ],
-                            ],
-                        ],
-                    ],
-                    'responses' => [
-                        'MultiCollectionResponse' => [
-                            'description' => 'OK',
-                        ],
-                        'ExplicitCollectionResponse' => [
-                            'description' => 'OK',
-                        ],
-                    ],
-                    'requestBodies' => [
-                        'MultiCollectionRequestBody' => [],
-                        'ExplicitCollectionRequestBody' => [],
-                    ],
-                    'callbacks' => [
-                        'ExplicitCollectionCallback' => [
-                            'https://laragen.io/explicit-collection-callback' => [],
-                        ],
-                        'MultiCollectionCallback' => [
-                            'https://laragen.io/multi-collection-callback' => [],
-                        ],
-                    ],
-                ],
+                'components' => [],
                 'security' => [
                     [
                         TestBearerSecuritySchemeFactory::name() => [],
@@ -158,46 +106,7 @@ describe('Generator', function (): void {
                         'url' => 'https://laragen.io',
                     ],
                 ],
-                'components' => [
-                    'schemas' => [
-                        'MultiCollectionSchema' => [
-                            'type' => 'object',
-                            'properties' => [
-                                'id' => [
-                                    'type' => 'integer',
-                                ],
-                            ],
-                        ],
-                        'ImplicitCollectionSchema' => [
-                            'type' => 'object',
-                            'properties' => [
-                                'id' => [
-                                    'type' => 'integer',
-                                ],
-                            ],
-                        ],
-                    ],
-                    'responses' => [
-                        'MultiCollectionResponse' => [
-                            'description' => 'OK',
-                        ],
-                        'ImplicitCollectionResponse' => [
-                            'description' => 'OK',
-                        ],
-                    ],
-                    'requestBodies' => [
-                        'MultiCollectionRequestBody' => [],
-                        'ImplicitCollectionRequestBody' => [],
-                    ],
-                    'callbacks' => [
-                        'MultiCollectionCallback' => [
-                            'https://laragen.io/multi-collection-callback' => [],
-                        ],
-                        'ImplicitDefaultCallback' => [
-                            'https://laragen.io/implicit-default-callback' => [],
-                        ],
-                    ],
-                ],
+                'components' => [],
                 'security' => [
                     [
                         TestBearerSecuritySchemeFactory::name() => [],

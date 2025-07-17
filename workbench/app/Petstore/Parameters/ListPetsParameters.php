@@ -8,6 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRu
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Formats\IntegerFormat;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
+use Workbench\App\Petstore\Reusable\Schema\PetSchema;
 
 class ListPetsParameters implements ParametersFactory
 {
@@ -21,6 +22,12 @@ class ListPetsParameters implements ParametersFactory
                         ->format(IntegerFormat::INT32),
                 ),
             )->description('How many items to return at one time (max 100)'),
+            Parameter::query(
+                'pet',
+                QueryParameter::create(
+                    PetSchema::create(),
+                ),
+            ),
         );
     }
 }

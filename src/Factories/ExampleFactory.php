@@ -20,7 +20,7 @@ use Workbench\App\Petstore\Security\SecuritySchemes\TestOAuth2PasswordSecuritySc
 
 final readonly class ExampleFactory extends OpenAPIFactory
 {
-    public function object(): OpenAPI
+    public function instance(): OpenAPI
     {
         return OpenAPI::v311(
             Info::create(
