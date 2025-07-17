@@ -73,57 +73,57 @@ final readonly class ComponentsBuilder
 
         $hasAnyObjects = false;
 
-        if (count($schemas) > 0) {
+        if ($schemas->isNotEmpty()) {
             $hasAnyObjects = true;
             $components = $components->schemas(...$schemas);
         }
 
-        if (count($responses) > 0) {
+        if ($responses->isNotEmpty()) {
             $hasAnyObjects = true;
             $components = $components->responses(...$responses);
         }
 
-        if (count($parameters) > 0) {
+        if ($parameters->isNotEmpty()) {
             $hasAnyObjects = true;
 
             $components = $components->parameters(...$parameters);
         }
 
-        if (count($examples) > 0) {
+        if ($examples->isNotEmpty()) {
             $hasAnyObjects = true;
             $components = $components->examples(...$examples);
         }
 
-        if (count($requestBodies) > 0) {
+        if ($requestBodies->isNotEmpty()) {
             $hasAnyObjects = true;
 
             $components = $components->requestBodies(...$requestBodies);
         }
 
-        if (count($headers) > 0) {
+        if ($headers->isNotEmpty()) {
             $hasAnyObjects = true;
 
             $components = $components->headers(...$headers);
         }
 
-        if (count($securitySchemes) > 0) {
+        if ($securitySchemes->isNotEmpty()) {
             $hasAnyObjects = true;
             $components = $components->securitySchemes(...$securitySchemes);
         }
 
-        if (count($links) > 0) {
+        if ($links->isNotEmpty()) {
             $hasAnyObjects = true;
 
             $components = $components->links(...$links);
         }
 
-        if (count($callbacks) > 0) {
+        if ($callbacks->isNotEmpty()) {
             $hasAnyObjects = true;
 
             $components = $components->callbacks(...$callbacks);
         }
 
-        if (count($pathItems) > 0) {
+        if ($pathItems->isNotEmpty()) {
             $hasAnyObjects = true;
 
             $components = $components->pathItems(...$pathItems);
@@ -141,7 +141,7 @@ final readonly class ComponentsBuilder
         $paths = config("openapi.collections.{$collection}.components.{$type}", []);
 
         foreach ($paths as &$path) {
-            $path = glob($path, GLOB_ONLYDIR);
+            $path = \Safe\glob($path, GLOB_ONLYDIR);
         }
 
         return Collection::make($paths)
