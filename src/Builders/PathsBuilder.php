@@ -14,6 +14,9 @@ final readonly class PathsBuilder
     ) {
     }
 
+    /**
+     * @param Collection<int, RouteInfo> $routeInfo
+     */
     public function build(Collection $routeInfo): Paths
     {
         $paths = $routeInfo->groupBy(
