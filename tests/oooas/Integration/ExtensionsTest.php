@@ -41,7 +41,6 @@ describe(class_basename(Extension::class), function (): void {
                 'description' => 'OK',
             ],
         ],
-        // TODO: make JSONSchema extensible
         // [
         //     function (): JSONSchema {
         //         return Schema::object();
@@ -82,7 +81,7 @@ describe(class_basename(Extension::class), function (): void {
             'x-baz' => null,
             'type' => 'object',
         ]);
-    })->todo();
+    })->todo('Make JSONSchema extensible');
 
     it('gets single extension', function (ExtensibleObject $extensibleObject): void {
         $extension = Extension::create('x-foo', 'bar');
