@@ -12,7 +12,7 @@ use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
 use Webmozart\Assert\Assert;
 
-class RouteInfo
+final class RouteInfo
 {
     /** @var Collection<int, \Attribute>|null */
     public Collection|null $actionAttributes = null;
@@ -33,7 +33,7 @@ class RouteInfo
     /** @var \ReflectionParameter[] */
     private array $actionParameters = [];
 
-    public static function create(Route $route): static
+    public static function create(Route $route): self
     {
         $method = collect($route->methods())
             ->map(static fn (string $value) => Str::lower($value))
@@ -45,8 +45,8 @@ class RouteInfo
             'Unsupported HTTP method [' . implode(', ', $route->methods()) . '] for route: ' . $route->uri(),
         );
 
-        return tap(new static(), static function (self $instance) use ($route, $method): void {
-            if (static::isControllerAction($route)) {
+        return tap(new self(), static function (self $instance) use ($route, $method): void {
+            if (self::isControllerAction($route)) {
                 [$controller, $action] = Str::parseCallback($route->getAction('uses'));
                 $instance->action = $action;
                 $instance->controller = $controller;
@@ -97,7 +97,7 @@ class RouteInfo
      */
     private static function isControllerAction(Route $route): bool
     {
-        return is_string($route->action['uses']) && !static::isSerializedClosure($route);
+        return is_string($route->action['uses']) && !self::isSerializedClosure($route);
     }
 
     /**

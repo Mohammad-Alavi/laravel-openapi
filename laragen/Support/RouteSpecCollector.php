@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace MohammadAlavi\LaravelOpenApi\Support;
+namespace MohammadAlavi\Laragen\Support;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Routing\Route;
-use Illuminate\Routing\RouteSignatureParameters as RSP;
+use Illuminate\Routing\RouteSignatureParameters;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route as RouteFacade;
@@ -39,7 +39,7 @@ final readonly class RouteSpecCollector
             $optional = $m[1];
         }
 
-        $refParams = collect(RSP::fromAction($route->getAction()))
+        $refParams = collect(RouteSignatureParameters::fromAction($route->getAction()))
             ->reject(
                 function (\ReflectionParameter $parameter) {
                     return $parameter->isVariadic()
@@ -115,7 +115,7 @@ final readonly class RouteSpecCollector
     public function bodyParams(Route $route): array
     {
         $requestParam = collect(
-            RSP::fromAction($route->getAction(), ['subClass' => FormRequest::class]),
+            RouteSignatureParameters::fromAction($route->getAction(), ['subClass' => FormRequest::class]),
         )->first();
 
         if (!$requestParam) {
@@ -152,20 +152,20 @@ final readonly class RouteSpecCollector
 
         $schema = match (true) {
             !is_null($rules->first(
-                static function ($r) {
-                    return str_contains($r, 'integer') || str_contains($r, 'numeric');
+                static function ($rule) {
+                    return str_contains($rule, 'integer') || str_contains($rule, 'numeric');
                 },
             )) => ['type' => 'integer', 'example' => fake()->numberBetween(1, 1000)],
             $rules->contains('boolean') => ['type' => 'boolean', 'example' => fake()->boolean()],
             $rules->contains('array') => ['type' => 'array', 'example' => []],
             !is_null($rules->first(
-                static function ($r) {
-                    return str_contains($r, 'file') || str_contains($r, 'image') || str_contains($r, 'mimes');
+                static function ($rule) {
+                    return str_contains($rule, 'file') || str_contains($rule, 'image') || str_contains($rule, 'mimes');
                 },
             )) => ['type' => 'string', 'format' => 'binary'],
             !is_null($rules->first(
-                static function ($r) {
-                    return str_contains($r, 'date');
+                static function ($rule) {
+                    return str_contains($rule, 'date');
                 },
             )) => ['type' => 'string', 'format' => 'date', 'example' => fake()->date()],
             $rules->contains('email') => ['type' => 'string', 'format' => 'email', 'example' => fake()->email()],
