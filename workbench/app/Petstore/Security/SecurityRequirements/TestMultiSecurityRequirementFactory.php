@@ -11,6 +11,9 @@ use Workbench\App\Petstore\Security\Scopes\OrderShippingStatusScope;
 use Workbench\App\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
 use Workbench\App\Petstore\Security\SecuritySchemes\TestOAuth2PasswordSecuritySchemeFactory;
 
+/**
+ * @extends SecurityRequirementFactory<SecurityRequirement>
+ */
 final class TestMultiSecurityRequirementFactory extends SecurityRequirementFactory
 {
     public function object(): SecurityRequirement

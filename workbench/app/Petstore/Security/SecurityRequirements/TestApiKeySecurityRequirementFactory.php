@@ -7,6 +7,9 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirem
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\SecurityRequirement;
 use Workbench\App\Petstore\Security\SecuritySchemes\TestApiKeySecuritySchemeFactory;
 
+/**
+ * @extends SecurityRequirementFactory<SecurityRequirement>
+ */
 final class TestApiKeySecurityRequirementFactory extends SecurityRequirementFactory
 {
     public function object(): SecurityRequirement
