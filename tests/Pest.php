@@ -2,6 +2,7 @@
 
 use Pest\Expectation;
 use Tests\IntegrationTestCase;
+use Tests\RealUnitTestCase;
 use Tests\UnitTestCase;
 
 /*
@@ -19,14 +20,18 @@ pest()->extends(IntegrationTestCase::class)->in(
     'src/Integration',
     'oooas/Integration',
     'JSONSchema/Integration',
-    'Laragen/Integration',
+    'Laragen/Feature',
 )->afterEach(fn () => cleanup($this->cleanupCallbacks));
+
 pest()->extends(UnitTestCase::class)->in(
     'src/Unit',
     'oooas/Unit',
     'JSONSchema/Unit',
-    'Laragen/Unit',
 )->afterEach(fn () => cleanup($this->cleanupCallbacks));
+
+pest()->extends(RealUnitTestCase::class)->in(
+    'Laragen/Unit',
+);
 
 /*
 |--------------------------------------------------------------------------
