@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Http\FormRequest;
-use MohammadAlavi\LaravelOpenApi\Support\RouteSpecCollector;
+use MohammadAlavi\Laragen\Support\RouteSpecCollector;
 
 describe(class_basename(RouteSpecCollector::class), function () {
     it('normalizes php types correctly', function () {
