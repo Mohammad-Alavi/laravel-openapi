@@ -87,6 +87,8 @@ final class Components extends ExtensibleObject
     }
 
     /**
+     * [AI Generated]
+     *
      * @return ShouldBeReferenced[]
      */
     private function collectReferenceables(OpenAPI $root): array
