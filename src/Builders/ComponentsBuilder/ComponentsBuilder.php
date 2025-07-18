@@ -141,7 +141,7 @@ final readonly class ComponentsBuilder
         $paths = config("openapi.collections.{$collection}.components.{$type}", []);
 
         foreach ($paths as &$path) {
-            $path = \Safe\glob($path, GLOB_ONLYDIR | GLOB_NOSORT);
+            $path = \Safe\glob($path, GLOB_ONLYDIR);
         }
 
         return Collection::make($paths)
