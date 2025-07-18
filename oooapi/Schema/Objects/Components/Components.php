@@ -87,7 +87,7 @@ final class Components extends ExtensibleObject
     }
 
     /**
-     * [AI Generated]
+     * [AI Generated].
      *
      * @return ShouldBeReferenced[]
      */
