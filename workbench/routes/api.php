@@ -2,12 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use Workbench\App\Http\Controllers\CreateUserController;
+use Workbench\App\Http\Controllers\UpdateUserController;
 
 Route::prefix('api')->group(
     static function (): void {
         Route::post('/users', [CreateUserController::class, '__invoke']);
-        Route::delete('/users/{id}', [CreateUserController::class, '__invoke']);
-        Route::get('/users/{id}/{lang?}', [CreateUserController::class, '__invoke']);
+        Route::patch('/users/{id}', [UpdateUserController::class, '__invoke']);
+        //        Route::delete('/users/{id}', [CreateUserController::class, '__invoke']);
+        //        Route::get('/users/{id}/{lang?}', [CreateUserController::class, '__invoke']);
 
         /*
          * Healthcheck

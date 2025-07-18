@@ -3,6 +3,7 @@
 namespace Workbench\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Workbench\App\Documentation\Workbench;
 
 class WorkbenchServiceProvider extends ServiceProvider
 {
@@ -12,6 +13,9 @@ class WorkbenchServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->app['config']->set('openapi.collections.Workbench', [
+            'openapi' => Workbench::class,
+        ]);
         $this->app['config']->set('scalar', require __DIR__ . '/../../../config/scalar.php');
         $this->app['config']->set('scribe', require __DIR__ . '/../../../config/scribe.php');
 

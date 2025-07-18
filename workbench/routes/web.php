@@ -2,9 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Workbench\App\Http\Controllers\ShowUserController;
-
-Route::get('/users/{id}', [ShowUserController::class, '__invoke']);
 
 Route::get(
     'laragen/docs',
