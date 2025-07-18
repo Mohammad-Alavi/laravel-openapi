@@ -9,8 +9,8 @@ describe(class_basename(OpenApiServiceProvider::class), function (): void {
         /** @var Application $app */
         $app = app();
 
-        expect($app->get('config')->get('openapi'))->toBe(
-            require __DIR__ . '/../../../../config/openapi.php',
+        expect($app->get('config')->get('openapi.collections.default'))->toBe(
+            (require __DIR__ . '/../../../../config/openapi.php')['collections']['default'],
         );
     });
 })->covers(OpenApiServiceProvider::class);

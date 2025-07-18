@@ -2,18 +2,21 @@
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
-use MohammadAlavi\LaravelOpenApi\Factories\ExampleFactory;
+use MohammadAlavi\LaravelOpenApi\Factories\OpenAPIFactory;
 use MohammadAlavi\LaravelOpenApi\Generator;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use Tests\src\Support\Doubles\Stubs\Objects\MultiActionController;
 
 describe(class_basename(Generator::class), function (): void {
     it('should generate OpenApi object', function (string $collection, array $expectation): void {
         Route::get('/test', [MultiActionController::class, 'anotherExample']);
+        $factory = Factory::class;
 
         Config::set('openapi', [
             'collections' => [
                 'default' => [
-                    'openapi' => ExampleFactory::class,
+                    'openapi' => $factory,
                     'components' => [
                         'callbacks' => [
                             __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Callback',
@@ -21,7 +24,7 @@ describe(class_basename(Generator::class), function (): void {
                     ],
                 ],
                 'example' => [
-                    'openapi' => ExampleFactory::class,
+                    'openapi' => $factory,
                     'components' => [
                         'responses' => [
                             __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Response',
@@ -29,7 +32,7 @@ describe(class_basename(Generator::class), function (): void {
                     ],
                 ],
                 'test' => [
-                    'openapi' => ExampleFactory::class,
+                    'openapi' => $factory,
                     'components' => [
                         'schemas' => [
                             __DIR__ . '/../Support/Doubles/Stubs/Builders/Components/Schema',
@@ -151,3 +154,16 @@ describe(class_basename(Generator::class), function (): void {
         ],
     ]);
 })->covers(Generator::class);
+
+final readonly class Factory extends OpenAPIFactory
+{
+    public function instance(): OpenAPI
+    {
+        return OpenAPI::v311(
+            Info::create(
+                'https://laragen.io',
+                '1.0.0',
+            ),
+        );
+    }
+}
