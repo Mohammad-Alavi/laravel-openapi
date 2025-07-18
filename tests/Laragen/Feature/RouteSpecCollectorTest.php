@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Http\FormRequest;
 use MohammadAlavi\Laragen\Support\RouteSpecCollector;
+use Workbench\App\Models\User;
 
 describe(class_basename(RouteSpecCollector::class), function () {
     it('normalizes php types correctly', function () {
@@ -71,15 +72,23 @@ describe(class_basename(RouteSpecCollector::class), function () {
     });
 
     it('collects path params correctly', function () {
-        $route = Route::get('users/{id}/posts/{slug}', [PathController::class, 'methodWithParams']);
+        $route = Route::get(
+            'users/{user}/posts/{slug}/comments/{id}/{not_in_method_sig}/{not_in_method_sig_opt?}/{noTypeParam}/{user_id?}',
+            [PathController::class, 'methodWithParams'],
+        );
         $collector = new RouteSpecCollector();
 
         $pathParams = $collector->pathParams($route);
 
         expect($pathParams)->toBeArray()
             ->and($pathParams)->toHaveKeys(['id', 'slug'])
-            ->and($pathParams['id'])->toMatchArray(['type' => 'integer'])
-            ->and($pathParams['slug'])->toMatchArray(['type' => 'string']);
+            ->and($pathParams['user'])->toMatchArray(['type' => 'integer', 'required' => true])
+            ->and($pathParams['slug'])->toMatchArray(['type' => 'string', 'required' => true])
+            ->and($pathParams['id'])->toMatchArray(['type' => 'integer', 'required' => true])
+            ->and($pathParams['not_in_method_sig'])->toMatchArray(['type' => 'string', 'required' => true])
+            ->and($pathParams['not_in_method_sig_opt'])->toMatchArray(['type' => 'string', 'required' => false])
+            ->and($pathParams['noTypeParam'])->toMatchArray(['type' => 'string', 'required' => true])
+            ->and($pathParams['user_id'])->toMatchArray(['type' => 'integer', 'required' => false]);
     });
 
     it('skips FormRequest in path params', function () {
@@ -144,7 +153,7 @@ class BodyFormRequest extends FormRequest
 
 class PathController
 {
-    public function methodWithParams(int $id, string $slug, bool $flag)
+    public function methodWithParams(int $id, User $user, string $slug, $noTypeParam, bool $flag, User $user_id)
     {
     }
 

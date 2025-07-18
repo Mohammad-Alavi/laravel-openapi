@@ -35,11 +35,11 @@ final readonly class RouteSpecCollector
         $uriParams = $route->parameterNames();
         $optional = [];
 
-        if (preg_match_all('/\{(\w+)\?}/', $route->uri(), $m)) {
-            $optional = $m[1];
+        if (preg_match_all('/\{(\w+)\?}/', $route->uri(), $match)) {
+            $optional = $match[1];
         }
 
-        $refParams = collect(RouteSignatureParameters::fromAction($route->getAction()))
+        $routeParams = collect(RouteSignatureParameters::fromAction($route->getAction()))
             ->reject(
                 function (\ReflectionParameter $parameter) {
                     return $parameter->isVariadic()
@@ -48,27 +48,15 @@ final readonly class RouteSpecCollector
                         || $this->isFormRequest($parameter);
                 },
             );
-        $byName = $refParams->keyBy(static fn (\ReflectionParameter $parameter) => $parameter->getName());
 
-        // pool of model-bound parameters whose name does *not* match the uri segment
-        $modelPool = $refParams->filter(
-            static fn (\ReflectionParameter $parameter) => is_subclass_of(
-                $parameter->getType()?->getName() ?? '',
-                Model::class,
-            ),
-        )->values();
+        /** @var Collection<string, \ReflectionParameter> $paramsByName */
+        $paramsByName = $routeParams->keyBy(static fn (\ReflectionParameter $parameter) => $parameter->getName());
 
         return collect($uriParams)->mapWithKeys(
-            function (string $name) use ($byName, &$modelPool, $route, $optional): array {
-                // match by name, else first model
-                if ($byName->get($name)) {
-                    $p = $byName->get($name);
-                } else {
-                    $p = $modelPool->shift();
-                }
-
-                if ($p?->hasType()) {
-                    $type = $this->normalizePhpType($p->getType()->getName());
+            function (string $name) use ($paramsByName, $route, $optional): array {
+                $param = $paramsByName->get($name);
+                if ($param?->hasType()) {
+                    $type = $this->normalizePhpType($param->getType()?->getName());
                 } else {
                     $type = $this->guessFromWhere($route, $name);
                 }
@@ -92,6 +80,16 @@ final readonly class RouteSpecCollector
 
     public function normalizePhpType(string $type): string
     {
+        if (is_subclass_of($type, Model::class)) {
+            /** @var Model $model */
+            $model = new $type();
+
+            return match ($model->getKeyType()) {
+                'int', 'integer' => 'integer',
+                default => 'string',
+            };
+        }
+
         return match (strtolower($type)) {
             'int', 'integer' => 'integer',
             'bool', 'boolean' => 'boolean',
