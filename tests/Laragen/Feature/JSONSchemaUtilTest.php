@@ -8,8 +8,10 @@ describe(class_basename(JSONSchemaUtil::class), function (): void {
     it('can be instantiated from array', function (array $rules, array $expectation): void {
         $descriptor = LooseFluentDescriptor::from(LaravelRulesToSchema::parse($rules)->compile());
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode($expectation),
+        expect(
+            \Safe\json_encode($descriptor, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+        )->toBe(
+            \Safe\json_encode($expectation, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
         );
     })->with([
         [
@@ -53,16 +55,43 @@ describe(class_basename(JSONSchemaUtil::class), function (): void {
         ],
         [
             [
-                'age' => ['nullable', 'integer', 'between:18,99'],
+                'age' => ['nullable', 'integer', 'between:18,99', 'min:3', 'max:10'],
             ],
             [
                 'type' => 'object',
                 'properties' => [
                     'age' => [
                         'type' => ['null', 'integer'],
+                        'maximum' => 10,
+                        'minimum' => 3,
                         // TODO: Implement support for 'between' rule.
                         // 'minimum' => 18,
                         // 'maximum' => 99,
+                    ],
+                ],
+            ],
+        ],
+        [
+            [
+                'value' => [
+                    'string',
+                    'min:3',
+                    'max:10',
+                    'between:4,8',
+                    'in:foo,bar',
+                    'regex:/[A-Z]+/',
+                ],
+            ],
+            [
+                'type' => 'object',
+                'properties' => [
+                    'value' => [
+                        'type' => 'string',
+                        'maxLength' => 10,
+                        'minLength' => 3,
+                        // TODO: Implement support for 'enum' rule.
+                        // 'enum' => ['foo', 'bar'],
+                        'pattern' => '[A-Z]+',
                     ],
                 ],
             ],
