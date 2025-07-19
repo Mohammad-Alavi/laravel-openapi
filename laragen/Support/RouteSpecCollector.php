@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace MohammadAlavi\LaravelOpenApi\Support;
+namespace MohammadAlavi\Laragen\Support;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Routing\Route;
-use Illuminate\Routing\RouteSignatureParameters as RSP;
+use Illuminate\Routing\RouteSignatureParameters;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route as RouteFacade;
@@ -35,11 +35,11 @@ final readonly class RouteSpecCollector
         $uriParams = $route->parameterNames();
         $optional = [];
 
-        if (preg_match_all('/\{(\w+)\?}/', $route->uri(), $m)) {
-            $optional = $m[1];
+        if (preg_match_all('/\{(\w+)\?}/', $route->uri(), $match)) {
+            $optional = $match[1];
         }
 
-        $refParams = collect(RSP::fromAction($route->getAction()))
+        $routeParams = collect(RouteSignatureParameters::fromAction($route->getAction()))
             ->reject(
                 function (\ReflectionParameter $parameter) {
                     return $parameter->isVariadic()
@@ -48,27 +48,15 @@ final readonly class RouteSpecCollector
                         || $this->isFormRequest($parameter);
                 },
             );
-        $byName = $refParams->keyBy(static fn (\ReflectionParameter $parameter) => $parameter->getName());
 
-        // pool of model-bound parameters whose name does *not* match the uri segment
-        $modelPool = $refParams->filter(
-            static fn (\ReflectionParameter $parameter) => is_subclass_of(
-                $parameter->getType()?->getName() ?? '',
-                Model::class,
-            ),
-        )->values();
+        /** @var Collection<string, \ReflectionParameter> $paramsByName */
+        $paramsByName = $routeParams->keyBy(static fn (\ReflectionParameter $parameter) => $parameter->getName());
 
         return collect($uriParams)->mapWithKeys(
-            function (string $name) use ($byName, &$modelPool, $route, $optional): array {
-                // match by name, else first model
-                if ($byName->get($name)) {
-                    $p = $byName->get($name);
-                } else {
-                    $p = $modelPool->shift();
-                }
-
-                if ($p?->hasType()) {
-                    $type = $this->normalizePhpType($p->getType()->getName());
+            function (string $name) use ($paramsByName, $route, $optional): array {
+                $param = $paramsByName->get($name);
+                if ($param?->hasType()) {
+                    $type = $this->normalizePhpType($param->getType()?->getName());
                 } else {
                     $type = $this->guessFromWhere($route, $name);
                 }
@@ -92,6 +80,16 @@ final readonly class RouteSpecCollector
 
     public function normalizePhpType(string $type): string
     {
+        if (is_subclass_of($type, Model::class)) {
+            /** @var Model $model */
+            $model = new $type();
+
+            return match ($model->getKeyType()) {
+                'int', 'integer' => 'integer',
+                default => 'string',
+            };
+        }
+
         return match (strtolower($type)) {
             'int', 'integer' => 'integer',
             'bool', 'boolean' => 'boolean',
@@ -115,7 +113,7 @@ final readonly class RouteSpecCollector
     public function bodyParams(Route $route): array
     {
         $requestParam = collect(
-            RSP::fromAction($route->getAction(), ['subClass' => FormRequest::class]),
+            RouteSignatureParameters::fromAction($route->getAction(), ['subClass' => FormRequest::class]),
         )->first();
 
         if (!$requestParam) {
@@ -132,8 +130,11 @@ final readonly class RouteSpecCollector
         $validator = validator([], $request->rules(), $request->messages(), $request->attributes());
 
         return collect($validator->getRules())
-            ->map(fn ($rules) => $this->ruleSetToSchema(Arr::wrap($rules)))
-            ->all();
+            ->map(
+                function ($rules) {
+                    return $this->ruleSetToSchema(Arr::wrap($rules));
+                },
+            )->all();
     }
 
     /** @param array<int,string|ValidationRule> $ruleSet */
@@ -152,20 +153,20 @@ final readonly class RouteSpecCollector
 
         $schema = match (true) {
             !is_null($rules->first(
-                static function ($r) {
-                    return str_contains($r, 'integer') || str_contains($r, 'numeric');
+                static function ($rule) {
+                    return str_contains($rule, 'integer') || str_contains($rule, 'numeric');
                 },
             )) => ['type' => 'integer', 'example' => fake()->numberBetween(1, 1000)],
             $rules->contains('boolean') => ['type' => 'boolean', 'example' => fake()->boolean()],
             $rules->contains('array') => ['type' => 'array', 'example' => []],
             !is_null($rules->first(
-                static function ($r) {
-                    return str_contains($r, 'file') || str_contains($r, 'image') || str_contains($r, 'mimes');
+                static function ($rule) {
+                    return str_contains($rule, 'file') || str_contains($rule, 'image') || str_contains($rule, 'mimes');
                 },
             )) => ['type' => 'string', 'format' => 'binary'],
             !is_null($rules->first(
-                static function ($r) {
-                    return str_contains($r, 'date');
+                static function ($rule) {
+                    return str_contains($rule, 'date');
                 },
             )) => ['type' => 'string', 'format' => 'date', 'example' => fake()->date()],
             $rules->contains('email') => ['type' => 'string', 'format' => 'email', 'example' => fake()->email()],

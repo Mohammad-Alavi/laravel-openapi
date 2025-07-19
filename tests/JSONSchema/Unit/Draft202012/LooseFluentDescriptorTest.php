@@ -264,4 +264,21 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ]),
         );
     });
+
+    it('can be instantiated from array', function (array $payload): void {
+        $descriptor = LooseFluentDescriptor::from($payload);
+
+        expect(\Safe\json_encode($descriptor))->toBe(
+            \Safe\json_encode($payload),
+        );
+    })->with([
+        [
+            [
+                'type' => 'string',
+                'format' => 'date',
+                'maximum' => 100,
+                'minimum' => 0,
+            ],
+        ],
+    ]);
 })->covers(LooseFluentDescriptor::class);

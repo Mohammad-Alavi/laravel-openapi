@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Foundation\Http\FormRequest;
-use MohammadAlavi\LaravelOpenApi\Support\RouteSpecCollector;
+use MohammadAlavi\Laragen\Support\RouteSpecCollector;
+use Workbench\App\Models\User;
 
 describe(class_basename(RouteSpecCollector::class), function () {
     it('normalizes php types correctly', function () {
@@ -38,16 +39,16 @@ describe(class_basename(RouteSpecCollector::class), function () {
             // expect(isset($schema['example']))->toBeTrue();
         },
     )->with([
-        'integer' => [['integer'], 'integer', null],
-        'numeric' => [['numeric'], 'integer', null],
-        'boolean' => [['boolean'], 'boolean', null],
-        'array' => [['array'], 'array', null],
-        'date' => [['date'], 'string', 'date'],
-        'email' => [['email'], 'string', 'email'],
-        'string' => [['string'], 'string', null],
-        'file' => [['file'], 'string', 'binary'],
-        'image' => [['image'], 'string', 'binary'],
-        'mimes' => [['mimes:jpg'], 'string', 'binary'],
+        'integer' => [['field_name' => 'integer'], 'integer', null],
+        'numeric' => [['field_name' => 'numeric'], 'integer', null],
+        'boolean' => [['field_name' => 'boolean'], 'boolean', null],
+        'array' => [['field_name' => 'array'], 'array', null],
+        'date' => [['field_name' => 'date'], 'string', 'date'],
+        'email' => [['field_name' => 'email'], 'string', 'email'],
+        'string' => [['field_name' => 'string'], 'string', null],
+        'file' => [['field_name' => 'file'], 'string', 'binary'],
+        'image' => [['field_name' => 'image'], 'string', 'binary'],
+        'mimes' => [['field_name' => 'mimes:jpg'], 'string', 'binary'],
     ]);
 
     it('applies rule modifiers correctly', function () {
@@ -71,15 +72,23 @@ describe(class_basename(RouteSpecCollector::class), function () {
     });
 
     it('collects path params correctly', function () {
-        $route = Route::get('users/{id}/posts/{slug}', [PathController::class, 'methodWithParams']);
+        $route = Route::get(
+            'users/{user}/posts/{slug}/comments/{id}/{not_in_method_sig}/{not_in_method_sig_opt?}/{noTypeParam}/{user_id?}',
+            [PathController::class, 'methodWithParams'],
+        );
         $collector = new RouteSpecCollector();
 
         $pathParams = $collector->pathParams($route);
 
         expect($pathParams)->toBeArray()
             ->and($pathParams)->toHaveKeys(['id', 'slug'])
-            ->and($pathParams['id'])->toMatchArray(['type' => 'integer'])
-            ->and($pathParams['slug'])->toMatchArray(['type' => 'string']);
+            ->and($pathParams['user'])->toMatchArray(['type' => 'integer', 'required' => true])
+            ->and($pathParams['slug'])->toMatchArray(['type' => 'string', 'required' => true])
+            ->and($pathParams['id'])->toMatchArray(['type' => 'integer', 'required' => true])
+            ->and($pathParams['not_in_method_sig'])->toMatchArray(['type' => 'string', 'required' => true])
+            ->and($pathParams['not_in_method_sig_opt'])->toMatchArray(['type' => 'string', 'required' => false])
+            ->and($pathParams['noTypeParam'])->toMatchArray(['type' => 'string', 'required' => true])
+            ->and($pathParams['user_id'])->toMatchArray(['type' => 'integer', 'required' => false]);
     });
 
     it('skips FormRequest in path params', function () {
@@ -144,7 +153,7 @@ class BodyFormRequest extends FormRequest
 
 class PathController
 {
-    public function methodWithParams(int $id, string $slug, bool $flag)
+    public function methodWithParams(int $id, User $user, string $slug, $noTypeParam, bool $flag, User $user_id)
     {
     }
 
