@@ -130,8 +130,11 @@ final readonly class RouteSpecCollector
         $validator = validator([], $request->rules(), $request->messages(), $request->attributes());
 
         return collect($validator->getRules())
-            ->map(fn ($rules) => $this->ruleSetToSchema(Arr::wrap($rules)))
-            ->all();
+            ->map(
+                function ($rules) {
+                    return $this->ruleSetToSchema(Arr::wrap($rules));
+                },
+            )->all();
     }
 
     /** @param array<int,string|ValidationRule> $ruleSet */
