@@ -255,4 +255,21 @@ describe(class_basename(Schema::class), function (): void {
         'object' => ['object', 'object'],
         'string' => ['string', 'string'],
     ]);
+
+    it('can be instantiated from array', function (array $payload): void {
+        $schema = Schema::from($payload);
+
+        expect(\Safe\json_encode($schema))->toBe(
+            \Safe\json_encode($payload),
+        );
+    })->with([
+        [
+            [
+                'type' => 'string',
+                'format' => 'date',
+                'maximum' => 100,
+                'minimum' => 0,
+            ],
+        ],
+    ]);
 })->covers(Schema::class);

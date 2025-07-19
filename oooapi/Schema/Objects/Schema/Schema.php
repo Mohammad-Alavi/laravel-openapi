@@ -17,6 +17,11 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\StrictFluentDescriptor;
 
 final class Schema
 {
+    public static function from(array $data): ObjectRestrictor
+    {
+        return StrictFluentDescriptor::from($data);
+    }
+
     public static function null(): NullRestrictor
     {
         return StrictFluentDescriptor::null();
