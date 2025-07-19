@@ -39,16 +39,16 @@ describe(class_basename(RouteSpecCollector::class), function () {
             // expect(isset($schema['example']))->toBeTrue();
         },
     )->with([
-        'integer' => [['integer'], 'integer', null],
-        'numeric' => [['numeric'], 'integer', null],
-        'boolean' => [['boolean'], 'boolean', null],
-        'array' => [['array'], 'array', null],
-        'date' => [['date'], 'string', 'date'],
-        'email' => [['email'], 'string', 'email'],
-        'string' => [['string'], 'string', null],
-        'file' => [['file'], 'string', 'binary'],
-        'image' => [['image'], 'string', 'binary'],
-        'mimes' => [['mimes:jpg'], 'string', 'binary'],
+        'integer' => [['field_name' => 'integer'], 'integer', null],
+        'numeric' => [['field_name' => 'numeric'], 'integer', null],
+        'boolean' => [['field_name' => 'boolean'], 'boolean', null],
+        'array' => [['field_name' => 'array'], 'array', null],
+        'date' => [['field_name' => 'date'], 'string', 'date'],
+        'email' => [['field_name' => 'email'], 'string', 'email'],
+        'string' => [['field_name' => 'string'], 'string', null],
+        'file' => [['field_name' => 'file'], 'string', 'binary'],
+        'image' => [['field_name' => 'image'], 'string', 'binary'],
+        'mimes' => [['field_name' => 'mimes:jpg'], 'string', 'binary'],
     ]);
 
     it('applies rule modifiers correctly', function () {
