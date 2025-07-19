@@ -134,6 +134,44 @@ class LooseFluentDescriptor implements FluentDescriptor
         return $clone;
     }
 
+    public static function from(array $payload): static
+    {
+        $instance = new static();
+
+        foreach ($payload as $key => $value) {
+            if (method_exists($instance, $key)) {
+                if ('format' === $key) {
+                    $value = new class($value) implements DefinedFormat {
+                        public function __construct(
+                            private readonly string $value,
+                        ) {
+                        }
+
+                        public function value(): string
+                        {
+                            return $this->value;
+                        }
+                    };
+                    $instance = $instance->{$key}($value);
+                } elseif ('properties' === $key) {
+                    $properties = [];
+                    foreach ($value as $name => $property) {
+                        $properties[] = Property::create($name, static::from($property));
+                    }
+                    $instance = $instance->{$key}(...$properties);
+                } elseif (is_array($value)) {
+                    $instance = $instance->{$key}(...$value);
+                } else {
+                    $instance = $instance->{$key}($value);
+                }
+            } else {
+                throw new \InvalidArgumentException("Unknown method: {$key}");
+            }
+        }
+
+        return $instance;
+    }
+
     public function anchor(string $value): static
     {
         $clone = clone $this;
