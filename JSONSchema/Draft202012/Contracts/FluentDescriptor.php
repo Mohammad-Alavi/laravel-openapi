@@ -48,6 +48,6 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptions\Un
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptions\UniqueItems;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Descriptions\Vocabulary;
 
-interface FluentDescriptor extends JSONSchema, \JsonSerializable, Anchor, Comment, Defs, DynamicAnchor, DynamicRef, Id, Ref, Schema, Vocabulary, UnevaluatedItems, UnevaluatedProperties, ExclusiveMaximum, ExclusiveMinimum, Format, Maximum, MaxLength, Minimum, MinLength, MultipleOf, Pattern, Type, MaxContains, MinContains, UniqueItems, MaxItems, MinItems, Items, AllOf, AnyOf, OneOf, AdditionalProperties, Properties, DependentRequired, MaxProperties, MinProperties, Required, DefaultValue, Deprecated, Description, Examples, IsReadOnly, IsWriteOnly, Title, Constant, Enum
+interface FluentDescriptor extends JSONSchema, Arrayable, \JsonSerializable, Anchor, Comment, Defs, DynamicAnchor, DynamicRef, Id, Ref, Schema, Vocabulary, UnevaluatedItems, UnevaluatedProperties, ExclusiveMaximum, ExclusiveMinimum, Format, Maximum, MaxLength, Minimum, MinLength, MultipleOf, Pattern, Type, MaxContains, MinContains, UniqueItems, MaxItems, MinItems, Items, AllOf, AnyOf, OneOf, AdditionalProperties, Properties, DependentRequired, MaxProperties, MinProperties, Required, DefaultValue, Deprecated, Description, Examples, IsReadOnly, IsWriteOnly, Title, Constant, Enum
 {
 }

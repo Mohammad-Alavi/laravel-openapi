@@ -3,6 +3,7 @@
 namespace Workbench\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use LaravelRulesToSchema\Facades\LaravelRulesToSchema;
 
 class CreateUserRequest extends FormRequest
 {
@@ -22,9 +23,13 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|max:255',
-            'email' => 'email|max:255|unique:users,email',
+            // TODO: Handle mixed validation rules of string and array types
+            // The underlying package ,"LaravelRulesToSchema::parse()", cannot handle it yet.
+            // 'name' => ['required_without:email', 'string|max:255'],
+            'name' => ['required_without:email', 'string', 'max:255'],
+            'email' => 'required_without:name|email|max:255',
             'password' => 'string|min:8|confirmed',
+            'age' => ['nullable', 'integer', 'between:18,99'],
         ];
     }
 }

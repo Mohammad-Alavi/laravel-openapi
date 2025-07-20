@@ -117,23 +117,6 @@ class LooseFluentDescriptor implements FluentDescriptor
         return new static(null);
     }
 
-    /**
-     * Create a new instance of the Descriptor with a schema.
-     */
-    public static function create(string $schema = 'https://json-schema.org/draft-2020-12/schema'): static
-    {
-        return new static(Dialect::schema($schema));
-    }
-
-    public function schema(string $uri): static
-    {
-        $clone = clone $this;
-
-        $clone->schema = Dialect::schema($uri);
-
-        return $clone;
-    }
-
     public static function from(array $payload): static
     {
         $instance = new static();
@@ -170,6 +153,23 @@ class LooseFluentDescriptor implements FluentDescriptor
         }
 
         return $instance;
+    }
+
+    /**
+     * Create a new instance of the Descriptor with a schema.
+     */
+    public static function create(string $schema = 'https://json-schema.org/draft-2020-12/schema'): static
+    {
+        return new static(Dialect::schema($schema));
+    }
+
+    public function schema(string $uri): static
+    {
+        $clone = clone $this;
+
+        $clone->schema = Dialect::schema($uri);
+
+        return $clone;
     }
 
     public function anchor(string $value): static
@@ -610,6 +610,19 @@ class LooseFluentDescriptor implements FluentDescriptor
         $clone->enum = Dialect::enum(...$value);
 
         return $clone;
+    }
+
+    public function toArray(): array
+    {
+        return json_decode(
+            \Safe\json_encode(
+                $this->jsonSerialize(),
+                JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
+            ),
+            true,
+            512,
+            JSON_THROW_ON_ERROR,
+        );
     }
 
     public function jsonSerialize(): array

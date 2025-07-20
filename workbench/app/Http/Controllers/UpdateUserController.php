@@ -13,6 +13,7 @@ use Workbench\App\Documentation\UpdateUserSecurity;
 use Workbench\App\Documentation\UserResponses;
 use Workbench\App\Documentation\WorkbenchCollection;
 use Workbench\App\Http\Requests\CreateUserRequest;
+use Workbench\App\Models\User;
 
 #[Collection(WorkbenchCollection::class)]
 #[PathItem]
@@ -32,5 +33,9 @@ final readonly class UpdateUserController
     public function __invoke(CreateUserRequest $request): string
     {
         return 'test';
+    }
+
+    public function methodWithParams(int $id, User $user, string $slug, $noTypeParam, bool $flag, User $author_id)
+    {
     }
 }
