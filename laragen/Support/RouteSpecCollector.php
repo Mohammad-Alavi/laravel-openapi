@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace MohammadAlavi\Laragen\Support;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\RouteSignatureParameters;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route as RouteFacade;
 
@@ -109,19 +107,22 @@ final readonly class RouteSpecCollector
         return 'string';
     }
 
-    /** @return array<string,mixed> */
+    /**
+     * @return array<string,mixed>
+     */
     public function bodyParams(Route $route): array
     {
+        /** @var \ReflectionParameter|null $requestParam */
         $requestParam = collect(
             RouteSignatureParameters::fromAction($route->getAction(), ['subClass' => FormRequest::class]),
         )->first();
 
-        if (!$requestParam) {
+        if (is_null($requestParam)) {
             return [];
         }
 
         /** @var FormRequest $request */
-        $request = app($requestParam->getType()->getName());
+        $request = new ($requestParam->getType()?->getName())();
 
         if (!method_exists($request, 'rules')) {
             return [];
@@ -129,69 +130,6 @@ final readonly class RouteSpecCollector
 
         $validator = validator([], $request->rules(), $request->messages(), $request->attributes());
 
-        return collect($validator->getRules())
-            ->map(
-                function ($rules) {
-                    return $this->ruleSetToSchema(Arr::wrap($rules));
-                },
-            )->all();
-    }
-
-    /** @param array<int,string|ValidationRule> $ruleSet */
-    public function ruleSetToSchema(array $ruleSet): array
-    {
-        /** @var Collection<array-key, string> $rules */
-        $rules = collect($ruleSet)->map(
-            static function ($rule): string {
-                if (is_string($rule)) {
-                    return $rule;
-                }
-
-                return class_basename($rule);
-            },
-        );
-
-        $schema = match (true) {
-            !is_null($rules->first(
-                static function ($rule) {
-                    return str_contains($rule, 'integer') || str_contains($rule, 'numeric');
-                },
-            )) => ['type' => 'integer', 'example' => fake()->numberBetween(1, 1000)],
-            $rules->contains('boolean') => ['type' => 'boolean', 'example' => fake()->boolean()],
-            $rules->contains('array') => ['type' => 'array', 'example' => []],
-            !is_null($rules->first(
-                static function ($rule) {
-                    return str_contains($rule, 'file') || str_contains($rule, 'image') || str_contains($rule, 'mimes');
-                },
-            )) => ['type' => 'string', 'format' => 'binary'],
-            !is_null($rules->first(
-                static function ($rule) {
-                    return str_contains($rule, 'date');
-                },
-            )) => ['type' => 'string', 'format' => 'date', 'example' => fake()->date()],
-            $rules->contains('email') => ['type' => 'string', 'format' => 'email', 'example' => fake()->email()],
-            default => ['type' => 'string', 'example' => fake()->word()],
-        };
-
-        foreach ($rules as $rule) {
-            if (preg_match('/^(min|max):(\d+)/', $rule, $m)) {
-                $schema['min' === $m[1] ? 'minimum' : 'maximum'] = (int) $m[2];
-            }
-
-            if (preg_match('/^between:(\d+),(\d+)/', $rule, $m)) {
-                $schema['minimum'] = (int) $m[1];
-                $schema['maximum'] = (int) $m[2];
-            }
-
-            if (preg_match('/^in:(.+)$/', $rule, $m)) {
-                $schema['enum'] = explode(',', $m[1]);
-            }
-
-            if (preg_match('/^regex:(.+)$/', $rule, $m)) {
-                $schema['pattern'] = $m[1];
-            }
-        }
-
-        return $schema;
+        return JSONSchemaUtil::fromRequestRules($validator->getRules())->toArray()['properties'];
     }
 }

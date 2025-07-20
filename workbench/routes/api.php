@@ -7,7 +7,12 @@ use Workbench\App\Http\Controllers\UpdateUserController;
 Route::prefix('api')->group(
     static function (): void {
         Route::post('/users', [CreateUserController::class, '__invoke']);
+        Route::get('/users', [CreateUserController::class, '__invoke']);
         Route::patch('/users/{id}', [UpdateUserController::class, '__invoke']);
+        Route::put(
+            'users/{user}/posts/{slug}/comments/{id}/{not_in_method_sig}/{not_in_method_sig_opt?}/{noTypeParam}/{author_id?}',
+            [UpdateUserController::class, 'methodWithParams'],
+        );
         //        Route::delete('/users/{id}', [CreateUserController::class, '__invoke']);
         //        Route::get('/users/{id}/{lang?}', [CreateUserController::class, '__invoke']);
 
