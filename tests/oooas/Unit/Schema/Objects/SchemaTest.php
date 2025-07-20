@@ -22,22 +22,20 @@ describe(class_basename(Schema::class), function (): void {
             ->writeOnly()
             ->deprecated();
 
-        expect(json_encode($schema))->toBe(
-            json_encode(
-                [
-                    'title' => 'Schema title',
-                    'description' => 'Schema description',
-                    'type' => 'array',
-                    'items' => ['type' => 'string'],
-                    'maxItems' => 10,
-                    'minItems' => 1,
-                    'uniqueItems' => true,
-                    'deprecated' => true,
-                    'readOnly' => true,
-                    'writeOnly' => true,
-                    'default' => ['Earth'],
-                ],
-            ),
+        expect($schema->toArray())->toBe(
+            [
+                'title' => 'Schema title',
+                'description' => 'Schema description',
+                'type' => 'array',
+                'items' => ['type' => 'string'],
+                'maxItems' => 10,
+                'minItems' => 1,
+                'uniqueItems' => true,
+                'deprecated' => true,
+                'readOnly' => true,
+                'writeOnly' => true,
+                'default' => ['Earth'],
+            ],
         );
     });
 
@@ -50,8 +48,8 @@ describe(class_basename(Schema::class), function (): void {
             ->writeOnly()
             ->deprecated();
 
-        expect(json_encode($schema))->toBe(
-            json_encode([
+        expect($schema->toArray())->toBe(
+            [
                 'title' => 'Schema title',
                 'description' => 'Schema description',
                 'type' => 'boolean',
@@ -59,7 +57,7 @@ describe(class_basename(Schema::class), function (): void {
                 'readOnly' => true,
                 'writeOnly' => true,
                 'default' => false,
-            ], ),
+            ],
         );
     });
 
@@ -77,23 +75,21 @@ describe(class_basename(Schema::class), function (): void {
             ->readOnly()
             ->writeOnly();
 
-        expect(json_encode($schema))->toBe(
-            json_encode(
-                [
-                    'title' => 'Schema title',
-                    'description' => 'Schema description',
-                    'type' => 'integer',
-                    'format' => 'int32',
-                    'exclusiveMaximum' => 101,
-                    'exclusiveMinimum' => 0,
-                    'maximum' => 100,
-                    'minimum' => 1,
-                    'multipleOf' => 2,
-                    'readOnly' => true,
-                    'writeOnly' => true,
-                    'default' => false,
-                ],
-            ),
+        expect($schema->toArray())->toBe(
+            [
+                'title' => 'Schema title',
+                'description' => 'Schema description',
+                'type' => 'integer',
+                'format' => 'int32',
+                'exclusiveMaximum' => 101,
+                'exclusiveMinimum' => 0,
+                'maximum' => 100,
+                'minimum' => 1,
+                'multipleOf' => 2,
+                'readOnly' => true,
+                'writeOnly' => true,
+                'default' => false,
+            ],
         );
     });
 
@@ -111,23 +107,21 @@ describe(class_basename(Schema::class), function (): void {
             ->writeOnly()
             ->deprecated();
 
-        expect(json_encode($schema))->toBe(
-            json_encode(
-                [
-                    'title' => 'Schema title',
-                    'description' => 'Schema description',
-                    'type' => 'number',
-                    'exclusiveMaximum' => 101,
-                    'exclusiveMinimum' => 0,
-                    'maximum' => 100,
-                    'minimum' => 1,
-                    'multipleOf' => 2,
-                    'deprecated' => true,
-                    'readOnly' => true,
-                    'writeOnly' => true,
-                    'default' => false,
-                ],
-            ),
+        expect($schema->toArray())->toBe(
+            [
+                'title' => 'Schema title',
+                'description' => 'Schema description',
+                'type' => 'number',
+                'exclusiveMaximum' => 101,
+                'exclusiveMinimum' => 0,
+                'maximum' => 100,
+                'minimum' => 1,
+                'multipleOf' => 2,
+                'deprecated' => true,
+                'readOnly' => true,
+                'writeOnly' => true,
+                'default' => false,
+            ],
         );
     });
 
@@ -147,30 +141,28 @@ describe(class_basename(Schema::class), function (): void {
             ->writeOnly()
             ->deprecated();
 
-        expect(json_encode($schema))->toBe(
-            json_encode(
-                [
-                    'title' => 'Schema title',
-                    'description' => 'Schema description',
-                    'type' => 'object',
-                    'additionalProperties' => [
-                        'type' => 'integer',
-                    ],
-                    'properties' => [
-                        'id' => [
-                            'type' => 'string',
-                            'format' => 'uuid',
-                        ],
-                    ],
-                    'maxProperties' => 10,
-                    'minProperties' => 1,
-                    'required' => ['id'],
-                    'deprecated' => true,
-                    'readOnly' => true,
-                    'writeOnly' => true,
-                    'default' => false,
+        expect($schema->toArray())->toBe(
+            [
+                'title' => 'Schema title',
+                'description' => 'Schema description',
+                'type' => 'object',
+                'additionalProperties' => [
+                    'type' => 'integer',
                 ],
-            ),
+                'properties' => [
+                    'id' => [
+                        'type' => 'string',
+                        'format' => 'uuid',
+                    ],
+                ],
+                'maxProperties' => 10,
+                'minProperties' => 1,
+                'required' => ['id'],
+                'deprecated' => true,
+                'readOnly' => true,
+                'writeOnly' => true,
+                'default' => false,
+            ],
         );
     });
 
@@ -187,22 +179,20 @@ describe(class_basename(Schema::class), function (): void {
             ->writeOnly()
             ->deprecated();
 
-        expect(json_encode($schema))->toBe(
-            json_encode(
-                [
-                    'title' => 'Schema title',
-                    'description' => 'Schema description',
-                    'type' => 'string',
-                    'format' => 'uuid',
-                    'maxLength' => 10,
-                    'minLength' => 1,
-                    'pattern' => '/[a-zA-Z]+/',
-                    'deprecated' => true,
-                    'readOnly' => true,
-                    'writeOnly' => true,
-                    'default' => 'test',
-                ],
-            ),
+        expect($schema->toArray())->toBe(
+            [
+                'title' => 'Schema title',
+                'description' => 'Schema description',
+                'type' => 'string',
+                'format' => 'uuid',
+                'maxLength' => 10,
+                'minLength' => 1,
+                'pattern' => '/[a-zA-Z]+/',
+                'deprecated' => true,
+                'readOnly' => true,
+                'writeOnly' => true,
+                'default' => 'test',
+            ],
         );
     });
 
@@ -224,15 +214,13 @@ describe(class_basename(Schema::class), function (): void {
         };
         $schema = Schema::array()->items($reusableSchema);
 
-        expect(json_encode($schema))->toBe(
-            json_encode(
-                [
-                    'type' => 'array',
-                    'items' => [
-                        '$ref' => '#/components/schemas/test',
-                    ],
+        expect($schema)->toArray()->toBe(
+            [
+                'type' => 'array',
+                'items' => [
+                    '$ref' => '#/components/schemas/test',
                 ],
-            ),
+            ],
         );
     });
 
@@ -259,9 +247,7 @@ describe(class_basename(Schema::class), function (): void {
     it('can be instantiated from array', function (array $payload): void {
         $schema = Schema::from($payload);
 
-        expect(\Safe\json_encode($schema))->toBe(
-            \Safe\json_encode($payload),
-        );
+        expect($schema->toArray())->toBe($payload);
     })->with([
         [
             [
