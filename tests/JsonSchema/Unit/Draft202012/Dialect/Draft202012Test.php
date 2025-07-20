@@ -104,12 +104,12 @@ describe(class_basename(Draft202012::class), function (): void {
     });
 
     it('can create properties keyword', function (): void {
-        $mockDescriptor = LooseFluentDescriptor::withoutSchema();
-        $property = Property::create('name', $mockDescriptor);
+        $descriptor = LooseFluentDescriptor::withoutSchema();
+        $property = Property::create('name', $descriptor);
         $properties = Draft202012::properties($property);
 
         expect($properties)->toBeInstanceOf(Properties::class)
-            ->and(\Safe\json_encode($properties))->toBe(\Safe\json_encode(['name' => $mockDescriptor]));
+            ->and(\Safe\json_encode($properties))->toBe(\Safe\json_encode(['name' => $descriptor]));
     });
 
     it('can create ref keyword', function (): void {

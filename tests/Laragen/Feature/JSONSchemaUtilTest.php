@@ -8,11 +8,7 @@ describe(class_basename(JSONSchemaUtil::class), function (): void {
     it('can be instantiated from array', function (array $rules, array $expectation): void {
         $descriptor = LooseFluentDescriptor::from(LaravelRulesToSchema::parse($rules)->compile());
 
-        expect(
-            \Safe\json_encode($descriptor, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-        )->toBe(
-            \Safe\json_encode($expectation, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-        );
+        expect($descriptor->toArray())->toBe($expectation);
     })->with([
         [
             [

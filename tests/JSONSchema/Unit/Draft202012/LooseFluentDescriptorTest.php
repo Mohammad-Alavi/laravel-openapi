@@ -9,36 +9,36 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('can create a descriptor with schema', function (): void {
         $descriptor = LooseFluentDescriptor::create('https://json-schema.org/draft/2020-12/schema');
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 '$schema' => 'https://json-schema.org/draft/2020-12/schema',
-            ]),
+            ],
         );
     });
 
     it('can create a descriptor without schema', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema();
 
-        expect(\Safe\json_encode($descriptor))->toBe('[]');
+        expect($descriptor)->toArray()->toBeEmpty();
     });
 
     it('can set type', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()->type('string');
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'string',
-            ]),
+            ],
         );
     });
 
     it('can set type using Type class', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()->type(Type::string());
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'string',
-            ]),
+            ],
         );
     });
 
@@ -47,11 +47,11 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->type('string')
             ->format(StringFormat::DATE);
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'string',
                 'format' => 'date',
-            ]),
+            ],
         );
     });
 
@@ -61,12 +61,12 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->minimum(0)
             ->maximum(100);
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'number',
-                'maximum' => 100.0,
-                'minimum' => 0.0,
-            ]),
+                'maximum' => 100,
+                'minimum' => 0,
+            ],
         );
     });
 
@@ -76,12 +76,12 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->exclusiveMinimum(0)
             ->exclusiveMaximum(100);
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'number',
-                'exclusiveMaximum' => 100.0,
-                'exclusiveMinimum' => 0.0,
-            ]),
+                'exclusiveMaximum' => 100,
+                'exclusiveMinimum' => 0,
+            ],
         );
     });
 
@@ -91,12 +91,12 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->minLength(5)
             ->maxLength(10);
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'string',
                 'maxLength' => 10,
                 'minLength' => 5,
-            ]),
+            ],
         );
     });
 
@@ -105,11 +105,11 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->type('string')
             ->pattern('^[a-zA-Z0-9]*$');
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'string',
                 'pattern' => '^[a-zA-Z0-9]*$',
-            ]),
+            ],
         );
     });
 
@@ -121,8 +121,8 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
                 Property::create('age', LooseFluentDescriptor::withoutSchema()->type('integer')),
             );
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'object',
                 'properties' => [
                     'name' => [
@@ -132,7 +132,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
                         'type' => 'integer',
                     ],
                 ],
-            ]),
+            ],
         );
     });
 
@@ -144,8 +144,8 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
                 Property::create('age', LooseFluentDescriptor::withoutSchema()->type('integer')),
             )->required('name', 'age');
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'object',
                 'properties' => [
                     'name' => [
@@ -159,7 +159,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
                     'name',
                     'age',
                 ],
-            ]),
+            ],
         );
     });
 
@@ -168,13 +168,13 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->type(Type::array())
             ->items(LooseFluentDescriptor::withoutSchema()->type(Type::string()));
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'array',
                 'items' => [
                     'type' => 'string',
                 ],
-            ]),
+            ],
         );
     });
 
@@ -183,21 +183,21 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->type('string')
             ->enum('red', 'green', 'blue');
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'string',
                 'enum' => ['red', 'green', 'blue'],
-            ]),
+            ],
         );
     });
 
     it('should return constant value as is', function (mixed $value): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()->const($value);
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'const' => $value,
-            ]),
+            ],
         );
     })->with([
         'test',
@@ -214,13 +214,13 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->description('A color name')
             ->examples('red', 'green', 'blue');
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'title' => 'Color',
                 'description' => 'A color name',
                 'type' => 'string',
                 'examples' => ['red', 'green', 'blue'],
-            ]),
+            ],
         );
     });
 
@@ -229,11 +229,11 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->type('string')
             ->default('default-value');
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'string',
                 'default' => 'default-value',
-            ]),
+            ],
         );
     });
 
@@ -243,12 +243,12 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->readOnly()
             ->writeOnly();
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'string',
                 'readOnly' => true,
                 'writeOnly' => true,
-            ]),
+            ],
         );
     });
 
@@ -257,20 +257,18 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->type('string')
             ->deprecated();
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode([
+        expect($descriptor)->toArray()->toBe(
+            [
                 'type' => 'string',
                 'deprecated' => true,
-            ]),
+            ],
         );
     });
 
     it('can be instantiated from array', function (array $payload): void {
         $descriptor = LooseFluentDescriptor::from($payload);
 
-        expect(\Safe\json_encode($descriptor))->toBe(
-            \Safe\json_encode($payload),
-        );
+        expect($descriptor)->toArray()->toBe($payload);
     })->with([
         [
             [
