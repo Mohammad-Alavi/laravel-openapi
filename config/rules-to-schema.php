@@ -9,6 +9,7 @@ use LaravelRulesToSchema\Parsers\MiscPropertyParser;
 use LaravelRulesToSchema\Parsers\NestedObjectParser;
 use LaravelRulesToSchema\Parsers\RequiredParser;
 use LaravelRulesToSchema\Parsers\TypeParser;
+use MohammadAlavi\Laragen\RuleParsers\RequiredWith;
 
 return [
     /*
@@ -31,6 +32,7 @@ return [
         ExcludedParser::class,
         ConfirmedParser::class,
         CustomRuleSchemaParser::class,
+        RequiredWith::class,
     ],
 
     /*
