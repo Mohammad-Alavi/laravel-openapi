@@ -4,7 +4,6 @@ namespace Tests\Laragen\Feature\Support\Doubles;
 
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
-use Workbench\App\Models\User;
 
 class ExtractController
 {
