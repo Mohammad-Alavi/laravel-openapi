@@ -144,4 +144,4 @@ describe(class_basename(RequiredWith::class), function (): void {
             ],
         ],
     ]);
-})->covers(RequiredWith::class)->only();
+})->covers(RequiredWith::class);
