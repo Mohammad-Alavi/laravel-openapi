@@ -29,7 +29,7 @@ final class RulesToSchema extends LaravelRulesToSchema
             ->return();
 
         foreach ($normalizedRules as $property => $rawRules) {
-            $propertySchema = $this->parseRuleset($property, $rawRules, $schema, $normalizedRules);
+            $propertySchema = $this->parseRulesetOverride($property, $rawRules, $schema, $normalizedRules);
 
             if ($propertySchema instanceof FluentSchema) {
                 $schema->object()->property($property, $propertySchema);
@@ -41,7 +41,10 @@ final class RulesToSchema extends LaravelRulesToSchema
         return $schema;
     }
 
-    public function parseRuleset(string $name, array $nestedRuleset, FluentSchema $baseSchema, array $allRules): FluentSchema|array|null
+    /*
+     * This is a temporary method to allow for overriding the ruleset parsing logic, parseRuleset() method.
+     */
+    public function parseRulesetOverride(string $name, array $nestedRuleset, FluentSchema $baseSchema, array $allRules): FluentSchema|array|null
     {
         $validationRules = $nestedRuleset[config('rules-to-schema.validation_rule_token')] ?? [];
 
