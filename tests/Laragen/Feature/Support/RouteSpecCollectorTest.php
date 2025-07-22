@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Http\FormRequest;
-use MohammadAlavi\Laragen\Extraction\Extractor;
+use MohammadAlavi\Laragen\Scribe\Extraction\Extractor;
 use MohammadAlavi\Laragen\Support\RouteSpecCollector;
 use Workbench\App\Models\User;
 
