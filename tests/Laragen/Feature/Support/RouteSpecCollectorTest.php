@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Foundation\Http\FormRequest;
 use MohammadAlavi\Laragen\Scribe\Extraction\Extractor;
 use MohammadAlavi\Laragen\Support\RouteSpecCollector;
-use Workbench\App\Models\User;
+use Tests\Laragen\Feature\Support\Doubles\PathController;
 
 describe(class_basename(RouteSpecCollector::class), function () {
     it('normalizes php types correctly', function () {
@@ -86,43 +85,3 @@ describe(class_basename(RouteSpecCollector::class), function () {
         expect($bodyParams)->toBeArray()->and($bodyParams)->toBeEmpty();
     });
 })->covers(RouteSpecCollector::class);
-
-class BodyFormRequest extends FormRequest
-{
-    public function rules(): array
-    {
-        return [
-            'foo' => ['string', 'min:3'],
-            'bar' => ['integer'],
-            'name' => ['required_without:email', 'string', 'max:255'],
-            'email' => 'required_without:name|email|max:255',
-            'password' => 'string|min:8|confirmed',
-            'age' => ['nullable', 'integer', 'between:18,99'],
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [];
-    }
-
-    public function attributes(): array
-    {
-        return [];
-    }
-}
-
-class PathController
-{
-    public function methodWithParams(int $id, User $user, string $slug, $noTypeParam, BodyFormRequest $request, bool $flag, User $user_id)
-    {
-    }
-
-    public function methodWithFormRequest(BodyFormRequest $request)
-    {
-    }
-
-    public function methodWithoutFormRequest(int $id, User $user)
-    {
-    }
-}
