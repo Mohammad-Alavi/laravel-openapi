@@ -4,8 +4,10 @@ namespace MohammadAlavi\Laragen\Support;
 
 use FluentJsonSchema\FluentSchema;
 use Illuminate\Foundation\Http\FormRequest;
+use LaravelRulesToSchema\Contracts\RuleParser;
 use LaravelRulesToSchema\LaravelRulesToSchema;
 use LaravelRulesToSchema\ValidationRuleNormalizer;
+use Mockery\Exception;
 
 final class RulesToSchema extends LaravelRulesToSchema
 {
@@ -37,5 +39,46 @@ final class RulesToSchema extends LaravelRulesToSchema
         }
 
         return $schema;
+    }
+
+    public function parseRuleset(string $name, array $nestedRuleset, FluentSchema $baseSchema, array $allRules): FluentSchema|array|null
+    {
+        $validationRules = $nestedRuleset[config('rules-to-schema.validation_rule_token')] ?? [];
+
+        $schemas = [$name => FluentSchema::make()];
+
+        foreach (\LaravelRulesToSchema\Facades\LaravelRulesToSchema::getParsers() as $parserClass) {
+            $instance = app($parserClass);
+
+            if (!$instance instanceof RuleParser) {
+                throw new Exception('Rule parsers must implement ' . RuleParser::class);
+            }
+
+            $newSchemas = [];
+
+            foreach ($schemas as $schemaKey => $schema) {
+                $resultSchema = $instance($schemaKey, $schema, $validationRules, $nestedRuleset, $baseSchema, $allRules);
+
+                if (null === $resultSchema) {
+                    continue;
+                }
+
+                if (is_array($resultSchema)) {
+                    $newSchemas = [...$newSchemas, ...$resultSchema];
+                } else {
+                    $newSchemas[$schemaKey] = $resultSchema;
+                }
+            }
+
+            $schemas = $newSchemas;
+        }
+
+        if (0 == count($schemas)) {
+            return null;
+        } elseif (1 == count($schemas)) {
+            return array_values($schemas)[0];
+        }
+
+        return $schemas;
     }
 }
