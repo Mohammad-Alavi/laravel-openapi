@@ -10,6 +10,9 @@ final readonly class RequiredWith implements RuleParser
 {
     public function __invoke(string $attribute, FluentSchema $schema, array $validationRules, array $nestedRuleset): array|FluentSchema|null
     {
+        if (func_num_args() < 6) {
+            return $schema;
+        }
         $baseSchema = func_get_arg(4);
         $allRules = func_get_arg(5);
         if (!($baseSchema instanceof FluentSchema) || !is_array($allRules)) {
