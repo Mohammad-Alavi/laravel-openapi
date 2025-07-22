@@ -3,7 +3,6 @@
 namespace Workbench\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use LaravelRulesToSchema\Facades\LaravelRulesToSchema;
 
 class CreateUserRequest extends FormRequest
 {
