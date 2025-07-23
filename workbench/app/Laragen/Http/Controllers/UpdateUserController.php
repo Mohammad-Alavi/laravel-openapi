@@ -1,6 +1,6 @@
 <?php
 
-namespace Workbench\App\Http\Controllers;
+namespace Workbench\App\Laragen\Http\Controllers;
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
@@ -12,7 +12,7 @@ use Workbench\App\Documentation\Tags\UserTag;
 use Workbench\App\Documentation\UpdateUserSecurity;
 use Workbench\App\Documentation\UserResponses;
 use Workbench\App\Documentation\WorkbenchCollection;
-use Workbench\App\Http\Requests\CreateUserRequest;
+use Workbench\App\Laragen\Http\Requests\CreateUserRequest;
 use Workbench\App\Models\User;
 
 #[Collection(WorkbenchCollection::class)]

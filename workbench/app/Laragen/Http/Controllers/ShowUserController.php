@@ -1,6 +1,6 @@
 <?php
 
-namespace Workbench\App\Http\Controllers;
+namespace Workbench\App\Laragen\Http\Controllers;
 
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;

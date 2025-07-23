@@ -1,6 +1,6 @@
 <?php
 
-namespace Workbench\App\Http\Requests;
+namespace Workbench\App\Laragen\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

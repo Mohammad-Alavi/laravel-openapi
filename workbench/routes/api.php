@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Workbench\App\Http\Controllers\CreateUserController;
-use Workbench\App\Http\Controllers\UpdateUserController;
+use Workbench\App\Laragen\Http\Controllers\CreateUserController;
+use Workbench\App\Laragen\Http\Controllers\UpdateUserController;
 
 Route::prefix('api')->group(
     static function (): void {
