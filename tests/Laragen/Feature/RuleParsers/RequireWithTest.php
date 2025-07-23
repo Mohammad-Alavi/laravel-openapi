@@ -1,7 +1,7 @@
 <?php
 
 use MohammadAlavi\Laragen\RuleParsers\RequiredWith;
-use MohammadAlavi\Laragen\Support\RulesToSchema;
+use MohammadAlavi\Laragen\Support\RuleToSchema;
 
 describe(class_basename(RequiredWith::class), function (): void {
     $anyOf = [
@@ -29,8 +29,8 @@ describe(class_basename(RequiredWith::class), function (): void {
     it(
         'can parse required_with rules',
         function (array $rules, array $expectation): void {
-            expect(json_encode(app(RulesToSchema::class)->parse($rules)->compile(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES))
-                ->toBe(json_encode($expectation, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            expect(RuleToSchema::transform($rules)->compile())
+                ->toBe($expectation);
         },
     )->with([
         [

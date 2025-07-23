@@ -4,32 +4,32 @@ namespace MohammadAlavi\Laragen\Support;
 
 use FluentJsonSchema\FluentSchema;
 use Illuminate\Foundation\Http\FormRequest;
-use LaravelRulesToSchema\Contracts\RuleParser;
+use LaravelRulesToSchema\Contracts\RuleParser as LaravelRuleParser;
 use LaravelRulesToSchema\LaravelRulesToSchema;
 use LaravelRulesToSchema\ValidationRuleNormalizer;
 use Mockery\Exception;
 
-final class RulesToSchema extends LaravelRulesToSchema
+final class RuleToSchema extends LaravelRulesToSchema
 {
-    public function parse(array|string $rules): FluentSchema
+    public static function transform(array|string $rule): FluentSchema
     {
-        if (is_string($rules)) {
-            if (!class_exists($rules)) {
-                throw new \Exception("Class $rules does not implement " . FormRequest::class . ' and can not be parsed.');
+        if (is_string($rule)) {
+            if (!class_exists($rule)) {
+                throw new \Exception("Class $rule does not implement " . FormRequest::class . ' and can not be parsed.');
             }
-            $instance = new $rules();
+            $instance = new $rule();
 
-            $rules = method_exists($instance, 'rules') ? app()->call([$instance, 'rules']) : [];
+            $rule = method_exists($instance, 'rules') ? app()->call([$instance, 'rules']) : [];
         }
 
-        $normalizedRules = (new ValidationRuleNormalizer($rules))->getRules();
+        $normalizedRules = (new ValidationRuleNormalizer($rule))->getRules();
 
         $schema = FluentSchema::make()
             ->type()->object()
             ->return();
 
         foreach ($normalizedRules as $property => $rawRules) {
-            $propertySchema = $this->parseRulesetOverride($property, $rawRules, $schema, $normalizedRules);
+            $propertySchema = self::parseRulesetOverride($property, $rawRules, $schema, $normalizedRules);
 
             if ($propertySchema instanceof FluentSchema) {
                 $schema->object()->property($property, $propertySchema);
@@ -44,7 +44,7 @@ final class RulesToSchema extends LaravelRulesToSchema
     /*
      * This is a temporary method to allow for overriding the ruleset parsing logic, parseRuleset() method.
      */
-    public function parseRulesetOverride(string $name, array $nestedRuleset, FluentSchema $baseSchema, array $allRules): FluentSchema|array|null
+    private static function parseRulesetOverride(string $name, array $nestedRuleset, FluentSchema $baseSchema, array $allRules): FluentSchema|array|null
     {
         $validationRules = $nestedRuleset[config('rules-to-schema.validation_rule_token')] ?? [];
 
@@ -53,8 +53,8 @@ final class RulesToSchema extends LaravelRulesToSchema
         foreach (\LaravelRulesToSchema\Facades\LaravelRulesToSchema::getParsers() as $parserClass) {
             $instance = app($parserClass);
 
-            if (!$instance instanceof RuleParser) {
-                throw new Exception('Rule parsers must implement ' . RuleParser::class);
+            if (!$instance instanceof LaravelRuleParser) {
+                throw new Exception('Rule parsers must implement ' . LaravelRuleParser::class);
             }
 
             $newSchemas = [];

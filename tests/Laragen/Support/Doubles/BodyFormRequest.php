@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Laragen\Feature\Support\Doubles;
+namespace Tests\Laragen\Support\Doubles;
 
 use Illuminate\Foundation\Http\FormRequest;
 

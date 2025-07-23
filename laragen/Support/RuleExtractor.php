@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\Laragen\Scribe\Extraction\Strategies;
+namespace MohammadAlavi\Laragen\Support;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Routing\Route;
@@ -10,9 +10,9 @@ use Knuckles\Scribe\Extracting\Strategies\BodyParameters\GetFromFormRequest as G
 use Knuckles\Scribe\Extracting\Strategies\BodyParameters\GetFromInlineValidator;
 use Knuckles\Scribe\Tools\Globals;
 
-final class GetFromFormRequest extends GetFromFormRequestBase
+final class RuleExtractor extends GetFromFormRequestBase
 {
-    public function rules(Route $route): array
+    public function extractFrom(Route $route): array
     {
         return $this->normaliseRules([...$this->requestRules($route), ...$this->inlineRules($route)]);
     }

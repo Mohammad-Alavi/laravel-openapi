@@ -2,7 +2,7 @@
 
 use MohammadAlavi\Laragen\Scribe\Extraction\Extractor;
 use MohammadAlavi\Laragen\Support\RouteSpecCollector;
-use Tests\Laragen\Feature\Support\Doubles\PathController;
+use Tests\Laragen\Support\Doubles\PathController;
 
 describe(class_basename(RouteSpecCollector::class), function () {
     it('normalizes php types correctly', function () {
