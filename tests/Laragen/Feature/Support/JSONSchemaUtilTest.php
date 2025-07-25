@@ -1,12 +1,10 @@
 <?php
 
-use LaravelRulesToSchema\Facades\LaravelRulesToSchema;
 use MohammadAlavi\Laragen\Support\JSONSchemaUtil;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(JSONSchemaUtil::class), function (): void {
     it('can be instantiated from array', function (array $rules, array $expectation): void {
-        $descriptor = LooseFluentDescriptor::from(LaravelRulesToSchema::parse($rules)->compile());
+        $descriptor = JSONSchemaUtil::fromRequestRules($rules);
 
         expect($descriptor->toArray())->toBe($expectation);
     })->with([

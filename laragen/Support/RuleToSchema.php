@@ -4,10 +4,11 @@ namespace MohammadAlavi\Laragen\Support;
 
 use FluentJsonSchema\FluentSchema;
 use Illuminate\Foundation\Http\FormRequest;
-use LaravelRulesToSchema\Contracts\RuleParser as LaravelRuleParser;
+use LaravelRulesToSchema\Contracts\RuleParser;
 use LaravelRulesToSchema\LaravelRulesToSchema;
 use LaravelRulesToSchema\ValidationRuleNormalizer;
 use Mockery\Exception;
+use MohammadAlavi\Laragen\RuleParsers\RequiredWith;
 
 final class RuleToSchema extends LaravelRulesToSchema
 {
@@ -22,14 +23,24 @@ final class RuleToSchema extends LaravelRulesToSchema
             $rule = method_exists($instance, 'rules') ? app()->call([$instance, 'rules']) : [];
         }
 
-        $normalizedRules = (new ValidationRuleNormalizer($rule))->getRules();
+        $ruleSets = (new ValidationRuleNormalizer($rule))->getRules();
 
         $schema = FluentSchema::make()
             ->type()->object()
             ->return();
 
-        foreach ($normalizedRules as $property => $rawRules) {
-            $propertySchema = self::parseRulesetOverride($property, $rawRules, $schema, $normalizedRules);
+        foreach ($ruleSets as $property => $rawRules) {
+            $propertySchema = self::parseRulesetOverride($property, $rawRules);
+
+            if ($propertySchema instanceof FluentSchema) {
+                $schema->object()->property($property, $propertySchema);
+            } elseif (is_array($propertySchema)) {
+                $schema->object()->properties($propertySchema);
+            }
+        }
+
+        foreach ($ruleSets as $property => $rawRules) {
+            $propertySchema = self::parseCustomRules($property, $rawRules, $schema, $ruleSets, $schema);
 
             if ($propertySchema instanceof FluentSchema) {
                 $schema->object()->property($property, $propertySchema);
@@ -44,7 +55,7 @@ final class RuleToSchema extends LaravelRulesToSchema
     /*
      * This is a temporary method to allow for overriding the ruleset parsing logic, parseRuleset() method.
      */
-    private static function parseRulesetOverride(string $name, array $nestedRuleset, FluentSchema $baseSchema, array $allRules): FluentSchema|array|null
+    private static function parseRulesetOverride(string $name, array $nestedRuleset): FluentSchema|array|null
     {
         $validationRules = $nestedRuleset[config('rules-to-schema.validation_rule_token')] ?? [];
 
@@ -53,14 +64,14 @@ final class RuleToSchema extends LaravelRulesToSchema
         foreach (\LaravelRulesToSchema\Facades\LaravelRulesToSchema::getParsers() as $parserClass) {
             $instance = app($parserClass);
 
-            if (!$instance instanceof LaravelRuleParser) {
-                throw new Exception('Rule parsers must implement ' . LaravelRuleParser::class);
+            if (!$instance instanceof RuleParser) {
+                throw new Exception('Rule parsers must implement ' . RuleParser::class);
             }
 
             $newSchemas = [];
 
             foreach ($schemas as $schemaKey => $schema) {
-                $resultSchema = $instance($schemaKey, $schema, $validationRules, $nestedRuleset, $baseSchema, $allRules);
+                $resultSchema = $instance($schemaKey, $schema, $validationRules, $nestedRuleset);
 
                 if (null === $resultSchema) {
                     continue;
@@ -75,6 +86,29 @@ final class RuleToSchema extends LaravelRulesToSchema
 
             $schemas = $newSchemas;
         }
+
+        if (0 == count($schemas)) {
+            return null;
+        } elseif (1 == count($schemas)) {
+            return array_values($schemas)[0];
+        }
+
+        return $schemas;
+    }
+
+    private static function parseCustomRules(string $name, array $nestedRuleset, FluentSchema $baseSchema, array $ruleSets): FluentSchema|array|null
+    {
+        $validationRules = $nestedRuleset[config('rules-to-schema.validation_rule_token')] ?? [];
+
+        $schemas = [$name => FluentSchema::make()];
+
+        $newSchemas = [];
+
+        foreach ($schemas as $schemaKey => $schema) {
+            app(RequiredWith::class)($schemaKey, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets);
+        }
+
+        $schemas = $newSchemas;
 
         if (0 == count($schemas)) {
             return null;

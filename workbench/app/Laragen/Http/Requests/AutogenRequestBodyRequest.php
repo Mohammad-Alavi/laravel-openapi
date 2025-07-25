@@ -4,7 +4,7 @@ namespace Workbench\App\Laragen\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-final class CreateUserRequest extends FormRequest
+final class AutogenRequestBodyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ final class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required_without:email', 'string', 'max:255'],
-            'email' => 'required_without:name|email|max:255',
-            'password' => 'string|min:8|confirmed',
+            'name' => ['required_with:email', 'string', 'max:255'],
+            'email' => 'required_with:name|email|max:255',
+            'password' => 'required|string|min:8|confirmed',
             'age' => ['nullable', 'integer', 'between:18,99'],
         ];
     }

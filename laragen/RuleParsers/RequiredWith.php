@@ -3,10 +3,9 @@
 namespace MohammadAlavi\Laragen\RuleParsers;
 
 use FluentJsonSchema\FluentSchema;
-use Illuminate\Support\Arr;
 use LaravelRulesToSchema\Contracts\RuleParser;
 
-final readonly class RequiredWith implements RuleParser
+final class RequiredWith implements RuleParser
 {
     public function __invoke(string $attribute, FluentSchema $schema, array $validationRules, array $nestedRuleset): array|FluentSchema|null
     {
@@ -25,7 +24,7 @@ final readonly class RequiredWith implements RuleParser
             foreach ($ruleSet['##_VALIDATION_RULES_##'] as $set) {
                 [$rule, $args] = $set;
                 if ('required_with' === $rule) {
-                    $hasRequiredWith[$attr] = true;
+                    $hasRequiredWith[$attr] = $args;
                 }
             }
         }
@@ -38,50 +37,51 @@ final readonly class RequiredWith implements RuleParser
             $shouldWrapInAllOf = true;
         }
 
-        foreach ($validationRules as $ruleArgs) {
-            [$rule, $args] = $ruleArgs;
-
-            if (!is_string($rule)) {
-                continue;
-            }
-
-            if ('required_with' === $rule) {
-                $anyOf = [
+        $lastAttribute = array_key_last($allRules);
+        if ($lastAttribute === $attribute) {
+            $properties = $baseSchema->getSchemaDTO()?->properties ?? [];
+            /** @var array<string, FluentSchema> $allOf */
+            $allOf = array_filter(
+                $properties,
+                static function (FluentSchema $schema, string $property) use ($hasRequiredWith) {
+                    return !array_key_exists($property, $hasRequiredWith);
+                },
+                ARRAY_FILTER_USE_BOTH,
+            );
+            /** @var array<string, FluentSchema> $anyOf */
+            $anyOf = array_filter(
+                $properties,
+                static function (FluentSchema $schema, string $property) use ($hasRequiredWith) {
+                    return array_key_exists($property, $hasRequiredWith);
+                },
+                ARRAY_FILTER_USE_BOTH,
+            );
+            $processedAnyOf = [];
+            foreach ($anyOf as $prop => $propSchema) {
+                $processedAnyOf[] = [
                     'properties' => [
-                        $attribute => $schema->object(),
+                        $prop => $propSchema,
                     ],
-                    'required' => [$attribute],
+                    'required' => $hasRequiredWith[$prop] ?? [],
                 ];
-
-                if (!$shouldWrapInAllOf) {
-                    $baseSchema->anyOf(
-                        [
-                            ...($baseSchema->getSchemaDTO()->anyOf ?? []),
-                            $anyOf,
-                        ],
-                    );
-
-                    return null;
-                }
-
-                $allOf = $baseSchema->getSchemaDTO()->allOf ?? [];
-                $allOf['anyOf'] = [
-                    ...($baseSchema->getSchemaDTO()->allOf['anyOf'] ?? []),
-                    $anyOf,
-                ];
-                $baseSchema->allOf(Arr::sort($allOf, static fn ($value, $key) => 'anyOf' !== $key));
-
-                return null;
             }
 
+            $baseSchema->getSchemaDTO()->properties = null;
             if ($shouldWrapInAllOf) {
-                $allOf = [
-                    ...($baseSchema->getSchemaDTO()->allOf ?? []),
-                    ['properties' => [$attribute => $schema->object()]],
-                ];
-                $baseSchema->allOf($allOf);
-
-                return null;
+                $processedAllOf = [];
+                foreach ($allOf as $prop => $propSchema) {
+                    $processedAllOf['properties'][$prop] = $propSchema;
+                }
+                if (!is_null($baseSchema->getSchemaDTO()->required) && [] !== $baseSchema->getSchemaDTO()->required) {
+                    $processedAllOf['required'] = $baseSchema->getSchemaDTO()->required;
+                }
+                $baseSchema->getSchemaDTO()->required = null;
+                $baseSchema->allOf([
+                    ['anyOf' => $processedAnyOf],
+                    $processedAllOf,
+                ]);
+            } else {
+                $baseSchema->anyOf($processedAnyOf);
             }
         }
 

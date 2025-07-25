@@ -13,7 +13,7 @@ final readonly class Laragen
     public static function getBodyParameters(Route $route): ObjectRestrictor
     {
         $rules = app(RuleExtractor::class)->extractFrom($route);
-        $schema = app(RuleToSchema::class)->transform(
+        $schema = RuleToSchema::class::transform(
             $rules,
         )->compile();
 

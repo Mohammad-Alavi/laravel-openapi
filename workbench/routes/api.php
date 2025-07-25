@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Workbench\App\Laragen\Http\Controllers\AutogenController;
 use Workbench\App\Laragen\Http\Controllers\CreateUserController;
 use Workbench\App\Laragen\Http\Controllers\UpdateUserController;
 
@@ -13,6 +14,8 @@ Route::prefix('api')->group(
             'users/{user}/posts/{slug}/comments/{id}/{not_in_method_sig}/{not_in_method_sig_opt?}/{noTypeParam}/{author_id?}',
             [UpdateUserController::class, 'methodWithParams'],
         );
+        Route::post('/autogen/request-body', [AutogenController::class, 'requestBody'])
+            ->name('autogen.request-body');
         //        Route::delete('/users/{id}', [CreateUserController::class, '__invoke']);
         //        Route::get('/users/{id}/{lang?}', [CreateUserController::class, '__invoke']);
 

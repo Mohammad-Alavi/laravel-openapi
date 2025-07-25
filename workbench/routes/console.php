@@ -2,11 +2,17 @@
 
 use Illuminate\Support\Facades\Artisan;
 
+use function Laravel\Prompts\select;
+
 Artisan::command(
-    'laragen:generate {collection=default}',
+    'laragen:generate',
     function () {
         $this->info('Generating OpenAPI specification...');
-        $collection = $this->argument('collection');
+        $collection = select(
+            'Select the collection to generate OpenAPI specification for:',
+            array_keys(config('openapi.collections')),
+            default: 'default',
+        );
         app(MohammadAlavi\LaravelOpenApi\Generator::class)->generate($collection)->toJsonFile(
             'openapi',
             './.laragen',
