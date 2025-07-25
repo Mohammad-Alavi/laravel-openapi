@@ -1,10 +1,7 @@
 /.idea/
 /node_modules/
 /vendor/
-.phpunit.result.cache
 .bash_aliases
-.php-cs-fixer.cache
-/psalm_cache
 /temp
 .env
 .env.*

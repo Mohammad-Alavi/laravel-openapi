@@ -15,6 +15,7 @@ $finder = Finder::create()
     ->name('*.php');
 
 return (new PhpCsFixer\Config())
+    ->setCacheFile(__DIR__ . '/temp/.php-cs-fixer.cache')
     ->setRules([
         '@Symfony' => true,
         'concat_space' => ['spacing' => 'one'],
