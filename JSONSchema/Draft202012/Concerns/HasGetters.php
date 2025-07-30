@@ -30,7 +30,7 @@ trait HasGetters
 
     public function getEnum(): array
     {
-        //Assert::null($this->type, 'Only Enum type can have enum values.');
+        // Assert::null($this->type, 'Only Enum type can have enum values.');
 
         return $this->enum?->value() ?? [];
     }
