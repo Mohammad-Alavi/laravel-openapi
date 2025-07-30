@@ -26,6 +26,7 @@ final class AutogenRequestBodyRequest extends FormRequest
             'email' => 'required_with:name|email|max:255',
             'password' => 'required|string|min:8|confirmed',
             'age' => ['nullable', 'integer', 'between:18,99'],
+            'avatar' => ['nullable', 'image', 'max:2048'],
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012;
 
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Concerns\HasGetters;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\FluentDescriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchemaFactory;
@@ -59,6 +60,8 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Vocabulary\Vocab
 
 class LooseFluentDescriptor implements FluentDescriptor
 {
+    use HasGetters;
+
     private Anchor|null $anchor = null;
     private Comment|null $comment = null;
     private Defs|null $defs = null;
@@ -251,6 +254,26 @@ class LooseFluentDescriptor implements FluentDescriptor
         return $clone;
     }
 
+    public function oneOf(JSONSchema|JSONSchemaFactory ...$schema): static
+    {
+        $clone = clone $this;
+
+        $schemas = array_map(
+            static function (JSONSchema|JSONSchemaFactory $schema): JSONSchema {
+                if ($schema instanceof JSONSchemaFactory) {
+                    return $schema->build();
+                }
+
+                return $schema;
+            },
+            $schema,
+        );
+
+        $clone->oneOf = Dialect::oneOf(...$schemas);
+
+        return $clone;
+    }
+
     public function toArray(): array
     {
         return json_decode(
@@ -404,26 +427,6 @@ class LooseFluentDescriptor implements FluentDescriptor
         }
 
         return $keywords;
-    }
-
-    public function oneOf(JSONSchema|JSONSchemaFactory ...$schema): static
-    {
-        $clone = clone $this;
-
-        $schemas = array_map(
-            static function (JSONSchema|JSONSchemaFactory $schema): JSONSchema {
-                if ($schema instanceof JSONSchemaFactory) {
-                    return $schema->build();
-                }
-
-                return $schema;
-            },
-            $schema,
-        );
-
-        $clone->oneOf = Dialect::oneOf(...$schemas);
-
-        return $clone;
     }
 
     public function anchor(string $value): static

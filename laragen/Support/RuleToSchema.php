@@ -40,7 +40,7 @@ final class RuleToSchema extends LaravelRulesToSchema
         }
 
         foreach ($ruleSets as $property => $rawRules) {
-            $propertySchema = self::parseCustomRules($property, $rawRules, $schema, $ruleSets, $schema);
+            $propertySchema = self::parseCustomRules($property, $rawRules, $schema, $ruleSets);
 
             if ($propertySchema instanceof FluentSchema) {
                 $schema->object()->property($property, $propertySchema);

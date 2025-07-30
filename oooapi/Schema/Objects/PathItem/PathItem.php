@@ -54,6 +54,11 @@ final class PathItem extends ExtensibleObject
         return $clone;
     }
 
+    public function getOperations(): Operations|null
+    {
+        return $this->operations;
+    }
+
     public function servers(Server ...$server): self
     {
         $clone = clone $this;

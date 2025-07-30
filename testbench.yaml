@@ -18,6 +18,7 @@ workbench:
 providers:
   - MohammadAlavi\LaravelOpenApi\Providers\OpenApiServiceProvider
   - Workbench\App\Providers\WorkbenchServiceProvider
+  - MohammadAlavi\Laragen\Providers\LaragenServiceProvider
 env:
   - APP_DEBUG=true
   - APP_URL=https://laravel-openapi.ddev.site

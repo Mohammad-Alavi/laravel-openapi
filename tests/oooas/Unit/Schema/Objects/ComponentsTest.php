@@ -146,6 +146,7 @@ describe(class_basename(Components::class), function (): void {
                             AvailableOperation::create(
                                 HttpMethod::POST,
                                 Operation::create()
+                                    ->operationId('callbackUrl')
                                     ->requestBody(
                                         RequestBody::create()
                                             ->description(
@@ -240,6 +241,7 @@ describe(class_basename(Components::class), function (): void {
                 'MyEvent' => [
                     '{$request.query.callbackUrl}' => [
                         'post' => [
+                            'operationId' => 'callbackUrl',
                             'requestBody' => [
                                 'description' => 'something happened',
                             ],

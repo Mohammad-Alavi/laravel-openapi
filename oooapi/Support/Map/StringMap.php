@@ -8,7 +8,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Map;
 interface StringMap extends \JsonSerializable
 {
     /**
-     * @param StringMapEntry $entries
+     * @param array<string, TValue>[] $entries
      */
     public function __construct(array $entries);
 
@@ -20,7 +20,7 @@ interface StringMap extends \JsonSerializable
     public function keys(): array;
 
     /**
-     * @return StringMapEntry
+     * @return array<string, TValue>[]
      */
     public function entries(): array;
 

@@ -21,7 +21,8 @@ describe(class_basename(Operation::class), function (): void {
     it('can be created with no parameters', function (): void {
         $operation = Operation::create();
 
-        expect($operation->unserializeToArray())->toBeEmpty();
+        expect($operation->unserializeToArray())->toHaveCount(1)
+        ->toHaveKey('operationId');
     });
 
     it(

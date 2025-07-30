@@ -4,11 +4,12 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final readonly class Items implements Keyword
 {
     private function __construct(
-        private JSONSchema $descriptor,
+        private LooseFluentDescriptor $descriptor,
     ) {
     }
 
@@ -27,7 +28,7 @@ final readonly class Items implements Keyword
         return $this->value();
     }
 
-    public function value(): JSONSchema
+    public function value(): LooseFluentDescriptor
     {
         return $this->descriptor;
     }

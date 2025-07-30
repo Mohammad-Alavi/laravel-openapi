@@ -174,7 +174,7 @@ final class Operation extends ExtensibleObject
             'summary' => $this->summary,
             'description' => $this->description,
             'externalDocs' => $this->externalDocs,
-            'operationId' => $this->operationId,
+            'operationId' => $this->operationId ?? OperationId::create(uniqid('', true)),
             'parameters' => $this->parameters,
             'requestBody' => $this->requestBody,
             'responses' => $this->responses,

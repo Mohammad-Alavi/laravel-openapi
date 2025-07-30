@@ -164,6 +164,8 @@ describe('OpenApi', function (): void {
         $openApi->toJsonFile('openapi', options: JSON_PRETTY_PRINT);
 
         expect('openapi.json')->toBeValidJsonSchema();
-        $this->pushCleanupCallback(fn () => \Safe\unlink('openapi.json'));
+        $this->pushCleanupCallback(static function () {
+            \Safe\unlink('openapi.json');
+        });
     });
 })->coversNothing();

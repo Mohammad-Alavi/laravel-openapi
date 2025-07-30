@@ -23,6 +23,7 @@ describe(class_basename(Callback::class), function (): void {
                         AvailableOperation::create(
                             $method,
                             Operation::create()
+                                ->operationId('myEvent')
                                 ->requestBody(
                                     RequestBody::create()
                                         ->description(
@@ -43,8 +44,9 @@ describe(class_basename(Callback::class), function (): void {
                 'MyEvent',
             );
 
-            expect($callback)->unserializeToArray()->toBe([
-                '{$request.query.callbackUrl}' => [
+            expect($callback)->unserializeToArray()->toHaveKey(
+                '{$request.query.callbackUrl}',
+                [
                     $method->value => [
                         'requestBody' => [
                             'description' => 'something happened',
@@ -54,9 +56,10 @@ describe(class_basename(Callback::class), function (): void {
                                 'description' => 'Unauthorized',
                             ],
                         ],
+                        'operationId' => 'myEvent',
                     ],
                 ],
-            ])->name()->toBe('MyEvent');
+            )->name()->toBe('MyEvent');
         },
     )->with([
         'get action' => [HttpMethod::GET],

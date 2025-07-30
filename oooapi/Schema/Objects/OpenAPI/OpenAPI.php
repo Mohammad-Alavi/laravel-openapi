@@ -59,6 +59,11 @@ final class OpenAPI extends ExtensibleObject
         return $clone;
     }
 
+    public function getPaths(): Paths|null
+    {
+        return $this->paths;
+    }
+
     public function components(Components $components): self
     {
         $clone = clone $this;

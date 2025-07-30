@@ -30,6 +30,7 @@ describe(class_basename(PathItem::class), function (): void {
                         AvailableOperation::create(
                             HttpMethod::GET,
                             Operation::create()
+                                ->operationId('getUsers')
                                 ->responses(
                                     Responses::create(
                                         ResponseEntry::create(
@@ -57,6 +58,7 @@ describe(class_basename(PathItem::class), function (): void {
                 'summary' => 'User endpoints',
                 'description' => 'Get the users',
                 'get' => [
+                    'operationId' => 'getUsers',
                     'responses' => [
                         '200' => [
                             'description' => 'OK',

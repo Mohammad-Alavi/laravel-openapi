@@ -26,8 +26,8 @@ describe(class_basename(Extension::class), function (): void {
         ],
         [
             function (): Operation {
-                return Operation::create();
-            }, $expectations,
+                return Operation::create()->operationId('myOperation');
+            }, $expectations + ['operationId' => 'myOperation'],
         ],
         [
             function (): PathItem {

@@ -13,6 +13,7 @@ class MultiActionController
 {
     #[Operation(
         responses: SingleResponseUsingReusable::class,
+        operationId: 'anotherExample',
     )]
     public function anotherExample(): void
     {

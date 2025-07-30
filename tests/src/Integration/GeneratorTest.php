@@ -73,6 +73,7 @@ describe(class_basename(Generator::class), function (): void {
                 'paths' => [
                     '/test' => [
                         'get' => [
+                            'operationId' => 'anotherExample',
                             'responses' => [
                                 '422' => [
                                     '$ref' => '#/components/responses/ValidationErrorResponse',
