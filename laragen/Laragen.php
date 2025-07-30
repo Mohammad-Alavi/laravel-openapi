@@ -47,18 +47,13 @@ final readonly class Laragen
     public static function getRouteByUri(string $uri): Route|null
     {
         $uri = ltrim($uri, '/');
-        $route = collect(app(Router::class)->getRoutes())
+
+        return collect(app(Router::class)->getRoutes())
             ->first(
                 static function (Route $route) use ($uri): bool {
                     return $route->uri() === $uri;
                 },
             );
-
-        if (!is_null($route)) {
-            return $route;
-        }
-
-        return null;
     }
 
     public static function enrichObjectWithExample(ObjectRestrictor $descriptor): ObjectRestrictor
