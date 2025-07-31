@@ -38,6 +38,20 @@ if (!function_exists('blank')) {
     }
 }
 
+if (!function_exists('filled')) {
+    /**
+     * Determine if a value is "filled".
+     *
+     * @phpstan-assert-if-true !=null|'' $value
+     *
+     * @phpstan-assert-if-false !=numeric|bool $value
+     */
+    function filled($value): bool
+    {
+        return !blank($value);
+    }
+}
+
 if (!function_exists('value')) {
     /**
      * Return the default value of the given value.
