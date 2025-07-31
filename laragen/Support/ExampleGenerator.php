@@ -11,38 +11,79 @@ final readonly class ExampleGenerator
 {
     public function for(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
+        /** @var string|string[] $type */
+        $type = $descriptor->getType();
         if (!is_null($descriptor->getConstant())) {
-            return $descriptor->examples($descriptor->getConstant()->value());
+            $descriptor = $descriptor->examples($descriptor->getConstant()->value());
         }
 
-        if (is_string($descriptor->getType())) {
-            return $this->forType(
-                $descriptor->getType(),
-                $descriptor,
-            );
+        if (filled($descriptor->getAllOf())) {
+            $descriptor = $this->forApplicator(Applicator::ALL_OF, $descriptor);
         }
 
-        if (is_array($descriptor->getType()) && 1 === count($descriptor->getType())) {
-            return $this->forType(
-                $descriptor->getType()[0],
-                $descriptor,
-            );
+        if (filled($descriptor->getAnyOf())) {
+            $descriptor = $this->forApplicator(Applicator::ANY_OF, $descriptor);
         }
 
-        if (is_array($descriptor->getType()) && count($descriptor->getType()) > 1) {
-            return $this->multiType($descriptor);
+        if (filled($descriptor->getOneOf())) {
+            $descriptor = $this->forApplicator(Applicator::ONE_OF, $descriptor);
         }
 
-        if ([] !== $descriptor->getEnum()) {
-            return $this->forEnum($descriptor);
+        if (is_string($type)) {
+            $descriptor = $this->forType($type, $descriptor);
+        }
+
+        if (is_array($type) && filled($type)) {
+            if (1 === count($type)) {
+                $descriptor = $this->forType($type[0], $descriptor);
+            }
+
+            $descriptor = $this->multiType($type, $descriptor);
+        }
+
+        if (filled($descriptor->getEnum())) {
+            $descriptor = $this->forEnum($descriptor);
+        }
+
+        if (filled($descriptor->getProperties())) {
+            $descriptor = $this->forType('object', $descriptor);
+        }
+
+        if (!is_null($descriptor->getItems())) {
+            $descriptor = $this->forType('array', $descriptor);
         }
 
         return $descriptor;
     }
 
-    public function forType(mixed $type, LooseFluentDescriptor $descriptor): LooseFluentDescriptor
+    public function forApplicator(Applicator $applicator, LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
-        if (('object' !== $type) && ([] !== $descriptor->getExamples())) {
+        return match ($applicator) {
+            Applicator::ALL_OF => $descriptor->allOf(...collect($descriptor->getAllOf())
+                ->map(
+                    function (LooseFluentDescriptor $item) {
+                        return $this->for($item);
+                    },
+                )->toArray()),
+            Applicator::ANY_OF => $descriptor->anyOf(...collect($descriptor->getAnyOf())
+                ->map(
+                    function (LooseFluentDescriptor $item) {
+                        return $this->for($item);
+                    },
+                )->toArray()),
+            Applicator::ONE_OF => $descriptor->oneOf(...collect($descriptor->getOneOf())
+                ->map(
+                    function (LooseFluentDescriptor $item) {
+                        return $this->for($item);
+                    },
+                )->toArray()),
+            default => $descriptor,
+        };
+    }
+
+    public function forType(string $type, LooseFluentDescriptor $descriptor): LooseFluentDescriptor
+    {
+        if ((('object' !== $type) && ('array' !== $type)) && filled($descriptor->getExamples())) {
             return $descriptor;
         }
 
@@ -127,7 +168,7 @@ final readonly class ExampleGenerator
             ->map(
                 function (Property $property) {
                     return [
-                        $property->name() => fake()->randomElement($property->schema()->getExamples()),
+                        $property->name() => fake()->randomElement($property->schema()->getExamples() ?? []),
                     ];
                 },
             )->reduce(
@@ -167,7 +208,7 @@ final readonly class ExampleGenerator
             ->flatMap(
                 function () use ($itemDescriptor): array {
                     if ($itemDescriptor) {
-                        return $this->for($itemDescriptor)->getExamples();
+                        return $this->for($itemDescriptor)->getExamples() ?? [];
                     }
 
                     return [];
@@ -181,13 +222,22 @@ final readonly class ExampleGenerator
         return $descriptor->examples(null);
     }
 
-    public function multiType(LooseFluentDescriptor $descriptor)
+    /**
+     * Generates examples for multiple types.
+     *
+     * @param non-empty-array<int, string> $type
+     */
+    public function multiType(array $type, LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
         return $descriptor->examples(
-            ...collect($descriptor->getType())
+            ...collect($type)
             ->map(
                 function (string $type) use ($descriptor) {
-                    return $this->forType($type, $descriptor)->getExamples()[0];
+                    $examples = $this->forType($type, $descriptor)->getExamples();
+
+                    return fake()->randomElement(
+                        when(filled($examples), $examples, []),
+                    );
                 },
             )->toArray(),
         );
@@ -196,17 +246,7 @@ final readonly class ExampleGenerator
     public function forEnum(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
         return $descriptor->examples(
-            fake()->randomElement($descriptor->getEnum()),
+            fake()->randomElement($descriptor->getEnum() ?? []),
         );
-    }
-
-    public function mergeExamples(LooseFluentDescriptor $first, LooseFluentDescriptor $second): LooseFluentDescriptor
-    {
-        $mergedExamples = array_merge(
-            $first->getExamples(),
-            $second->getExamples(),
-        );
-
-        return $first->examples(...$mergedExamples);
     }
 }
