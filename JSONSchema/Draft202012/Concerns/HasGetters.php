@@ -16,23 +16,23 @@ trait HasGetters
     /**
      * Get the properties defined in this schema.
      *
-     * @return Property[]
+     * @return Property[]|null
      */
-    public function getProperties(): array
+    public function getProperties(): array|null
     {
-        return $this->properties?->value() ?? [];
+        return $this->properties?->value();
     }
 
-    public function getExamples(): array
+    public function getExamples(): array|null
     {
-        return $this->examples?->value() ?? [];
+        return $this->examples?->value();
     }
 
-    public function getEnum(): array
+    public function getEnum(): array|null
     {
-        //Assert::null($this->type, 'Only Enum type can have enum values.');
+        // Assert::null($this->type, 'Only Enum type can have enum values.');
 
-        return $this->enum?->value() ?? [];
+        return $this->enum?->value();
     }
 
     public function getConstant(): Constant|null
@@ -68,5 +68,20 @@ trait HasGetters
     public function getFormat(): string|null
     {
         return $this->format?->value();
+    }
+
+    public function getAllOf(): array|null
+    {
+        return $this->allOf?->value();
+    }
+
+    public function getAnyOf(): array|null
+    {
+        return $this->anyOf?->value();
+    }
+
+    public function getOneOf(): array|null
+    {
+        return $this->oneOf?->value();
     }
 }
