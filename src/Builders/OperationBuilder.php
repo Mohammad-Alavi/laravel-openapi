@@ -52,7 +52,7 @@ final readonly class OperationBuilder
                     $this->externalDocumentationBuilder->build($attribute->externalDocs),
                 );
             }
-            if (!blank($attribute->security)) {
+            if (filled($attribute->security)) {
                 $operation = $operation->security($this->securityBuilder->build($attribute->security));
             }
             if (true === $attribute->deprecated) {
