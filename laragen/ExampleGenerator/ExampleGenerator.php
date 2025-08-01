@@ -1,9 +1,8 @@
 <?php
 
-namespace MohammadAlavi\Laragen\Support;
+namespace MohammadAlavi\Laragen\ExampleGenerator;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\IntegerRestrictor;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\StringRestrictor;
+use MohammadAlavi\Laragen\Support\Applicator;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
@@ -29,11 +28,11 @@ final readonly class ExampleGenerator
             $descriptor = $this->forApplicator(Applicator::ONE_OF, $descriptor);
         }
 
-        if (is_string($type)) {
+        if (is_string($type) && filled($type)) {
             $descriptor = $this->forType($type, $descriptor);
         }
 
-        if (is_array($type) && filled($type)) {
+        if ($this->isMultiType($type) && blank($descriptor->getEnum())) {
             if (1 === count($type)) {
                 $descriptor = $this->forType($type[0], $descriptor);
             }
@@ -46,11 +45,11 @@ final readonly class ExampleGenerator
         }
 
         if (filled($descriptor->getProperties())) {
-            $descriptor = $this->forType('object', $descriptor);
+            $descriptor = $this->forObject($descriptor);
         }
 
         if (!is_null($descriptor->getItems())) {
-            $descriptor = $this->forType('array', $descriptor);
+            $descriptor = $this->forArray($descriptor);
         }
 
         return $descriptor;
@@ -83,7 +82,11 @@ final readonly class ExampleGenerator
 
     public function forType(string $type, LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
-        if ((('object' !== $type) && ('array' !== $type)) && filled($descriptor->getExamples())) {
+        if (!is_array($descriptor->getType())) {
+            if (filled($descriptor->getExamples())) {
+                return $descriptor;
+            }
+        } elseif (count($descriptor->getExamples() ?? []) === count($descriptor->getType() ?? [])) {
             return $descriptor;
         }
 
@@ -92,14 +95,12 @@ final readonly class ExampleGenerator
             'integer' => $this->forInteger($descriptor),
             'number' => $this->forNumber($descriptor),
             'boolean' => $this->forBoolean($descriptor),
-            'object' => $this->forObject($descriptor),
-            'array' => $this->forArray($descriptor),
             'null' => $this->forNull($descriptor),
             default => $descriptor,
         };
     }
 
-    public function forString(StringRestrictor $descriptor): StringRestrictor
+    public function forString(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
         if (!is_null($descriptor->getFormat())) {
             try {
@@ -126,7 +127,7 @@ final readonly class ExampleGenerator
         return substr(str_shuffle(str_repeat($characters, $length)), 0, $length);
     }
 
-    public function forInteger(IntegerRestrictor $descriptor): IntegerRestrictor
+    public function forInteger(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
         return $descriptor->examples(
             fake()->numberBetween(
@@ -222,6 +223,11 @@ final readonly class ExampleGenerator
         return $descriptor->examples(null);
     }
 
+    private function isMultiType(array|string|null $type): bool
+    {
+        return is_array($type) && filled($type);
+    }
+
     /**
      * Generates examples for multiple types.
      *
@@ -245,8 +251,38 @@ final readonly class ExampleGenerator
 
     public function forEnum(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
+        $types = collect($descriptor->getEnum())
+            ->map(
+                function ($value) {
+                    return gettype($value);
+                },
+            )->unique();
+
+        $values = collect($descriptor->getEnum())
+            ->groupBy(
+                function ($value) {
+                    return gettype($value);
+                },
+            )->toArray();
+
+        $shemaType = $descriptor->getType();
+        if ($this->isMultiType($shemaType)) {
+            foreach ($shemaType as $type) {
+                if ('null' === $type && $types->doesntContain('null')) {
+                    $types->push('null');
+                    $values['null'] = [null];
+                    $descriptor = $descriptor->enum(null, ...$descriptor->getEnum());
+                }
+            }
+        }
+
         return $descriptor->examples(
-            fake()->randomElement($descriptor->getEnum() ?? []),
+            ...collect($types)
+            ->map(
+                function (string $type) use ($values) {
+                    return fake()->randomElement($values[$type] ?? []);
+                },
+            )->toArray(),
         );
     }
 }

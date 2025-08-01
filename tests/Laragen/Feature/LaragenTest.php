@@ -3,11 +3,15 @@
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use MohammadAlavi\Laragen\Laragen;
-use MohammadAlavi\Laragen\RuleParsers\RequiredWith;
+use MohammadAlavi\Laragen\RuleParsers\RequiredWithParser;
 use Tests\Laragen\Support\Doubles\ExtractController;
 use Tests\Laragen\Support\Doubles\RequireWith\RequireWithController;
 
 describe(class_basename(Laragen::class), function () {
+    beforeEach(function () {
+        config(['laragen.laragen.autogen_example' => false]);
+    });
+
     it('can get body parameters from a route', function () {
         $route = RouteFacade::get('test', [ExtractController::class, 'simpleRules']);
 
@@ -60,11 +64,6 @@ describe(class_basename(Laragen::class), function () {
         'required' => ['name'],
     ];
 
-    $anyOf = [
-        $name,
-        $email,
-    ];
-
     $password = [
         'password' => [
             'type' => 'string',
@@ -95,7 +94,6 @@ describe(class_basename(Laragen::class), function () {
     it(
         'can parse required_with rules',
         function (Route $route, array $expectation): void {
-            //            dd(Laragen::getBodyParameters($route)->toArray());
             expect(Laragen::getBodyParameters($route)->toArray())->toEqualCanonicalizing($expectation);
         },
     )->with([
@@ -253,4 +251,4 @@ describe(class_basename(Laragen::class), function () {
             },
         );
     });
-})->covers(Laragen::class, RequiredWith::class);
+})->covers(Laragen::class, RequiredWithParser::class);

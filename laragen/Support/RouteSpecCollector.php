@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace MohammadAlavi\Laragen\Support;
 
 use Illuminate\Database\Eloquent\Model;

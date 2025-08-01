@@ -8,7 +8,7 @@ use LaravelRulesToSchema\Contracts\RuleParser;
 use LaravelRulesToSchema\LaravelRulesToSchema;
 use LaravelRulesToSchema\ValidationRuleNormalizer;
 use Mockery\Exception;
-use MohammadAlavi\Laragen\RuleParsers\RequiredWith;
+use MohammadAlavi\Laragen\RuleParsers\RequiredWithParser;
 
 final class RuleToSchema extends LaravelRulesToSchema
 {
@@ -105,7 +105,7 @@ final class RuleToSchema extends LaravelRulesToSchema
         $newSchemas = [];
 
         foreach ($schemas as $schemaKey => $schema) {
-            app(RequiredWith::class)($schemaKey, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets);
+            app(RequiredWithParser::class)($schemaKey, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets);
         }
 
         $schemas = $newSchemas;

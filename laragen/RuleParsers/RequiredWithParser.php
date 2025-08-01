@@ -5,10 +5,14 @@ namespace MohammadAlavi\Laragen\RuleParsers;
 use FluentJsonSchema\FluentSchema;
 use LaravelRulesToSchema\Contracts\RuleParser;
 
-final class RequiredWith implements RuleParser
+final class RequiredWithParser implements RuleParser
 {
-    public function __invoke(string $attribute, FluentSchema $schema, array $validationRules, array $nestedRuleset): array|FluentSchema|null
-    {
+    public function __invoke(
+        string $attribute,
+        FluentSchema $schema,
+        array $validationRules,
+        array $nestedRuleset,
+    ): array|FluentSchema|null {
         if (func_num_args() < 6) {
             return $schema;
         }
