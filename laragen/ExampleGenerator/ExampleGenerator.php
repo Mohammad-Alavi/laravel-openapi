@@ -111,11 +111,11 @@ final readonly class ExampleGenerator
             }
         }
 
+        $minLength = $descriptor->getMinLength();
+        $maxLength = $descriptor->getMaxLength();
+
         return $descriptor->examples(
-            $this->fastRandomStringBetween(
-                is_null($descriptor->getMinLength()) ? 5 : $descriptor->getMinLength(),
-                is_null($descriptor->getMaxLength()) ? 10 : $descriptor->getMaxLength(),
-            ),
+            $this->fastRandomStringBetween($minLength ?? 5, $maxLength ?? 255),
         );
     }
 
@@ -129,28 +129,88 @@ final readonly class ExampleGenerator
 
     public function forInteger(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
+        $minimum = $descriptor->getMinimum();
+        $maximum = $descriptor->getMaximum();
+
         return $descriptor->examples(
-            fake()->numberBetween(
-                is_null($descriptor->getMinimum()) ? 1 : $descriptor->getMinimum(),
-                is_null($descriptor->getMaximum()) ? 100 : $descriptor->getMaximum(),
-            ),
+            fake()->numberBetween($minimum ?? 1, $maximum ?? 100),
         );
     }
 
     public function forNumber(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
+        $minimum = $descriptor->getMinimum();
+        $maximum = $descriptor->getMaximum();
+
         return $descriptor->examples(
-            fake()->randomFloat(
-                2,
-                is_null($descriptor->getMinimum()) ? 0 : $descriptor->getMinimum(),
-                is_null($descriptor->getMaximum()) ? 100 : $descriptor->getMaximum(),
-            ),
+            fake()->randomFloat(2, $minimum ?? 1, $maximum ?? 100),
         );
     }
 
     public function forBoolean(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
         return $descriptor->examples(fake()->boolean());
+    }
+
+    public function forNull(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
+    {
+        return $descriptor->examples(null);
+    }
+
+    private function isMultiType(array|string|null $type): bool
+    {
+        return is_array($type) && filled($type);
+    }
+
+    /**
+     * Generates examples for multiple types.
+     *
+     * @param non-empty-array<int, string> $type
+     */
+    public function multiType(array $type, LooseFluentDescriptor $descriptor): LooseFluentDescriptor
+    {
+        return $descriptor->examples(
+            ...collect($type)
+            ->map(
+                function (string $type) use ($descriptor): mixed {
+                    $examples = $this->forType($type, $descriptor)->getExamples();
+
+                    return fake()->randomElement(when(filled($examples), $examples, []));
+                },
+            )->toArray(),
+        );
+    }
+
+    public function forEnum(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
+    {
+        $values = $descriptor->getEnum() ?? [];
+        $types = collect($values)
+            ->map(static fn ($value) => gettype($value))
+            ->unique();
+
+        $valuesByType = collect($values)
+            ->groupBy(static fn ($value) => gettype($value))
+            ->toArray();
+
+        $shemaType = $descriptor->getType();
+        if ($this->isMultiType($shemaType)) {
+            foreach ($shemaType as $type) {
+                if ('null' === $type && $types->doesntContain('null')) {
+                    $types->push('null');
+                    $valuesByType['null'] = [null];
+                    $descriptor = $descriptor->enum(null, ...$values);
+                }
+            }
+        }
+
+        return $descriptor->examples(
+            ...collect($types)
+            ->map(
+                function (string $type) use ($valuesByType) {
+                    return fake()->randomElement($valuesByType[$type] ?? []);
+                },
+            )->toArray(),
+        );
     }
 
     public function forObject(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
@@ -213,74 +273,6 @@ final readonly class ExampleGenerator
                     }
 
                     return [];
-                },
-            )->toArray(),
-        );
-    }
-
-    public function forNull(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
-    {
-        return $descriptor->examples(null);
-    }
-
-    private function isMultiType(array|string|null $type): bool
-    {
-        return is_array($type) && filled($type);
-    }
-
-    /**
-     * Generates examples for multiple types.
-     *
-     * @param non-empty-array<int, string> $type
-     */
-    public function multiType(array $type, LooseFluentDescriptor $descriptor): LooseFluentDescriptor
-    {
-        return $descriptor->examples(
-            ...collect($type)
-            ->map(
-                function (string $type) use ($descriptor) {
-                    $examples = $this->forType($type, $descriptor)->getExamples();
-
-                    return fake()->randomElement(
-                        when(filled($examples), $examples, []),
-                    );
-                },
-            )->toArray(),
-        );
-    }
-
-    public function forEnum(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
-    {
-        $types = collect($descriptor->getEnum())
-            ->map(
-                function ($value) {
-                    return gettype($value);
-                },
-            )->unique();
-
-        $values = collect($descriptor->getEnum())
-            ->groupBy(
-                function ($value) {
-                    return gettype($value);
-                },
-            )->toArray();
-
-        $shemaType = $descriptor->getType();
-        if ($this->isMultiType($shemaType)) {
-            foreach ($shemaType as $type) {
-                if ('null' === $type && $types->doesntContain('null')) {
-                    $types->push('null');
-                    $values['null'] = [null];
-                    $descriptor = $descriptor->enum(null, ...$descriptor->getEnum());
-                }
-            }
-        }
-
-        return $descriptor->examples(
-            ...collect($types)
-            ->map(
-                function (string $type) use ($values) {
-                    return fake()->randomElement($values[$type] ?? []);
                 },
             )->toArray(),
         );
