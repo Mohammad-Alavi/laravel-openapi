@@ -9,7 +9,6 @@ use LaravelRulesToSchema\Parsers\MiscPropertyParser;
 use LaravelRulesToSchema\Parsers\NestedObjectParser;
 use LaravelRulesToSchema\Parsers\RequiredParser;
 use LaravelRulesToSchema\Parsers\TypeParser;
-use MohammadAlavi\Laragen\RuleParsers\AutogenOverride;
 use MohammadAlavi\Laragen\RuleParsers\PasswordParser;
 
 return [
@@ -34,7 +33,6 @@ return [
         ConfirmedParser::class,
         CustomRuleSchemaParser::class,
         PasswordParser::class,
-        AutogenOverride::class,
     ],
 
     /*
