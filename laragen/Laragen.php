@@ -6,7 +6,6 @@ use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleGenerator;
-use MohammadAlavi\Laragen\Support\RuleExtractor;
 use MohammadAlavi\Laragen\Support\RuleToSchema;
 use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\ObjectRestrictor;
@@ -101,10 +100,8 @@ final readonly class Laragen
 
     public static function getBodyParameters(Route $route): ObjectRestrictor
     {
-        $rules = app(RuleExtractor::class)->extractFrom($route);
-
-        $schema = RuleToSchema::class::transform(
-            $rules,
+        $schema = RuleToSchema::transform(
+            $route,
         )->compile();
 
         if (is_array($schema)) {

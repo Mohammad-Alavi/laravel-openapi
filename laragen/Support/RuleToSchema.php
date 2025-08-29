@@ -4,23 +4,40 @@ namespace MohammadAlavi\Laragen\Support;
 
 use FluentJsonSchema\FluentSchema;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Routing\Route;
 use LaravelRulesToSchema\Contracts\RuleParser;
 use LaravelRulesToSchema\LaravelRulesToSchema;
 use LaravelRulesToSchema\ValidationRuleNormalizer;
 use Mockery\Exception;
-use MohammadAlavi\Laragen\RuleParsers\RequiredWithParser;
+use MohammadAlavi\Laragen\RuleParsers\ExampleOverride;
+use MohammadAlavi\Laragen\RuleParsers\RequiredWithoutParser;
+use Webmozart\Assert\Assert;
 
 final class RuleToSchema extends LaravelRulesToSchema
 {
-    public static function transform(array|string $rule): FluentSchema
+    public static function transform(array|string|Route $rule): FluentSchema
     {
+        $request = null;
         if (is_string($rule)) {
-            if (!class_exists($rule)) {
-                throw new \Exception("Class $rule does not implement " . FormRequest::class . ' and can not be parsed.');
-            }
+            Assert::isAOf(
+                $rule,
+                FormRequest::class,
+                "Class {$rule} does not implement " . FormRequest::class . ' and can not be parsed.',
+            );
+            $request = $rule;
             $instance = new $rule();
 
             $rule = method_exists($instance, 'rules') ? app()->call([$instance, 'rules']) : [];
+        }
+
+        if ($rule instanceof Route) {
+            $route = $rule;
+            $extractor = app(RuleExtractor::class);
+
+            $request = $extractor->getFormRequestInstance($route);
+            $request = $request ? get_class($request) : null;
+
+            $rule = $extractor->extractFrom($route);
         }
 
         $ruleSets = (new ValidationRuleNormalizer($rule))->getRules();
@@ -40,7 +57,7 @@ final class RuleToSchema extends LaravelRulesToSchema
         }
 
         foreach ($ruleSets as $property => $rawRules) {
-            $propertySchema = self::parseCustomRules($property, $rawRules, $schema, $ruleSets);
+            $propertySchema = self::parseCustomRules($property, $rawRules, $schema, $ruleSets, $request);
 
             if ($propertySchema instanceof FluentSchema) {
                 $schema->object()->property($property, $propertySchema);
@@ -96,19 +113,30 @@ final class RuleToSchema extends LaravelRulesToSchema
         return $schemas;
     }
 
-    private static function parseCustomRules(string $name, array $nestedRuleset, FluentSchema $baseSchema, array $ruleSets): FluentSchema|array|null
+    private static function parseCustomRules(string $name, array $nestedRuleset, FluentSchema $baseSchema, array $ruleSets, string|null $request): FluentSchema|array|null
     {
         $validationRules = $nestedRuleset[config('rules-to-schema.validation_rule_token')] ?? [];
 
-        $schemas = [$name => FluentSchema::make()];
+        $schemas = [$name => $baseSchema->getSchemaDTO()->properties[$name] ?? FluentSchema::make()];
 
         $newSchemas = [];
 
         foreach ($schemas as $schemaKey => $schema) {
-            app(RequiredWithParser::class)($schemaKey, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets);
-        }
+            $resultSchema = app(ExampleOverride::class)($schemaKey, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets, $request);
+            app(RequiredWithoutParser::class)($schemaKey, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets);
 
-        $schemas = $newSchemas;
+            if (null === $resultSchema) {
+                continue;
+            }
+
+            if (is_array($resultSchema)) {
+                $newSchemas = [...$newSchemas, ...$resultSchema];
+            } else {
+                $newSchemas[$schemaKey] = $resultSchema;
+            }
+
+            $schemas = $newSchemas;
+        }
 
         if (0 == count($schemas)) {
             return null;
@@ -116,6 +144,6 @@ final class RuleToSchema extends LaravelRulesToSchema
             return array_values($schemas)[0];
         }
 
-        return $schemas;
+        return $baseSchema;
     }
 }

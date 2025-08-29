@@ -19,15 +19,22 @@ final class RuleExtractor extends GetFromFormRequestBase
 
     private function requestRules(Route $route): array
     {
+        $formRequest = $this->getFormRequestInstance($route);
+
+        return $this->getRouteValidationRules($formRequest);
+    }
+
+    public function getFormRequestInstance(Route $route): FormRequest|null
+    {
         $endpointData = ExtractedEndpointData::fromRoute($route);
         $method = $endpointData->method;
 
-        if (!$formRequestReflectionClass = $this->getFormRequestReflectionClass($method)) {
-            return [];
-        }
-
-        if (!$this->isFormRequestMeantForThisStrategy($formRequestReflectionClass)) {
-            return [];
+        $formRequestReflectionClass = $this->getFormRequestReflectionClass($method);
+        if (
+            is_null($formRequestReflectionClass)
+            || !$this->isFormRequestMeantForThisStrategy($formRequestReflectionClass)
+        ) {
+            return null;
         }
 
         $className = $formRequestReflectionClass->getName();
@@ -37,6 +44,7 @@ final class RuleExtractor extends GetFromFormRequestBase
         } else {
             $formRequest = new $className();
         }
+
         // Set the route properly so it works for users who have code that checks for the route.
         /* @var FormRequest $formRequest */
         $formRequest->setRouteResolver(function () use ($formRequest, $route) {
@@ -45,7 +53,7 @@ final class RuleExtractor extends GetFromFormRequestBase
         });
         $formRequest->server->set('REQUEST_METHOD', $route->methods()[0]);
 
-        return $this->getRouteValidationRules($formRequest);
+        return $formRequest;
     }
 
     private function inlineRules(Route $route): array
