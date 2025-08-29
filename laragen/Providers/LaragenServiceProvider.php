@@ -7,6 +7,8 @@ use MohammadAlavi\Laragen\Console\Generate;
 use MohammadAlavi\Laragen\ExampleGenerator\Date;
 use MohammadAlavi\Laragen\ExampleGenerator\Email;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleProvider;
+use MohammadAlavi\Laragen\ExampleGenerator\Integer;
+use MohammadAlavi\Laragen\ExampleGenerator\Password;
 
 final class LaragenServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,8 @@ final class LaragenServiceProvider extends ServiceProvider
         ExampleProvider::addExample(
             Date::class,
             Email::class,
+            Password::class,
+            Integer::class,
         );
 
         $this->publishes([

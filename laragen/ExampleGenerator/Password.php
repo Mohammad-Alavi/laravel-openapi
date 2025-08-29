@@ -5,20 +5,20 @@ namespace MohammadAlavi\Laragen\ExampleGenerator;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\DefinedFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
 
-final readonly class Email extends Example
+final readonly class Password extends Example
 {
     public static function rule(): string
     {
-        return 'email';
+        return \Illuminate\Validation\Rules\Password::class;
     }
 
     public function values(): array
     {
-        return ['example@laragen.com'];
+        return [fake()->password($this->schema->getSchemaDTO()->minLength)];
     }
 
     public function format(): DefinedFormat
     {
-        return StringFormat::EMAIL;
+        return StringFormat::PASSWORD;
     }
 }

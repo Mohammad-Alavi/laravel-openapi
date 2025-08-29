@@ -5,7 +5,7 @@ namespace MohammadAlavi\Laragen\RuleParsers;
 use FluentJsonSchema\FluentSchema;
 use LaravelRulesToSchema\Contracts\RuleParser;
 
-final class RequiredWithParser implements RuleParser
+final class RequiredWithoutParser implements RuleParser
 {
     public function __invoke(
         string $attribute,
@@ -23,21 +23,21 @@ final class RequiredWithParser implements RuleParser
         }
 
         $shouldWrapInAllOf = false;
-        $hasRequiredWith = [];
+        $hasRequiredWithout = [];
         foreach ($allRules as $attr => $ruleSet) {
             foreach ($ruleSet['##_VALIDATION_RULES_##'] as $set) {
                 [$rule, $args] = $set;
-                if ('required_with' === $rule) {
-                    $hasRequiredWith[$attr] = $args;
+                if ('required_without' === $rule) {
+                    $hasRequiredWithout[$attr] = $args;
                 }
             }
         }
 
-        if (empty($hasRequiredWith)) {
+        if ([] === $hasRequiredWithout) {
             return $schema;
         }
 
-        if (!$this->allAttributesHaveRequireWithRule($hasRequiredWith, $allRules)) {
+        if (!$this->allAttributesHaveRequireWithRule($hasRequiredWithout, $allRules)) {
             $shouldWrapInAllOf = true;
         }
 
@@ -47,26 +47,26 @@ final class RequiredWithParser implements RuleParser
             /** @var array<string, FluentSchema> $allOf */
             $allOf = array_filter(
                 $properties,
-                static function (FluentSchema $schema, string $property) use ($hasRequiredWith) {
-                    return !array_key_exists($property, $hasRequiredWith);
+                static function (FluentSchema $schema, string $property) use ($hasRequiredWithout) {
+                    return !array_key_exists($property, $hasRequiredWithout);
                 },
                 ARRAY_FILTER_USE_BOTH,
             );
-            /** @var array<string, FluentSchema> $anyOf */
-            $anyOf = array_filter(
+            /** @var array<string, FluentSchema> $oneOf */
+            $oneOf = array_filter(
                 $properties,
-                static function (FluentSchema $schema, string $property) use ($hasRequiredWith) {
-                    return array_key_exists($property, $hasRequiredWith);
+                static function (FluentSchema $schema, string $property) use ($hasRequiredWithout) {
+                    return array_key_exists($property, $hasRequiredWithout);
                 },
                 ARRAY_FILTER_USE_BOTH,
             );
-            $processedAnyOf = [];
-            foreach ($anyOf as $prop => $propSchema) {
-                $processedAnyOf[] = [
+            $processedOneOf = [];
+            foreach ($oneOf as $prop => $propSchema) {
+                $processedOneOf[] = [
                     'properties' => [
                         $prop => $propSchema,
                     ],
-                    'required' => $hasRequiredWith[$prop] ?? [],
+                    'required' => $prop,
                 ];
             }
 
@@ -81,19 +81,19 @@ final class RequiredWithParser implements RuleParser
                 }
                 $baseSchema->getSchemaDTO()->required = null;
                 $baseSchema->allOf([
-                    ['anyOf' => $processedAnyOf],
+                    ['oneOf' => $processedOneOf],
                     $processedAllOf,
                 ]);
             } else {
-                $baseSchema->anyOf($processedAnyOf);
+                $baseSchema->oneOf($processedOneOf);
             }
         }
 
         return $schema;
     }
 
-    private function allAttributesHaveRequireWithRule(array $hasRequiredWith, array $allRules): bool
+    private function allAttributesHaveRequireWithRule(array $hasRequiredWithout, array $allRules): bool
     {
-        return count($allRules) === count($hasRequiredWith);
+        return count($allRules) === count($hasRequiredWithout);
     }
 }

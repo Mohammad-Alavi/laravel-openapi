@@ -5,9 +5,9 @@ namespace MohammadAlavi\Laragen\ExampleGenerator;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\DefinedFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
 
-final readonly class Date implements Example
+final readonly class Date extends Example
 {
-    public function rule(): string
+    public static function rule(): string
     {
         return 'date';
     }
@@ -17,7 +17,7 @@ final readonly class Date implements Example
         return ['2023-10-01'];
     }
 
-    public function format(): DefinedFormat|null
+    public function format(): DefinedFormat
     {
         return StringFormat::DATE;
     }

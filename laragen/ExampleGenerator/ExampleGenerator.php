@@ -58,31 +58,30 @@ final readonly class ExampleGenerator
     public function forApplicator(Applicator $applicator, LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
         return match ($applicator) {
-            Applicator::ALL_OF => $descriptor->allOf(...collect($descriptor->getAllOf())
+            Applicator::ALL_OF => $descriptor->allOf(...collect($descriptor->getAllOf() ?? [])
                 ->map(
                     function (LooseFluentDescriptor $item) {
                         return $this->for($item);
                     },
                 )->toArray()),
-            Applicator::ANY_OF => $descriptor->anyOf(...collect($descriptor->getAnyOf())
+            Applicator::ANY_OF => $descriptor->anyOf(...collect($descriptor->getAnyOf() ?? [])
                 ->map(
                     function (LooseFluentDescriptor $item) {
                         return $this->for($item);
                     },
                 )->toArray()),
-            Applicator::ONE_OF => $descriptor->oneOf(...collect($descriptor->getOneOf())
+            Applicator::ONE_OF => $descriptor->oneOf(...collect($descriptor->getOneOf() ?? [])
                 ->map(
                     function (LooseFluentDescriptor $item) {
                         return $this->for($item);
                     },
                 )->toArray()),
-            default => $descriptor,
         };
     }
 
     public function forType(string $type, LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
-        if (!is_array($descriptor->getType())) {
+        if (!$this->isMultiType($descriptor->getType())) {
             if (filled($descriptor->getExamples())) {
                 return $descriptor;
             }
@@ -102,11 +101,19 @@ final readonly class ExampleGenerator
 
     public function forString(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
+        if (filled($descriptor->getExamples())) {
+            return $descriptor;
+        }
+
         if (!is_null($descriptor->getFormat())) {
             try {
-                return $descriptor->examples(
+                $examples = when(
+                    filled($descriptor->getExamples()),
+                    $descriptor->getExamples(),
                     fake()->{$descriptor->getFormat()}(),
                 );
+
+                return $descriptor->examples(...$examples);
             } catch (\Throwable) {
             }
         }
@@ -115,7 +122,7 @@ final readonly class ExampleGenerator
         $maxLength = $descriptor->getMaxLength();
 
         return $descriptor->examples(
-            $this->fastRandomStringBetween($minLength ?? 5, $maxLength ?? 255),
+            $this->fastRandomStringBetween($minLength ?? 10, $maxLength ?? 50),
         );
     }
 
@@ -129,6 +136,10 @@ final readonly class ExampleGenerator
 
     public function forInteger(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
+        if (filled($descriptor->getExamples())) {
+            return $descriptor;
+        }
+
         $minimum = $descriptor->getMinimum();
         $maximum = $descriptor->getMaximum();
 
@@ -139,6 +150,10 @@ final readonly class ExampleGenerator
 
     public function forNumber(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
+        if (filled($descriptor->getExamples())) {
+            return $descriptor;
+        }
+
         $minimum = $descriptor->getMinimum();
         $maximum = $descriptor->getMaximum();
 
@@ -149,6 +164,10 @@ final readonly class ExampleGenerator
 
     public function forBoolean(LooseFluentDescriptor $descriptor): LooseFluentDescriptor
     {
+        if (filled($descriptor->getExamples())) {
+            return $descriptor;
+        }
+
         return $descriptor->examples(fake()->boolean());
     }
 
@@ -157,6 +176,11 @@ final readonly class ExampleGenerator
         return $descriptor->examples(null);
     }
 
+    /**
+     * @param string[]|string|null $type
+     *
+     * @phpstan-assert-if-true non-empty-array $type
+     */
     private function isMultiType(array|string|null $type): bool
     {
         return is_array($type) && filled($type);
@@ -175,9 +199,14 @@ final readonly class ExampleGenerator
                 function (string $type) use ($descriptor): mixed {
                     $examples = $this->forType($type, $descriptor)->getExamples();
 
-                    return fake()->randomElement(when(filled($examples), $examples, []));
+                    return when(filled($examples), $examples, []);
                 },
-            )->toArray(),
+            )->reduce(
+                static function (array $carry, array $item): array {
+                    return array_merge($carry, $item);
+                },
+                [],
+            ),
         );
     }
 
@@ -228,9 +257,13 @@ final readonly class ExampleGenerator
         $objectExamples = collect($properties)
             ->map(
                 function (Property $property) {
-                    return [
-                        $property->name() => fake()->randomElement($property->schema()->getExamples() ?? []),
-                    ];
+                    if (!is_null($property->schema()->getExamples())) {
+                        return [
+                            $property->name() => fake()->randomElement($property->schema()->getExamples()),
+                        ];
+                    }
+
+                    return [];
                 },
             )->reduce(
                 static function (array $carry, array $item): array {
@@ -268,7 +301,7 @@ final readonly class ExampleGenerator
             ...collect(range(1, 3))
             ->flatMap(
                 function () use ($itemDescriptor): array {
-                    if ($itemDescriptor) {
+                    if (!is_null($itemDescriptor)) {
                         return $this->for($itemDescriptor)->getExamples() ?? [];
                     }
 
