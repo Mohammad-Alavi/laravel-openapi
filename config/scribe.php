@@ -3,6 +3,7 @@
 use Knuckles\Scribe\Config\AuthIn;
 use Knuckles\Scribe\Config\Defaults;
 use Knuckles\Scribe\Extracting\Strategies;
+use MohammadAlavi\Laragen\OpenAPIGenerator;
 
 use function Knuckles\Scribe\Config\configureStrategy;
 use function Knuckles\Scribe\Config\removeStrategies;
@@ -163,7 +164,9 @@ return [
 
         // Additional generators to use when generating the OpenAPI spec.
         // Should extend `Knuckles\Scribe\Writing\OpenApiSpecGenerators\OpenApiGenerator`.
-        'generators' => [],
+        'generators' => [
+            OpenAPIGenerator::class,
+        ],
     ],
 
     'groups' => [
