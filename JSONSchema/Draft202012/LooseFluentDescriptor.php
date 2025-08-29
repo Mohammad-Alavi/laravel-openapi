@@ -274,7 +274,7 @@ class LooseFluentDescriptor implements FluentDescriptor
         return $clone;
     }
 
-    public function toArray(): array
+    public function compile(): array
     {
         return json_decode(
             \Safe\json_encode(

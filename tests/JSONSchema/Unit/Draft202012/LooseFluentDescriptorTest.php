@@ -9,7 +9,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('can create a descriptor with schema', function (): void {
         $descriptor = LooseFluentDescriptor::create('https://json-schema.org/draft/2020-12/schema');
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor)->compile()->toBe(
             [
                 '$schema' => 'https://json-schema.org/draft/2020-12/schema',
             ],
@@ -19,13 +19,13 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('can create a descriptor without schema', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema();
 
-        expect($descriptor)->toArray()->toBeEmpty();
+        expect($descriptor)->compile()->toBeEmpty();
     });
 
     it('can set type', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()->type('string');
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor)->compile()->toBe(
             [
                 'type' => 'string',
             ],
@@ -35,7 +35,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('can set type using Type class', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()->type(Type::string());
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor)->compile()->toBe(
             [
                 'type' => 'string',
             ],
@@ -194,7 +194,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('should return constant value as is', function (mixed $value): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()->const($value);
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor)->compile()->toBe(
             [
                 'const' => $value,
             ],
@@ -268,7 +268,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('can be instantiated from array', function (array $payload): void {
         $descriptor = LooseFluentDescriptor::from($payload);
 
-        expect($descriptor)->toArray()->toBe($payload);
+        expect($descriptor)->compile()->toBe($payload);
     })->with([
         [
             [

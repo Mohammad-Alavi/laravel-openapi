@@ -22,7 +22,7 @@ describe(class_basename(Schema::class), function (): void {
             ->writeOnly()
             ->deprecated();
 
-        expect($schema->toArray())->toBe(
+        expect($schema->compile())->toBe(
             [
                 'title' => 'Schema title',
                 'description' => 'Schema description',
@@ -48,7 +48,7 @@ describe(class_basename(Schema::class), function (): void {
             ->writeOnly()
             ->deprecated();
 
-        expect($schema->toArray())->toBe(
+        expect($schema->compile())->toBe(
             [
                 'title' => 'Schema title',
                 'description' => 'Schema description',
@@ -75,7 +75,7 @@ describe(class_basename(Schema::class), function (): void {
             ->readOnly()
             ->writeOnly();
 
-        expect($schema->toArray())->toBe(
+        expect($schema->compile())->toBe(
             [
                 'title' => 'Schema title',
                 'description' => 'Schema description',
@@ -107,7 +107,7 @@ describe(class_basename(Schema::class), function (): void {
             ->writeOnly()
             ->deprecated();
 
-        expect($schema->toArray())->toBe(
+        expect($schema->compile())->toBe(
             [
                 'title' => 'Schema title',
                 'description' => 'Schema description',
@@ -141,7 +141,7 @@ describe(class_basename(Schema::class), function (): void {
             ->writeOnly()
             ->deprecated();
 
-        expect($schema->toArray())->toBe(
+        expect($schema->compile())->toBe(
             [
                 'title' => 'Schema title',
                 'description' => 'Schema description',
@@ -179,7 +179,7 @@ describe(class_basename(Schema::class), function (): void {
             ->writeOnly()
             ->deprecated();
 
-        expect($schema->toArray())->toBe(
+        expect($schema->compile())->toBe(
             [
                 'title' => 'Schema title',
                 'description' => 'Schema description',
@@ -214,7 +214,7 @@ describe(class_basename(Schema::class), function (): void {
         };
         $schema = Schema::array()->items($reusableSchema);
 
-        expect($schema)->toArray()->toBe(
+        expect($schema)->compile()->toBe(
             [
                 'type' => 'array',
                 'items' => [
@@ -247,7 +247,7 @@ describe(class_basename(Schema::class), function (): void {
     it('can be instantiated from array', function (array $payload): void {
         $schema = Schema::from($payload);
 
-        expect($schema->toArray())->toBe($payload);
+        expect($schema->compile())->toBe($payload);
     })->with([
         [
             [

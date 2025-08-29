@@ -6,12 +6,12 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts;
  * @template TKey of array-key
  * @template TValue
  */
-interface Arrayable
+interface Compilable
 {
     /**
      * Get the instance as an array.
      *
      * @return array<TKey, TValue>
      */
-    public function toArray(): array;
+    public function compile(): array;
 }
