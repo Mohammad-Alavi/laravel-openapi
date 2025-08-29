@@ -92,7 +92,7 @@ return [
         'layout' => 'modern',
 
         /* URL to a request proxy for the API client */
-        'proxyUrl' => 'https://proxy.scalar.com',
+        // 'proxyUrl' => 'https://proxy.scalar.com',
 
         /* Whether to show the sidebar */
         'showSidebar' => true,
