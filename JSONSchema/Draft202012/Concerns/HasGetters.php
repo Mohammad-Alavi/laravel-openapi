@@ -4,6 +4,7 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Concerns;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Constant;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\StrictFluentDescriptor;
 
 trait HasGetters
@@ -70,16 +71,25 @@ trait HasGetters
         return $this->format?->value();
     }
 
+    /**
+     * @return LooseFluentDescriptor[]|null
+     */
     public function getAllOf(): array|null
     {
         return $this->allOf?->value();
     }
 
+    /**
+     * @return LooseFluentDescriptor[]|null
+     */
     public function getAnyOf(): array|null
     {
         return $this->anyOf?->value();
     }
 
+    /**
+     * @return LooseFluentDescriptor[]|null
+     */
     public function getOneOf(): array|null
     {
         return $this->oneOf?->value();
