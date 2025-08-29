@@ -26,8 +26,8 @@ final readonly class PasswordParser implements RuleParser
                 if (filled($rules['max'])) {
                     $schema->string()->maxLength($rules['max']);
                 }
-                $lookaheads = [];
 
+                $lookaheads = [];
                 if ($rules['mixedCase']) {
                     $lookaheads[] = '(?=.*\p{Ll})(?=.*\p{Lu})';
                 }
@@ -44,7 +44,7 @@ final readonly class PasswordParser implements RuleParser
                     $lookaheads[] = '(?=.*\p{N})';
                 }
 
-                $schema->string()->pattern('/^' . implode('', $lookaheads) . '.*$/u');
+                $schema->type()->string()->pattern('/^' . implode($lookaheads) . '.*$/u');
             }
         }
 
