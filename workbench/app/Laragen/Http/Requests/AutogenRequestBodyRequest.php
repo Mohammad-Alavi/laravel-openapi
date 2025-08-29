@@ -3,6 +3,8 @@
 namespace Workbench\App\Laragen\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 final class AutogenRequestBodyRequest extends FormRequest
 {
@@ -22,11 +24,30 @@ final class AutogenRequestBodyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required_with:email', 'string', 'max:255'],
-            'email' => 'required_with:name|email|max:255',
+            'name' => ['required_without:email', 'max:255'],
+            'email' => 'required_without:name|email|max:255',
             'password' => 'required|string|min:8|confirmed',
             'age' => ['nullable', 'integer', 'between:18,99'],
+            'height' => ['integer'],
+            'width' => ['integer', 'nullable'],
+            'depth' => 'nullable|integer',
             'avatar' => ['nullable', 'image', 'max:2048'],
+            'pass' => [
+                'required',
+                'confirmed',
+                Password::default(),
+            ],
+            'birth' => ['date', 'nullable'],
+            'death' => ['date'],
+            'current_password' => [
+                // Rule::requiredIf(fn (): bool => !is_null($this->user()->password) && $this->filled('new_password')),
+                'current_password:api',
+            ],
+            'new_password' => [
+                Password::default(),
+                'required_with:current_password',
+            ],
+            'new_password_confirmation' => 'required_with:new_password|same:new_password',
         ];
     }
 }
