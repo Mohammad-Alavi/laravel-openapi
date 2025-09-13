@@ -151,7 +151,7 @@ final class RuleToSchema extends LaravelRulesToSchema
 
     private static function distinctRequired(FluentSchema $schema): FluentSchema
     {
-        $schema->getSchemaDTO()->required = array_values(array_unique($schema->getSchemaDTO()->required));
+        $schema->getSchemaDTO()->required = array_values(array_unique($schema->getSchemaDTO()->required ?? []));
 
         return $schema;
     }
