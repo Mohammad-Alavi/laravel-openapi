@@ -11,6 +11,7 @@ use LaravelRulesToSchema\ValidationRuleNormalizer;
 use Mockery\Exception;
 use MohammadAlavi\Laragen\RuleParsers\ExampleOverride;
 use MohammadAlavi\Laragen\RuleParsers\RequiredWithoutParser;
+use MohammadAlavi\Laragen\RuleParsers\RequiredWithParser;
 use Webmozart\Assert\Assert;
 
 final class RuleToSchema extends LaravelRulesToSchema
@@ -66,7 +67,7 @@ final class RuleToSchema extends LaravelRulesToSchema
             }
         }
 
-        return $schema;
+        return self::distinctRequired($schema);
     }
 
     /*
@@ -121,9 +122,10 @@ final class RuleToSchema extends LaravelRulesToSchema
 
         $newSchemas = [];
 
-        foreach ($schemas as $schemaKey => $schema) {
-            $resultSchema = app(ExampleOverride::class)($schemaKey, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets, $request);
-            app(RequiredWithoutParser::class)($schemaKey, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets);
+        foreach ($schemas as $attribute => $schema) {
+            $resultSchema = app(ExampleOverride::class)($attribute, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets, $request);
+            //            app(RequiredWithoutParser::class)($attribute, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets);
+            //            app(RequiredWithParser::class)($attribute, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets);
 
             if (null === $resultSchema) {
                 continue;
@@ -132,7 +134,7 @@ final class RuleToSchema extends LaravelRulesToSchema
             if (is_array($resultSchema)) {
                 $newSchemas = [...$newSchemas, ...$resultSchema];
             } else {
-                $newSchemas[$schemaKey] = $resultSchema;
+                $newSchemas[$attribute] = $resultSchema;
             }
 
             $schemas = $newSchemas;
@@ -144,6 +146,13 @@ final class RuleToSchema extends LaravelRulesToSchema
             return array_values($schemas)[0];
         }
 
-        return $baseSchema;
+        return $schemas;
+    }
+
+    private static function distinctRequired(FluentSchema $schema): FluentSchema
+    {
+        $schema->getSchemaDTO()->required = array_values(array_unique($schema->getSchemaDTO()->required));
+
+        return $schema;
     }
 }
