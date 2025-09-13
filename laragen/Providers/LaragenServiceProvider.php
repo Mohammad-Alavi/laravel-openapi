@@ -2,6 +2,7 @@
 
 namespace MohammadAlavi\Laragen\Providers;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use MohammadAlavi\Laragen\Console\Generate;
 use MohammadAlavi\Laragen\ExampleGenerator\Date;
@@ -9,6 +10,7 @@ use MohammadAlavi\Laragen\ExampleGenerator\Email;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleProvider;
 use MohammadAlavi\Laragen\ExampleGenerator\Integer;
 use MohammadAlavi\Laragen\ExampleGenerator\Password;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 final class LaragenServiceProvider extends ServiceProvider
 {
@@ -36,5 +38,12 @@ final class LaragenServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../../config/laragen.php' => config_path('laragen.php'),
         ], 'laragen-config');
+
+        Route::get(
+            'laragen/docs',
+            static function (): BinaryFileResponse {
+                return response()->file(base_path(config()->string('laragen.docs_path')));
+            },
+        );
     }
 }

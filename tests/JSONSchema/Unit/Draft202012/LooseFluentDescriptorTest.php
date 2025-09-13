@@ -9,7 +9,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('can create a descriptor with schema', function (): void {
         $descriptor = LooseFluentDescriptor::create('https://json-schema.org/draft/2020-12/schema');
 
-        expect($descriptor)->compile()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 '$schema' => 'https://json-schema.org/draft/2020-12/schema',
             ],
@@ -19,13 +19,13 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('can create a descriptor without schema', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema();
 
-        expect($descriptor)->compile()->toBeEmpty();
+        expect($descriptor->compile())->toBeEmpty();
     });
 
     it('can set type', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()->type('string');
 
-        expect($descriptor)->compile()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'string',
             ],
@@ -35,7 +35,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('can set type using Type class', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()->type(Type::string());
 
-        expect($descriptor)->compile()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'string',
             ],
@@ -47,7 +47,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->type('string')
             ->format(StringFormat::DATE);
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'string',
                 'format' => 'date',
@@ -61,7 +61,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->minimum(0)
             ->maximum(100);
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'number',
                 'maximum' => 100,
@@ -76,7 +76,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->exclusiveMinimum(0)
             ->exclusiveMaximum(100);
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'number',
                 'exclusiveMaximum' => 100,
@@ -91,7 +91,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->minLength(5)
             ->maxLength(10);
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'string',
                 'maxLength' => 10,
@@ -105,7 +105,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->type('string')
             ->pattern('^[a-zA-Z0-9]*$');
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'string',
                 'pattern' => '^[a-zA-Z0-9]*$',
@@ -121,7 +121,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
                 Property::create('age', LooseFluentDescriptor::withoutSchema()->type('integer')),
             );
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'object',
                 'properties' => [
@@ -144,7 +144,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
                 Property::create('age', LooseFluentDescriptor::withoutSchema()->type('integer')),
             )->required('name', 'age');
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'object',
                 'properties' => [
@@ -168,7 +168,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->type(Type::array())
             ->items(LooseFluentDescriptor::withoutSchema()->type(Type::string()));
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'array',
                 'items' => [
@@ -183,7 +183,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->type('string')
             ->enum('red', 'green', 'blue');
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'string',
                 'enum' => ['red', 'green', 'blue'],
@@ -194,7 +194,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('should return constant value as is', function (mixed $value): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()->const($value);
 
-        expect($descriptor)->compile()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'const' => $value,
             ],
@@ -214,7 +214,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->description('A color name')
             ->examples('red', 'green', 'blue');
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'title' => 'Color',
                 'description' => 'A color name',
@@ -229,7 +229,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->type('string')
             ->default('default-value');
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'string',
                 'default' => 'default-value',
@@ -243,7 +243,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->readOnly()
             ->writeOnly();
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'string',
                 'readOnly' => true,
@@ -257,7 +257,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
             ->type('string')
             ->deprecated();
 
-        expect($descriptor)->toArray()->toBe(
+        expect($descriptor->compile())->toBe(
             [
                 'type' => 'string',
                 'deprecated' => true,
@@ -268,7 +268,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     it('can be instantiated from array', function (array $payload): void {
         $descriptor = LooseFluentDescriptor::from($payload);
 
-        expect($descriptor)->compile()->toBe($payload);
+        expect($descriptor->compile())->toBe($payload);
     })->with([
         [
             [

@@ -6,6 +6,7 @@ use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleGenerator;
+use MohammadAlavi\Laragen\Support\Config\Config;
 use MohammadAlavi\Laragen\Support\RuleToSchema;
 use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\ObjectRestrictor;
@@ -86,7 +87,7 @@ final readonly class Laragen
 
     public static function getSchema(Route $route): ObjectRestrictor
     {
-        if (config()->boolean('laragen.laragen.autogen_example')) {
+        if (config()->boolean('laragen.autogen.example')) {
             return self::enrichObjectWithExample(self::getBodyParameters($route));
         }
 
@@ -109,5 +110,10 @@ final readonly class Laragen
         }
 
         return Schema::from([]);
+    }
+
+    public static function configs(): Config
+    {
+        return new Config();
     }
 }

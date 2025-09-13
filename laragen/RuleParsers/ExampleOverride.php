@@ -15,7 +15,7 @@ final readonly class ExampleOverride implements RuleParser
         array $validationRules,
         array $nestedRuleset,
     ): array|FluentSchema|null {
-        if (config()->boolean('laragen.laragen.autogen_example')) {
+        if (config()->boolean('laragen.autogen.example')) {
             if (func_num_args() < 7) {
                 return $schema;
             }

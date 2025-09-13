@@ -23,12 +23,14 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Deprecated;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Description;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DynamicAnchor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DynamicRef;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ElseKeyword;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Enum;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Examples;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ExclusiveMaximum;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ExclusiveMinimum;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Format;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Id;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IfKeyword;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IsReadOnly;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IsWriteOnly;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Items;
@@ -43,6 +45,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinItems;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinLength;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinProperties;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MultipleOf;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Not;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\OneOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Pattern;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Properties;
@@ -50,6 +53,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Prope
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Ref;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Required;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Schema;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Then;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Title;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\UnevaluatedItems;
@@ -91,6 +95,10 @@ class LooseFluentDescriptor implements FluentDescriptor
     private AllOf|null $allOf = null;
     private AnyOf|null $anyOf = null;
     private OneOf|null $oneOf = null;
+    private IfKeyword|null $if = null;
+    private Then|null $then = null;
+    private ElseKeyword|null $else = null;
+    private Not|null $not = null;
     private AdditionalProperties|null $additionalProperties = null;
     private Properties|null $properties = null;
     private DependentRequired|null $dependentRequired = null;
@@ -166,6 +174,14 @@ class LooseFluentDescriptor implements FluentDescriptor
                             $value,
                         ),
                     );
+                } elseif ('if' === $key) {
+                    $instance = $instance->if(static::from($value));
+                } elseif ('then' === $key) {
+                    $instance = $instance->then(static::from($value));
+                } elseif ('else' === $key) {
+                    $instance = $instance->else(static::from($value));
+                } elseif ('not' === $key) {
+                    $instance = $instance->not(static::from($value));
                 } elseif (is_array($value)) {
                     $instance = $instance->{$key}(...$value);
                 } else {
@@ -218,27 +234,19 @@ class LooseFluentDescriptor implements FluentDescriptor
     {
         $clone = clone $this;
 
-        $schemas = array_map(
-            static function (JSONSchema|JSONSchemaFactory $schema): JSONSchema {
-                if ($schema instanceof JSONSchemaFactory) {
-                    return $schema->build();
-                }
-
-                return $schema;
-            },
-            $schema,
-        );
+        $schemas = $this->getSchemas($schema);
 
         $clone->anyOf = Dialect::anyOf(...$schemas);
 
         return $clone;
     }
 
-    public function allOf(JSONSchema|JSONSchemaFactory ...$schema): static
+    /**
+     * @return JSONSchema[]
+     */
+    private function getSchemas(array $schema): array
     {
-        $clone = clone $this;
-
-        $schemas = array_map(
+        return array_map(
             static function (JSONSchema|JSONSchemaFactory $schema): JSONSchema {
                 if ($schema instanceof JSONSchemaFactory) {
                     return $schema->build();
@@ -248,6 +256,13 @@ class LooseFluentDescriptor implements FluentDescriptor
             },
             $schema,
         );
+    }
+
+    public function allOf(JSONSchema|JSONSchemaFactory ...$schema): static
+    {
+        $clone = clone $this;
+
+        $schemas = $this->getSchemas($schema);
 
         $clone->allOf = Dialect::allOf(...$schemas);
 
@@ -258,18 +273,61 @@ class LooseFluentDescriptor implements FluentDescriptor
     {
         $clone = clone $this;
 
-        $schemas = array_map(
-            static function (JSONSchema|JSONSchemaFactory $schema): JSONSchema {
-                if ($schema instanceof JSONSchemaFactory) {
-                    return $schema->build();
-                }
-
-                return $schema;
-            },
-            $schema,
-        );
+        $schemas = $this->getSchemas($schema);
 
         $clone->oneOf = Dialect::oneOf(...$schemas);
+
+        return $clone;
+    }
+
+    public function if(JSONSchema|JSONSchemaFactory $schema): static
+    {
+        $clone = clone $this;
+
+        if ($schema instanceof JSONSchemaFactory) {
+            $schema = $schema->build();
+        }
+
+        $clone->if = Dialect::if($schema);
+
+        return $clone;
+    }
+
+    public function then(JSONSchema|JSONSchemaFactory $schema): static
+    {
+        $clone = clone $this;
+
+        if ($schema instanceof JSONSchemaFactory) {
+            $schema = $schema->build();
+        }
+
+        $clone->then = Dialect::then($schema);
+
+        return $clone;
+    }
+
+    public function else(JSONSchema|JSONSchemaFactory $schema): static
+    {
+        $clone = clone $this;
+
+        if ($schema instanceof JSONSchemaFactory) {
+            $schema = $schema->build();
+        }
+
+        $clone->else = Dialect::else($schema);
+
+        return $clone;
+    }
+
+    public function not(JSONSchema|JSONSchemaFactory $schema): static
+    {
+        $clone = clone $this;
+
+        if ($schema instanceof JSONSchemaFactory) {
+            $schema = $schema->build();
+        }
+
+        $clone->not = Dialect::not($schema);
 
         return $clone;
     }
@@ -287,7 +345,7 @@ class LooseFluentDescriptor implements FluentDescriptor
         );
     }
 
-    public function jsonSerialize(): array
+    public function jsonSerialize(): array|\stdClass
     {
         $keywords = [];
         if ($this->schema instanceof Schema) {
@@ -328,6 +386,18 @@ class LooseFluentDescriptor implements FluentDescriptor
         }
         if ($this->oneOf instanceof OneOf) {
             $keywords[$this->oneOf::name()] = $this->oneOf;
+        }
+        if ($this->if instanceof IfKeyword) {
+            $keywords[$this->if::name()] = $this->if;
+        }
+        if ($this->then instanceof Then) {
+            $keywords[$this->then::name()] = $this->then;
+        }
+        if ($this->else instanceof ElseKeyword) {
+            $keywords[$this->else::name()] = $this->else;
+        }
+        if ($this->not instanceof Not) {
+            $keywords[$this->not::name()] = $this->not;
         }
         if ($this->type instanceof Type) {
             $keywords[$this->type::name()] = $this->type;
@@ -426,7 +496,7 @@ class LooseFluentDescriptor implements FluentDescriptor
             $keywords[$this->defs::name()] = $this->defs;
         }
 
-        return $keywords;
+        return when(blank($keywords), new \stdClass(), $keywords);
     }
 
     public function anchor(string $value): static

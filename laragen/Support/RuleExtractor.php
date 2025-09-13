@@ -21,6 +21,10 @@ final class RuleExtractor extends GetFromFormRequestBase
     {
         $formRequest = $this->getFormRequestInstance($route);
 
+        if (is_null($formRequest)) {
+            return [];
+        }
+
         return $this->getRouteValidationRules($formRequest);
     }
 

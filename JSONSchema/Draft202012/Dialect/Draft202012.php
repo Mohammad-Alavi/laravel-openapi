@@ -19,12 +19,14 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Deprecated;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Description;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DynamicAnchor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DynamicRef;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ElseKeyword;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Enum;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Examples;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ExclusiveMaximum;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ExclusiveMinimum;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Format;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Id;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IfKeyword;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IsReadOnly;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\IsWriteOnly;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Items;
@@ -39,6 +41,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinItems;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinLength;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MinProperties;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MultipleOf;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Not;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\OneOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Pattern;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Properties;
@@ -46,6 +49,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Prope
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Ref;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Required;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Schema;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Then;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Title;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\UnevaluatedItems;
@@ -204,6 +208,26 @@ final readonly class Draft202012
     public static function oneOf(JSONSchema ...$builder): OneOf
     {
         return OneOf::create(...$builder);
+    }
+
+    public static function if(JSONSchema $builder): IfKeyword
+    {
+        return IfKeyword::create($builder);
+    }
+
+    public static function then(JSONSchema $builder): Then
+    {
+        return Then::create($builder);
+    }
+
+    public static function else(JSONSchema $builder): ElseKeyword
+    {
+        return ElseKeyword::create($builder);
+    }
+
+    public static function not(JSONSchema $builder): Not
+    {
+        return Not::create($builder);
     }
 
     public static function additionalProperties(JSONSchema|bool $schema): AdditionalProperties
