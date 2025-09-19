@@ -46,7 +46,7 @@ describe(class_basename(Generator::class), function (): void {
         ]);
         $openApi = app(Generator::class)->generate($collection);
 
-        $result = $openApi->unserializeToArray();
+        $result = $openApi->compile();
 
         expect($result['components'])->toEqual($expectation['components'])
             ->and($result['paths'])->toEqual($expectation['paths']);

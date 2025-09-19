@@ -21,7 +21,7 @@ describe(class_basename(Operation::class), function (): void {
     it('can be created with no parameters', function (): void {
         $operation = Operation::create();
 
-        expect($operation->unserializeToArray())->toHaveCount(1)
+        expect($operation->compile())->toHaveCount(1)
         ->toHaveKey('operationId');
     });
 
@@ -56,7 +56,7 @@ describe(class_basename(Operation::class), function (): void {
                 ->servers(Server::default())
                 ->callbacks(TestCallbackFactory::create());
 
-            expect($operation->unserializeToArray())->toBe([
+            expect($operation->compile())->toBe([
                 'tags' => ['Users', 'Admins'],
                 'summary' => 'Lorem ipsum',
                 'description' => 'Dolar sit amet',

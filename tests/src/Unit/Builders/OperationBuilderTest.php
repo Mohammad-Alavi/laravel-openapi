@@ -25,7 +25,7 @@ describe(class_basename(OperationBuilder::class), function (): void {
         $operation = $operationBuilder->build($routeInfo);
 
         expect($operation)->key()->toBe($routeInfo->method())
-            ->value()->unserializeToArray()->toBe($expected);
+            ->value()->compile()->toBe($expected);
     })->with(
         [
             function (): array {

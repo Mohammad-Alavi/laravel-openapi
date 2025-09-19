@@ -15,7 +15,7 @@ describe('PetStore', function (): void {
         Route::delete('/nestedSecurityFirstTest', [PetController::class, 'nestedSecurity']);
         Route::put('/nestedSecuritySecondTest', [PetController::class, 'anotherNestedSecurity']);
 
-        $spec = app(Generator::class)->generate()->unserializeToArray();
+        $spec = app(Generator::class)->generate()->compile();
 
         expect($spec['paths'])->toHaveKey($path)
             ->and($spec['paths'][$path])->toHaveKey($method)

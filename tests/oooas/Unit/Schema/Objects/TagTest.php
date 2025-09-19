@@ -13,7 +13,7 @@ describe('Tag', function (): void {
             )->description('User API documentation'),
         );
 
-        expect($tag->unserializeToArray())->toBe([
+        expect($tag->compile())->toBe([
             'name' => 'Users',
             'description' => 'All user endpoints',
             'externalDocs' => [

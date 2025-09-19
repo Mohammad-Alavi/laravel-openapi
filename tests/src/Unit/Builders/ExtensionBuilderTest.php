@@ -17,7 +17,7 @@ describe(class_basename(ExtensionBuilder::class), function (): void {
             new Extension(factory: FakeExtension::class),
         ]));
 
-        expect($example->unserializeToArray())->toBe([
+        expect($example->compile())->toBe([
             'x-uuid' => [
                 'type' => 'string',
                 'format' => 'uuid',
@@ -35,7 +35,7 @@ describe(class_basename(ExtensionBuilder::class), function (): void {
             new Extension(key: 'x-key', value: '1'),
         ]));
 
-        expect($example->unserializeToArray())->toBe([
+        expect($example->compile())->toBe([
             'x-foo' => 'bar',
             'x-key' => '1',
         ]);

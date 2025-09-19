@@ -9,7 +9,7 @@ describe(class_basename(ExternalDocumentation::class), function (): void {
         $externalDocumentation = ExternalDocumentation::create('https://laragen.io')
             ->description('example Repo');
 
-        expect($externalDocumentation->unserializeToArray())->toBe([
+        expect($externalDocumentation->compile())->toBe([
             'url' => 'https://laragen.io',
             'description' => 'example Repo',
         ]);

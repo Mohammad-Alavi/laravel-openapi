@@ -28,6 +28,6 @@ class ContactTest extends UnitTestCase
                 'email' => 'hello@laragen.io',
             ],
             'version' => 'v1',
-        ], $info->unserializeToArray());
+        ], $info->compile());
     }
 }

@@ -23,6 +23,6 @@ class LicenseTest extends UnitTestCase
                 'identifier' => 'MIT',
             ],
             'version' => 'v1',
-        ], $info->unserializeToArray());
+        ], $info->compile());
     }
 }

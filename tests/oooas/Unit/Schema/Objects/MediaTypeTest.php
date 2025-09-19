@@ -11,7 +11,7 @@ describe(class_basename(MediaType::class), function (): void {
     it('can be created with no parameters', function (): void {
         $mediaType = MediaType::create();
 
-        expect($mediaType->unserializeToArray())->toBeEmpty();
+        expect($mediaType->compile())->toBeEmpty();
     });
 
     it('can be created with all parameters', function (): void {
@@ -33,7 +33,7 @@ describe(class_basename(MediaType::class), function (): void {
                 ),
             );
 
-        expect($mediaType->unserializeToArray())->toBe([
+        expect($mediaType->compile())->toBe([
             'schema' => [
                 'type' => 'object',
             ],

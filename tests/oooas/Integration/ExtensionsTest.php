@@ -64,7 +64,7 @@ describe(class_basename(Extension::class), function (): void {
                 ->addExtension($extension3)
                 ->addExtension($extension4);
 
-            expect($sut->unserializeToArray())->toEqual($expectations);
+            expect($sut->compile())->toEqual($expectations);
         },
     )->with('extensibleObjectSet');
 

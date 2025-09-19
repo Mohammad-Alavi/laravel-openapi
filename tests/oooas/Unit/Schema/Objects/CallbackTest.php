@@ -44,7 +44,7 @@ describe(class_basename(Callback::class), function (): void {
                 'MyEvent',
             );
 
-            expect($callback)->unserializeToArray()->toHaveKey(
+            expect($callback)->compile()->toHaveKey(
                 '{$request.query.callbackUrl}',
                 [
                     $method->value => [

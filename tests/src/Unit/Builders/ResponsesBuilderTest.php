@@ -9,7 +9,7 @@ describe(class_basename(ResponsesBuilder::class), function (): void {
 
         $responses = $builder->build(TestResponsesFactory::class);
 
-        expect($responses->unserializeToArray())->toBe([
+        expect($responses->compile())->toBe([
             '200' => [
                 'description' => 'OK',
             ],

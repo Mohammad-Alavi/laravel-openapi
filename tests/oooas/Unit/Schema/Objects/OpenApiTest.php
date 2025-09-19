@@ -180,7 +180,7 @@ describe(class_basename(OpenAPI::class), function (): void {
             ->tags($tag)
             ->externalDocs($externalDocumentation);
 
-        $result = $openApi->unserializeToArray();
+        $result = $openApi->compile();
 
         expect($result)->toBe([
             'openapi' => '3.1.1',

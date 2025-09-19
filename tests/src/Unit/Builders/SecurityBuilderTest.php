@@ -128,31 +128,31 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 );
             }
 
-            expect($openApi->unserializeToArray()['components']['securitySchemes'])
+            expect($openApi->compile()['components']['securitySchemes'])
                 ->toBe($expectations['components']['securitySchemes']);
             when(
                 is_null($expectations['operationSecurity']),
                 function () use ($openApi, $route, $action) {
-                    return expect($openApi->unserializeToArray()['paths'][$route][$action])->not->toHaveKey('security');
+                    return expect($openApi->compile()['paths'][$route][$action])->not->toHaveKey('security');
                 },
             );
             when(
                 !is_null($expectations['operationSecurity']),
                 function () use ($openApi, $route, $action, $expectations) {
-                    return expect($openApi->unserializeToArray()['paths'][$route][$action]['security'])
+                    return expect($openApi->compile()['paths'][$route][$action]['security'])
                         ->toBe($expectations['operationSecurity']);
                 },
             );
             when(
                 is_null($expectations['topLevelSecurity']),
                 function () use ($openApi) {
-                    return expect($openApi->unserializeToArray())->not->toHaveKey('security');
+                    return expect($openApi->compile())->not->toHaveKey('security');
                 },
             );
             when(
                 !is_null($expectations['topLevelSecurity']),
                 function () use ($openApi, $expectations) {
-                    return expect($openApi->unserializeToArray()['security'])
+                    return expect($openApi->compile()['security'])
                         ->toBe($expectations['topLevelSecurity']);
                 },
             );
@@ -766,9 +766,9 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 ) ? app($topLevelSecurity)->build() : $topLevelSecurity,
             )->components($components);
 
-            expect($openApi->unserializeToArray()['components']['securitySchemes'])
+            expect($openApi->compile()['components']['securitySchemes'])
                 ->toBe($expectation['components']['securitySchemes'])
-                ->and($openApi->unserializeToArray()['security'])
+                ->and($openApi->compile()['security'])
                 ->toBe($expectation['security']);
         },
     )->with([
@@ -972,9 +972,9 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 ),
             );
 
-        expect($openApi->unserializeToArray()['components']['securitySchemes'])
+        expect($openApi->compile()['components']['securitySchemes'])
             ->toBe([TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations()])
-            ->and($openApi->unserializeToArray()['security'])
+            ->and($openApi->compile()['security'])
             ->toBe([[TestBearerSecuritySchemeFactory::name() => []]]);
     });
 
@@ -1024,9 +1024,9 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                 ),
             );
 
-        expect($openApi->unserializeToArray()['components']['securitySchemes'])
+        expect($openApi->compile()['components']['securitySchemes'])
             ->toBe([TestBearerSecuritySchemeFactory::name() => bearerSecurityExpectations()])
-            ->and($openApi->unserializeToArray()['paths']['/foo']['patch']['security'])
+            ->and($openApi->compile()['paths']['/foo']['patch']['security'])
             ->toBe([[TestBearerSecuritySchemeFactory::name() => []]]);
     });
 })->covers(SecurityBuilder::class);

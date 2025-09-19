@@ -48,7 +48,7 @@ describe(class_basename(ExtensibleObject::class), function (): void {
         $extension2 = Extension::create('x-foo', 'bar');
         $object = $object->addExtension($extension1, $extension2);
 
-        $result = $object->unserializeToArray();
+        $result = $object->compile();
 
         expect($result)->toBe([
             'x-test' => 'value',

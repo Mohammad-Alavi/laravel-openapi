@@ -56,8 +56,8 @@ describe(class_basename(ParametersBuilder::class), function (): void {
         $parameters = $builder->build($routeInformation);
 
         $typeHintedParam = $parameters->toArray()[0];
-        expect($parameters->unserializeToArray())->toHaveCount(2)
-            ->and($typeHintedParam->unserializeToArray()['schema']['type'])->toBe(Type::integer()->value());
+        expect($parameters->compile())->toHaveCount(2)
+            ->and($typeHintedParam->compile()['schema']['type'])->toBe(Type::integer()->value());
     });
 
     it('doesnt extract path parameters if there are none', function (): void {
@@ -68,7 +68,7 @@ describe(class_basename(ParametersBuilder::class), function (): void {
 
         $parameters = $builder->build($routeInformation);
 
-        expect($parameters)->unserializeToArray()->toHaveCount(0);
+        expect($parameters)->compile()->toHaveCount(0);
     });
 
     it(
@@ -81,7 +81,7 @@ describe(class_basename(ParametersBuilder::class), function (): void {
 
             $parameters = $builder->build($routeInformation);
 
-            expect($parameters)->unserializeToArray()->toEqual($expectation);
+            expect($parameters)->compile()->toEqual($expectation);
         },
     )->with([
         'single parameter' => [

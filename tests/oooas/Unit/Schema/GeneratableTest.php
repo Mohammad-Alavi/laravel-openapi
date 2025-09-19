@@ -9,7 +9,7 @@ describe(class_basename(Generatable::class), function (): void {
 
         $object = new GeneratableFake();
 
-        $result = $object->unserializeToArray();
+        $result = $object->compile();
 
         expect($result)->toBe([]);
     });

@@ -68,7 +68,7 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
         when(
             !is_null($expectation),
             function () use ($result, $expectation): Expectation {
-                return expect($result->unserializeToArray())->toEqualCanonicalizing($expectation);
+                return expect($result->compile())->toEqualCanonicalizing($expectation);
             },
         );
     })->with(

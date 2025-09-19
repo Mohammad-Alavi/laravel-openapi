@@ -52,11 +52,11 @@ trait Generator
     abstract public function toArray(): array;
 
     /**
-     * Returns the object as an array.
+     * Compiles the object to an associative array.
      *
      * @throws \JsonException
      */
-    public function unserializeToArray(): array
+    public function compile(): array
     {
         return json_decode($this->toJson(), true, 512, JSON_THROW_ON_ERROR);
     }

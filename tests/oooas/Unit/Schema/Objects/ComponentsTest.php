@@ -197,7 +197,7 @@ describe(class_basename(Components::class), function (): void {
             ->callbacks($callback)
             ->pathItems($pathItem);
 
-        expect($components->unserializeToArray())->toBe([
+        expect($components->compile())->toBe([
             'schemas' => [
                 'ExampleSchema' => [
                     'type' => 'object',

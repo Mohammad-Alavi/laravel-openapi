@@ -73,8 +73,8 @@ describe('Extensions', function (): void {
         $extension = Extension::create('x-test', 'test');
         $extensions = $extensions->add($extension);
 
-        expect($extensions->unserializeToArray())->toBe(['x-test' => 'test'])
-            ->and($extensions->unserializeToArray())->toBe(['x-test' => 'test']);
+        expect($extensions->compile())->toBe(['x-test' => 'test'])
+            ->and($extensions->compile())->toBe(['x-test' => 'test']);
     });
 
     it('can return all extensions', function (): void {
