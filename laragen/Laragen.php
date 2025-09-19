@@ -45,16 +45,12 @@ final readonly class Laragen
 
                             if (is_null($route) || self::hasRequestBody($availableOperation)) {
                                 $operationMap[$availableOperation->key()] = $availableOperation->value();
-                                continue;
-                            }
+                            } else {
+                                $schema = self::extractRequestBodySchema($route);
 
-                            $requestBodySchema = self::extractRequestBodySchema($route);
-
-                            if (self::hasAtLeastOneProperty($requestBodySchema)) {
-                                $operationMap[$availableOperation->key()] = self::setRequestBody(
-                                    $availableOperation,
-                                    self::enrichObjectWithExample($requestBodySchema),
-                                );
+                                $operationMap[$availableOperation->key()] = self::hasAtLeastOneProperty($schema)
+                                    ? self::setRequestBody($availableOperation, self::enrichObjectWithExample($schema))
+                                    : $availableOperation->value();
                             }
                         }
 
