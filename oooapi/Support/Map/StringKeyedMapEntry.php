@@ -27,7 +27,7 @@ trait StringKeyedMapEntry
     /**
      * @return TValue
      */
-    final public function value(): mixed
+    final public function value()
     {
         return $this->value;
     }

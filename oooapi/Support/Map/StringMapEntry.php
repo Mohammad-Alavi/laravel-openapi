@@ -17,5 +17,5 @@ interface StringMapEntry
     /**
      * @return TValue
      */
-    public function value(): mixed;
+    public function value();
 }
