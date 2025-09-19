@@ -41,18 +41,22 @@ final readonly class Laragen
                         $ops = [];
                         foreach ($availableOps as $operation) {
                             $route = self::getRouteByUri($operation->key(), $path->key());
-                            if (!is_null($route) && !Arr::has($operation->value()->toArray(), 'requestBody')) {
-                                $ops[$operation->key()] = $operation->value()->requestBody(
-                                    RequestBody::create()
-                                        ->content(
-                                            ContentEntry::json(
-                                                MediaType::create()
-                                                    ->schema(
-                                                        self::getSchema($route),
-                                                    ),
+                            if (!is_null($route) && self::doesntHaveRequestBody($operation)) {
+                                $requestBodySchema = self::extractRequestBodySchemaFrom($route);
+
+                                if (self::hasAtLeastOneProperty($requestBodySchema)) {
+                                    $ops[$operation->key()] = $operation->value()->requestBody(
+                                        RequestBody::create()
+                                            ->content(
+                                                ContentEntry::json(
+                                                    MediaType::create()
+                                                        ->schema($requestBodySchema),
+                                                ),
                                             ),
-                                        ),
-                                );
+                                    );
+                                } else {
+                                    $ops[$operation->key()] = $operation->value();
+                                }
                             } else {
                                 $ops[$operation->key()] = $operation->value();
                             }
@@ -85,18 +89,19 @@ final readonly class Laragen
             );
     }
 
-    public static function getSchema(Route $route): ObjectRestrictor
+    private static function doesntHaveRequestBody(AvailableOperation $operation): bool
     {
-        if (config()->boolean('laragen.autogen.example')) {
-            return self::enrichObjectWithExample(self::getBodyParameters($route));
-        }
-
-        return self::getBodyParameters($route);
+        return !Arr::has($operation->value()->toArray(), 'requestBody');
     }
 
-    public static function enrichObjectWithExample(ObjectRestrictor $descriptor): ObjectRestrictor
+    public static function extractRequestBodySchemaFrom(Route $route): ObjectRestrictor
     {
-        return app(ExampleGenerator::class)->for($descriptor);
+        $bodyParamsSchema = self::getBodyParameters($route);
+        if (config()->boolean('laragen.autogen.example')) {
+            return self::enrichObjectWithExample($bodyParamsSchema);
+        }
+
+        return $bodyParamsSchema;
     }
 
     public static function getBodyParameters(Route $route): ObjectRestrictor
@@ -110,6 +115,18 @@ final readonly class Laragen
         }
 
         return Schema::from([]);
+    }
+
+    public static function enrichObjectWithExample(ObjectRestrictor $descriptor): ObjectRestrictor
+    {
+        return app(ExampleGenerator::class)->for($descriptor);
+    }
+
+    private static function hasAtLeastOneProperty(ObjectRestrictor $schema): bool
+    {
+        $requestBody = $schema->compile();
+
+        return Arr::has($requestBody, 'properties') && filled($requestBody['properties']);
     }
 
     public static function configs(): Config
