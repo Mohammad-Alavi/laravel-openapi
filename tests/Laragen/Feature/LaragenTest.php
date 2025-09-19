@@ -15,7 +15,7 @@ describe(class_basename(Laragen::class), function () {
     it('can get body parameters from a route', function () {
         $route = RouteFacade::get('test', [ExtractController::class, 'simpleRules']);
 
-        $schema = Laragen::getBodyParameters($route);
+        $schema = Laragen::extractRequestBodySchema($route);
 
         expect($schema->compile())->toBe([
             'type' => 'object',
@@ -35,7 +35,7 @@ describe(class_basename(Laragen::class), function () {
     it('returns an empty schema if no rules are found', function () {
         $route = RouteFacade::get('test', [ExtractController::class, 'noRules']);
 
-        $schema = Laragen::getBodyParameters($route);
+        $schema = Laragen::extractRequestBodySchema($route);
 
         expect($schema->compile())->toBe([
             'type' => 'object',
@@ -94,7 +94,7 @@ describe(class_basename(Laragen::class), function () {
     it(
         'can parse required_with rules',
         function (Route $route, array $expectation): void {
-            expect(Laragen::getBodyParameters($route)->compile())->toEqualCanonicalizing($expectation);
+            expect(Laragen::extractRequestBodySchema($route)->compile())->toEqualCanonicalizing($expectation);
         },
     )->with([
         'justTwoRequireWithRules' => [

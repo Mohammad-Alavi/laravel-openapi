@@ -12,7 +12,7 @@ final class OpenAPIGenerator extends ScribeOpenApiGenerator
     {
         $route = Laragen::getRouteByUri($endpoint->uri);
         if (!is_null($route)) {
-            $requestBodySchema = Laragen::getBodyParameters($route)->compile();
+            $requestBodySchema = Laragen::extractRequestBodySchema($route)->compile();
             if (Arr::has($pathItem, 'requestBody.content')) {
                 // TODO: content is an array and can have multiple encodings, we should handle that
                 $encoding = array_key_first($pathItem['requestBody']['content']);

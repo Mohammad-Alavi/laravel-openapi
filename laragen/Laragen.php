@@ -12,6 +12,7 @@ use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\ObjectRestrictor;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\Operations;
@@ -36,34 +37,29 @@ final readonly class Laragen
                     static function (Path $path): Path {
                         /** @var Operations $operations */
                         $operations = $path->value()->getOperations();
-                        /** @var AvailableOperation[] $availableOps */
-                        $availableOps = $operations->entries();
-                        $ops = [];
-                        foreach ($availableOps as $operation) {
-                            $route = self::getRouteByUri($operation->key(), $path->key());
-                            if (!is_null($route) && self::doesntHaveRequestBody($operation)) {
-                                $requestBodySchema = self::extractRequestBodySchemaFrom($route);
+                        /** @var AvailableOperation[] $availableOperations */
+                        $availableOperations = $operations->entries();
+                        $operationMap = [];
+                        foreach ($availableOperations as $availableOperation) {
+                            $route = self::getRouteByUri($availableOperation->key(), $path->key());
 
-                                if (self::hasAtLeastOneProperty($requestBodySchema)) {
-                                    $ops[$operation->key()] = $operation->value()->requestBody(
-                                        RequestBody::create()
-                                            ->content(
-                                                ContentEntry::json(
-                                                    MediaType::create()
-                                                        ->schema($requestBodySchema),
-                                                ),
-                                            ),
-                                    );
-                                } else {
-                                    $ops[$operation->key()] = $operation->value();
-                                }
-                            } else {
-                                $ops[$operation->key()] = $operation->value();
+                            if (is_null($route) || self::hasRequestBody($availableOperation)) {
+                                $operationMap[$availableOperation->key()] = $availableOperation->value();
+                                continue;
+                            }
+
+                            $requestBodySchema = self::extractRequestBodySchema($route);
+
+                            if (self::hasAtLeastOneProperty($requestBodySchema)) {
+                                $operationMap[$availableOperation->key()] = self::setRequestBody(
+                                    $availableOperation,
+                                    self::enrichObjectWithExample($requestBodySchema),
+                                );
                             }
                         }
 
                         $processedAvailableOps = [];
-                        foreach ($ops as $key => $operation) {
+                        foreach ($operationMap as $key => $operation) {
                             $processedAvailableOps[] = AvailableOperation::create(HttpMethod::from($key), $operation);
                         }
 
@@ -89,22 +85,12 @@ final readonly class Laragen
             );
     }
 
-    private static function doesntHaveRequestBody(AvailableOperation $operation): bool
+    private static function hasRequestBody(AvailableOperation $operation): bool
     {
-        return !Arr::has($operation->value()->toArray(), 'requestBody');
+        return Arr::has($operation->value()->compile(), 'requestBody');
     }
 
-    public static function extractRequestBodySchemaFrom(Route $route): ObjectRestrictor
-    {
-        $bodyParamsSchema = self::getBodyParameters($route);
-        if (config()->boolean('laragen.autogen.example')) {
-            return self::enrichObjectWithExample($bodyParamsSchema);
-        }
-
-        return $bodyParamsSchema;
-    }
-
-    public static function getBodyParameters(Route $route): ObjectRestrictor
+    public static function extractRequestBodySchema(Route $route): ObjectRestrictor
     {
         $schema = RuleToSchema::transform(
             $route,
@@ -117,16 +103,37 @@ final readonly class Laragen
         return Schema::from([]);
     }
 
-    public static function enrichObjectWithExample(ObjectRestrictor $descriptor): ObjectRestrictor
-    {
-        return app(ExampleGenerator::class)->for($descriptor);
-    }
-
     private static function hasAtLeastOneProperty(ObjectRestrictor $schema): bool
     {
         $requestBody = $schema->compile();
 
         return Arr::has($requestBody, 'properties') && filled($requestBody['properties']);
+    }
+
+    private static function setRequestBody(
+        AvailableOperation $availableOperation,
+        ObjectRestrictor $requestBodySchema,
+    ): Operation {
+        return $availableOperation
+            ->value()
+            ->requestBody(
+                RequestBody::create()
+                    ->content(
+                        ContentEntry::json(
+                            MediaType::create()
+                                ->schema($requestBodySchema),
+                        ),
+                    ),
+            );
+    }
+
+    public static function enrichObjectWithExample(ObjectRestrictor $descriptor): ObjectRestrictor
+    {
+        if (config()->boolean('laragen.autogen.example')) {
+            return app(ExampleGenerator::class)->for($descriptor);
+        }
+
+        return $descriptor;
     }
 
     public static function configs(): Config
