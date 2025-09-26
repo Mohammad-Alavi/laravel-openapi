@@ -38,9 +38,7 @@ final readonly class OperationBuilder
             if (!is_null($attribute->operationId)) {
                 $operation = $operation->operationId($attribute->operationId);
             }
-            if (!is_null($attribute->parameters)) {
-                $operation = $operation->parameters($this->parametersBuilder->build($routeInfo));
-            }
+            $operation = $operation->parameters($this->parametersBuilder->build($routeInfo));
             if (!is_null($attribute->requestBody)) {
                 $operation = $operation->requestBody($this->requestBodyBuilder->build($attribute->requestBody));
             }
