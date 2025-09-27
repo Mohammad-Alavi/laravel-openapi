@@ -38,7 +38,6 @@ final readonly class OperationBuilder
             if (!is_null($attribute->operationId)) {
                 $operation = $operation->operationId($attribute->operationId);
             }
-            $operation = $operation->parameters($this->parametersBuilder->build($routeInfo));
             if (!is_null($attribute->requestBody)) {
                 $operation = $operation->requestBody($this->requestBodyBuilder->build($attribute->requestBody));
             }
@@ -60,6 +59,7 @@ final readonly class OperationBuilder
             $operation = $operation->callbacks(...$this->callbackBuilder->build(...$attribute->getCallbacks()));
             $operation = $operation->servers(...$this->serverBuilder->build(...$attribute->getServers()));
         }
+        $operation = $operation->parameters($this->parametersBuilder->build($routeInfo));
 
         $this->extensionBuilder->build($operation, $routeInfo->extensionAttributes());
 
