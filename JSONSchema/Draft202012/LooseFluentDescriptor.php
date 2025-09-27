@@ -282,6 +282,19 @@ class LooseFluentDescriptor implements FluentDescriptor
         return $clone;
     }
 
+    public function items(JSONSchema|JSONSchemaFactory $schema): static
+    {
+        $clone = clone $this;
+
+        if ($schema instanceof JSONSchemaFactory) {
+            $schema = $schema->build();
+        }
+
+        $clone->items = Dialect::items($schema);
+
+        return $clone;
+    }
+
     public function if(JSONSchema|JSONSchemaFactory $schema): static
     {
         $clone = clone $this;
@@ -720,19 +733,6 @@ class LooseFluentDescriptor implements FluentDescriptor
         $clone = clone $this;
 
         $clone->uniqueItems = Dialect::uniqueItems($value);
-
-        return $clone;
-    }
-
-    public function items(JSONSchema|JSONSchemaFactory $schema): static
-    {
-        $clone = clone $this;
-
-        if ($schema instanceof JSONSchemaFactory) {
-            $schema = $schema->build();
-        }
-
-        $clone->items = Dialect::items($schema);
 
         return $clone;
     }
