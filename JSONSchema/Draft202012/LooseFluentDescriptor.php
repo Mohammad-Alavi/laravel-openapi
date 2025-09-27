@@ -174,6 +174,8 @@ class LooseFluentDescriptor implements FluentDescriptor
                             $value,
                         ),
                     );
+                } elseif ('items' === $key) {
+                    $instance = $instance->items(static::from($value));
                 } elseif ('if' === $key) {
                     $instance = $instance->if(static::from($value));
                 } elseif ('then' === $key) {
