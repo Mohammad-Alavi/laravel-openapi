@@ -3,6 +3,7 @@
 namespace MohammadAlavi\LaravelOpenApi\Support;
 
 use Composer\ClassMapGenerator\ClassMapGenerator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection as CollectionAttribute;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\FilterStrategy;
@@ -38,11 +39,12 @@ final class ComponentCollector
 
                 /** @var CollectionAttribute $collectionAttribute */
                 $collectionAttribute = $attributes[0]->newInstance();
+                $collections = Arr::wrap($collectionAttribute->name);
 
-                return ['*'] === $collectionAttribute->name
+                return ['*'] === $collections
                     || in_array(
                         $collection,
-                        $collectionAttribute->name ?? [],
+                        when(filled($collections), $collections, []),
                         true,
                     );
             });
