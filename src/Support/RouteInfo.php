@@ -195,7 +195,7 @@ final class RouteInfo
 
         return in_array(
             $collection,
-                $this->getControllerCollectionAttribute()?->name ?? [],
+            $this->getControllerCollectionAttribute()?->name ?? [],
             true,
         ) || in_array(
             $collection,

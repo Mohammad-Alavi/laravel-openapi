@@ -10,8 +10,6 @@ use Tests\src\Support\Doubles\Stubs\Objects\ExplicitDefaultCollectionController;
 use Tests\src\Support\Doubles\Stubs\Objects\ExplicitDefaultCollectionControllerAction;
 use Tests\src\Support\Doubles\Stubs\Objects\ExplicitOverriddenDefaultCollectionControllerAction;
 use Tests\src\Support\Doubles\Stubs\Objects\ImplicitDefaultCollectionController;
-use Tests\src\Support\Doubles\Stubs\Objects\InvocableController;
-use Tests\src\Support\Doubles\Stubs\Objects\MultiActionController;
 
 describe(class_basename(RouteCollector::class), function (): void {
     it('can filter routes by collection', function (): void {
