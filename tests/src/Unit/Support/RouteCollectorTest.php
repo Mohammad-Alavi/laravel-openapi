@@ -1,44 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\LaravelOpenApi\Support\RouteCollector;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
-use Tests\src\Support\Doubles\Stubs\Builders\ControllerWithoutOperationStub;
-use Tests\src\Support\Doubles\Stubs\Builders\ControllerWithoutPathItemStub;
 use Tests\src\Support\Doubles\Stubs\Builders\ControllerWithPathItemAndOperationStub;
 use Tests\src\Support\Doubles\Stubs\CollectibleClass;
+use Tests\src\Support\Doubles\Stubs\Objects\ExplicitDefaultCollectionController;
+use Tests\src\Support\Doubles\Stubs\Objects\ExplicitDefaultCollectionControllerAction;
+use Tests\src\Support\Doubles\Stubs\Objects\ExplicitOverriddenDefaultCollectionControllerAction;
+use Tests\src\Support\Doubles\Stubs\Objects\ImplicitDefaultCollectionController;
+use Tests\src\Support\Doubles\Stubs\Objects\InvocableController;
+use Tests\src\Support\Doubles\Stubs\Objects\MultiActionController;
 
 describe(class_basename(RouteCollector::class), function (): void {
-    it('can collect all routes that has both pathItem and operation', function (): void {
-        $unexpectedUri = [
-            '/has-no-path-item',
-            '/has-no-operation',
-        ];
-        $expectedUri = [
-            '/has-both-pathItem-and-operation',
-            '/has-both-pathItem-and-operation',
-            '/has-both-pathItem-and-operation',
-            '/has-both-pathItem-and-operation',
-            '/has-both-pathItem-and-operation',
-        ];
-        Route::get($expectedUri[0], ControllerWithPathItemAndOperationStub::class);
-        Route::post($expectedUri[1], ControllerWithPathItemAndOperationStub::class);
-        Route::get($unexpectedUri[0], ControllerWithoutPathItemStub::class);
-        Route::put($expectedUri[2], ControllerWithPathItemAndOperationStub::class);
-        Route::patch($expectedUri[3], ControllerWithPathItemAndOperationStub::class);
-        Route::get($unexpectedUri[1], ControllerWithoutOperationStub::class);
-        Route::delete($expectedUri[4], ControllerWithPathItemAndOperationStub::class);
-        /** @var RouteCollector $routeCollector */
-        $routeCollector = app(RouteCollector::class);
-
-        $routes = $routeCollector->all();
-
-        expect($routes)
-            ->count()->toBeGreaterThanOrEqual(5)
-            ->and($expectedUri)->each->toBeIn($routes->map(fn (RouteInfo $route) => $route->uri()))
-            ->and($routes)->toContainOnlyInstancesOf(RouteInfo::class);
-    });
-
     it('can filter routes by collection', function (): void {
         Route::get('/default-collection', ControllerWithPathItemAndOperationStub::class);
         Route::get('/test-collection', CollectibleClass::class);
@@ -48,9 +23,30 @@ describe(class_basename(RouteCollector::class), function (): void {
         /** @var RouteCollector $routeCollector */
         $routeCollector = app(RouteCollector::class);
 
-        $routes = $routeCollector->whereInCollection('TestCollection');
+        $routes = $routeCollector->whereShouldBeCollectedFor('TestCollection');
 
         expect($routes)->toHaveCount(1)
             ->and($routes)->toContainOnlyInstancesOf(RouteInfo::class);
     });
+
+    it(
+        'can configure default collection collecting behavior',
+        function (bool $include, int $expectedCount): void {
+            config(['openapi.collection.default.include_routes_without_attribute' => $include]);
+            Route::get('', ExplicitDefaultCollectionController::class);
+            Route::delete('', ExplicitDefaultCollectionControllerAction::class);
+            Route::put('', ImplicitDefaultCollectionController::class);
+            Route::post('', ExplicitOverriddenDefaultCollectionControllerAction::class);
+            /** @var RouteCollector $routeCollector */
+            $routeCollector = app(RouteCollector::class);
+
+            $routes = $routeCollector->whereShouldBeCollectedFor(Generator::COLLECTION_DEFAULT);
+
+            expect($routes->count())->toBe($expectedCount)
+                ->and($routes)->toContainOnlyInstancesOf(RouteInfo::class);
+        },
+    )->with([
+        'include routes without Collection attribute' => [true, 5],
+        'do not include routes without Collection attribute' => [false, 3],
+    ]);
 })->covers(RouteCollector::class);

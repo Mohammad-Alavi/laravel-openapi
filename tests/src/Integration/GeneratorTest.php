@@ -44,6 +44,7 @@ describe(class_basename(Generator::class), function (): void {
                 ],
             ],
         ]);
+        Config::set('openapi.collection.default.include_routes_without_attribute', false);
         $openApi = app(Generator::class)->generate($collection);
 
         $result = $openApi->compile();

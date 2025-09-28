@@ -7,6 +7,7 @@ use Illuminate\Routing\Route;
 use Illuminate\Routing\RouteAction;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use MohammadAlavi\LaravelOpenApi\Attributes\Collection as CollectionAttribute;
 use MohammadAlavi\LaravelOpenApi\Attributes\Extension;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
@@ -141,7 +142,11 @@ final class RouteInfo
     public function extensionAttributes(): Collection
     {
         return $this->actionAttributes()
-            ->filter(static fn (object $attribute): bool => $attribute instanceof Extension);
+            ->filter(
+                static function (object $attribute): bool {
+                    return $attribute instanceof Extension;
+                },
+            );
     }
 
     public function actionAttributes(): Collection
@@ -152,7 +157,11 @@ final class RouteInfo
     public function pathItemAttribute(): PathItem|null
     {
         return $this->controllerAttributes()
-            ->first(static fn (object $attribute): bool => $attribute instanceof PathItem);
+            ->first(
+                static function (object $attribute): bool {
+                    return $attribute instanceof PathItem;
+                },
+            );
     }
 
     public function controllerAttributes(): Collection
@@ -163,6 +172,71 @@ final class RouteInfo
     public function operationAttribute(): Operation|null
     {
         return $this->actionAttributes()
-            ->first(static fn (object $attribute): bool => $attribute instanceof Operation);
+            ->first(
+                static function (object $attribute): bool {
+                    return $attribute instanceof Operation;
+                },
+            );
+    }
+
+    public function isInCollection(string $collection): bool
+    {
+        $actionCollectionAttr = $this->getActionCollectionAttribute();
+        if (
+            !is_null($actionCollectionAttr)
+            && config()->boolean('openapi.collection.action_attribute_overrides_controller_attribute', true)
+        ) {
+            return in_array(
+                $collection,
+                $actionCollectionAttr->name,
+                true,
+            );
+        }
+
+        return in_array(
+            $collection,
+                $this->getControllerCollectionAttribute()?->name ?? [],
+            true,
+        ) || in_array(
+            $collection,
+            $actionCollectionAttr?->name ?? [],
+            true,
+        );
+    }
+
+    private function getControllerCollectionAttribute(): CollectionAttribute|null
+    {
+        return $this->controllerAttributes()
+            ->first(
+                static function (object $attribute): bool {
+                    return $attribute instanceof CollectionAttribute;
+                },
+            );
+    }
+
+    private function getActionCollectionAttribute(): CollectionAttribute|null
+    {
+        return $this->actionAttributes()
+            ->first(
+                static function (object $attribute): bool {
+                    return $attribute instanceof CollectionAttribute;
+                },
+            );
+    }
+
+    public function hasCollectionAttribute(): bool
+    {
+        return $this->getCollectionAttributes()->isNotEmpty();
+    }
+
+    public function getCollectionAttributes(): Collection
+    {
+        return $this->controllerAttributes()
+            ->merge($this->actionAttributes())
+            ->filter(
+                static function (object $attribute): bool {
+                    return $attribute instanceof CollectionAttribute;
+                },
+            );
     }
 }

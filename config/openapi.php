@@ -3,6 +3,31 @@
 use MohammadAlavi\LaravelOpenApi\Factories\ExampleFactory;
 
 return [
+    /**
+     * Collection configuration.
+     */
+    'collection' => [
+        /**
+         * The default collection configuration.
+         */
+        'default' => [
+            /**
+             * The default collection name to use when no explicit collection is specified.
+             */
+            'name' => 'default',
+
+            /**
+             * Indicates if the routes that doesn't have explicit Collection attributes
+             * should be considered under default collection or not.
+             */
+            'include_routes_without_attribute' => false,
+        ],
+        /**
+         * Indicates if the action-level Collection attribute should override the
+         * controller-level Collection attribute or not.
+         */
+        'action_attribute_overrides_controller_attribute' => true,
+    ],
     'collections' => [
         'default' => [
             'openapi' => ExampleFactory::class,

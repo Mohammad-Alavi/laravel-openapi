@@ -21,7 +21,7 @@ class MultiActionController
 
     #[Operation]
     #[Collection('another-collection')]
-    public function example()
+    public function example(): void
     {
     }
 }
