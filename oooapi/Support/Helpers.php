@@ -81,8 +81,8 @@ if (!function_exists('when')) {
      * @template TValue
      * @template TDefault
      *
-     * @param Closure|TValue $value
-     * @param Closure|TDefault $default
+     * @param TValue|Closure $value
+     * @param TDefault|Closure $default
      *
      * @return ($condition is true ? TValue : TDefault)
      */
