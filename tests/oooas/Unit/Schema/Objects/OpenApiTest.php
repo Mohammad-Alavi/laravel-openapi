@@ -26,6 +26,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Webhooks\Fields\Webhook;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Webhooks\Webhooks;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 use Workbench\App\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
@@ -414,5 +416,139 @@ describe(class_basename(OpenAPI::class), function (): void {
                 'description' => 'Example',
             ],
         ]);
+    });
+
+    it('can set summary field', function (): void {
+        $info = Info::create('My API', '1.0.0');
+
+        $openApi = OpenAPI::v311($info)
+            ->summary('A short summary of the API');
+
+        $result = $openApi->compile();
+
+        expect($result['summary'])->toBe('A short summary of the API');
+    });
+
+    it('can set webhooks', function (): void {
+        $info = Info::create('My API', '1.0.0');
+
+        $webhookPathItem = PathItem::create()
+            ->operations(
+                AvailableOperation::create(
+                    HttpMethod::POST,
+                    Operation::create()
+                        ->operationId('newPetNotification')
+                        ->summary('Receive notification when a new pet is added')
+                        ->responses(
+                            Responses::create(
+                                ResponseEntry::create(
+                                    HTTPStatusCode::ok(),
+                                    Response::create('Webhook acknowledged'),
+                                ),
+                            ),
+                        ),
+                ),
+            );
+
+        $webhooks = Webhooks::create(
+            Webhook::create('newPet', $webhookPathItem),
+        );
+
+        $openApi = OpenAPI::v311($info)
+            ->webhooks($webhooks);
+
+        $result = $openApi->compile();
+
+        expect($result['webhooks'])->toBe([
+            'newPet' => [
+                'post' => [
+                    'summary' => 'Receive notification when a new pet is added',
+                    'operationId' => 'newPetNotification',
+                    'responses' => [
+                        '200' => [
+                            'description' => 'Webhook acknowledged',
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+    });
+
+    it('can get webhooks', function (): void {
+        $info = Info::create('My API', '1.0.0');
+
+        $webhooks = Webhooks::create(
+            Webhook::create('test', PathItem::create()),
+        );
+
+        $openApi = OpenAPI::v311($info)
+            ->webhooks($webhooks);
+
+        expect($openApi->getWebhooks())->toBe($webhooks);
+    });
+
+    it('returns null when no webhooks set', function (): void {
+        $info = Info::create('My API', '1.0.0');
+
+        $openApi = OpenAPI::v311($info);
+
+        expect($openApi->getWebhooks())->toBeNull();
+    });
+
+    it('can combine summary, webhooks, and paths in same spec', function (): void {
+        $info = Info::create('Pet Store API', '1.0.0');
+
+        $paths = Paths::create(
+            Path::create(
+                '/pets',
+                PathItem::create()
+                    ->operations(
+                        AvailableOperation::create(
+                            HttpMethod::GET,
+                            Operation::create()
+                                ->operationId('listPets')
+                                ->responses(
+                                    Responses::create(
+                                        ResponseEntry::create(
+                                            HTTPStatusCode::ok(),
+                                            Response::create('List of pets'),
+                                        ),
+                                    ),
+                                ),
+                        ),
+                    ),
+            ),
+        );
+
+        $webhooks = Webhooks::create(
+            Webhook::create('newPet', PathItem::create()
+                ->operations(
+                    AvailableOperation::create(
+                        HttpMethod::POST,
+                        Operation::create()
+                            ->operationId('newPetWebhook')
+                            ->responses(
+                                Responses::create(
+                                    ResponseEntry::create(
+                                        HTTPStatusCode::ok(),
+                                        Response::create('OK'),
+                                    ),
+                                ),
+                            ),
+                    ),
+                )),
+        );
+
+        $openApi = OpenAPI::v311($info)
+            ->summary('Pet store API with webhooks support')
+            ->paths($paths)
+            ->webhooks($webhooks);
+
+        $result = $openApi->compile();
+
+        expect($result)->toHaveKeys(['openapi', 'info', 'summary', 'paths', 'webhooks'])
+            ->and($result['summary'])->toBe('Pet store API with webhooks support')
+            ->and($result['paths'])->toHaveKey('/pets')
+            ->and($result['webhooks'])->toHaveKey('newPet');
     });
 })->covers(OpenAPI::class);

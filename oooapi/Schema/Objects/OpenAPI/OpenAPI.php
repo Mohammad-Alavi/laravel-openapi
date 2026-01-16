@@ -12,12 +12,23 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\Security;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Webhooks\Webhooks;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 
+/**
+ * OpenAPI Object.
+ *
+ * This is the root object of the OpenAPI document.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#openapi-object
+ */
 final class OpenAPI extends ExtensibleObject
 {
     private JsonSchemaDialect $jsonSchemaDialect;
+    private Summary|null $summary = null;
     private Paths|null $paths = null;
+    private Webhooks|null $webhooks = null;
     private Components|null $components = null;
     private Security|null $security = null;
     private ExternalDocumentation|null $externalDocs = null;
@@ -41,6 +52,20 @@ final class OpenAPI extends ExtensibleObject
         return new self(OpenAPIField::v311(), $info);
     }
 
+    /**
+     * A short summary of the API.
+     *
+     * @see https://spec.openapis.org/oas/v3.1.0#fixed-fields
+     */
+    public function summary(string $summary): self
+    {
+        $clone = clone $this;
+
+        $clone->summary = Summary::create($summary);
+
+        return $clone;
+    }
+
     public function servers(Server ...$server): self
     {
         $clone = clone $this;
@@ -62,6 +87,25 @@ final class OpenAPI extends ExtensibleObject
     public function getPaths(): Paths|null
     {
         return $this->paths;
+    }
+
+    /**
+     * The incoming webhooks that MAY be received as part of this API.
+     *
+     * @see https://spec.openapis.org/oas/v3.1.0#fixed-fields
+     */
+    public function webhooks(Webhooks $webhooks): self
+    {
+        $clone = clone $this;
+
+        $clone->webhooks = $webhooks;
+
+        return $clone;
+    }
+
+    public function getWebhooks(): Webhooks|null
+    {
+        return $this->webhooks;
     }
 
     public function components(Components $components): self
@@ -119,9 +163,11 @@ final class OpenAPI extends ExtensibleObject
         return Arr::filter([
             'openapi' => $this->openAPIField,
             'info' => $this->info,
+            'summary' => $this->summary,
             'jsonSchemaDialect' => $this->jsonSchemaDialect,
             'servers' => when(blank($this->servers), [Server::default()], $this->servers),
             'paths' => $this->toObjectIfEmpty($this->paths),
+            'webhooks' => is_null($this->webhooks) ? null : $this->toObjectIfEmpty($this->webhooks),
             'components' => $this->toObjectIfEmpty($this->components),
             'security' => $this->security,
             'tags' => $this->tags,
