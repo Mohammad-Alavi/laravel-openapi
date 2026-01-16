@@ -58,4 +58,57 @@ final readonly class ContentEntry implements StringMapEntry
     {
         return self::create('application/x-www-form-urlencoded', $mediaType);
     }
+
+    public static function multipartFormData(MediaType $mediaType): self
+    {
+        return self::create('multipart/form-data', $mediaType);
+    }
+
+    public static function octetStream(MediaType $mediaType): self
+    {
+        return self::create('application/octet-stream', $mediaType);
+    }
+
+    public static function html(MediaType $mediaType): self
+    {
+        return self::create('text/html', $mediaType);
+    }
+
+    public static function csv(MediaType $mediaType): self
+    {
+        return self::create('text/csv', $mediaType);
+    }
+
+    public static function gif(MediaType $mediaType): self
+    {
+        return self::create('image/gif', $mediaType);
+    }
+
+    public static function svg(MediaType $mediaType): self
+    {
+        return self::create('image/svg+xml', $mediaType);
+    }
+
+    public static function webp(MediaType $mediaType): self
+    {
+        return self::create('image/webp', $mediaType);
+    }
+
+    public static function zip(MediaType $mediaType): self
+    {
+        return self::create('application/zip', $mediaType);
+    }
+
+    public static function yaml(MediaType $mediaType): self
+    {
+        return self::create('application/yaml', $mediaType);
+    }
+
+    /**
+     * Any content type (wildcard).
+     */
+    public static function any(MediaType $mediaType): self
+    {
+        return self::create('*/*', $mediaType);
+    }
 }
