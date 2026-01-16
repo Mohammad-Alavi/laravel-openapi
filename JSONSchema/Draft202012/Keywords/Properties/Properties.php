@@ -4,6 +4,13 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 
+/**
+ * The "properties" keyword defines schemas for object property validation.
+ *
+ * Maps property names to schemas; each property is validated against its schema.
+ *
+ * @see https://json-schema.org/draft/2020-12/json-schema-core#section-10.3.2.1
+ */
 final readonly class Properties implements Keyword
 {
     /** @param Property[] $properties */

@@ -4,6 +4,13 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentR
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 
+/**
+ * The "dependentRequired" keyword defines property dependencies.
+ *
+ * When a property is present, other specified properties become required.
+ *
+ * @see https://json-schema.org/draft/2020-12/json-schema-validation#section-6.5.4
+ */
 final readonly class DependentRequired implements Keyword
 {
     /** @param Dependency[] $dependencies */

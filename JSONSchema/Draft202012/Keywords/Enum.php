@@ -4,6 +4,13 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 
+/**
+ * The "enum" keyword restricts an instance to one of the specified values.
+ *
+ * The instance must equal one of the elements in the array.
+ *
+ * @see https://json-schema.org/draft/2020-12/json-schema-validation#section-6.1.2
+ */
 final readonly class Enum implements Keyword
 {
     private function __construct(

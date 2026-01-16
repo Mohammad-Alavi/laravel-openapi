@@ -2,14 +2,14 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts;
 
+use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Keyword as BaseKeyword;
+
 /**
- * Keyword is a property appearing within a schema object.
+ * Draft 2020-12 specific keyword contract.
  *
  * @see https://json-schema.org/learn/glossary#keyword
  */
-interface Keyword extends \JsonSerializable
+interface Keyword extends BaseKeyword
 {
-    public static function name(): string;
-
-    public function value(): mixed;
+    // Inherits from base - no additional requirements for now
 }

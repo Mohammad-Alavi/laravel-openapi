@@ -4,6 +4,13 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Defs;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 
+/**
+ * The "$defs" keyword provides a location for reusable schema definitions.
+ *
+ * Schemas defined here can be referenced via "$ref": "#/$defs/name".
+ *
+ * @see https://json-schema.org/draft/2020-12/json-schema-core#section-8.2.4
+ */
 final readonly class Defs implements Keyword
 {
     /** @param Def[] $defs */
@@ -34,7 +41,7 @@ final readonly class Defs implements Keyword
     {
         $defs = [];
         foreach ($this->value() as $def) {
-            $defs[$def->name()] = $def->value();
+            $defs[$def->name()] = $def->schema();
         }
 
         return $defs;

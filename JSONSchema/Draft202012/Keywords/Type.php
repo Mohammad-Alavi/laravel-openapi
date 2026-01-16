@@ -5,6 +5,13 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 use Webmozart\Assert\Assert;
 
+/**
+ * The "type" keyword restricts the JSON type(s) an instance can be.
+ *
+ * Valid types: null, boolean, string, integer, number, object, array.
+ *
+ * @see https://json-schema.org/draft/2020-12/json-schema-validation#section-6.1.1
+ */
 final readonly class Type implements Keyword
 {
     /** @param string|array<array-key, string> $type */

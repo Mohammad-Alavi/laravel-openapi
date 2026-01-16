@@ -5,6 +5,13 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 use Webmozart\Assert\Assert;
 
+/**
+ * The "maxItems" keyword sets the maximum number of items in an array.
+ *
+ * The array's length must not exceed this value.
+ *
+ * @see https://json-schema.org/draft/2020-12/json-schema-validation#section-6.4.1
+ */
 final readonly class MaxItems implements Keyword
 {
     private function __construct(

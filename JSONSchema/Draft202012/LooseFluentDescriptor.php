@@ -2,23 +2,30 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012;
 
+use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Keyword;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Concerns\HasGetters;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\FluentDescriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchemaFactory;
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Dialect\Draft202012 as Dialect;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\DefinedFormat;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\KeywordFactory as Dialect;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AdditionalProperties;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AllOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Anchor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\AnyOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Comment;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Constant;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Contains;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ContentEncoding;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ContentMediaType;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\ContentSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DefaultValue;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Defs\Def;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Defs\Defs;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentRequired\Dependency;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentRequired\DependentRequired;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentSchemas\DependentSchema;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentSchemas\DependentSchemas;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Deprecated;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Description;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DynamicAnchor;
@@ -48,8 +55,12 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\MultipleOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Not;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\OneOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Pattern;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\PatternProperties\PatternProperties;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\PatternProperties\PatternProperty;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\PrefixItems;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Properties;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\PropertyNames;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Ref;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Required;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Schema;
@@ -92,6 +103,8 @@ class LooseFluentDescriptor implements FluentDescriptor
     private MinItems|null $minItems = null;
     private UniqueItems|null $uniqueItems = null;
     private Items|null $items = null;
+    private PrefixItems|null $prefixItems = null;
+    private Contains|null $contains = null;
     private AllOf|null $allOf = null;
     private AnyOf|null $anyOf = null;
     private OneOf|null $oneOf = null;
@@ -101,7 +114,10 @@ class LooseFluentDescriptor implements FluentDescriptor
     private Not|null $not = null;
     private AdditionalProperties|null $additionalProperties = null;
     private Properties|null $properties = null;
+    private PatternProperties|null $patternProperties = null;
+    private PropertyNames|null $propertyNames = null;
     private DependentRequired|null $dependentRequired = null;
+    private DependentSchemas|null $dependentSchemas = null;
     private MaxProperties|null $maxProperties = null;
     private MinProperties|null $minProperties = null;
     private Required|null $required = null;
@@ -114,6 +130,16 @@ class LooseFluentDescriptor implements FluentDescriptor
     private Title|null $title = null;
     private Constant|null $constant = null;
     private Enum|null $enum = null;
+    private ContentEncoding|null $contentEncoding = null;
+    private ContentMediaType|null $contentMediaType = null;
+    private ContentSchema|null $contentSchema = null;
+
+    /**
+     * Custom/extension keywords storage.
+     *
+     * @var array<string, Keyword>
+     */
+    protected array $customKeywords = [];
 
     final private function __construct(
         private Schema|null $schema = null,
@@ -197,11 +223,11 @@ class LooseFluentDescriptor implements FluentDescriptor
         return $instance;
     }
 
-    public function format(DefinedFormat $definedFormat): static
+    public function format(DefinedFormat|string $format): static
     {
         $clone = clone $this;
 
-        $clone->format = Dialect::format($definedFormat);
+        $clone->format = Dialect::format($format);
 
         return $clone;
     }
@@ -423,14 +449,26 @@ class LooseFluentDescriptor implements FluentDescriptor
         if ($this->enum instanceof Enum) {
             $keywords[$this->enum::name()] = $this->enum;
         }
+        if ($this->prefixItems instanceof PrefixItems) {
+            $keywords[$this->prefixItems::name()] = $this->prefixItems;
+        }
         if ($this->items instanceof Items) {
             $keywords[$this->items::name()] = $this->items;
+        }
+        if ($this->contains instanceof Contains) {
+            $keywords[$this->contains::name()] = $this->contains;
         }
         if ($this->additionalProperties instanceof AdditionalProperties) {
             $keywords[$this->additionalProperties::name()] = $this->additionalProperties;
         }
         if ($this->properties instanceof Properties) {
             $keywords[$this->properties::name()] = $this->properties;
+        }
+        if ($this->patternProperties instanceof PatternProperties) {
+            $keywords[$this->patternProperties::name()] = $this->patternProperties;
+        }
+        if ($this->propertyNames instanceof PropertyNames) {
+            $keywords[$this->propertyNames::name()] = $this->propertyNames;
         }
         if ($this->unevaluatedItems instanceof UnevaluatedItems) {
             $keywords[$this->unevaluatedItems::name()] = $this->unevaluatedItems;
@@ -483,6 +521,9 @@ class LooseFluentDescriptor implements FluentDescriptor
         if ($this->dependentRequired instanceof DependentRequired) {
             $keywords[$this->dependentRequired::name()] = $this->dependentRequired;
         }
+        if ($this->dependentSchemas instanceof DependentSchemas) {
+            $keywords[$this->dependentSchemas::name()] = $this->dependentSchemas;
+        }
         if ($this->maxProperties instanceof MaxProperties) {
             $keywords[$this->maxProperties::name()] = $this->maxProperties;
         }
@@ -509,6 +550,20 @@ class LooseFluentDescriptor implements FluentDescriptor
         }
         if ($this->defs instanceof Defs) {
             $keywords[$this->defs::name()] = $this->defs;
+        }
+        if ($this->contentEncoding instanceof ContentEncoding) {
+            $keywords[$this->contentEncoding::name()] = $this->contentEncoding;
+        }
+        if ($this->contentMediaType instanceof ContentMediaType) {
+            $keywords[$this->contentMediaType::name()] = $this->contentMediaType;
+        }
+        if ($this->contentSchema instanceof ContentSchema) {
+            $keywords[$this->contentSchema::name()] = $this->contentSchema;
+        }
+
+        // Add custom keywords at the end
+        foreach ($this->customKeywords as $name => $keyword) {
+            $keywords[$name] = $keyword;
         }
 
         return when(blank($keywords), new \stdClass(), $keywords);
@@ -859,6 +914,144 @@ class LooseFluentDescriptor implements FluentDescriptor
         $clone = clone $this;
 
         $clone->enum = Dialect::enum(...$value);
+
+        return $clone;
+    }
+
+    public function prefixItems(JSONSchema|JSONSchemaFactory ...$schema): static
+    {
+        $clone = clone $this;
+
+        $schemas = $this->getSchemas($schema);
+
+        $clone->prefixItems = Dialect::prefixItems(...$schemas);
+
+        return $clone;
+    }
+
+    public function contains(JSONSchema|JSONSchemaFactory $schema): static
+    {
+        $clone = clone $this;
+
+        if ($schema instanceof JSONSchemaFactory) {
+            $schema = $schema->build();
+        }
+
+        $clone->contains = Dialect::contains($schema);
+
+        return $clone;
+    }
+
+    public function patternProperties(PatternProperty ...$patternProperty): static
+    {
+        $clone = clone $this;
+
+        $clone->patternProperties = Dialect::patternProperties(...$patternProperty);
+
+        return $clone;
+    }
+
+    public function dependentSchemas(DependentSchema ...$dependentSchema): static
+    {
+        $clone = clone $this;
+
+        $clone->dependentSchemas = Dialect::dependentSchemas(...$dependentSchema);
+
+        return $clone;
+    }
+
+    public function propertyNames(JSONSchema|JSONSchemaFactory $schema): static
+    {
+        $clone = clone $this;
+
+        if ($schema instanceof JSONSchemaFactory) {
+            $schema = $schema->build();
+        }
+
+        $clone->propertyNames = Dialect::propertyNames($schema);
+
+        return $clone;
+    }
+
+    public function contentEncoding(string $encoding): static
+    {
+        $clone = clone $this;
+
+        $clone->contentEncoding = Dialect::contentEncoding($encoding);
+
+        return $clone;
+    }
+
+    public function contentMediaType(string $mediaType): static
+    {
+        $clone = clone $this;
+
+        $clone->contentMediaType = Dialect::contentMediaType($mediaType);
+
+        return $clone;
+    }
+
+    public function contentSchema(JSONSchema|JSONSchemaFactory $schema): static
+    {
+        $clone = clone $this;
+
+        if ($schema instanceof JSONSchemaFactory) {
+            $schema = $schema->build();
+        }
+
+        $clone->contentSchema = Dialect::contentSchema($schema);
+
+        return $clone;
+    }
+
+    /**
+     * Set a custom keyword on this schema.
+     *
+     * Use this for custom/extension keywords that don't have explicit methods.
+     * For autocomplete on custom keywords, extend this class and add methods.
+     *
+     * @example
+     * // Without autocomplete (escape hatch):
+     * $schema->set(XMyCustom::create('value'));
+     *
+     * // With autocomplete (extend class):
+     * class MyDescriptor extends StrictFluentDescriptor {
+     *     public function xMyCustom(string $v): static {
+     *         return $this->set(XMyCustom::create($v));
+     *     }
+     * }
+     */
+    public function set(Keyword $keyword): static
+    {
+        $clone = clone $this;
+        $clone->customKeywords[$keyword::name()] = $keyword;
+
+        return $clone;
+    }
+
+    /**
+     * Get a custom keyword by name.
+     */
+    public function getKeyword(string $name): Keyword|null
+    {
+        return $this->customKeywords[$name] ?? null;
+    }
+
+    /**
+     * Check if a custom keyword is set.
+     */
+    public function hasKeyword(string $name): bool
+    {
+        return isset($this->customKeywords[$name]);
+    }
+
+    /**
+     * Remove a custom keyword.
+     */
+    public function withoutKeyword(string $name): static
+    {
+        $clone = clone $this;
+        unset($clone->customKeywords[$name]);
 
         return $clone;
     }

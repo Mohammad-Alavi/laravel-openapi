@@ -5,6 +5,13 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 use Webmozart\Assert\Assert;
 
+/**
+ * The "minItems" keyword sets the minimum number of items in an array.
+ *
+ * The array's length must be at least this value.
+ *
+ * @see https://json-schema.org/draft/2020-12/json-schema-validation#section-6.4.2
+ */
 final readonly class MinItems implements Keyword
 {
     private function __construct(

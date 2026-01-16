@@ -5,6 +5,13 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 use Webmozart\Assert\Assert;
 
+/**
+ * The "maxProperties" keyword sets the maximum number of properties in an object.
+ *
+ * The object must not have more properties than this value.
+ *
+ * @see https://json-schema.org/draft/2020-12/json-schema-validation#section-6.5.1
+ */
 final readonly class MaxProperties implements Keyword
 {
     private function __construct(

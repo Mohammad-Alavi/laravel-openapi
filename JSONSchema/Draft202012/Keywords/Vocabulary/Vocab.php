@@ -2,6 +2,13 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Vocabulary;
 
+/**
+ * Represents a single vocabulary entry for the "$vocabulary" keyword.
+ *
+ * Pairs a vocabulary URI with a boolean indicating if support is required.
+ *
+ * @see Vocabulary The parent keyword class
+ */
 final readonly class Vocab
 {
     private function __construct(

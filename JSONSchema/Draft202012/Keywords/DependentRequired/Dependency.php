@@ -2,6 +2,11 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentRequired;
 
+/**
+ * Represents a single property dependency for "dependentRequired".
+ *
+ * Defines a property and the list of properties it requires when present.
+ */
 final readonly class Dependency
 {
     /**

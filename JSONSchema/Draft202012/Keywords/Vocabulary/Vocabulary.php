@@ -4,6 +4,13 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Vocabulary
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 
+/**
+ * The "$vocabulary" keyword declares which vocabularies are used by a meta-schema.
+ *
+ * Maps vocabulary URIs to booleans indicating if support is required.
+ *
+ * @see https://json-schema.org/draft/2020-12/json-schema-core#section-8.1.2
+ */
 final readonly class Vocabulary implements Keyword
 {
     /** @param Vocab[] $vocabs */

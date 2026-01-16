@@ -4,6 +4,13 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 
+/**
+ * The "multipleOf" keyword restricts a number to be a multiple of a given value.
+ *
+ * The numeric instance must be divisible by this value with no remainder.
+ *
+ * @see https://json-schema.org/draft/2020-12/json-schema-validation#section-6.2.1
+ */
 final readonly class MultipleOf implements Keyword
 {
     private function __construct(

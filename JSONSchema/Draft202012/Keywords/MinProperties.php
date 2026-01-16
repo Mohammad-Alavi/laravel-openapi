@@ -5,6 +5,13 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 use Webmozart\Assert\Assert;
 
+/**
+ * The "minProperties" keyword sets the minimum number of properties in an object.
+ *
+ * The object must have at least this many properties.
+ *
+ * @see https://json-schema.org/draft/2020-12/json-schema-validation#section-6.5.2
+ */
 final readonly class MinProperties implements Keyword
 {
     private function __construct(

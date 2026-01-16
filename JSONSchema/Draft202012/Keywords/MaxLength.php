@@ -5,6 +5,13 @@ namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Keyword;
 use Webmozart\Assert\Assert;
 
+/**
+ * The "maxLength" keyword sets the maximum length for strings.
+ *
+ * The string's length (in Unicode code points) must not exceed this value.
+ *
+ * @see https://json-schema.org/draft/2020-12/json-schema-validation#section-6.3.1
+ */
 final readonly class MaxLength implements Keyword
 {
     private function __construct(
