@@ -2,7 +2,17 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule;
 
-interface SerializationRule extends \JsonSerializable
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\MergeableFields;
+
+/**
+ * Serialization rule for Parameter Object.
+ *
+ * Defines how parameter values are serialized. Fields from implementing
+ * classes (schema, style, explode, etc.) are merged into the parent
+ * Parameter object at the same level as name and in.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#parameter-object
+ */
+interface SerializationRule extends MergeableFields
 {
-    public function jsonSerialize(): array;
 }

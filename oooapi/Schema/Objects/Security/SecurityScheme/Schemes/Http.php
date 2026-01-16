@@ -82,7 +82,7 @@ final readonly class Http implements Scheme
         return 'http';
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array|null
     {
         return [
             'scheme' => $this->scheme,

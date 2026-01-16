@@ -24,6 +24,11 @@ abstract class Base implements Style
         return $clone;
     }
 
+    public function jsonSerialize(): array|null
+    {
+        return $this->toArray();
+    }
+
     public function toArray(): array
     {
         return [

@@ -32,7 +32,7 @@ final readonly class ApiKey implements Scheme
         return 'apiKey';
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array|null
     {
         return [
             'name' => $this->name,

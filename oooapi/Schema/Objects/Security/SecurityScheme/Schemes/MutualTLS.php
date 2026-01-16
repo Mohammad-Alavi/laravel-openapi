@@ -16,7 +16,7 @@ final readonly class MutualTLS implements Scheme
         return 'mutualTLS';
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array|null
     {
         return [];
     }

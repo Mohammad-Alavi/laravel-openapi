@@ -33,7 +33,7 @@ final readonly class OAuth2 implements Scheme
         return $this->OAuthFlows->scopeCollection()->all();
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array|null
     {
         return [
             'flows' => $this->OAuthFlows,

@@ -70,7 +70,7 @@ final class SecurityScheme extends ExtensibleObject
         return Arr::filter([
             'type' => $this->scheme->type(),
             'description' => $this->description,
-            ...$this->scheme->toArray(),
+            ...$this->mergeFields($this->scheme),
         ]);
     }
 }

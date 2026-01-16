@@ -22,7 +22,7 @@ final readonly class OpenIdConnect implements Scheme
         return 'openIdConnect';
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array|null
     {
         return [
             'openIdConnectUrl' => $this->openIdConnectUrl,

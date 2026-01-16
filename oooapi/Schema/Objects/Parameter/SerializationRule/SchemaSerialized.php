@@ -28,7 +28,7 @@ abstract readonly class SchemaSerialized implements SerializationRule
     {
         return [
             'schema' => $this->jsonSchema,
-            ...($this->style?->toArray() ?? []),
+            ...($this->style?->jsonSerialize() ?? []),
             'examples' => $this->examples,
         ];
     }

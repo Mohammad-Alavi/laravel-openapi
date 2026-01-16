@@ -119,7 +119,7 @@ final class Parameter extends ExtensibleObject
             'required' => $this->required,
             'deprecated' => $this->deprecated,
             'allowEmptyValue' => $this->allowEmptyValue,
-            ...$this->serializationRule->jsonSerialize(), // TODO: Improve? This is different from the usual way of handling serialization rules.
+            ...$this->mergeFields($this->serializationRule),
         ]);
     }
 }

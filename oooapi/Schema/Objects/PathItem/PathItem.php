@@ -92,7 +92,7 @@ final class PathItem extends ExtensibleObject
             [
                 'summary' => $this->summary,
                 'description' => $this->description,
-                ...($this->operations?->jsonSerialize() ?? []), // TODO: Improve? This is different from the way we handle other fields
+                ...$this->mergeFields($this->operations),
                 'servers' => $this->servers,
                 'parameters' => $this->parameters,
             ],

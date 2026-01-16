@@ -3,6 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract;
 
 use Illuminate\Support\Facades\File;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\MergeableFields;
 
 trait Generator
 {
@@ -79,5 +80,18 @@ trait Generator
     public function toNullIfEmpty(): static|null
     {
         return when(blank($this->toArray()), null, $this);
+    }
+
+    /**
+     * Returns an array of fields from a MergeableFields object for spreading into toArray().
+     *
+     * Use this method when a child object's fields should appear at the same level
+     * as the parent's fields in the OpenAPI specification output.
+     *
+     * @return array<string, mixed>
+     */
+    protected function mergeFields(MergeableFields|null $fields): array
+    {
+        return $fields?->jsonSerialize() ?? [];
     }
 }
