@@ -9,6 +9,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\V
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
+/**
+ * Server Object.
+ *
+ * An object representing a Server. The url field is required.
+ * Server variables can be used for variable substitution in the URL.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#server-object
+ */
 final class Server extends ExtensibleObject
 {
     private Description|null $description = null;

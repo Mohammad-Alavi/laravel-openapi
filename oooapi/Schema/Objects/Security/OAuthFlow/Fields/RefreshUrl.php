@@ -5,6 +5,13 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuthFlow\
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Validator;
 
+/**
+ * The URL for obtaining refresh tokens.
+ *
+ * OPTIONAL for all OAuth2 flows. MUST be a valid URL.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#oauth-flow-object
+ */
 final readonly class RefreshUrl extends StringField
 {
     private function __construct(

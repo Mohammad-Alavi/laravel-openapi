@@ -9,6 +9,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\O
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Flows\Password;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
+/**
+ * OAuth Flows Object.
+ *
+ * Allows configuration of the supported OAuth Flows. Supports implicit,
+ * password, clientCredentials, and authorizationCode flows.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#oauth-flows-object
+ */
 final class OAuthFlows extends Generatable
 {
     private function __construct(

@@ -18,6 +18,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 
+/**
+ * Operation Object.
+ *
+ * Describes a single API operation on a path. An Operation Object is
+ * required for each HTTP method on a path that the API exposes.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#operation-object
+ */
 final class Operation extends ExtensibleObject
 {
     private Summary|null $summary = null;

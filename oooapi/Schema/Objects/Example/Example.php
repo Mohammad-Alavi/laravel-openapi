@@ -9,6 +9,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 use Webmozart\Assert\Assert;
 
+/**
+ * Example Object.
+ *
+ * Provides an example of a schema or media type. The value and externalValue
+ * fields are mutually exclusive.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#example-object
+ */
 final class Example extends ExtensibleObject
 {
     private Summary|null $summary = null;

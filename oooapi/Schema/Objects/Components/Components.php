@@ -27,6 +27,16 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
+/**
+ * Components Object.
+ *
+ * Holds a set of reusable objects for different aspects of the OAS.
+ * All objects defined within the components object will have no effect
+ * on the API unless they are explicitly referenced from properties
+ * outside the components object.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#components-object
+ */
 final class Components extends ExtensibleObject
 {
     /** @var array<string, JSONSchema>|null */

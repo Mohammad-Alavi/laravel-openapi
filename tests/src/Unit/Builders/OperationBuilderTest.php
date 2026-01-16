@@ -47,8 +47,6 @@ describe(class_basename(OperationBuilder::class), function (): void {
                 return [
                     'routeInfo' => $routeInfo,
                     'expected' => [
-                        'summary' => '',
-                        'description' => '',
                         'operationId' => 'test',
                     ],
                 ];

@@ -29,10 +29,10 @@ final readonly class OperationBuilder
         $attribute = $routeInfo->operationAttribute();
 
         if (!is_null($attribute)) {
-            if (!is_null($attribute->summary)) {
+            if (filled($attribute->summary)) {
                 $operation = $operation->summary($attribute->summary);
             }
-            if (!is_null($attribute->description)) {
+            if (filled($attribute->description)) {
                 $operation = $operation->description($attribute->description);
             }
             if (!is_null($attribute->operationId)) {

@@ -4,6 +4,14 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fiel
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
 
+/**
+ * Default value for a server variable.
+ *
+ * The default value to use for substitution, which SHALL be sent if an
+ * alternate value is not supplied. This is a REQUIRED field.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#server-variable-object
+ */
 final readonly class DefaultValue extends StringField
 {
     private function __construct(

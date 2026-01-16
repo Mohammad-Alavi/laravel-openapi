@@ -6,6 +6,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extensions;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
+/**
+ * Base class for OpenAPI objects that support specification extensions.
+ *
+ * OpenAPI allows extending the specification with custom properties prefixed
+ * with "x-". This abstract class provides the foundation for all objects
+ * that may contain such extensions.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#specification-extensions
+ */
 // TODO: Can we make this and all it's driven classes immutable/readonly?
 abstract class ExtensibleObject extends Generatable
 {

@@ -5,6 +5,15 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Extensions;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGeneratable;
 use Webmozart\Assert\Assert;
 
+/**
+ * Specification Extension.
+ *
+ * Allows extending the OpenAPI specification with custom properties.
+ * Extension names MUST begin with "x-" and cannot use reserved prefixes
+ * "x-oai-" and "x-oas-".
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#specification-extensions
+ */
 final readonly class Extension extends ReadonlyGeneratable
 {
     private const EXTENSION_PREFIX = 'x-';

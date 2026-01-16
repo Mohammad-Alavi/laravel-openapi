@@ -8,6 +8,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\Mapp
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Fields\PropertyName;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
+/**
+ * Discriminator Object.
+ *
+ * Used with composition keywords (oneOf, anyOf, allOf) to help determine
+ * which schema to use based on a property value. The propertyName field
+ * is required.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#discriminator-object
+ */
 final class Discriminator extends ExtensibleObject
 {
     private function __construct(

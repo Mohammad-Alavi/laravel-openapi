@@ -5,6 +5,14 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuthFlow\
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Validator;
 
+/**
+ * The token URL for OAuth2 flows.
+ *
+ * REQUIRED for password, clientCredentials, and authorizationCode flows.
+ * MUST be a valid URL.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#oauth-flow-object
+ */
 final readonly class TokenUrl extends StringField
 {
     private function __construct(

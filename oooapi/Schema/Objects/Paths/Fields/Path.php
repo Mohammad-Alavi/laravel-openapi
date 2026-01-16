@@ -9,6 +9,13 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
 use Webmozart\Assert\Assert;
 
 /**
+ * Path entry in the Paths Object.
+ *
+ * A relative path to an individual endpoint. The field name MUST begin
+ * with a forward slash (/). Path templating is allowed.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#paths-object
+ *
  * @implements StringMapEntry<PathItem>
  */
 final class Path extends ExtensibleObject implements StringMapEntry

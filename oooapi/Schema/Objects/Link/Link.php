@@ -9,6 +9,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
+/**
+ * Link Object.
+ *
+ * Represents a possible design-time link for a response. The presence of a
+ * link does not guarantee the caller's ability to invoke it. Either
+ * operationRef or operationId can be used, but not both.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#link-object
+ */
 final class Link extends ExtensibleObject
 {
     private OperationRef|null $operationRef = null;

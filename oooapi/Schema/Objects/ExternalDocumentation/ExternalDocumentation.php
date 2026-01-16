@@ -7,6 +7,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 
+/**
+ * External Documentation Object.
+ *
+ * Allows referencing an external resource for extended documentation.
+ * The url field is required and must be a valid URL.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#external-documentation-object
+ */
 final class ExternalDocumentation extends ExtensibleObject
 {
     private Description|null $description = null;

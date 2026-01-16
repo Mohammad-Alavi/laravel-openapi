@@ -7,6 +7,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\RuntimeExpressionAbstract;
 
+/**
+ * Callback Object.
+ *
+ * A map of possible out-of-band callbacks related to the parent operation.
+ * The key is a unique identifier for the Callback Object. Each value is a
+ * Path Item Object describing a callback request and expected responses.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#callback-object
+ */
 final class Callback extends ExtensibleObject
 {
     private function __construct(

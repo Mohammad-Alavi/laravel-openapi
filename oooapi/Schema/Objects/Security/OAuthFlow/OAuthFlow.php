@@ -10,6 +10,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuthFlow\Fields
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuthFlow\Fields\TokenUrl;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
+/**
+ * OAuth Flow Object.
+ *
+ * Configuration details for a supported OAuth Flow. Applicable OAuth2
+ * flow types are: implicit, password, clientCredentials, authorizationCode.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#oauth-flow-object
+ */
 final class OAuthFlow extends ExtensibleObject
 {
     protected Flow|null $flow = null;

@@ -11,6 +11,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\Examples;
 
+/**
+ * Header Object.
+ *
+ * Describes a single header parameter. The Header Object follows the
+ * structure of the Parameter Object with the following changes: name
+ * MUST NOT be specified, it is given in the corresponding headers map.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#header-object
+ */
 final class Header extends ExtensibleObject
 {
     private Description|null $description = null;

@@ -11,6 +11,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\Examples;
 
+/**
+ * Media Type Object.
+ *
+ * Provides schema and examples for the media type identified by its key.
+ * Each Media Type Object describes the content of a request or response body.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#media-type-object
+ */
 final class MediaType extends ExtensibleObject
 {
     private JSONSchema|SchemaFactory|null $schema = null;

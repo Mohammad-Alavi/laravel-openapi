@@ -4,6 +4,13 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Discriminator\Field
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
 
+/**
+ * The name of the property in the payload that will hold the discriminator value.
+ *
+ * This property is required in the Discriminator Object.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#discriminator-object
+ */
 final readonly class PropertyName extends StringField
 {
     private function __construct(

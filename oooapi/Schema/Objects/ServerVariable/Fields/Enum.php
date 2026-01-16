@@ -4,6 +4,14 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\Fiel
 
 use Webmozart\Assert\Assert;
 
+/**
+ * Enumeration of allowed values for a server variable.
+ *
+ * An enumeration of string values to be used if the substitution options are
+ * from a limited set. The array MUST NOT be empty.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#server-variable-object
+ */
 final readonly class Enum implements \JsonSerializable
 {
     private function __construct(

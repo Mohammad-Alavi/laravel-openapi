@@ -8,6 +8,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\Content;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
+/**
+ * Request Body Object.
+ *
+ * Describes a single request body. The content field describes the content
+ * of the request body using media type objects.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#request-body-object
+ */
 final class RequestBody extends ExtensibleObject
 {
     private Description|null $description = null;

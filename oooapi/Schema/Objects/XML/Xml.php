@@ -8,6 +8,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\XmlNamespace;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
+/**
+ * XML Object.
+ *
+ * A metadata object that allows for more fine-tuned XML model definitions.
+ * When using arrays, XML element names are not inferred and the name
+ * property should be used to add that information.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#xml-object
+ */
 final class Xml extends ExtensibleObject
 {
     private Name|null $name = null;

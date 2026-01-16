@@ -5,6 +5,14 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Contact\Fields;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
 use Webmozart\Assert\Assert;
 
+/**
+ * Email address for the contact.
+ *
+ * The email address of the contact person/organization.
+ * MUST be in the format of an email address.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#contact-object
+ */
 final readonly class Email extends StringField
 {
     private function __construct(

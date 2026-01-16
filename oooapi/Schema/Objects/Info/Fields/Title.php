@@ -4,6 +4,13 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Fields;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
 
+/**
+ * Title of the API.
+ *
+ * The title of the API. This is a REQUIRED field in the Info Object.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#info-object
+ */
 final readonly class Title extends StringField
 {
     private function __construct(

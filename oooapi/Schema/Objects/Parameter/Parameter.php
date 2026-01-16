@@ -14,6 +14,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
+/**
+ * Parameter Object.
+ *
+ * Describes a single operation parameter. A unique parameter is defined
+ * by a combination of a name and location. The name and in fields are required.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#parameter-object
+ */
 final class Parameter extends ExtensibleObject
 {
     private true|null $required = null;

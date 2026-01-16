@@ -7,6 +7,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\HeaderEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\Headers;
 
+/**
+ * Encoding Object.
+ *
+ * A single encoding definition applied to a single schema property.
+ * This object provides additional information about how a property should
+ * be serialized when using application/x-www-form-urlencoded or multipart content.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#encoding-object
+ */
 final class Encoding extends ExtensibleObject
 {
     private string|null $contentType = null;

@@ -11,6 +11,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 
+/**
+ * Path Item Object.
+ *
+ * Describes the operations available on a single path. A Path Item MAY be
+ * empty due to ACL constraints. The path itself is still exposed to the
+ * documentation viewer but they will not know which operations are available.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#path-item-object
+ */
 final class PathItem extends ExtensibleObject
 {
     private Summary|null $summary = null;

@@ -5,6 +5,14 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Extensions;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
 use Webmozart\Assert\Assert;
 
+/**
+ * Collection of Specification Extensions.
+ *
+ * Manages a collection of specification extensions for an OpenAPI object.
+ * Provides methods to add, remove, and retrieve extensions.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#specification-extensions
+ */
 // TODO: make readonly if possible
 // There was a problem with cloning that prevented me from making it readonly
 final class Extensions extends Generatable

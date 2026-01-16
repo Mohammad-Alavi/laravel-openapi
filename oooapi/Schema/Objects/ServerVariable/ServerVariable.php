@@ -9,6 +9,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use Webmozart\Assert\Assert;
 
+/**
+ * Server Variable Object.
+ *
+ * An object representing a Server Variable for server URL template substitution.
+ * The default value is required. If enum is provided, the default value MUST
+ * exist in the enum's values.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#server-variable-object
+ */
 final class ServerVariable extends ExtensibleObject
 {
     private Enum|null $enum = null;

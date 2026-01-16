@@ -8,6 +8,13 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 
+/**
+ * Contact Object.
+ *
+ * Contact information for the exposed API. All fields are optional.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#contact-object
+ */
 final class Contact extends ExtensibleObject
 {
     private Name|null $name = null;

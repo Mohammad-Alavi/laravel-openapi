@@ -9,6 +9,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
 use Webmozart\Assert\Assert;
 
+/**
+ * License Object.
+ *
+ * License information for the exposed API. The name field is required.
+ * The identifier and url fields are mutually exclusive.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#license-object
+ * @see https://spdx.org/licenses/ SPDX License List
+ */
 final class License extends ExtensibleObject
 {
     private Identifier|null $identifier = null;

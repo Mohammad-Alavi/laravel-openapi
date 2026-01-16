@@ -8,6 +8,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ReadonlyGeneratable;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityRequirement\SecurityRequirement;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
+/**
+ * Security Requirement Object collection.
+ *
+ * Lists the required security schemes to execute an operation. Each name
+ * MUST correspond to a security scheme declared in the Security Schemes
+ * under the Components Object.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#security-requirement-object
+ */
 final class Security extends Generatable
 {
     private readonly array $securityRequirements;

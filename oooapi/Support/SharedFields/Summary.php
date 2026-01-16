@@ -4,6 +4,15 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
 
+/**
+ * Summary field used across multiple OpenAPI objects.
+ *
+ * A short summary providing a brief overview. Unlike description,
+ * summary is intended for quick reference and should be concise.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#info-object
+ * @see https://spec.openapis.org/oas/v3.1.0#operation-object
+ */
 final readonly class Summary extends StringField
 {
     private function __construct(

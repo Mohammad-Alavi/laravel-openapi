@@ -13,6 +13,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\S
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 
+/**
+ * Security Scheme Object.
+ *
+ * Defines a security scheme that can be used by the operations. Supported
+ * schemes are HTTP authentication, API key, mutual TLS, OAuth2, and
+ * OpenID Connect Discovery.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.0#security-scheme-object
+ */
 final class SecurityScheme extends ExtensibleObject
 {
     private Description|null $description = null;
