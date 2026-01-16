@@ -3,28 +3,29 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Contracts\Scheme;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\ParameterLocation;
 
 final readonly class ApiKey implements Scheme
 {
     private function __construct(
         private string $name,
-        private string $in,
+        private ParameterLocation $in,
     ) {
     }
 
     public static function query(string $name): self
     {
-        return new self($name, 'query');
+        return new self($name, ParameterLocation::QUERY);
     }
 
     public static function header(string $name): self
     {
-        return new self($name, 'header');
+        return new self($name, ParameterLocation::HEADER);
     }
 
     public static function cookie(string $name): self
     {
-        return new self($name, 'cookie');
+        return new self($name, ParameterLocation::COOKIE);
     }
 
     public function type(): string
@@ -36,7 +37,7 @@ final readonly class ApiKey implements Scheme
     {
         return [
             'name' => $this->name,
-            'in' => $this->in,
+            'in' => $this->in->value,
         ];
     }
 }
