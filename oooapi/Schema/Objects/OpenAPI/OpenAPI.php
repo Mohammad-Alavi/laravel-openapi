@@ -33,8 +33,8 @@ final class OpenAPI extends ExtensibleObject
     private Security|null $security = null;
     private ExternalDocumentation|null $externalDocs = null;
 
-    /** @var Server[] */
-    private array $servers = [];
+    /** @var Server[]|null */
+    private array|null $servers = null;
 
     /** @var Tag[]|null */
     private array|null $tags = null;
@@ -70,7 +70,7 @@ final class OpenAPI extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->servers = $server;
+        $clone->servers = when(blank($server), null, $server);
 
         return $clone;
     }
