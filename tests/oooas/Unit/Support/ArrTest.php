@@ -43,4 +43,53 @@ describe('Arr', function (): void {
             'x-test' => null,
         ]);
     });
+
+    it('serializes JsonSerializable objects', function (): void {
+        $jsonSerializable = new class implements \JsonSerializable {
+            public function jsonSerialize(): array
+            {
+                return ['nested' => 'value', 'null_field' => null];
+            }
+        };
+
+        $array = Arr::filter([
+            'serializable' => $jsonSerializable,
+            'regular' => 'value',
+        ]);
+
+        expect($array)->toBe([
+            'serializable' => ['nested' => 'value'],
+            'regular' => 'value',
+        ]);
+    });
+
+    it('recursively processes nested JsonSerializable objects', function (): void {
+        $inner = new class implements \JsonSerializable {
+            public function jsonSerialize(): array
+            {
+                return ['inner_key' => 'inner_value'];
+            }
+        };
+
+        $outer = new class($inner) implements \JsonSerializable {
+            public function __construct(private \JsonSerializable $inner)
+            {
+            }
+
+            public function jsonSerialize(): array
+            {
+                return ['outer_key' => $this->inner, 'null_field' => null];
+            }
+        };
+
+        $array = Arr::filter([
+            'nested' => $outer,
+        ]);
+
+        expect($array)->toBe([
+            'nested' => [
+                'outer_key' => ['inner_key' => 'inner_value'],
+            ],
+        ]);
+    });
 })->covers(Arr::class);

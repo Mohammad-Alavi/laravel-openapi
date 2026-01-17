@@ -2,7 +2,6 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 
 /** @internal */
@@ -12,8 +11,7 @@ class Arr
     public static function filter(array $array): array
     {
         foreach ($array as $index => &$value) {
-            // If the value is an object, then parse to array.
-            if ($value instanceof ExtensibleObject) {
+            if ($value instanceof \JsonSerializable) {
                 $value = $value->jsonSerialize();
             }
 
