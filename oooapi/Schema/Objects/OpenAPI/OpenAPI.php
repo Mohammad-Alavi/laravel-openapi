@@ -39,6 +39,9 @@ final class OpenAPI extends ExtensibleObject
     /** @var Tag[]|null */
     private array|null $tags = null;
 
+    /** @var bool Flag to prevent re-crawling the object tree on subsequent serializations */
+    private bool $referencesCollected = false;
+
     private function __construct(
         private readonly OpenAPIField $openAPIField,
         private readonly Info $info,
@@ -153,9 +156,14 @@ final class OpenAPI extends ExtensibleObject
 
     private function beforeSerialization(): void
     {
+        if ($this->referencesCollected) {
+            return;
+        }
+
         // Ensure that the Components object is properly initialized with references to all reusable components
         //  used in the OpenAPI document.
         $this->components = Components::from($this, $this->components);
+        $this->referencesCollected = true;
     }
 
     public function toArray(): array
