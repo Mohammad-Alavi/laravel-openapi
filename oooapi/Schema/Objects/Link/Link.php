@@ -8,6 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Fields\OperationRef;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use Webmozart\Assert\Assert;
 
 /**
  * Link Object.
@@ -27,6 +28,11 @@ final class Link extends ExtensibleObject
 
     public function operationRef(string $operationRef): self
     {
+        Assert::null(
+            $this->operationId,
+            'operationRef and operationId fields are mutually exclusive.',
+        );
+
         $clone = clone $this;
 
         $clone->operationRef = OperationRef::create($operationRef);
@@ -41,6 +47,11 @@ final class Link extends ExtensibleObject
 
     public function operationId(string $operationId): self
     {
+        Assert::null(
+            $this->operationRef,
+            'operationId and operationRef fields are mutually exclusive.',
+        );
+
         $clone = clone $this;
 
         $clone->operationId = OperationId::create($operationId);
