@@ -1,6 +1,7 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback\Callback;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
@@ -11,6 +12,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStat
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Request\RequestQueryExpression;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 
 describe(class_basename(Callback::class), function (): void {
     it(
@@ -25,7 +27,7 @@ describe(class_basename(Callback::class), function (): void {
                             Operation::create()
                                 ->operationId('myEvent')
                                 ->requestBody(
-                                    RequestBody::create()
+                                    RequestBody::create(ContentEntry::json(MediaType::create()))
                                         ->description(
                                             'something happened',
                                         ),
@@ -50,6 +52,9 @@ describe(class_basename(Callback::class), function (): void {
                     $method->value => [
                         'requestBody' => [
                             'description' => 'something happened',
+                            'content' => [
+                                'application/json' => [],
+                            ],
                         ],
                         'responses' => [
                             401 => [

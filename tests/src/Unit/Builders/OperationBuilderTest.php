@@ -138,7 +138,11 @@ describe(class_basename(OperationBuilder::class), function (): void {
                                 ],
                             ],
                         ],
-                        'requestBody' => [],
+                        'requestBody' => [
+                            'content' => [
+                                'application/json' => [],
+                            ],
+                        ],
                         'responses' => [
                             200 => [
                                 'description' => 'OK',

@@ -113,13 +113,12 @@ final readonly class Laragen
         return $availableOperation
             ->value()
             ->requestBody(
-                RequestBody::create()
-                    ->content(
-                        ContentEntry::json(
-                            MediaType::create()
-                                ->schema($requestBodySchema),
-                        ),
+                RequestBody::create(
+                    ContentEntry::json(
+                        MediaType::create()
+                            ->schema($requestBodySchema),
                     ),
+                ),
             );
     }
 

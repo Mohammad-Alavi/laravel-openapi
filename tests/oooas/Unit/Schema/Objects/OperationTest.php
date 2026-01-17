@@ -1,6 +1,7 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
@@ -12,6 +13,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 use Tests\src\Support\Doubles\Stubs\Attributes\TestCallbackFactory;
 use Workbench\App\Petstore\Security\SecuritySchemes\TestBearerSecuritySchemeFactory;
@@ -43,7 +45,7 @@ describe(class_basename(Operation::class), function (): void {
                             QueryParameter::create(Schema::string()),
                         ),
                     ),
-                )->requestBody(RequestBody::create())
+                )->requestBody(RequestBody::create(ContentEntry::json(MediaType::create())))
                 ->responses(
                     Responses::create(
                         ResponseEntry::create(
@@ -73,7 +75,11 @@ describe(class_basename(Operation::class), function (): void {
                         ],
                     ],
                 ],
-                'requestBody' => [],
+                'requestBody' => [
+                    'content' => [
+                        'application/json' => [],
+                    ],
+                ],
                 'responses' => [
                     '200' => [
                         'description' => 'OK',

@@ -148,8 +148,16 @@ describe(class_basename(Generator::class), function (): void {
                         ],
                     ],
                     'requestBodies' => [
-                        'MultiCollectionRequestBody' => [],
-                        'ExplicitCollectionRequestBody' => [],
+                        'MultiCollectionRequestBody' => [
+                            'content' => [
+                                'application/json' => [],
+                            ],
+                        ],
+                        'ExplicitCollectionRequestBody' => [
+                            'content' => [
+                                'application/json' => [],
+                            ],
+                        ],
                     ],
                 ],
             ],

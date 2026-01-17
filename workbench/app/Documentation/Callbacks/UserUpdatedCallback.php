@@ -36,48 +36,47 @@ class UserUpdatedCallback extends CallbackFactory implements ShouldBeReferenced
                         HttpMethod::POST,
                         Operation::create()
                             ->requestBody(
-                                RequestBody::create()
-                                    ->content(
-                                        ContentEntry::json(
-                                            MediaType::create()
-                                                ->schema(
-                                                    Schema::object()
-                                                        ->description('Request body for User Updated callback')
-                                                        ->properties(
-                                                            Property::create(
-                                                                'id',
-                                                                Schema::string()
-                                                                    ->description('The ID of the updated user')
-                                                                    ->format(StringFormat::UUID),
-                                                            ),
-                                                            Property::create(
-                                                                'changes',
-                                                                Schema::object()
-                                                                    ->description('The changes made to the user')
-                                                                    ->properties(
-                                                                        Property::create(
-                                                                            'name',
-                                                                            Schema::string()
-                                                                                ->description('The updated name of the user'),
-                                                                        ),
-                                                                        Property::create(
-                                                                            'email',
-                                                                            Schema::string()
-                                                                                ->description('The updated email of the user')
-                                                                                ->format(StringFormat::EMAIL),
-                                                                        ),
-                                                                        Property::create(
-                                                                            'updated_at',
-                                                                            Schema::string()
-                                                                                ->description('The timestamp when the user was updated')
-                                                                                ->format(StringFormat::DATE_TIME),
-                                                                        ),
-                                                                    ),
-                                                            ),
+                                RequestBody::create(
+                                    ContentEntry::json(
+                                        MediaType::create()
+                                            ->schema(
+                                                Schema::object()
+                                                    ->description('Request body for User Updated callback')
+                                                    ->properties(
+                                                        Property::create(
+                                                            'id',
+                                                            Schema::string()
+                                                                ->description('The ID of the updated user')
+                                                                ->format(StringFormat::UUID),
                                                         ),
-                                                ),
-                                        ),
-                                    )->description('Callback for User Updated'),
+                                                        Property::create(
+                                                            'changes',
+                                                            Schema::object()
+                                                                ->description('The changes made to the user')
+                                                                ->properties(
+                                                                    Property::create(
+                                                                        'name',
+                                                                        Schema::string()
+                                                                            ->description('The updated name of the user'),
+                                                                    ),
+                                                                    Property::create(
+                                                                        'email',
+                                                                        Schema::string()
+                                                                            ->description('The updated email of the user')
+                                                                            ->format(StringFormat::EMAIL),
+                                                                    ),
+                                                                    Property::create(
+                                                                        'updated_at',
+                                                                        Schema::string()
+                                                                            ->description('The timestamp when the user was updated')
+                                                                            ->format(StringFormat::DATE_TIME),
+                                                                    ),
+                                                                ),
+                                                        ),
+                                                    ),
+                                            ),
+                                    ),
+                                )->description('Callback for User Updated'),
                             )->responses(
                                 Responses::create(
                                     ResponseEntry::create(

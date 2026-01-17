@@ -18,6 +18,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
@@ -33,6 +34,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\Http;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\SecurityScheme;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\Request\RequestQueryExpression;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 
 describe(class_basename(Components::class), function (): void {
     it('can be create with all parameters', function (): void {
@@ -91,7 +93,7 @@ describe(class_basename(Components::class), function (): void {
         $requestBody = new class extends RequestBodyFactory {
             public function component(): RequestBody
             {
-                return RequestBody::create();
+                return RequestBody::create(ContentEntry::json(MediaType::create()));
             }
 
             public static function name(): string
@@ -148,7 +150,7 @@ describe(class_basename(Components::class), function (): void {
                                 Operation::create()
                                     ->operationId('callbackUrl')
                                     ->requestBody(
-                                        RequestBody::create()
+                                        RequestBody::create(ContentEntry::json(MediaType::create()))
                                             ->description(
                                                 'something happened',
                                             ),
@@ -223,7 +225,11 @@ describe(class_basename(Components::class), function (): void {
                 ],
             ],
             'requestBodies' => [
-                'CreateResource' => [],
+                'CreateResource' => [
+                    'content' => [
+                        'application/json' => [],
+                    ],
+                ],
             ],
             'headers' => [
                 'HeaderExample' => [],
@@ -244,6 +250,9 @@ describe(class_basename(Components::class), function (): void {
                             'operationId' => 'callbackUrl',
                             'requestBody' => [
                                 'description' => 'something happened',
+                                'content' => [
+                                    'application/json' => [],
+                                ],
                             ],
                             'responses' => [
                                 '200' => [

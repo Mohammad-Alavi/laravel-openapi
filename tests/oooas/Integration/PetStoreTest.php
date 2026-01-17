@@ -144,16 +144,15 @@ describe('PetStoreTest', function (): void {
                 'Creates a new pet in the store.  Duplicates are allowed',
             )->operationId('addPet')
             ->requestBody(
-                RequestBody::create()
-                    ->description('Pet to add to the store')
-                    ->required()
-                    ->content(
-                        ContentEntry::json(
-                            MediaType::create()->schema(
-                                Animal::create(),
-                            ),
+                RequestBody::create(
+                    ContentEntry::json(
+                        MediaType::create()->schema(
+                            Animal::create(),
                         ),
                     ),
+                )
+                    ->description('Pet to add to the store')
+                    ->required(),
             )
             ->responses(Responses::create($responseEntry, $defaultErrorResponse));
 

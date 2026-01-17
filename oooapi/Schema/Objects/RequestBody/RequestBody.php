@@ -7,12 +7,13 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\Content;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use Webmozart\Assert\Assert;
 
 /**
  * Request Body Object.
  *
- * Describes a single request body. The content field describes the content
- * of the request body using media type objects.
+ * Describes a single request body. The content field is required and describes
+ * the content of the request body using media type objects.
  *
  * @see https://spec.openapis.org/oas/v3.1.0#request-body-object
  */
@@ -20,7 +21,12 @@ final class RequestBody extends ExtensibleObject
 {
     private Description|null $description = null;
     private true|null $required = null;
-    private Content|null $content = null;
+    private Content $content;
+
+    private function __construct(Content $content)
+    {
+        $this->content = $content;
+    }
 
     public function description(string $description): self
     {
@@ -31,9 +37,11 @@ final class RequestBody extends ExtensibleObject
         return $clone;
     }
 
-    public static function create(): self
+    public static function create(ContentEntry ...$contentEntry): self
     {
-        return new self();
+        Assert::minCount($contentEntry, 1, 'RequestBody content is required per OpenAPI spec.');
+
+        return new self(Content::create(...$contentEntry));
     }
 
     public function required(): self

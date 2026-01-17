@@ -103,12 +103,11 @@ describe(class_basename(OpenAPI::class), function (): void {
             ->summary('Create an audit')
             ->operationId('audits.store')
             ->requestBody(
-                RequestBody::create()
-                    ->content(
-                        ContentEntry::json(
-                            MediaType::create()->schema($objectDescriptor),
-                        ),
+                RequestBody::create(
+                    ContentEntry::json(
+                        MediaType::create()->schema($objectDescriptor),
                     ),
+                ),
             );
 
         $stringDescriptor = Schema::string()->format(StringFormat::UUID);

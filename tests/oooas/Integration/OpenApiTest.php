@@ -90,12 +90,11 @@ describe('OpenApi', function (): void {
             ->summary('Create an audit')
             ->operationId('audits.store')
             ->requestBody(
-                RequestBody::create()
-                    ->content(
-                        ContentEntry::json(
-                            MediaType::create()->schema($schema),
-                        ),
+                RequestBody::create(
+                    ContentEntry::json(
+                        MediaType::create()->schema($schema),
                     ),
+                ),
             );
         $stringDescriptor = Schema::string()->format(StringFormat::UUID);
         $enumDescriptor = Schema::enum('json', 'ics')

@@ -131,8 +131,16 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         ],
                     ],
                     'requestBodies' => [
-                        'MultiCollectionRequestBody' => [],
-                        'ExplicitCollectionRequestBody' => [],
+                        'MultiCollectionRequestBody' => [
+                            'content' => [
+                                'application/json' => [],
+                            ],
+                        ],
+                        'ExplicitCollectionRequestBody' => [
+                            'content' => [
+                                'application/json' => [],
+                            ],
+                        ],
                     ],
                     'headers' => [
                         'ExplicitCollectionHeader' => [],
@@ -220,8 +228,16 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                         ],
                     ],
                     'requestBodies' => [
-                        'ImplicitCollectionRequestBody' => [],
-                        'MultiCollectionRequestBody' => [],
+                        'ImplicitCollectionRequestBody' => [
+                            'content' => [
+                                'application/json' => [],
+                            ],
+                        ],
+                        'MultiCollectionRequestBody' => [
+                            'content' => [
+                                'application/json' => [],
+                            ],
+                        ],
                     ],
                     'headers' => [
                         'MultiCollectionHeader' => [],
