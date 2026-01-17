@@ -13,8 +13,6 @@ use Webmozart\Assert\Assert;
  *
  * @see https://spec.openapis.org/oas/v3.1.0#specification-extensions
  */
-// TODO: make readonly if possible
-// There was a problem with cloning that prevented me from making it readonly
 final class Extensions extends Generatable
 {
     private array $extensions = [];

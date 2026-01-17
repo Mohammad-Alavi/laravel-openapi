@@ -13,11 +13,11 @@ describe(class_basename(ExtensionBuilder::class), function (): void {
 
         /** @var ExtensionBuilder $extensionBuilder */
         $extensionBuilder = app(ExtensionBuilder::class);
-        $extensionBuilder->build($example, collect([
+        $result = $extensionBuilder->build($example, collect([
             new Extension(factory: FakeExtension::class),
         ]));
 
-        expect($example->compile())->toBe([
+        expect($result->compile())->toBe([
             'x-uuid' => [
                 'type' => 'string',
                 'format' => 'uuid',
@@ -30,14 +30,27 @@ describe(class_basename(ExtensionBuilder::class), function (): void {
 
         /** @var ExtensionBuilder $extensionBuilder */
         $extensionBuilder = app(ExtensionBuilder::class);
-        $extensionBuilder->build($example, collect([
+        $result = $extensionBuilder->build($example, collect([
             new Extension(key: 'x-foo', value: 'bar'),
             new Extension(key: 'x-key', value: '1'),
         ]));
 
-        expect($example->compile())->toBe([
+        expect($result->compile())->toBe([
             'x-foo' => 'bar',
             'x-key' => '1',
         ]);
+    });
+
+    it('does not mutate the original object', function (): void {
+        $original = Example::create();
+
+        /** @var ExtensionBuilder $extensionBuilder */
+        $extensionBuilder = app(ExtensionBuilder::class);
+        $result = $extensionBuilder->build($original, collect([
+            new Extension(key: 'x-foo', value: 'bar'),
+        ]));
+
+        expect($original->compile())->toBe([])
+            ->and($result->compile())->toBe(['x-foo' => 'bar']);
     });
 })->covers(ExtensionBuilder::class);

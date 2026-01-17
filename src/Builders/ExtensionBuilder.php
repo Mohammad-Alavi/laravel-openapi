@@ -11,20 +11,30 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 // TODO: refactor this class to use the ExtensionFactory interface
 final readonly class ExtensionBuilder
 {
-    public function build(ExtensibleObject $extensibleObject, Collection $attributes): void
+    /**
+     * @template T of ExtensibleObject
+     *
+     * @param T $extensibleObject
+     *
+     * @return T
+     */
+    public function build(ExtensibleObject $extensibleObject, Collection $attributes): ExtensibleObject
     {
-        $attributes->each(static function (ExtensionAttribute $extensionAttribute) use ($extensibleObject): void {
-            if (is_a($extensionAttribute->factory, ExtensionFactory::class, true)) {
-                /** @var ExtensionFactory $factory */
-                $factory = app($extensionAttribute->factory);
-                $key = $factory->key();
-                $value = $factory->value();
-            } else {
-                $key = $extensionAttribute->key;
-                $value = $extensionAttribute->value;
-            }
+        return $attributes->reduce(
+            static function (ExtensibleObject $object, ExtensionAttribute $extensionAttribute): ExtensibleObject {
+                if (is_a($extensionAttribute->factory, ExtensionFactory::class, true)) {
+                    /** @var ExtensionFactory $factory */
+                    $factory = app($extensionAttribute->factory);
+                    $key = $factory->key();
+                    $value = $factory->value();
+                } else {
+                    $key = $extensionAttribute->key;
+                    $value = $extensionAttribute->value;
+                }
 
-            $extensibleObject->addExtension(Extension::create($key, $value));
-        });
+                return $object->addExtension(Extension::create($key, $value));
+            },
+            $extensibleObject,
+        );
     }
 }

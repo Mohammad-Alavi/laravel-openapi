@@ -60,8 +60,7 @@ final readonly class OperationBuilder
             $operation = $operation->servers(...$this->serverBuilder->build(...$attribute->getServers()));
         }
         $operation = $operation->parameters($this->parametersBuilder->build($routeInfo));
-
-        $this->extensionBuilder->build($operation, $routeInfo->extensionAttributes());
+        $operation = $this->extensionBuilder->build($operation, $routeInfo->extensionAttributes());
 
         return AvailableOperation::create(
             HttpMethod::from($routeInfo->method()),

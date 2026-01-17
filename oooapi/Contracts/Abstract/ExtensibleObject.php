@@ -5,6 +5,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extensions;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
+use Webmozart\Assert\Assert;
 
 /**
  * Base class for OpenAPI objects that support specification extensions.
@@ -15,50 +16,56 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
  *
  * @see https://spec.openapis.org/oas/v3.1.0#specification-extensions
  */
-// TODO: Can we make this and all it's driven classes immutable/readonly?
 abstract class ExtensibleObject extends Generatable
 {
     private Extensions|null $extensions = null;
 
     public function addExtension(Extension ...$extension): static
     {
-        $this->extensionsInstance()->add(...$extension);
+        $clone = clone $this;
+        $existingExtensions = $this->extensions?->all() ?? [];
+        $clone->extensions = Extensions::create(...$existingExtensions, ...$extension);
 
-        return $this;
-    }
-
-    private function extensionsInstance(): Extensions
-    {
-        return $this->extensions ??= Extensions::create();
+        return $clone;
     }
 
     public function removeExtension(string $name): static
     {
-        $this->extensionsInstance()->remove($name);
+        Assert::notNull($this->extensions, 'Extension not found: ' . $name);
+        Assert::true($this->extensions->has($name), 'Extension not found: ' . $name);
 
-        return $this;
+        $clone = clone $this;
+        $remainingExtensions = array_filter(
+            $this->extensions->all(),
+            static fn (Extension $ext): bool => $ext->name() !== $name,
+        );
+        $clone->extensions = blank($remainingExtensions) ? null : Extensions::create(...$remainingExtensions);
+
+        return $clone;
     }
 
     public function getExtension(string $name): Extension
     {
-        return $this->extensionsInstance()->get($name);
+        Assert::notNull($this->extensions, 'Extension not found: ' . $name);
+
+        return $this->extensions->get($name);
     }
 
     /** @return Extension[] */
     public function extensions(): array
     {
-        return $this->extensionsInstance()->all();
+        return $this->extensions?->all() ?? [];
     }
 
     public function jsonSerialize(): array
     {
-        if ($this->extensionsInstance()->isEmpty()) {
+        if ($this->extensions === null || $this->extensions->isEmpty()) {
             return parent::jsonSerialize();
         }
 
         return Arr::filter([
             ...$this->toArray(),
-            ...$this->extensionsInstance()->jsonSerialize(),
+            ...$this->extensions->jsonSerialize(),
         ]);
     }
 }
