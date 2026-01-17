@@ -59,7 +59,7 @@ abstract class ExtensibleObject extends Generatable
 
     public function jsonSerialize(): array
     {
-        if ($this->extensions === null || $this->extensions->isEmpty()) {
+        if (null === $this->extensions || $this->extensions->isEmpty()) {
             return parent::jsonSerialize();
         }
 
