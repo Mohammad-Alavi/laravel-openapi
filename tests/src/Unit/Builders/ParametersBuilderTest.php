@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Builders\ParametersBuilder;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
@@ -10,39 +9,34 @@ use Tests\src\Support\Doubles\Stubs\Attributes\TestParametersFactory;
 use Tests\src\Support\Doubles\Stubs\Builders\TestController;
 
 describe(class_basename(ParametersBuilder::class), function (): void {
-    it('can be created', function (): void {
-        $routeInformation = RouteInfo::create(
-            Route::get('/example', static fn (): string => 'example'),
-        );
-        $routeInformation->actionAttributes = collect([new Operation(parameters: TestParametersFactory::class)]);
+    it('can build operation parameters from factory', function (): void {
         $builder = new ParametersBuilder();
 
-        $parameters = $builder->build($routeInformation);
+        $parameters = $builder->buildForOperation(TestParametersFactory::class);
 
         expect($parameters)->not()->toBeNull()
             ->and($parameters->toArray())->toHaveCount(4);
     });
 
-    it('can automatically create parameters from url params', function (array $params, int $count): void {
+    it('can build path item parameters combining uri and factory params', function (string|null $factoryClass, int $count): void {
         $routeInformation = RouteInfo::create(
             Route::get('/example/{id}', [TestController::class, 'actionWithTypeHintedParams']),
         );
-        $routeInformation->actionAttributes = collect($params);
 
         $builder = new ParametersBuilder();
 
-        $parameters = $builder->build($routeInformation);
+        $parameters = $builder->buildForPathItem($routeInformation, $factoryClass);
 
         $urlParam = $parameters->toArray()[0];
         expect($parameters->toArray())->toHaveCount($count)
             ->and($urlParam)->toBeInstanceOf(Parameter::class);
     })->with([
-        'with action params' => [
-            'params' => [new Operation(parameters: TestParametersFactory::class)],
+        'with factory params' => [
+            'factoryClass' => TestParametersFactory::class,
             'count' => 5,
         ],
-        'without action params' => [
-            'params' => [],
+        'without factory params' => [
+            'factoryClass' => null,
             'count' => 1,
         ],
     ]);
@@ -53,7 +47,7 @@ describe(class_basename(ParametersBuilder::class), function (): void {
         );
         $builder = new ParametersBuilder();
 
-        $parameters = $builder->build($routeInformation);
+        $parameters = $builder->buildForPathItem($routeInformation, null);
 
         $typeHintedParam = $parameters->toArray()[0];
         expect($parameters->compile())->toHaveCount(2)
@@ -66,7 +60,7 @@ describe(class_basename(ParametersBuilder::class), function (): void {
         );
         $builder = new ParametersBuilder();
 
-        $parameters = $builder->build($routeInformation);
+        $parameters = $builder->buildForPathItem($routeInformation, null);
 
         expect($parameters)->compile()->toHaveCount(0);
     });
@@ -79,7 +73,7 @@ describe(class_basename(ParametersBuilder::class), function (): void {
             );
             $builder = new ParametersBuilder();
 
-            $parameters = $builder->build($routeInformation);
+            $parameters = $builder->buildForPathItem($routeInformation, null);
 
             expect($parameters)->compile()->toEqual($expectation);
         },

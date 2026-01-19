@@ -44,22 +44,6 @@ final readonly class ParametersBuilder
         return $this->buildFromFactory($factoryClass);
     }
 
-    /**
-     * @deprecated use buildForPathItem() or buildForOperation() instead
-     */
-    public function build(RouteInfo $routeInfo): Parameters
-    {
-        $pathParams = $this->buildUriPathParams($routeInfo);
-
-        $attrParams = $routeInfo->operationAttribute()?->parameters;
-        $operationParams = $attrParams ? $this->buildFromFactory($attrParams) : null;
-
-        return Parameters::create(
-            ...($pathParams?->toArray() ?? []),
-            ...($operationParams?->toArray() ?? []),
-        );
-    }
-
     private function buildUriPathParams(RouteInfo $routeInfo): Parameters|null
     {
         /** @var Collection $params */
