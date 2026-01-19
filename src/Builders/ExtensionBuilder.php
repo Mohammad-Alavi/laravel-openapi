@@ -8,7 +8,6 @@ use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ExtensionFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Extensions\Extension;
 
-// TODO: refactor this class to use the ExtensionFactory interface
 final readonly class ExtensionBuilder
 {
     /**
