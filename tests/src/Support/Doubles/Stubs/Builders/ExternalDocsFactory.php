@@ -2,7 +2,7 @@
 
 namespace Tests\src\Support\Doubles\Stubs\Builders;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ExternalDocumentationFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\ExternalDocumentationFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
 
 class ExternalDocsFactory implements ExternalDocumentationFactory

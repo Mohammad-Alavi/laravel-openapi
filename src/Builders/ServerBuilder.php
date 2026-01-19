@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Builders;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\ServerFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use Webmozart\Assert\Assert;
 

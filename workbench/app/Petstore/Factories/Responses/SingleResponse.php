@@ -2,7 +2,7 @@
 
 namespace Workbench\App\Petstore\Factories\Responses;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ResponsesFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\ResponsesFactory;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;

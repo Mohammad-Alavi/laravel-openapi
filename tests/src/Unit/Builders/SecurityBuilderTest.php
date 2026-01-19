@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation as AttributesOperation;
 use MohammadAlavi\LaravelOpenApi\Builders\OperationBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\SecurityBuilder;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\SecurityFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\SecurityFactory;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SecuritySchemeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;

@@ -2,7 +2,7 @@
 
 namespace Workbench\App\Petstore\Tags;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\TagFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ExternalDocumentation\ExternalDocumentation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 

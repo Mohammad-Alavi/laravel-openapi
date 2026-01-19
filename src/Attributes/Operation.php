@@ -2,12 +2,12 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Attributes;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ExternalDocumentationFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ParametersFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ResponsesFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\SecurityFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\ExternalDocumentationFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\ParametersFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\ResponsesFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\SecurityFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\ServerFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\TagFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\CallbackFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
 

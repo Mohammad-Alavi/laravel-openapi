@@ -2,7 +2,7 @@
 
 namespace Workbench\App\Documentation\Parameters;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ParametersFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\ParametersFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 
 class CreateUserParameters implements ParametersFactory

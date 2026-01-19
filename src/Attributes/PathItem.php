@@ -2,8 +2,8 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Attributes;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ParametersFactory;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\ParametersFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\ServerFactory;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 final readonly class PathItem

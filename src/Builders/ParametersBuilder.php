@@ -4,7 +4,7 @@ namespace MohammadAlavi\LaravelOpenApi\Builders;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ParametersFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\ParametersFactory;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;

@@ -2,7 +2,7 @@
 
 namespace Tests\src\Support\Doubles\Stubs\Servers;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\ServerFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\ServerFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\VariableEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\ServerVariable\ServerVariable;

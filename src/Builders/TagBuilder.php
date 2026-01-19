@@ -2,7 +2,7 @@
 
 namespace MohammadAlavi\LaravelOpenApi\Builders;
 
-use MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories\TagFactory;
+use MohammadAlavi\LaravelOpenApi\Contracts\Factories\TagFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use Webmozart\Assert\Assert;
 

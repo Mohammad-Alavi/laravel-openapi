@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\LaravelOpenApi\Contracts\Interface\Factories;
+namespace MohammadAlavi\LaravelOpenApi\Contracts\Factories;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 
