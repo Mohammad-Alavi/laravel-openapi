@@ -4,18 +4,23 @@ namespace MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\FilterStrategi
 
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\FilterStrategy;
-use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\LinkFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
 
-final readonly class LinkFilter implements FilterStrategy
+final readonly class ComponentFilter implements FilterStrategy
 {
+    /**
+     * @param class-string $factoryClass
+     */
+    public function __construct(
+        private string $factoryClass,
+    ) {
+    }
+
     public function apply(Collection $data): Collection
     {
         return $data->filter(
-            static function (string $class): bool {
-                return is_a($class, LinkFactory::class, true)
-                    && is_a($class, ShouldBeReferenced::class, true);
-            },
+            fn (string $class): bool => is_a($class, $this->factoryClass, true)
+                && is_a($class, ShouldBeReferenced::class, true),
         );
     }
 }
