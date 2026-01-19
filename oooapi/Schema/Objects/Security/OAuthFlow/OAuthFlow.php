@@ -3,7 +3,6 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuthFlow;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Exceptions\InvalidArgumentException;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuthFlow\Fields\AuthorizationUrl;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuthFlow\Fields\Flow;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\OAuthFlow\Fields\RefreshUrl;
@@ -70,14 +69,14 @@ final class OAuthFlow extends ExtensibleObject
     /**
      * @param array<string, string>|null $scopes
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function scopes(array|null $scopes): self
     {
         if (is_array($scopes)) {
             foreach ($scopes as $key => $value) {
                 if (!is_string($key) || !is_string($value)) {
-                    throw new InvalidArgumentException('Each scope must have a string key and a string value.');
+                    throw new \InvalidArgumentException('Each scope must have a string key and a string value.');
                 }
             }
         }
