@@ -23,7 +23,7 @@ final readonly class ExtensionBuilder
             static function (ExtensibleObject $object, ExtensionAttribute $extensionAttribute): ExtensibleObject {
                 if (is_a($extensionAttribute->factory, ExtensionFactory::class, true)) {
                     /** @var ExtensionFactory $factory */
-                    $factory = app($extensionAttribute->factory);
+                    $factory = new $extensionAttribute->factory();
                     $key = $factory->key();
                     $value = $factory->value();
                 } else {
