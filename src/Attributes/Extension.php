@@ -7,7 +7,7 @@ use MohammadAlavi\LaravelOpenApi\Contracts\Abstract\Factories\ExtensionFactory;
 #[\Attribute(\Attribute::IS_REPEATABLE | \Attribute::TARGET_METHOD)]
 final readonly class Extension
 {
-    // TODO: use php8 constructor property promotion
+    /** @var class-string<ExtensionFactory>|null */
     public string|null $factory;
 
     public function __construct(
@@ -21,8 +21,7 @@ final readonly class Extension
                 : app()->getNamespace() . 'OpenApi\\Extensions\\' . $factory;
 
             if (!is_a($this->factory, ExtensionFactory::class, true)) {
-                // TODO: make Factory class name dynamic using class_basename and ClassName::class
-                throw new \InvalidArgumentException('Factory class must be an instance of ExtensionFactory');
+                throw new \InvalidArgumentException('Factory class must be an instance of ' . class_basename(ExtensionFactory::class));
             }
         }
 
