@@ -12,7 +12,6 @@ use Webmozart\Assert\Assert;
 
 final readonly class Generator
 {
-    // TODO: Is this the right place for this constant?
     public const COLLECTION_DEFAULT = 'default';
 
     public function __construct(

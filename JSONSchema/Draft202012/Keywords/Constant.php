@@ -18,7 +18,6 @@ final readonly class Constant implements Keyword
     ) {
     }
 
-    // TODO: It would be cool if constants could accept Schema types
     public static function create(mixed $value): self
     {
         return new self($value);

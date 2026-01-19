@@ -37,7 +37,6 @@ final class Security extends Generatable
 
     public static function create(SecurityRequirement|SecurityRequirementFactory ...$securityRequirement): self
     {
-        // TODO: extract into a builder class
         $securityRequirements = array_map(
             static function (
                 SecurityRequirement|SecurityRequirementFactory $securityRequirement,

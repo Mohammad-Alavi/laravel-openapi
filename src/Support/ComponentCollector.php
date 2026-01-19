@@ -53,8 +53,6 @@ final class ComponentCollector
             $classes = $this->filterStrategy->apply($classes);
         }
 
-        // TODO: refactor: maybe we can decouple this responsibility?
-        // you know, instantiating the factories
         return $classes
             ->map(static function (string $factory) {
                 return app($factory);

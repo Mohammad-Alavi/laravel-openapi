@@ -22,7 +22,6 @@ final readonly class OperationBuilder
     ) {
     }
 
-    // TODO: maybe we can abstract the usage of RouteInformation everywhere and use an interface instead
     public function build(RouteInfo $routeInfo): AvailableOperation
     {
         $operation = Operation::create();
