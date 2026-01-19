@@ -26,20 +26,24 @@ final readonly class PathItemBuilder
 
         $pathItem = PathItem::create()->operations(...$operations);
 
-        // TODO: This is stupid
-        //  Refactor and reimplement this
-        // https://spec.openapis.org/oas/latest.html#path-item-object
         $firstRouteInfo = $routeInfo[0];
         $attribute = $firstRouteInfo->pathItemAttribute();
+
+        $pathItem = $pathItem->parameters(
+            $this->parametersBuilder->buildForPathItem(
+                $firstRouteInfo,
+                $attribute?->parameters,
+            ),
+        );
+
         if (!is_null($attribute)) {
             if (!is_null($attribute->summary)) {
-                $pathItem->summary($attribute->summary);
+                $pathItem = $pathItem->summary($attribute->summary);
             }
             if (!is_null($attribute->description)) {
-                $pathItem->description($attribute->description);
+                $pathItem = $pathItem->description($attribute->description);
             }
-            $pathItem->servers(...$this->serverBuilder->build(...$attribute->getServers()));
-            $pathItem->parameters($this->parametersBuilder->build($firstRouteInfo));
+            $pathItem = $pathItem->servers(...$this->serverBuilder->build(...$attribute->getServers()));
         }
 
         return $pathItem;

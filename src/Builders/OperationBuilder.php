@@ -58,8 +58,11 @@ final readonly class OperationBuilder
             $operation = $operation->tags(...$this->tagBuilder->build(...$attribute->getTags()));
             $operation = $operation->callbacks(...$this->callbackBuilder->build(...$attribute->getCallbacks()));
             $operation = $operation->servers(...$this->serverBuilder->build(...$attribute->getServers()));
+            $operationParams = $this->parametersBuilder->buildForOperation($attribute->parameters);
+            if (!is_null($operationParams)) {
+                $operation = $operation->parameters($operationParams);
+            }
         }
-        $operation = $operation->parameters($this->parametersBuilder->build($routeInfo));
         $operation = $this->extensionBuilder->build($operation, $routeInfo->extensionAttributes());
 
         return AvailableOperation::create(
