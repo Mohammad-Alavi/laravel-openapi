@@ -6,7 +6,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\OASObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\ShouldBeReferenced;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Reference;
-use Webmozart\Assert\Assert;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Validator;
 
 abstract class ReusableComponent implements \JsonSerializable, OASObject
 {
@@ -53,7 +53,7 @@ abstract class ReusableComponent implements \JsonSerializable, OASObject
 
     final protected static function validateName(string $name): void
     {
-        Assert::regex($name, '/^[a-zA-Z0-9.\-_]+$/');
+        Validator::componentName($name);
     }
 
     private static function baseNamespace(): string

@@ -7,6 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Reference\Fields\Ref;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Validator;
 
 final class Reference extends NonExtensibleObject
 {
@@ -39,6 +40,8 @@ final class Reference extends NonExtensibleObject
      */
     public static function schema(string $name): self
     {
+        Validator::componentName($name);
+
         return new self(Ref::create("#/components/schemas/{$name}"));
     }
 
@@ -49,6 +52,8 @@ final class Reference extends NonExtensibleObject
      */
     public static function response(string $name): self
     {
+        Validator::componentName($name);
+
         return new self(Ref::create("#/components/responses/{$name}"));
     }
 
@@ -59,6 +64,8 @@ final class Reference extends NonExtensibleObject
      */
     public static function parameter(string $name): self
     {
+        Validator::componentName($name);
+
         return new self(Ref::create("#/components/parameters/{$name}"));
     }
 
@@ -69,6 +76,8 @@ final class Reference extends NonExtensibleObject
      */
     public static function requestBody(string $name): self
     {
+        Validator::componentName($name);
+
         return new self(Ref::create("#/components/requestBodies/{$name}"));
     }
 
@@ -79,6 +88,8 @@ final class Reference extends NonExtensibleObject
      */
     public static function header(string $name): self
     {
+        Validator::componentName($name);
+
         return new self(Ref::create("#/components/headers/{$name}"));
     }
 
@@ -89,6 +100,8 @@ final class Reference extends NonExtensibleObject
      */
     public static function securityScheme(string $name): self
     {
+        Validator::componentName($name);
+
         return new self(Ref::create("#/components/securitySchemes/{$name}"));
     }
 
@@ -99,6 +112,8 @@ final class Reference extends NonExtensibleObject
      */
     public static function link(string $name): self
     {
+        Validator::componentName($name);
+
         return new self(Ref::create("#/components/links/{$name}"));
     }
 
@@ -109,6 +124,8 @@ final class Reference extends NonExtensibleObject
      */
     public static function callback(string $name): self
     {
+        Validator::componentName($name);
+
         return new self(Ref::create("#/components/callbacks/{$name}"));
     }
 
@@ -119,6 +136,8 @@ final class Reference extends NonExtensibleObject
      */
     public static function pathItem(string $name): self
     {
+        Validator::componentName($name);
+
         return new self(Ref::create("#/components/pathItems/{$name}"));
     }
 
@@ -129,6 +148,8 @@ final class Reference extends NonExtensibleObject
      */
     public static function example(string $name): self
     {
+        Validator::componentName($name);
+
         return new self(Ref::create("#/components/examples/{$name}"));
     }
 

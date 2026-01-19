@@ -139,5 +139,12 @@ describe(class_basename(Reference::class), function (): void {
                 ->and($compiled['summary'])->toBe('Pet schema reference')
                 ->and($compiled['description'])->toBe('References the Pet schema defined in components');
         });
+
+        it('rejects invalid component names', function (): void {
+            expect(fn () => Reference::schema('invalid/name'))->toThrow(\InvalidArgumentException::class)
+                ->and(fn () => Reference::response('name with spaces'))->toThrow(\InvalidArgumentException::class)
+                ->and(fn () => Reference::parameter('name#hash'))->toThrow(\InvalidArgumentException::class)
+                ->and(fn () => Reference::requestBody(''))->toThrow(\InvalidArgumentException::class);
+        });
     });
 })->covers(Reference::class);
