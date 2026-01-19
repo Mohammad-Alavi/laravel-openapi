@@ -2,7 +2,11 @@
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
+use MohammadAlavi\LaravelOpenApi\Attributes\Extension;
+use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
+use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
+use Tests\src\Support\Doubles\Stubs\Objects\ControllerWithExtensions;
 use Tests\src\Support\Doubles\Stubs\Objects\InvocableController;
 use Tests\src\Support\Doubles\Stubs\Objects\MultiActionController;
 
@@ -137,4 +141,81 @@ describe(class_basename(RouteInfo::class), function (): void {
             1,
         ],
     ]);
+
+    it('can get operation attribute', function (): void {
+        $routeInfo = RouteInfo::create(
+            Route::get('/example', [ControllerWithExtensions::class, 'withExtensions']),
+        );
+
+        $operationAttribute = $routeInfo->operationAttribute();
+
+        expect($operationAttribute)->toBeInstanceOf(Operation::class)
+            ->and($operationAttribute->summary)->toBe('Test operation');
+    });
+
+    it('returns null when no operation attribute exists', function (): void {
+        $routeInfo = RouteInfo::create(
+            Route::get('/example', static fn (): string => 'example'),
+        );
+
+        expect($routeInfo->operationAttribute())->toBeNull();
+    });
+
+    it('can get path item attribute', function (): void {
+        $routeInfo = RouteInfo::create(
+            Route::get('/example', [ControllerWithExtensions::class, 'withExtensions']),
+        );
+
+        $pathItemAttribute = $routeInfo->pathItemAttribute();
+
+        expect($pathItemAttribute)->toBeInstanceOf(PathItem::class)
+            ->and($pathItemAttribute->summary)->toBe('Test path item');
+    });
+
+    it('returns null when no path item attribute exists', function (): void {
+        $routeInfo = RouteInfo::create(
+            Route::get('/example', static fn (): string => 'example'),
+        );
+
+        expect($routeInfo->pathItemAttribute())->toBeNull();
+    });
+
+    it('can get extension attributes', function (): void {
+        $routeInfo = RouteInfo::create(
+            Route::get('/example', [ControllerWithExtensions::class, 'withExtensions']),
+        );
+
+        $extensions = $routeInfo->extensionAttributes();
+
+        expect($extensions)->toHaveCount(2)
+            ->and($extensions->first())->toBeInstanceOf(Extension::class)
+            ->and($extensions->first()->key)->toBe('x-custom');
+    });
+
+    it('returns empty collection when no extension attributes exist', function (): void {
+        $routeInfo = RouteInfo::create(
+            Route::get('/example', [ControllerWithExtensions::class, 'withoutExtensions']),
+        );
+
+        expect($routeInfo->extensionAttributes())->toHaveCount(0);
+    });
+
+    it('can access collection matcher', function (): void {
+        $routeInfo = RouteInfo::create(
+            Route::get('/example', [ControllerWithExtensions::class, 'withExtensions']),
+        );
+
+        expect($routeInfo->collection())->toBeInstanceOf(MohammadAlavi\LaravelOpenApi\Support\CollectionMatcher::class);
+    });
+
+    it('returns same collection matcher instance on multiple calls', function (): void {
+        $routeInfo = RouteInfo::create(
+            Route::get('/example', [ControllerWithExtensions::class, 'withExtensions']),
+        );
+
+        $matcher1 = $routeInfo->collection();
+        $matcher2 = $routeInfo->collection();
+
+        expect($matcher1)->toBe($matcher2);
+    });
 })->covers(RouteInfo::class);

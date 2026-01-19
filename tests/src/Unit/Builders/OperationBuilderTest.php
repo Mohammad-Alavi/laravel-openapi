@@ -32,7 +32,7 @@ describe(class_basename(OperationBuilder::class), function (): void {
                 $routeInfo = RouteInfo::create(
                     Route::get('test', static fn (): string => 'test'),
                 );
-                $routeInfo->actionAttributes = collect([
+                $routeInfo = $routeInfo->withActionAttributes(collect([
                     new OperationAttribute(
                         tags: [],
                         summary: '',
@@ -42,7 +42,7 @@ describe(class_basename(OperationBuilder::class), function (): void {
                         servers: [],
                         operationId: 'test',
                     ),
-                ]);
+                ]));
 
                 return [
                     'routeInfo' => $routeInfo,
@@ -55,7 +55,7 @@ describe(class_basename(OperationBuilder::class), function (): void {
                 $routeInfo = RouteInfo::create(
                     Route::post('test', static fn (): string => 'test'),
                 );
-                $routeInfo->actionAttributes = collect([
+                $routeInfo = $routeInfo->withActionAttributes(collect([
                     new OperationAttribute(
                         tags: [TagWithoutExternalDoc::class],
                         summary: 'summary',
@@ -65,7 +65,7 @@ describe(class_basename(OperationBuilder::class), function (): void {
                         servers: [],
                         operationId: 'test',
                     ),
-                ]);
+                ]));
 
                 return [
                     'routeInfo' => $routeInfo,
@@ -82,7 +82,7 @@ describe(class_basename(OperationBuilder::class), function (): void {
                 $routeInfo = RouteInfo::create(
                     Route::delete('test', static fn (): string => 'test'),
                 );
-                $routeInfo->actionAttributes = collect([
+                $routeInfo = $routeInfo->withActionAttributes(collect([
                     new Collection('test'),
                     new Extension(TestExtensionFactory::class),
                     new OperationAttribute(
@@ -99,7 +99,7 @@ describe(class_basename(OperationBuilder::class), function (): void {
                         servers: [ServerWithMultipleVariableFormatting::class],
                         operationId: 'test',
                     ),
-                ]);
+                ]));
 
                 return [
                     'routeInfo' => $routeInfo,

@@ -7,7 +7,6 @@ use Illuminate\Routing\Route;
 use Illuminate\Routing\RouteAction;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use MohammadAlavi\LaravelOpenApi\Attributes\Collection as CollectionAttribute;
 use MohammadAlavi\LaravelOpenApi\Attributes\Extension;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
@@ -15,9 +14,6 @@ use Webmozart\Assert\Assert;
 
 final class RouteInfo
 {
-    /** @var Collection<int, \Attribute>|null */
-    public Collection|null $actionAttributes = null;
-
     private string|null $domain = null;
     private string|null $method = null;
     private string $uri;
@@ -26,13 +22,24 @@ final class RouteInfo
     /** @var string|class-string<Controller> */
     private string $controller = 'Closure';
 
-    /** @var Collection<int, \Attribute>|null */
-    private Collection|null $controllerAttributes = null;
+    /** @var Collection<int, object> */
+    private Collection $controllerAttributes;
+
+    /** @var Collection<int, object> */
+    private Collection $actionAttributes;
 
     private string $action = 'Closure';
 
     /** @var \ReflectionParameter[] */
     private array $actionParameters = [];
+
+    private CollectionMatcher|null $collectionMatcher = null;
+
+    private function __construct()
+    {
+        $this->controllerAttributes = collect();
+        $this->actionAttributes = collect();
+    }
 
     public static function create(Route $route): self
     {
@@ -59,13 +66,12 @@ final class RouteInfo
                 $instance->action = 'Closure';
             }
 
-            $instance->actionAttributes = collect();
             if ('Closure' !== $instance->controller) {
                 $reflectionClass = new \ReflectionClass($instance->controller);
                 $reflectionMethod = $reflectionClass->getMethod($instance->action);
                 $instance->actionParameters = $reflectionMethod->getParameters();
 
-                $controllerAttributes = collect($reflectionClass->getAttributes())
+                $instance->controllerAttributes = collect($reflectionClass->getAttributes())
                     ->map(
                         static fn (
                             \ReflectionAttribute $reflectionAttribute,
@@ -84,8 +90,21 @@ final class RouteInfo
             $instance->method = $method;
             $instance->uri = Str::start($route->uri(), '/');
             $instance->name = $route->getName();
-            $instance->controllerAttributes = $controllerAttributes ?? collect();
         });
+    }
+
+    /**
+     * Returns a new RouteInfo with the given action attributes.
+     * This is primarily useful for testing scenarios.
+     *
+     * @param Collection<int, object> $attributes
+     */
+    public function withActionAttributes(Collection $attributes): self
+    {
+        $clone = clone $this;
+        $clone->actionAttributes = $attributes;
+
+        return $clone;
     }
 
     public function uri(): string
@@ -151,7 +170,7 @@ final class RouteInfo
 
     public function actionAttributes(): Collection
     {
-        return $this->actionAttributes ?? collect();
+        return $this->actionAttributes;
     }
 
     public function pathItemAttribute(): PathItem|null
@@ -166,7 +185,7 @@ final class RouteInfo
 
     public function controllerAttributes(): Collection
     {
-        return $this->controllerAttributes ?? collect();
+        return $this->controllerAttributes;
     }
 
     public function operationAttribute(): Operation|null
@@ -179,64 +198,15 @@ final class RouteInfo
             );
     }
 
-    public function isInCollection(string $collection): bool
+    /**
+     * Get the collection matcher for this route.
+     *
+     * Use this to check collection membership:
+     * - $routeInfo->collection()->isInCollection('api')
+     * - $routeInfo->collection()->hasCollectionAttribute()
+     */
+    public function collection(): CollectionMatcher
     {
-        $actionCollectionAttr = $this->getActionCollectionAttribute();
-        if (
-            !is_null($actionCollectionAttr)
-            && config()->boolean('openapi.collection.action_attribute_overrides_controller_attribute', true)
-        ) {
-            return in_array(
-                $collection,
-                $actionCollectionAttr->name,
-                true,
-            );
-        }
-
-        return in_array(
-            $collection,
-            $this->getControllerCollectionAttribute()?->name ?? [],
-            true,
-        ) || in_array(
-            $collection,
-            $actionCollectionAttr?->name ?? [],
-            true,
-        );
-    }
-
-    private function getControllerCollectionAttribute(): CollectionAttribute|null
-    {
-        return $this->controllerAttributes()
-            ->first(
-                static function (object $attribute): bool {
-                    return $attribute instanceof CollectionAttribute;
-                },
-            );
-    }
-
-    private function getActionCollectionAttribute(): CollectionAttribute|null
-    {
-        return $this->actionAttributes()
-            ->first(
-                static function (object $attribute): bool {
-                    return $attribute instanceof CollectionAttribute;
-                },
-            );
-    }
-
-    public function hasCollectionAttribute(): bool
-    {
-        return $this->getCollectionAttributes()->isNotEmpty();
-    }
-
-    public function getCollectionAttributes(): Collection
-    {
-        return $this->controllerAttributes()
-            ->merge($this->actionAttributes())
-            ->filter(
-                static function (object $attribute): bool {
-                    return $attribute instanceof CollectionAttribute;
-                },
-            );
+        return $this->collectionMatcher ??= new CollectionMatcher($this);
     }
 }

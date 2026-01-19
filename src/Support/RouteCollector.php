@@ -29,11 +29,11 @@ final readonly class RouteCollector
         return $this->all()->filter(
             function (RouteInfo $routeInfo) use ($collection): bool {
                 if (config()->boolean('openapi.collection.default.include_routes_without_attribute', false)) {
-                    return (!$routeInfo->hasCollectionAttribute() && $this->generatingDefaultCollection($collection))
-                        || $routeInfo->isInCollection($collection);
+                    return (!$routeInfo->collection()->hasCollectionAttribute() && $this->generatingDefaultCollection($collection))
+                        || $routeInfo->collection()->isInCollection($collection);
                 }
 
-                return $routeInfo->isInCollection($collection);
+                return $routeInfo->collection()->isInCollection($collection);
             },
         );
     }

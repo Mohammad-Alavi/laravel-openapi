@@ -100,10 +100,9 @@ describe(class_basename(SecurityBuilder::class), function (): void {
             $action = 'get';
             $routeInformation = RouteInfo::create(
                 Route::$action($route, static fn (): string => 'example'),
-            );
-            $routeInformation->actionAttributes = collect([
+            )->withActionAttributes(collect([
                 new AttributesOperation(security: $operationSecurity),
-            ]);
+            ]));
             $operation = app(OperationBuilder::class)->build($routeInformation);
 
             $openApi = OpenAPI::v311(
@@ -984,10 +983,9 @@ describe(class_basename(SecurityBuilder::class), function (): void {
 
         $routeInformation = RouteInfo::create(
             Route::get('/example', static fn (): string => 'example'),
-        );
-        $routeInformation->actionAttributes = collect([
+        )->withActionAttributes(collect([
             new AttributesOperation(security: TestSingleHTTPBearerSchemeSecurityFactory::class),
-        ]);
+        ]));
 
         $securityBuilder = app(SecurityBuilder::class);
 
