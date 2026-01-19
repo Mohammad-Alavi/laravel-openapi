@@ -61,12 +61,6 @@ final readonly class ScopeCollection extends ReadonlyGeneratable
         return $this->scopeFactories;
     }
 
-    // TODO: extract into a builder class
-
-    public function names()
-    {
-    }
-
     public function toArray(): array
     {
         $scopes = array_reduce($this->all(), static function (array $carry, Scope $scope) {
