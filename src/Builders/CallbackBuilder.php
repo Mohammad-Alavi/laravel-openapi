@@ -16,8 +16,8 @@ final readonly class CallbackBuilder
     {
         Assert::allIsAOf($factory, CallbackFactory::class);
 
-        /** @var CallbackFactory[] $servers */
-        $servers = collect($factory)
+        /** @var CallbackFactory[] $callbacks */
+        $callbacks = collect($factory)
             ->map(
                 /**
                  * @param class-string<CallbackFactory> $factory
@@ -27,6 +27,6 @@ final readonly class CallbackBuilder
                 },
             )->toArray();
 
-        return $servers;
+        return $callbacks;
     }
 }
