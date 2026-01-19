@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
+use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Factories\OpenAPIFactory;
 use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;
@@ -53,7 +54,7 @@ describe(class_basename(Generator::class), function (): void {
             ->and($result['paths'])->toEqual($expectation['paths']);
     })->with([
         'default collection' => [
-            'collection' => Generator::COLLECTION_DEFAULT,
+            'collection' => Collection::DEFAULT,
             'expectation' => [
                 'paths' => [],
                 'components' => [

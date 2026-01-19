@@ -3,19 +3,19 @@
 namespace MohammadAlavi\LaravelOpenApi\Attributes;
 
 use Illuminate\Support\Arr;
-use MohammadAlavi\LaravelOpenApi\Generator;
 use Webmozart\Assert\Assert;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 final readonly class Collection
 {
+    public const DEFAULT = 'default';
     /** @var array<non-empty-string|class-string<\Stringable>> */
     public array $name;
 
     /**
      * @param non-empty-string|class-string<\Stringable>|array<non-empty-string|class-string<\Stringable>> $name
      */
-    public function __construct(string|array $name = Generator::COLLECTION_DEFAULT)
+    public function __construct(string|array $name = self::DEFAULT)
     {
         $name = Arr::wrap($name);
 

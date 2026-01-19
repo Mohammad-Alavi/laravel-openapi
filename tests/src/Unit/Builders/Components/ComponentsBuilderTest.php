@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Config;
+use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\ComponentsBuilder;
-use MohammadAlavi\LaravelOpenApi\Generator;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use Pest\Expectation;
 
@@ -175,7 +175,7 @@ describe(class_basename(ComponentsBuilder::class), function (): void {
                 ],
             ],
             'explicit default collection' => [
-                'collection' => Generator::COLLECTION_DEFAULT,
+                'collection' => Collection::DEFAULT,
                 'expectation' => [
                     'schemas' => [
                         'ImplicitCollectionSchema' => [

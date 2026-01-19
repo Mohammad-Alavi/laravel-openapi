@@ -5,7 +5,6 @@ namespace Workbench\App\Petstore;
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Operation;
 use MohammadAlavi\LaravelOpenApi\Attributes\PathItem;
-use MohammadAlavi\LaravelOpenApi\Generator;
 use Workbench\App\Petstore\Factories\Responses\MultiResponseMixedWithReusable;
 use Workbench\App\Petstore\Factories\Responses\SingleResponse;
 use Workbench\App\Petstore\Factories\Responses\SingleResponseUsingReusable;
@@ -17,7 +16,7 @@ use Workbench\App\Petstore\Tags\AnotherPetTag;
 use Workbench\App\Petstore\Tags\PetTag;
 
 #[PathItem]
-#[Collection(Generator::COLLECTION_DEFAULT)]
+#[Collection(Collection::DEFAULT)]
 class PetController
 {
     #[Operation(

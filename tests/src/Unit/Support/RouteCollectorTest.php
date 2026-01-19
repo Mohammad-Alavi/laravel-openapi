@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use MohammadAlavi\LaravelOpenApi\Generator;
+use MohammadAlavi\LaravelOpenApi\Attributes\Collection;
 use MohammadAlavi\LaravelOpenApi\Support\RouteCollector;
 use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use Tests\src\Support\Doubles\Stubs\Builders\ControllerWithPathItemAndOperationStub;
@@ -38,7 +38,7 @@ describe(class_basename(RouteCollector::class), function (): void {
             /** @var RouteCollector $routeCollector */
             $routeCollector = app(RouteCollector::class);
 
-            $routes = $routeCollector->whereShouldBeCollectedFor(Generator::COLLECTION_DEFAULT);
+            $routes = $routeCollector->whereShouldBeCollectedFor(Collection::DEFAULT);
 
             expect($routes->count())->toBe($expectedCount)
                 ->and($routes)->toContainOnlyInstancesOf(RouteInfo::class);

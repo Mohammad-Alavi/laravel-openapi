@@ -12,8 +12,6 @@ use Webmozart\Assert\Assert;
 
 final readonly class Generator
 {
-    public const COLLECTION_DEFAULT = 'default';
-
     public function __construct(
         private ComponentsBuilder $componentsBuilder,
         private PathsBuilder $pathsBuilder,
@@ -21,7 +19,7 @@ final readonly class Generator
     ) {
     }
 
-    public function generate(string|null $collection = self::COLLECTION_DEFAULT): OpenAPI
+    public function generate(string|null $collection = Attributes\Collection::DEFAULT): OpenAPI
     {
         /** @var class-string<OpenAPIFactory> $openApiFactory */
         $openApiFactory = config()->string('openapi.collections.' . $collection . '.openapi');

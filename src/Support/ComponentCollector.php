@@ -7,7 +7,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MohammadAlavi\LaravelOpenApi\Attributes\Collection as CollectionAttribute;
 use MohammadAlavi\LaravelOpenApi\Contracts\Interface\FilterStrategy;
-use MohammadAlavi\LaravelOpenApi\Generator;
 
 final class ComponentCollector
 {
@@ -29,7 +28,7 @@ final class ComponentCollector
                 $reflectionClass = new \ReflectionClass($class);
                 $attributes = $reflectionClass->getAttributes(CollectionAttribute::class);
 
-                if (Generator::COLLECTION_DEFAULT === $collection && blank($attributes)) {
+                if (CollectionAttribute::DEFAULT === $collection && blank($attributes)) {
                     return true;
                 }
 

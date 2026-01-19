@@ -5,7 +5,7 @@ namespace MohammadAlavi\LaravelOpenApi\Support;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
-use MohammadAlavi\LaravelOpenApi\Generator;
+use MohammadAlavi\LaravelOpenApi\Attributes\Collection as CollectionAlias;
 use Webmozart\Assert\Assert;
 
 final readonly class RouteCollector
@@ -55,6 +55,6 @@ final readonly class RouteCollector
 
     private function generatingDefaultCollection(string $collection): bool
     {
-        return Generator::COLLECTION_DEFAULT === $collection;
+        return CollectionAlias::DEFAULT === $collection;
     }
 }
