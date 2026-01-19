@@ -48,6 +48,7 @@ final class Parameters extends Generatable
 
     /**
      * A unique parameter is defined by a combination of a name and location.
+     * When duplicates exist, the last occurrence is kept (later items override earlier ones).
      *
      * @param (Parameter|ParameterFactory)[] $parameters
      *
@@ -65,9 +66,7 @@ final class Parameters extends Generatable
                 continue;
             }
 
-            if (!isset($uniqueParameters[$key])) {
-                $uniqueParameters[$key] = $parameter;
-            }
+            $uniqueParameters[$key] = $parameter;
         }
 
         return array_values($uniqueParameters);

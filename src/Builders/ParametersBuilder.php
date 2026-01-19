@@ -23,10 +23,10 @@ final readonly class ParametersBuilder
         $attrParams = $routeInfo->operationAttribute()?->parameters;
         $operationParams = $attrParams ? $this->buildOperationParams($attrParams) : null;
 
-        $pathParamsMap = $this->mapParams($pathParams);
-        $operationParamsMap = $this->mapParams($operationParams);
-
-        return Parameters::create(...array_values(array_merge($pathParamsMap, $operationParamsMap)));
+        return Parameters::create(
+            ...($pathParams?->toArray() ?? []),
+            ...($operationParams?->toArray() ?? []),
+        );
     }
 
     private function buildPathParams(RouteInfo $routeInfo): Parameters|null
@@ -114,22 +114,5 @@ final readonly class ParametersBuilder
         Assert::isAOf($factory, ParametersFactory::class);
 
         return (new $factory())->build();
-    }
-
-    /**
-     * @return array<string, Parameter|ParameterFactory>
-     */
-    private function mapParams(Parameters|null $parameters): array
-    {
-        $map = [];
-        foreach ($parameters?->toArray() ?? [] as $param) {
-            if ($param instanceof ParameterFactory) {
-                $map[$param->component()->getName() . ':' . $param->component()->getLocation()] = $param;
-            } else {
-                $map[$param->getName() . ':' . $param->getLocation()] = $param;
-            }
-        }
-
-        return $map;
     }
 }
