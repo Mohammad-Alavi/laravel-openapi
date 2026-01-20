@@ -10,6 +10,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntr
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\Examples;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles\Simple;
+use Webmozart\Assert\Assert;
 
 /**
  * Header Object.
@@ -18,16 +20,21 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\Examples;
  * structure of the Parameter Object with the following changes: name
  * MUST NOT be specified, it is given in the corresponding headers map.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#header-object
+ * Headers only support the 'simple' style per OpenAPI specification.
+ *
+ * @see https://spec.openapis.org/oas/v3.1.1#header-object
  */
 final class Header extends ExtensibleObject
 {
     private Description|null $description = null;
     private true|null $required = null;
     private true|null $deprecated = null;
-    private string|null $style = null;
-    private bool|null $explode = null;
+    private Simple|null $style = null;
     private JSONSchema|null $schema = null;
+
+    /** @var mixed Example of the header; mutually exclusive with examples */
+    private mixed $example = null;
+
     private Examples|null $examples = null;
     private Content|null $content = null;
 
@@ -63,20 +70,19 @@ final class Header extends ExtensibleObject
         return $clone;
     }
 
-    public function style(string $style): self
+    /**
+     * Set the serialization style for this header.
+     *
+     * Headers only support the 'simple' style per OpenAPI specification.
+     * Use Simple::create() optionally with ->explode() for array serialization.
+     *
+     * Example: ->style(Simple::create()->explode())
+     */
+    public function style(Simple $style): self
     {
         $clone = clone $this;
 
         $clone->style = $style;
-
-        return $clone;
-    }
-
-    public function explode(): self
-    {
-        $clone = clone $this;
-
-        $clone->explode = true;
 
         return $clone;
     }
@@ -90,8 +96,39 @@ final class Header extends ExtensibleObject
         return $clone;
     }
 
+    /**
+     * Example of the header's potential value.
+     *
+     * The example SHOULD match the specified schema if one is present.
+     * The example field is mutually exclusive of the examples field.
+     */
+    public function example(mixed $example): self
+    {
+        Assert::null(
+            $this->examples,
+            'example and examples fields are mutually exclusive.',
+        );
+
+        $clone = clone $this;
+
+        $clone->example = $example;
+
+        return $clone;
+    }
+
+    /**
+     * Examples of the header's potential values.
+     *
+     * Each example SHOULD match the specified schema if one is present.
+     * The examples field is mutually exclusive of the example field.
+     */
     public function examples(ExampleEntry ...$exampleEntry): self
     {
+        Assert::null(
+            $this->example,
+            'examples and example fields are mutually exclusive.',
+        );
+
         $clone = clone $this;
 
         $clone->examples = Examples::create(...$exampleEntry);
@@ -114,9 +151,9 @@ final class Header extends ExtensibleObject
             'description' => $this->description,
             'required' => $this->required,
             'deprecated' => $this->deprecated,
-            'style' => $this->style,
-            'explode' => $this->explode,
+            ...$this->mergeFields($this->style),
             'schema' => $this->schema,
+            'example' => $this->example,
             'examples' => $this->examples,
             'content' => $this->content,
         ]);
