@@ -80,4 +80,35 @@ describe(class_basename(PathItem::class), function (): void {
             ],
         ]);
     });
+
+    it('can be created with $ref', function (): void {
+        $pathItem = PathItem::create()
+            ->ref('#/components/pathItems/UserPath');
+
+        expect($pathItem->compile())->toBe([
+            '$ref' => '#/components/pathItems/UserPath',
+        ]);
+    });
+
+    it('can combine $ref with other fields', function (): void {
+        $pathItem = PathItem::create()
+            ->ref('#/components/pathItems/UserPath')
+            ->summary('User operations')
+            ->description('Operations on user resource');
+
+        expect($pathItem->compile())->toBe([
+            '$ref' => '#/components/pathItems/UserPath',
+            'summary' => 'User operations',
+            'description' => 'Operations on user resource',
+        ]);
+    });
+
+    it('can use external $ref', function (): void {
+        $pathItem = PathItem::create()
+            ->ref('https://example.com/openapi.yaml#/components/pathItems/UserPath');
+
+        expect($pathItem->compile())->toBe([
+            '$ref' => 'https://example.com/openapi.yaml#/components/pathItems/UserPath',
+        ]);
+    });
 })->covers(PathItem::class);

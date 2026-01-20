@@ -3,6 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Ref;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\Operations;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
@@ -22,6 +23,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
  */
 final class PathItem extends ExtensibleObject
 {
+    private Ref|null $ref = null;
     private Summary|null $summary = null;
     private Description|null $description = null;
     private Operations|null $operations = null;
@@ -43,6 +45,24 @@ final class PathItem extends ExtensibleObject
     public static function create(): self
     {
         return new self();
+    }
+
+    /**
+     * Allows for a referenced definition of this path item.
+     *
+     * The referenced structure MUST be a Path Item Object. In case a Path Item
+     * Object field appears both in the defined object and the referenced object,
+     * the behavior is undefined.
+     *
+     * @param string $ref A reference to a Path Item Object (e.g., "#/components/pathItems/...")
+     */
+    public function ref(string $ref): self
+    {
+        $clone = clone $this;
+
+        $clone->ref = Ref::create($ref);
+
+        return $clone;
     }
 
     public function description(string $description): self
@@ -90,6 +110,7 @@ final class PathItem extends ExtensibleObject
     {
         return Arr::filter(
             [
+                '$ref' => $this->ref,
                 'summary' => $this->summary,
                 'description' => $this->description,
                 ...$this->mergeFields($this->operations),
