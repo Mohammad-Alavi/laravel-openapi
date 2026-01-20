@@ -3,6 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\NodeType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\Prefix;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\XML\Fields\XmlNamespace;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
@@ -15,13 +16,14 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
  * When using arrays, XML element names are not inferred and the name
  * property should be used to add that information.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#xml-object
+ * @see https://spec.openapis.org/oas/v3.2.0#xml-object
  */
 final class Xml extends ExtensibleObject
 {
     private Name|null $name = null;
     private XmlNamespace|null $namespace = null;
     private Prefix|null $prefix = null;
+    private NodeType|null $nodeType = null;
     private true|null $attribute = null;
     private true|null $wrapped = null;
 
@@ -57,6 +59,23 @@ final class Xml extends ExtensibleObject
         return $clone;
     }
 
+    /**
+     * Specifies the type of XML node for serialization.
+     *
+     * In OAS 3.2.0+, this field supersedes the `attribute` and `wrapped` fields.
+     */
+    public function nodeType(NodeType $nodeType): self
+    {
+        $clone = clone $this;
+
+        $clone->nodeType = $nodeType;
+
+        return $clone;
+    }
+
+    /**
+     * @deprecated Use nodeType(NodeType::ATTRIBUTE) instead (OAS 3.2.0+)
+     */
     public function attribute(): self
     {
         $clone = clone $this;
@@ -66,6 +85,9 @@ final class Xml extends ExtensibleObject
         return $clone;
     }
 
+    /**
+     * @deprecated Use nodeType(NodeType::ELEMENT) instead (OAS 3.2.0+)
+     */
     public function wrapped(): self
     {
         $clone = clone $this;
@@ -81,6 +103,7 @@ final class Xml extends ExtensibleObject
             'name' => $this->name,
             'namespace' => $this->namespace,
             'prefix' => $this->prefix,
+            'nodeType' => $this->nodeType?->value,
             'attribute' => $this->attribute,
             'wrapped' => $this->wrapped,
         ]);
