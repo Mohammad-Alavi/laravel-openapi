@@ -10,6 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\Examples;
+use Webmozart\Assert\Assert;
 
 /**
  * Media Type Object.
@@ -22,6 +23,10 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\Examples;
 final class MediaType extends ExtensibleObject
 {
     private JSONSchema|SchemaFactory|null $schema = null;
+
+    /** @var mixed Example of the media type; mutually exclusive with examples */
+    private mixed $example = null;
+
     private Examples|null $examples = null;
     private Encoding|null $encoding = null;
 
@@ -34,8 +39,39 @@ final class MediaType extends ExtensibleObject
         return $clone;
     }
 
+    /**
+     * Example of the media type.
+     *
+     * The example SHOULD match the specified schema if one is present.
+     * The example field is mutually exclusive of the examples field.
+     */
+    public function example(mixed $example): self
+    {
+        Assert::null(
+            $this->examples,
+            'example and examples fields are mutually exclusive.',
+        );
+
+        $clone = clone $this;
+
+        $clone->example = $example;
+
+        return $clone;
+    }
+
+    /**
+     * Examples of the media type.
+     *
+     * Each example SHOULD match the specified schema if one is present.
+     * The examples field is mutually exclusive of the example field.
+     */
     public function examples(ExampleEntry ...$exampleEntry): self
     {
+        Assert::null(
+            $this->example,
+            'examples and example fields are mutually exclusive.',
+        );
+
         $clone = clone $this;
 
         $clone->examples = Examples::create(...$exampleEntry);
@@ -61,6 +97,7 @@ final class MediaType extends ExtensibleObject
     {
         return Arr::filter([
             'schema' => $this->schema,
+            'example' => $this->example,
             'examples' => $this->examples,
             'encoding' => $this->encoding,
         ]);
