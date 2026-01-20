@@ -1,7 +1,15 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style;
+declare(strict_types=1);
 
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Style;
+
+/**
+ * Base class for parameter serialization styles.
+ *
+ * Provides common functionality for all style implementations including
+ * the style value and explode modifier.
+ */
 abstract class Base implements Style
 {
     private true|null $explode = null;
@@ -15,6 +23,13 @@ abstract class Base implements Style
         return new static();
     }
 
+    /**
+     * When true, generates separate parameters for each value of array or object.
+     *
+     * Default behavior varies by style:
+     * - form: explode defaults to true
+     * - all others: explode defaults to false
+     */
     final public function explode(): static
     {
         $clone = clone $this;
@@ -37,5 +52,8 @@ abstract class Base implements Style
         ];
     }
 
+    /**
+     * Returns the style value string as defined in the OpenAPI specification.
+     */
     abstract protected function value(): string;
 }

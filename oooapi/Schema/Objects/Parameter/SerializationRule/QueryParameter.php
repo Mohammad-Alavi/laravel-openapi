@@ -4,11 +4,11 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Serializa
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\DeepObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\Form;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\PipeDelimited;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Schema\Style\Styles\SpaceDelimited;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles\DeepObject;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles\Form;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles\PipeDelimited;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles\SpaceDelimited;
 
 final readonly class QueryParameter extends SchemaSerialized
 {
