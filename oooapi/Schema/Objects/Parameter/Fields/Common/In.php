@@ -32,6 +32,11 @@ final readonly class In extends StringField
         return new self(ParameterLocation::COOKIE);
     }
 
+    public static function querystring(): self
+    {
+        return new self(ParameterLocation::QUERYSTRING);
+    }
+
     public function value(): string
     {
         return $this->location->value;

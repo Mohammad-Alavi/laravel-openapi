@@ -16,4 +16,14 @@ enum ParameterLocation: string
     case HEADER = 'header';
     case PATH = 'path';
     case COOKIE = 'cookie';
+
+    /**
+     * The querystring location indicates the entire query string.
+     *
+     * When used, the parameter name MUST be empty and the schema
+     * MUST describe an object with properties for each query parameter.
+     *
+     * @see https://spec.openapis.org/oas/v3.2.0#parameter-locations
+     */
+    case QUERYSTRING = 'querystring';
 }

@@ -11,6 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRu
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles\Cookie;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles\DeepObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles\Form;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles\Label;
@@ -23,7 +24,7 @@ describe('Parameter', function (): void {
     it(
         'can create cookie parameter',
         function (
-            Form|null $style,
+            Cookie|Form|null $style,
             array $expected,
         ): void {
             $parameter = Parameter::cookie(
@@ -42,8 +43,7 @@ describe('Parameter', function (): void {
                 ),
             )->description('User ID')
                 ->required()
-                ->deprecated()
-                ->allowEmptyValue();
+                ->deprecated();
 
             expect($parameter->compile())->toBe([
                 'name' => 'user',
@@ -51,7 +51,6 @@ describe('Parameter', function (): void {
                 'description' => 'User ID',
                 'required' => true,
                 'deprecated' => true,
-                'allowEmptyValue' => true,
                 'schema' => [
                     'type' => 'integer',
                 ],
@@ -69,6 +68,13 @@ describe('Parameter', function (): void {
                 'style' => 'form',
                 'explode' => true,
                 'allowReserved' => true,
+            ],
+        ],
+        'cookie' => [
+            Cookie::create()->explode(),
+            [
+                'style' => 'cookie',
+                'explode' => true,
             ],
         ],
         'null' => [
@@ -94,15 +100,13 @@ describe('Parameter', function (): void {
                     ),
                 ),
             )->description('User ID')
-                ->deprecated()
-                ->allowEmptyValue();
+                ->deprecated();
 
             expect($parameter->compile())->toBe([
                 'name' => 'user',
                 'in' => 'header',
                 'description' => 'User ID',
                 'deprecated' => true,
-                'allowEmptyValue' => true,
                 'schema' => [
                     'type' => 'object',
                 ],
@@ -132,6 +136,7 @@ describe('Parameter', function (): void {
             Label|Matrix|Simple|null $style,
             array $expected,
         ): void {
+            // Note: per OAS 3.2, path parameters should have required() called
             $parameter = Parameter::path(
                 'user',
                 PathParameter::create(
@@ -139,15 +144,13 @@ describe('Parameter', function (): void {
                     $style,
                 ),
             )->description('User ID')
-                ->required()
-                ->allowEmptyValue();
+                ->required();
 
             expect($parameter->compile())->toBe([
                 'name' => 'user',
                 'in' => 'path',
                 'description' => 'User ID',
                 'required' => true,
-                'allowEmptyValue' => true,
                 'schema' => [
                     'type' => 'string',
                 ],
@@ -277,4 +280,38 @@ describe('Parameter', function (): void {
             ],
         ],
     ]);
+
+    it('path parameters should have required() called for OAS 3.2 compliance', function (): void {
+        // Per OAS 3.2, path parameters MUST have required=true
+        // This test verifies the API supports setting it explicitly
+        $parameter = Parameter::path(
+            'id',
+            PathParameter::create(Schema::string()),
+        )->required();
+
+        expect($parameter->compile())->toHaveKey('required', true);
+    });
+
+    it('allowEmptyValue works for query parameters', function (): void {
+        $parameter = Parameter::query(
+            'filter',
+            QueryParameter::create(Schema::string()),
+        )->allowEmptyValue();
+
+        expect($parameter->compile())->toHaveKey('allowEmptyValue', true);
+    });
+
+    it('allowEmptyValue throws for non-query parameters', function (string $location): void {
+        $parameter = match ($location) {
+            'path' => Parameter::path('id', PathParameter::create(Schema::string())),
+            'header' => Parameter::header('X-Custom', HeaderParameter::create(Schema::string())),
+            'cookie' => Parameter::cookie('session', CookieParameter::create(Schema::string())),
+        };
+
+        expect(fn () => $parameter->allowEmptyValue())
+            ->toThrow(
+                InvalidArgumentException::class,
+                'allowEmptyValue is only valid for query parameters',
+            );
+    })->with(['path', 'header', 'cookie']);
 })->covers(Parameter::class);

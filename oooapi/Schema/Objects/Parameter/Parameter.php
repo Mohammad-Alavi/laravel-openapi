@@ -11,6 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRu
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SerializationRule;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\ParameterLocation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
@@ -50,6 +51,17 @@ final class Parameter extends ExtensibleObject
         return new self(Name::create($name), In::header(), $serialization);
     }
 
+    /**
+     * Create a path parameter.
+     *
+     * Note: Per OAS 3.2 spec, path parameters SHOULD have `required()` set to true:
+     * "If the parameter location is 'path', this field is REQUIRED and its value MUST be true."
+     *
+     * However, this library allows flexibility for frameworks like Laravel that support
+     * optional route parameters. Call `->required()` for OAS-compliant documents.
+     *
+     * @see https://spec.openapis.org/oas/v3.2.0#parameter-object
+     */
     public static function path(
         string $name,
         Content|PathParameter $serialization,
@@ -62,6 +74,22 @@ final class Parameter extends ExtensibleObject
         Content|QueryParameter $serialization,
     ): self {
         return new self(Name::create($name), In::query(), $serialization);
+    }
+
+    /**
+     * Create a querystring parameter.
+     *
+     * The querystring location treats the entire URL query string as a value.
+     * It MUST use the content field (not schema with style) and the media type
+     * MUST be application/x-www-form-urlencoded.
+     *
+     * @see https://spec.openapis.org/oas/v3.2.0#parameter-locations
+     */
+    public static function querystring(
+        string $name,
+        Content $serialization,
+    ): self {
+        return new self(Name::create($name), In::querystring(), $serialization);
     }
 
     public function description(string $description): self
@@ -91,8 +119,22 @@ final class Parameter extends ExtensibleObject
         return $clone;
     }
 
+    /**
+     * Allow empty value for query parameters.
+     *
+     * This property is DEPRECATED and only valid for query parameters.
+     * Sets the ability to pass empty-valued parameters.
+     *
+     * @throws \InvalidArgumentException if called on non-query parameters
+     *
+     * @see https://spec.openapis.org/oas/v3.2.0#parameter-object
+     */
     public function allowEmptyValue(): self
     {
+        if (ParameterLocation::QUERY->value !== $this->in->value()) {
+            throw new \InvalidArgumentException(sprintf('allowEmptyValue is only valid for query parameters, but this parameter has in: "%s". Note: allowEmptyValue is deprecated per OAS 3.2.', $this->in->value()));
+        }
+
         $clone = clone $this;
 
         $clone->allowEmptyValue = true;
@@ -108,6 +150,11 @@ final class Parameter extends ExtensibleObject
     public function getLocation(): string
     {
         return $this->in->value();
+    }
+
+    public function isRequired(): bool
+    {
+        return true === $this->required;
     }
 
     public function toArray(): array
