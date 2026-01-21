@@ -53,4 +53,28 @@ class ServerTestTest extends UnitTestCase
             $server->compile(),
         );
     }
+
+    public function testNameFieldWorks(): void
+    {
+        $server = Server::create('https://api.example.com/v1')
+            ->name('Production Server');
+
+        $this->assertSame([
+            'url' => 'https://api.example.com/v1',
+            'name' => 'Production Server',
+        ], $server->compile());
+    }
+
+    public function testNameFieldWithOtherParameters(): void
+    {
+        $server = Server::create('https://api.example.com/v1')
+            ->name('Production API')
+            ->description('Main production server');
+
+        $this->assertSame([
+            'url' => 'https://api.example.com/v1',
+            'name' => 'Production API',
+            'description' => 'Main production server',
+        ], $server->compile());
+    }
 }
