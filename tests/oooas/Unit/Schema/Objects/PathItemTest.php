@@ -6,6 +6,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AdditionalOperation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\HttpMethod;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Fields\Path;
@@ -110,5 +111,107 @@ describe(class_basename(PathItem::class), function (): void {
         expect($pathItem->compile())->toBe([
             '$ref' => 'https://example.com/openapi.yaml#/components/pathItems/UserPath',
         ]);
+    });
+
+    it('can create with QUERY http method (OAS 3.2)', function (): void {
+        $pathItem = PathItem::create()
+            ->operations(
+                AvailableOperation::create(
+                    HttpMethod::QUERY,
+                    Operation::create()
+                        ->operationId('searchUsers')
+                        ->responses(
+                            Responses::create(
+                                ResponseEntry::create(
+                                    HTTPStatusCode::ok(),
+                                    Response::create('Search results'),
+                                ),
+                            ),
+                        ),
+                ),
+            );
+
+        expect($pathItem->compile())->toBe([
+            'query' => [
+                'operationId' => 'searchUsers',
+                'responses' => [
+                    '200' => [
+                        'description' => 'Search results',
+                    ],
+                ],
+            ],
+        ]);
+    });
+
+    it('can create with additionalOperations for custom HTTP methods (OAS 3.2)', function (): void {
+        $pathItem = PathItem::create()
+            ->additionalOperations(
+                AdditionalOperation::create(
+                    'CUSTOM',
+                    Operation::create()
+                        ->operationId('customOperation')
+                        ->responses(
+                            Responses::create(
+                                ResponseEntry::create(
+                                    HTTPStatusCode::ok(),
+                                    Response::create('Custom response'),
+                                ),
+                            ),
+                        ),
+                ),
+            );
+
+        expect($pathItem->compile())->toBe([
+            'additionalOperations' => [
+                'CUSTOM' => [
+                    'operationId' => 'customOperation',
+                    'responses' => [
+                        '200' => [
+                            'description' => 'Custom response',
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+    });
+
+    it('can combine standard operations with additionalOperations (OAS 3.2)', function (): void {
+        $pathItem = PathItem::create()
+            ->operations(
+                AvailableOperation::create(
+                    HttpMethod::GET,
+                    Operation::create()
+                        ->operationId('getResource')
+                        ->responses(
+                            Responses::create(
+                                ResponseEntry::create(
+                                    HTTPStatusCode::ok(),
+                                    Response::create('OK'),
+                                ),
+                            ),
+                        ),
+                ),
+            )
+            ->additionalOperations(
+                AdditionalOperation::create(
+                    'SUBSCRIBE',
+                    Operation::create()
+                        ->operationId('subscribeResource')
+                        ->responses(
+                            Responses::create(
+                                ResponseEntry::create(
+                                    HTTPStatusCode::ok(),
+                                    Response::create('Subscribed'),
+                                ),
+                            ),
+                        ),
+                ),
+            );
+
+        $result = $pathItem->compile();
+
+        expect($result)->toHaveKeys(['get', 'additionalOperations'])
+            ->and($result['get']['operationId'])->toBe('getResource')
+            ->and($result['additionalOperations']['SUBSCRIBE']['operationId'])->toBe('subscribeResource');
     });
 })->covers(PathItem::class);

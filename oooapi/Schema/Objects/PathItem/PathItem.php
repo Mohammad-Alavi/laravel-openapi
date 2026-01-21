@@ -4,6 +4,8 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Fields\Ref;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AdditionalOperation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AdditionalOperations;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\AvailableOperation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\Operations;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
@@ -19,7 +21,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
  * empty due to ACL constraints. The path itself is still exposed to the
  * documentation viewer but they will not know which operations are available.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#path-item-object
+ * @see https://spec.openapis.org/oas/v3.2.0#path-item-object
  */
 final class PathItem extends ExtensibleObject
 {
@@ -27,6 +29,7 @@ final class PathItem extends ExtensibleObject
     private Summary|null $summary = null;
     private Description|null $description = null;
     private Operations|null $operations = null;
+    private AdditionalOperations|null $additionalOperations = null;
 
     /** @var Server[]|null */
     private array|null $servers = null;
@@ -88,6 +91,20 @@ final class PathItem extends ExtensibleObject
         return $this->operations;
     }
 
+    /**
+     * Additional operations for custom HTTP methods.
+     *
+     * Use this for HTTP methods beyond the standard ones (get, post, put, etc.).
+     */
+    public function additionalOperations(AdditionalOperation ...$additionalOperation): self
+    {
+        $clone = clone $this;
+
+        $clone->additionalOperations = AdditionalOperations::create(...$additionalOperation);
+
+        return $clone;
+    }
+
     public function servers(Server ...$server): self
     {
         $clone = clone $this;
@@ -114,6 +131,7 @@ final class PathItem extends ExtensibleObject
                 'summary' => $this->summary,
                 'description' => $this->description,
                 ...$this->mergeFields($this->operations),
+                'additionalOperations' => $this->additionalOperations,
                 'servers' => $this->servers,
                 'parameters' => $this->parameters,
             ],
