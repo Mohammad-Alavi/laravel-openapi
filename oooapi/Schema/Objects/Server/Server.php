@@ -8,6 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\V
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Fields\Variables\Variables;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
 
 /**
  * Server Object.
@@ -15,10 +16,11 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
  * An object representing a Server. The url field is required.
  * Server variables can be used for variable substitution in the URL.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#server-object
+ * @see https://spec.openapis.org/oas/v3.2.0#server-object
  */
 final class Server extends ExtensibleObject
 {
+    private Name|null $name = null;
     private Description|null $description = null;
     private Variables|null $variables = null;
 
@@ -35,6 +37,20 @@ final class Server extends ExtensibleObject
     public static function create(string $url): self
     {
         return new self(URL::create($url));
+    }
+
+    /**
+     * A human-readable name for the server.
+     *
+     * Useful when multiple servers are defined for identification purposes.
+     */
+    public function name(string $name): self
+    {
+        $clone = clone $this;
+
+        $clone->name = Name::create($name);
+
+        return $clone;
     }
 
     public function description(string $description): self
@@ -59,6 +75,7 @@ final class Server extends ExtensibleObject
     {
         return Arr::filter([
             'url' => $this->url,
+            'name' => $this->name,
             'description' => $this->description,
             'variables' => $this->variables,
         ]);
