@@ -15,17 +15,22 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Webhooks\Webhooks;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Validator;
 
 /**
  * OpenAPI Object.
  *
  * This is the root object of the OpenAPI document.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#openapi-object
+ * @see https://spec.openapis.org/oas/v3.2.0#openapi-object
  */
 final class OpenAPI extends ExtensibleObject
 {
     private JsonSchemaDialect $jsonSchemaDialect;
+
+    /** @var string|null JSON Pointer to self within a bundled document */
+    private string|null $self = null;
+
     private Summary|null $summary = null;
     private Paths|null $paths = null;
     private Webhooks|null $webhooks = null;
@@ -56,9 +61,29 @@ final class OpenAPI extends ExtensibleObject
     }
 
     /**
+     * A JSON Pointer to this OpenAPI Object within a bundled document.
+     *
+     * Used to identify the root of an OpenAPI description when it is bundled
+     * with other documents (e.g., JSON Schema documents) that may also contain
+     * "$id" keywords.
+     *
+     * @see https://spec.openapis.org/oas/v3.2.0#fixed-fields
+     */
+    public function self(string $jsonPointer): self
+    {
+        Validator::jsonPointer($jsonPointer);
+
+        $clone = clone $this;
+
+        $clone->self = $jsonPointer;
+
+        return $clone;
+    }
+
+    /**
      * A short summary of the API.
      *
-     * @see https://spec.openapis.org/oas/v3.1.0#fixed-fields
+     * @see https://spec.openapis.org/oas/v3.2.0#fixed-fields
      */
     public function summary(string $summary): self
     {
@@ -95,7 +120,7 @@ final class OpenAPI extends ExtensibleObject
     /**
      * The incoming webhooks that MAY be received as part of this API.
      *
-     * @see https://spec.openapis.org/oas/v3.1.0#fixed-fields
+     * @see https://spec.openapis.org/oas/v3.2.0#fixed-fields
      */
     public function webhooks(Webhooks $webhooks): self
     {
@@ -170,6 +195,7 @@ final class OpenAPI extends ExtensibleObject
     {
         return Arr::filter([
             'openapi' => $this->openAPIField,
+            '$self' => $this->self,
             'info' => $this->info,
             'summary' => $this->summary,
             'jsonSchemaDialect' => $this->jsonSchemaDialect,

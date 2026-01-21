@@ -3,6 +3,7 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Rules\ComponentName;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Rules\JsonPointer;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Rules\URI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Rules\URL;
 
@@ -21,5 +22,10 @@ final readonly class Validator
     public static function componentName(string $value): void
     {
         new ComponentName($value);
+    }
+
+    public static function jsonPointer(string $value): void
+    {
+        new JsonPointer($value);
     }
 }

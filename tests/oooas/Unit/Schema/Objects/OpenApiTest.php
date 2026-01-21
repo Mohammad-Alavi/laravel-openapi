@@ -550,4 +550,33 @@ describe(class_basename(OpenAPI::class), function (): void {
             ->and($result['paths'])->toHaveKey('/pets')
             ->and($result['webhooks'])->toHaveKey('newPet');
     });
+
+    it('can set $self field for bundled documents (OAS 3.2)', function (): void {
+        $info = Info::create('My API', '1.0.0');
+
+        $openApi = OpenAPI::v311($info)
+            ->self('/openapi');
+
+        $result = $openApi->compile();
+
+        expect($result['$self'])->toBe('/openapi');
+    });
+
+    it('can set $self with complex JSON Pointer (OAS 3.2)', function (): void {
+        $info = Info::create('My API', '1.0.0');
+
+        $openApi = OpenAPI::v311($info)
+            ->self('/bundled/apis/pet-store');
+
+        $result = $openApi->compile();
+
+        expect($result['$self'])->toBe('/bundled/apis/pet-store');
+    });
+
+    it('rejects invalid $self JSON Pointer (OAS 3.2)', function (): void {
+        $info = Info::create('My API', '1.0.0');
+
+        expect(fn () => OpenAPI::v311($info)->self('invalid-pointer'))
+            ->toThrow(InvalidArgumentException::class);
+    });
 })->covers(OpenAPI::class);
