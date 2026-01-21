@@ -112,8 +112,14 @@ expect($schema->value())->toBeTrue()
 
 ## Workflow
 
-1. Write code following PSR-4 in appropriate namespace directory
-2. Write comprehensive Pest 3 tests
+**CRITICAL: Test-Driven Development (TDD) is mandatory.**
+
+- **Never add or update code without test coverage**
+- **Write tests BEFORE implementing new features** (TDD)
+- **Add missing tests BEFORE refactoring any existing logic**
+
+1. Write tests first (TDD) for new features
+2. Write code following PSR-4 in appropriate namespace directory
 3. Run `composer test` until all tests pass
 4. Run `composer fixer` for code style
 5. Run `composer lint` for static analysis
