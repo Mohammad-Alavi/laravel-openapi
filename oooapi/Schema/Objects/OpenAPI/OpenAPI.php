@@ -185,10 +185,60 @@ final class OpenAPI extends ExtensibleObject
             return;
         }
 
+        $this->validateTagHierarchy();
+
         // Ensure that the Components object is properly initialized with references to all reusable components
         //  used in the OpenAPI document.
         $this->components = Components::from($this, $this->components);
         $this->referencesCollected = true;
+    }
+
+    /**
+     * Validates the tag hierarchy according to OAS 3.2 requirements.
+     *
+     * @throws \InvalidArgumentException if a parent tag doesn't exist or circular references are detected
+     */
+    private function validateTagHierarchy(): void
+    {
+        if (null === $this->tags || [] === $this->tags) {
+            return;
+        }
+
+        // Build a map of tag names for quick lookup
+        $tagNames = [];
+        foreach ($this->tags as $tag) {
+            $tagNames[$tag->name()] = true;
+        }
+
+        // Build parent relationships and validate
+        $parentMap = [];
+        foreach ($this->tags as $tag) {
+            $parentName = $tag->parentName();
+            if (null === $parentName) {
+                continue;
+            }
+
+            // Validate parent exists
+            if (!isset($tagNames[$parentName])) {
+                throw new \InvalidArgumentException(sprintf('Tag "%s" references parent tag "%s" which does not exist in the API description.', $tag->name(), $parentName));
+            }
+
+            $parentMap[$tag->name()] = $parentName;
+        }
+
+        // Detect circular references
+        foreach ($parentMap as $tagName => $parentName) {
+            $visited = [$tagName => true];
+            $current = $parentName;
+
+            while (null !== $current && isset($parentMap[$current])) {
+                if (isset($visited[$current])) {
+                    throw new \InvalidArgumentException(sprintf('Circular reference detected in tag hierarchy: tag "%s" is part of a cycle.', $tagName));
+                }
+                $visited[$current] = true;
+                $current = $parentMap[$current];
+            }
+        }
     }
 
     public function toArray(): array

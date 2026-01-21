@@ -579,4 +579,89 @@ describe(class_basename(OpenAPI::class), function (): void {
         expect(fn () => OpenAPI::v311($info)->self('invalid-pointer'))
             ->toThrow(InvalidArgumentException::class);
     });
+
+    it('allows valid tag hierarchy with parent references (OAS 3.2)', function (): void {
+        $info = Info::create('My API', '1.0.0');
+
+        $parentTag = Tag::create('users');
+        $childTag = Tag::create('admin')->parent('users');
+
+        $openApi = OpenAPI::v311($info)
+            ->tags($parentTag, $childTag);
+
+        $result = $openApi->compile();
+
+        expect($result['tags'])->toBe([
+            ['name' => 'users'],
+            ['name' => 'admin', 'parent' => 'users'],
+        ]);
+    });
+
+    it('rejects tag with non-existent parent (OAS 3.2)', function (): void {
+        $info = Info::create('My API', '1.0.0');
+
+        $childTag = Tag::create('admin')->parent('non-existent');
+
+        $openApi = OpenAPI::v311($info)
+            ->tags($childTag);
+
+        expect(fn () => $openApi->compile())
+            ->toThrow(
+                InvalidArgumentException::class,
+                'Tag "admin" references parent tag "non-existent" which does not exist in the API description.',
+            );
+    });
+
+    it('rejects direct circular reference in tags (OAS 3.2)', function (): void {
+        $info = Info::create('My API', '1.0.0');
+
+        // A -> B -> A (circular)
+        $tagA = Tag::create('tagA')->parent('tagB');
+        $tagB = Tag::create('tagB')->parent('tagA');
+
+        $openApi = OpenAPI::v311($info)
+            ->tags($tagA, $tagB);
+
+        expect(fn () => $openApi->compile())
+            ->toThrow(
+                InvalidArgumentException::class,
+                'Circular reference detected in tag hierarchy',
+            );
+    });
+
+    it('rejects indirect circular reference in tags (OAS 3.2)', function (): void {
+        $info = Info::create('My API', '1.0.0');
+
+        // A -> B -> C -> A (circular)
+        $tagA = Tag::create('tagA')->parent('tagC');
+        $tagB = Tag::create('tagB')->parent('tagA');
+        $tagC = Tag::create('tagC')->parent('tagB');
+
+        $openApi = OpenAPI::v311($info)
+            ->tags($tagA, $tagB, $tagC);
+
+        expect(fn () => $openApi->compile())
+            ->toThrow(
+                InvalidArgumentException::class,
+                'Circular reference detected in tag hierarchy',
+            );
+    });
+
+    it('allows deep but non-circular tag hierarchy (OAS 3.2)', function (): void {
+        $info = Info::create('My API', '1.0.0');
+
+        // root -> level1 -> level2 -> level3 (valid chain)
+        $root = Tag::create('root');
+        $level1 = Tag::create('level1')->parent('root');
+        $level2 = Tag::create('level2')->parent('level1');
+        $level3 = Tag::create('level3')->parent('level2');
+
+        $openApi = OpenAPI::v311($info)
+            ->tags($root, $level1, $level2, $level3);
+
+        $result = $openApi->compile();
+
+        expect($result['tags'])->toHaveCount(4)
+            ->and($result['tags'][3]['parent'])->toBe('level2');
+    });
 })->covers(OpenAPI::class);
