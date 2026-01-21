@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
  * An SPDX license expression for the API. The identifier field is mutually
  * exclusive of the url field in the License Object.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#license-object
+ * @see https://spec.openapis.org/oas/v3.2.0#license-object
  * @see https://spdx.org/licenses/
  */
 final readonly class Identifier extends StringField

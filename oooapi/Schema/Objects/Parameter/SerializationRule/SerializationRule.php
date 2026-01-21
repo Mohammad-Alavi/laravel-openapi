@@ -11,7 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\MergeableFields;
  * classes (schema, style, explode, etc.) are merged into the parent
  * Parameter object at the same level as name and in.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#parameter-object
+ * @see https://spec.openapis.org/oas/v3.2.0#parameter-object
  */
 interface SerializationRule extends MergeableFields
 {

@@ -16,7 +16,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Validator;
  * present is undefined per the spec. The OAS spec notes this behavior may
  * change in future versions to align with Reference Object behavior.
  *
- * @see https://spec.openapis.org/oas/v3.1.1#path-item-object
+ * @see https://spec.openapis.org/oas/v3.2.0#path-item-object
  */
 final readonly class Ref extends StringField
 {

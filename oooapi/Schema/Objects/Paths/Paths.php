@@ -14,7 +14,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
  * The path is appended to the URL from the Server Object to construct the
  * full URL. Field pattern: /{path}
  *
- * @see https://spec.openapis.org/oas/v3.1.0#paths-object
+ * @see https://spec.openapis.org/oas/v3.2.0#paths-object
  *
  * @implements StringMap<Path>
  */

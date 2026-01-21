@@ -14,7 +14,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
  * Adds metadata to a single tag that is used by the Operation Object.
  * The name field is required and must be unique among all tags.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#tag-object
+ * @see https://spec.openapis.org/oas/v3.2.0#tag-object
  */
 final class Tag extends ExtensibleObject
 {

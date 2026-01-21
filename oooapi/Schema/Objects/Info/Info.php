@@ -18,7 +18,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
  * Provides metadata about the API. The metadata MAY be used by tooling
  * as required. Title and version are required fields.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#info-object
+ * @see https://spec.openapis.org/oas/v3.2.0#info-object
  */
 final class Info extends ExtensibleObject
 {

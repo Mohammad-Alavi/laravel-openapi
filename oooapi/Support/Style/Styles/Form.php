@@ -21,7 +21,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\QueryApplicable;
  * - object with explode=false: name=key1,value1,key2,value2
  * - object with explode=true: key1=value1&key2=value2
  *
- * @see https://spec.openapis.org/oas/v3.1.1#style-values
+ * @see https://spec.openapis.org/oas/v3.2.0#style-values
  */
 final class Form extends Base implements QueryApplicable
 {

@@ -14,7 +14,7 @@ use Webmozart\Assert\Assert;
  * A relative path to an individual endpoint. The field name MUST begin
  * with a forward slash (/). Path templating is allowed.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#paths-object
+ * @see https://spec.openapis.org/oas/v3.2.0#paths-object
  *
  * @implements StringMapEntry<PathItem>
  */

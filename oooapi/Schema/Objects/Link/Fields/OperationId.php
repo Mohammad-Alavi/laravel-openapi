@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
  * The name of an existing, resolvable OAS operation, as defined with a unique
  * operationId. This field is mutually exclusive of the operationRef field.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#link-object
+ * @see https://spec.openapis.org/oas/v3.2.0#link-object
  */
 final readonly class OperationId extends StringField
 {

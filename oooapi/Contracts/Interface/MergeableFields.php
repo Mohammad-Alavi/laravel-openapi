@@ -14,8 +14,8 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface;
  * Objects implementing this interface signal that their serialized fields
  * should be spread into the parent object using the spread operator.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#path-item-object
- * @see https://spec.openapis.org/oas/v3.1.0#parameter-object
+ * @see https://spec.openapis.org/oas/v3.2.0#path-item-object
+ * @see https://spec.openapis.org/oas/v3.2.0#parameter-object
  */
 interface MergeableFields extends \JsonSerializable
 {

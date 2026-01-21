@@ -14,7 +14,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
  * at the same level as summary and description, not nested under an
  * "operations" key.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#path-item-object
+ * @see https://spec.openapis.org/oas/v3.2.0#path-item-object
  *
  * @implements StringMap<Operation>
  */

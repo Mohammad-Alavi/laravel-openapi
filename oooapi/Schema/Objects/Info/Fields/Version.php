@@ -11,7 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
  * Specification version or the API implementation version). This is a
  * REQUIRED field in the Info Object.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#info-object
+ * @see https://spec.openapis.org/oas/v3.2.0#info-object
  */
 final readonly class Version extends StringField
 {

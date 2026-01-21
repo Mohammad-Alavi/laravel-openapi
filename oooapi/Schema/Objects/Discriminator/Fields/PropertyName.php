@@ -9,7 +9,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
  *
  * This property is required in the Discriminator Object.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#discriminator-object
+ * @see https://spec.openapis.org/oas/v3.2.0#discriminator-object
  */
 final readonly class PropertyName extends StringField
 {

@@ -20,7 +20,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
  * schemes are HTTP authentication, API key, mutual TLS, OAuth2, and
  * OpenID Connect Discovery.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#security-scheme-object
+ * @see https://spec.openapis.org/oas/v3.2.0#security-scheme-object
  */
 final class SecurityScheme extends ExtensibleObject
 {

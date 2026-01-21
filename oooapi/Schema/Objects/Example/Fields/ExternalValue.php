@@ -11,7 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
  * be included in JSON or YAML documents. The externalValue field is
  * mutually exclusive of the value field.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#example-object
+ * @see https://spec.openapis.org/oas/v3.2.0#example-object
  */
 final readonly class ExternalValue extends StringField
 {

@@ -14,7 +14,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\RuntimeExpression\RuntimeExpress
  * The key is a unique identifier for the Callback Object. Each value is a
  * Path Item Object describing a callback request and expected responses.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#callback-object
+ * @see https://spec.openapis.org/oas/v3.2.0#callback-object
  */
 final class Callback extends ExtensibleObject
 {

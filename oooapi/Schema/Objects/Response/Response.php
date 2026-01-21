@@ -19,7 +19,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Links\Links;
  * static links to operations based on the response. The description field
  * is required.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#response-object
+ * @see https://spec.openapis.org/oas/v3.2.0#response-object
  */
 final class Response extends ExtensibleObject
 {

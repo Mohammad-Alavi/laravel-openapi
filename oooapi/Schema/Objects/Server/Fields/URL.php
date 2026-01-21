@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  * where the OpenAPI document is being served. Variable substitutions will
  * be made when a variable is named in {brackets}. This is a REQUIRED field.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#server-object
+ * @see https://spec.openapis.org/oas/v3.2.0#server-object
  */
 final readonly class URL extends StringField
 {

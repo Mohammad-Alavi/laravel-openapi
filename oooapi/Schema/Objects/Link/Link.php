@@ -18,7 +18,7 @@ use Webmozart\Assert\Assert;
  * link does not guarantee the caller's ability to invoke it. Either
  * operationRef or operationId can be used, but not both.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#link-object
+ * @see https://spec.openapis.org/oas/v3.2.0#link-object
  */
 final class Link extends ExtensibleObject
 {

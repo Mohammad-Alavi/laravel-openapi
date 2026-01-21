@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
  *
  * Headers only support the 'simple' style per OpenAPI specification.
  *
- * @see https://spec.openapis.org/oas/v3.1.1#header-object
+ * @see https://spec.openapis.org/oas/v3.2.0#header-object
  */
 final class Header extends ExtensibleObject
 {

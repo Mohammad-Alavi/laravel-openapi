@@ -13,7 +13,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
  *
  * Contact information for the exposed API. All fields are optional.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#contact-object
+ * @see https://spec.openapis.org/oas/v3.2.0#contact-object
  */
 final class Contact extends ExtensibleObject
 {

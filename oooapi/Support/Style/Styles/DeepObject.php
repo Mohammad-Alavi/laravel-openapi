@@ -22,7 +22,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\QueryApplicable;
  * Note: Behavior for nested objects and arrays within the object is undefined
  * in the specification.
  *
- * @see https://spec.openapis.org/oas/v3.1.1#style-values
+ * @see https://spec.openapis.org/oas/v3.2.0#style-values
  */
 final class DeepObject extends Base implements QueryApplicable
 {

@@ -12,7 +12,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\MergeableFields;
  * Defines how parameters are serialized. Fields from implementing classes
  * are merged into the parent object at the same level as the schema field.
  *
- * @see https://spec.openapis.org/oas/v3.1.1#style-values
+ * @see https://spec.openapis.org/oas/v3.2.0#style-values
  */
 interface Style extends MergeableFields
 {

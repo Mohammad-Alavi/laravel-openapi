@@ -14,7 +14,7 @@ use Webmozart\Assert\Assert;
  * with "x-". This abstract class provides the foundation for all objects
  * that may contain such extensions.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#specification-extensions
+ * @see https://spec.openapis.org/oas/v3.2.0#specification-extensions
  */
 abstract class ExtensibleObject extends Generatable
 {

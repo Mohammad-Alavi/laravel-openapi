@@ -13,7 +13,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
  * name MUST correspond to a security scheme declared in the Security Schemes
  * under the Components Object.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#security-requirement-object
+ * @see https://spec.openapis.org/oas/v3.2.0#security-requirement-object
  */
 final readonly class SecurityRequirement extends ReadonlyGeneratable
 {

@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
  * Represents an HTTP status code (1XX-5XX) used as a key in the Responses
  * Object to specify expected responses for an operation.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#responses-object
+ * @see https://spec.openapis.org/oas/v3.2.0#responses-object
  */
 final readonly class HTTPStatusCode extends StringField
 {

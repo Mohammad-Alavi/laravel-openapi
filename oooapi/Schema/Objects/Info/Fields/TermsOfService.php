@@ -11,7 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Validator;
  * A URL pointing to the Terms of Service for the API.
  * This MUST be in the form of a URL.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#info-object
+ * @see https://spec.openapis.org/oas/v3.2.0#info-object
  */
 final readonly class TermsOfService extends StringField
 {

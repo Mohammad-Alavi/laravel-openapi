@@ -12,7 +12,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
  * A single entry in the server variables map, representing a variable name
  * and its corresponding ServerVariable object.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#server-object
+ * @see https://spec.openapis.org/oas/v3.2.0#server-object
  *
  * @implements StringMapEntry<ServerVariable>
  */

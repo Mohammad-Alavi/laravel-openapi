@@ -12,7 +12,7 @@ use Webmozart\Assert\Assert;
  * Extension names MUST begin with "x-" and cannot use reserved prefixes
  * "x-oai-" and "x-oas-".
  *
- * @see https://spec.openapis.org/oas/v3.1.0#specification-extensions
+ * @see https://spec.openapis.org/oas/v3.2.0#specification-extensions
  */
 final readonly class Extension extends ReadonlyGeneratable
 {

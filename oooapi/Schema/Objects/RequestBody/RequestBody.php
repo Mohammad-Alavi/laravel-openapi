@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
  * Describes a single request body. The content field is required and describes
  * the content of the request body using media type objects.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#request-body-object
+ * @see https://spec.openapis.org/oas/v3.2.0#request-body-object
  */
 final class RequestBody extends ExtensibleObject
 {

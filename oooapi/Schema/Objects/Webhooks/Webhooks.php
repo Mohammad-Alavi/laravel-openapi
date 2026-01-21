@@ -21,7 +21,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
  *
  * @implements StringMap<Webhook>
  *
- * @see https://spec.openapis.org/oas/v3.1.0#fixed-fields
+ * @see https://spec.openapis.org/oas/v3.2.0#fixed-fields
  */
 final class Webhooks extends ExtensibleObject implements StringMap
 {

@@ -18,7 +18,7 @@ use Webmozart\Assert\Assert;
  * Provides schema and examples for the media type identified by its key.
  * Each Media Type Object describes the content of a request or response body.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#media-type-object
+ * @see https://spec.openapis.org/oas/v3.2.0#media-type-object
  */
 final class MediaType extends ExtensibleObject
 {

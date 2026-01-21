@@ -11,7 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\MergeableFields;
  * implementing classes are merged into the parent SecurityScheme object
  * at the same level as type and description.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#security-scheme-object
+ * @see https://spec.openapis.org/oas/v3.2.0#security-scheme-object
  */
 interface Scheme extends MergeableFields
 {

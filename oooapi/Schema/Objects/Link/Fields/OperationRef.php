@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
  * A relative or absolute URI reference to an OAS operation. This field is
  * mutually exclusive of the operationId field, and MUST point to an Operation Object.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#link-object
+ * @see https://spec.openapis.org/oas/v3.2.0#link-object
  */
 final readonly class OperationRef extends StringField
 {

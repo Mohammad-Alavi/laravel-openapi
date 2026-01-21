@@ -10,7 +10,7 @@ use Webmozart\Assert\Assert;
  *
  * CommonMark syntax MAY be used for rich text representation.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#rich-text-formatting
+ * @see https://spec.openapis.org/oas/v3.2.0#rich-text-formatting
  */
 final readonly class Description extends StringField
 {

@@ -14,7 +14,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\Headers;
  * This object provides additional information about how a property should
  * be serialized when using application/x-www-form-urlencoded or multipart content.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#encoding-object
+ * @see https://spec.openapis.org/oas/v3.2.0#encoding-object
  */
 final class Encoding extends ExtensibleObject
 {

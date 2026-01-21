@@ -7,7 +7,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Style;
 /**
  * Trait for styles that support allowReserved (query parameter styles only).
  *
- * @see https://spec.openapis.org/oas/v3.1.1#parameter-object
+ * @see https://spec.openapis.org/oas/v3.2.0#parameter-object
  */
 trait AllowReserved
 {

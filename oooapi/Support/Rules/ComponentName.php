@@ -7,7 +7,7 @@ use Webmozart\Assert\Assert;
 /**
  * Validates OpenAPI component names.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#components-object
+ * @see https://spec.openapis.org/oas/v3.2.0#components-object
  */
 final readonly class ComponentName
 {

@@ -10,7 +10,7 @@ use Webmozart\Assert\Assert;
  * An enumeration of string values to be used if the substitution options are
  * from a limited set. The array MUST NOT be empty.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#server-variable-object
+ * @see https://spec.openapis.org/oas/v3.2.0#server-variable-object
  */
 final readonly class Enum implements \JsonSerializable
 {

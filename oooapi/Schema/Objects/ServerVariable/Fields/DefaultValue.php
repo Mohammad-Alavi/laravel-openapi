@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;
  * The default value to use for substitution, which SHALL be sent if an
  * alternate value is not supplied. This is a REQUIRED field.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#server-variable-object
+ * @see https://spec.openapis.org/oas/v3.2.0#server-variable-object
  */
 final readonly class DefaultValue extends StringField
 {

@@ -15,7 +15,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
  * Allows configuration of the supported OAuth Flows. Supports implicit,
  * password, clientCredentials, and authorizationCode flows.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#oauth-flows-object
+ * @see https://spec.openapis.org/oas/v3.2.0#oauth-flows-object
  */
 final class OAuthFlows extends Generatable
 {

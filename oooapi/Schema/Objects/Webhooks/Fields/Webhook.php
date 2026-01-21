@@ -17,7 +17,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMapEntry;
  *
  * @implements StringMapEntry<PathItem>
  *
- * @see https://spec.openapis.org/oas/v3.1.0#fixed-fields
+ * @see https://spec.openapis.org/oas/v3.2.0#fixed-fields
  */
 final class Webhook extends ExtensibleObject implements StringMapEntry
 {

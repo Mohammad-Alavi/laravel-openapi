@@ -21,7 +21,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\QueryApplicable;
  *
  * Equivalent to collectionFormat: pipes in OpenAPI 2.0.
  *
- * @see https://spec.openapis.org/oas/v3.1.1#style-values
+ * @see https://spec.openapis.org/oas/v3.2.0#style-values
  */
 final class PipeDelimited extends Base implements QueryApplicable
 {

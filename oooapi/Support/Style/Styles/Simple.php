@@ -21,7 +21,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Base;
  * - array: comma-separated values (same as explode=false for simple)
  * - object: comma-separated key=value pairs (e.g., "R=100,G=200,B=150")
  *
- * @see https://spec.openapis.org/oas/v3.1.1#style-values
+ * @see https://spec.openapis.org/oas/v3.2.0#style-values
  */
 final class Simple extends Base
 {

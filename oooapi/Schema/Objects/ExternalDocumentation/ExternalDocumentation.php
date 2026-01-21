@@ -13,7 +13,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\URL;
  * Allows referencing an external resource for extended documentation.
  * The url field is required and must be a valid URL.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#external-documentation-object
+ * @see https://spec.openapis.org/oas/v3.2.0#external-documentation-object
  */
 final class ExternalDocumentation extends ExtensibleObject
 {

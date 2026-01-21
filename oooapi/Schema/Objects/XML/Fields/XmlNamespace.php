@@ -10,7 +10,7 @@ use Webmozart\Assert\Assert;
  *
  * The URI of the namespace definition. This MUST be in the form of an absolute URI.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#xml-object
+ * @see https://spec.openapis.org/oas/v3.2.0#xml-object
  */
 final readonly class XmlNamespace extends StringField
 {

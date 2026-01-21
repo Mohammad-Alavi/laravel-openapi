@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
  * Manages a collection of specification extensions for an OpenAPI object.
  * Provides methods to add, remove, and retrieve extensions.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#specification-extensions
+ * @see https://spec.openapis.org/oas/v3.2.0#specification-extensions
  */
 final class Extensions extends Generatable
 {

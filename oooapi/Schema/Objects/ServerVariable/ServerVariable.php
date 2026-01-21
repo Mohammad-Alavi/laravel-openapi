@@ -16,7 +16,7 @@ use Webmozart\Assert\Assert;
  * The default value is required. If enum is provided, the default value MUST
  * exist in the enum's values.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#server-variable-object
+ * @see https://spec.openapis.org/oas/v3.2.0#server-variable-object
  */
 final class ServerVariable extends ExtensibleObject
 {

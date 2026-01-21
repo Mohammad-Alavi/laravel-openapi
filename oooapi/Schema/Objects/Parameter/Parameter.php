@@ -20,7 +20,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
  * Describes a single operation parameter. A unique parameter is defined
  * by a combination of a name and location. The name and in fields are required.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#parameter-object
+ * @see https://spec.openapis.org/oas/v3.2.0#parameter-object
  */
 final class Parameter extends ExtensibleObject
 {

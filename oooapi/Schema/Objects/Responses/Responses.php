@@ -13,7 +13,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\Respons
  * maps an HTTP response code to the expected response. At least one
  * response code is required, and it SHOULD be the success response.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#responses-object
+ * @see https://spec.openapis.org/oas/v3.2.0#responses-object
  */
 final class Responses extends ExtensibleObject
 {

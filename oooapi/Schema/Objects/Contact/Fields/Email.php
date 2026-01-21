@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
  * The email address of the contact person/organization.
  * MUST be in the format of an email address.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#contact-object
+ * @see https://spec.openapis.org/oas/v3.2.0#contact-object
  */
 final readonly class Email extends StringField
 {

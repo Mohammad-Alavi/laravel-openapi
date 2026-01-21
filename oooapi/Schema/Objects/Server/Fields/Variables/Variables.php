@@ -12,7 +12,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Map\StringMap;
  * A map between a variable name and its value used for substitution
  * in the server's URL template.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#server-object
+ * @see https://spec.openapis.org/oas/v3.2.0#server-object
  *
  * @implements StringMap<ServerVariable>
  */

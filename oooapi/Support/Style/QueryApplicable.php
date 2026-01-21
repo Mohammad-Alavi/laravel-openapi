@@ -12,7 +12,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Style;
  *
  * Valid query styles: form, spaceDelimited, pipeDelimited, deepObject
  *
- * @see https://spec.openapis.org/oas/v3.1.1#parameter-object
+ * @see https://spec.openapis.org/oas/v3.2.0#parameter-object
  */
 interface QueryApplicable
 {
