@@ -33,7 +33,7 @@ final class Parameters extends Generatable
         );
         $parameters = array_filter(
             $parameter,
-            static fn (Parameter|ParameterFactory|self $param): bool => !($param instanceof self),
+            static fn (Parameter|ParameterFactory|self $param): bool => !$param instanceof self,
         );
 
         $merged = self::removeDuplicate(array_merge($parameters, $selfParams));
