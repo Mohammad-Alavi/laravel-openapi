@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\AllowReserved;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Base;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\QueryApplicable;
 
 /**
  * DeepObject style serialization for nested objects.
@@ -24,10 +22,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\QueryApplicable;
  *
  * @see https://spec.openapis.org/oas/v3.2.0#style-values
  */
-final class DeepObject extends Base implements QueryApplicable
+final class DeepObject extends Base
 {
-    use AllowReserved;
-
     protected function value(): string
     {
         return 'deepObject';

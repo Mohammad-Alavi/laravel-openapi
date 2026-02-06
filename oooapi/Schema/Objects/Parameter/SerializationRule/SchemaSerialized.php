@@ -20,6 +20,7 @@ use Webmozart\Assert\Assert;
  */
 abstract class SchemaSerialized implements SerializationRule
 {
+    private true|null $allowReserved = null;
     private Examples|null $examples = null;
 
     /** @var mixed Example of the parameter's potential value */
@@ -29,6 +30,22 @@ abstract class SchemaSerialized implements SerializationRule
         private readonly JSONSchema|SchemaFactory $jsonSchema,
         private readonly Style|null $style,
     ) {
+    }
+
+    /**
+     * When true, allows reserved characters to pass through without percent-encoding.
+     *
+     * Reserved characters as defined by RFC3986: :/?#[]@!$&'()*+,;=
+     *
+     * @see https://spec.openapis.org/oas/v3.2.0#parameter-object
+     */
+    final public function allowReserved(): static
+    {
+        $clone = clone $this;
+
+        $clone->allowReserved = true;
+
+        return $clone;
     }
 
     /**
@@ -83,6 +100,7 @@ abstract class SchemaSerialized implements SerializationRule
     {
         return [
             ...($this->style?->jsonSerialize() ?? []),
+            'allowReserved' => $this->allowReserved,
             'schema' => $this->jsonSchema,
             'example' => $this->example,
             'examples' => $this->examples,

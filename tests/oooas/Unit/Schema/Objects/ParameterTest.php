@@ -32,6 +32,7 @@ describe('Parameter', function (): void {
                 CookieParameter::create(
                     Schema::integer(),
                     $style,
+                )->examples(
                     ExampleEntry::create(
                         'example_test',
                         Example::create(),
@@ -51,10 +52,10 @@ describe('Parameter', function (): void {
                 'description' => 'User ID',
                 'required' => true,
                 'deprecated' => true,
+                ...$expected,
                 'schema' => [
                     'type' => 'integer',
                 ],
-                ...$expected,
                 'examples' => [
                     'example_test' => [],
                     'ExampleName' => [],
@@ -63,11 +64,10 @@ describe('Parameter', function (): void {
         },
     )->with([
         'form' => [
-            Form::create()->explode()->allowReserved(),
+            Form::create()->explode(),
             [
                 'style' => 'form',
                 'explode' => true,
-                'allowReserved' => true,
             ],
         ],
         'cookie' => [
@@ -94,6 +94,7 @@ describe('Parameter', function (): void {
                 HeaderParameter::create(
                     Schema::object(),
                     $style,
+                )->examples(
                     ExampleEntry::create(
                         'example_test',
                         Example::create(),
@@ -107,10 +108,10 @@ describe('Parameter', function (): void {
                 'in' => 'header',
                 'description' => 'User ID',
                 'deprecated' => true,
+                ...$expected,
                 'schema' => [
                     'type' => 'object',
                 ],
-                ...$expected,
                 'examples' => [
                     'example_test' => [],
                 ],
@@ -151,10 +152,10 @@ describe('Parameter', function (): void {
                 'in' => 'path',
                 'description' => 'User ID',
                 'required' => true,
+                ...$expected,
                 'schema' => [
                     'type' => 'string',
                 ],
-                ...$expected,
             ]);
         },
     )->with([
@@ -188,14 +189,21 @@ describe('Parameter', function (): void {
         'can create query parameter',
         function (
             DeepObject|Form|PipeDelimited|SpaceDelimited|null $style,
+            bool $allowReserved,
             array $expected,
         ): void {
+            $queryParam = QueryParameter::create(
+                Schema::array(),
+                $style,
+            );
+
+            if ($allowReserved) {
+                $queryParam = $queryParam->allowReserved();
+            }
+
             $parameter = Parameter::query(
                 'user',
-                QueryParameter::create(
-                    Schema::array(),
-                    $style,
-                ),
+                $queryParam,
             )->description('User ID')
                 ->required()
                 ->deprecated();
@@ -206,29 +214,31 @@ describe('Parameter', function (): void {
                 'description' => 'User ID',
                 'required' => true,
                 'deprecated' => true,
+                ...$expected,
                 'schema' => [
                     'type' => 'array',
                 ],
-                ...$expected,
             ]);
         },
     )->with([
         'deepObject' => [
-            DeepObject::create()->explode()->allowReserved(),
+            DeepObject::create(),
+            true,
             [
                 'style' => 'deepObject',
-                'explode' => true,
                 'allowReserved' => true,
             ],
         ],
         'form' => [
             Form::create(),
+            false,
             [
                 'style' => 'form',
             ],
         ],
         'pipeDelimited' => [
-            PipeDelimited::create()->allowReserved(),
+            PipeDelimited::create(),
+            true,
             [
                 'style' => 'pipeDelimited',
                 'allowReserved' => true,
@@ -236,6 +246,7 @@ describe('Parameter', function (): void {
         ],
         'spaceDelimited' => [
             SpaceDelimited::create()->explode(),
+            false,
             [
                 'style' => 'spaceDelimited',
                 'explode' => true,
@@ -243,6 +254,7 @@ describe('Parameter', function (): void {
         ],
         'null' => [
             null,
+            false,
             [],
         ],
     ]);
@@ -314,4 +326,144 @@ describe('Parameter', function (): void {
                 'allowEmptyValue is only valid for query parameters',
             );
     })->with(['path', 'header', 'cookie']);
+
+    describe('explode field on style', function (): void {
+        it('can explicitly set explode to false on form style', function (): void {
+            $parameter = Parameter::query(
+                'filter',
+                QueryParameter::create(
+                    Schema::array(),
+                    Form::create()->explode(false),
+                ),
+            );
+
+            expect($parameter->compile())->toBe([
+                'name' => 'filter',
+                'in' => 'query',
+                'style' => 'form',
+                'explode' => false,
+                'schema' => [
+                    'type' => 'array',
+                ],
+            ]);
+        });
+
+        it('can explicitly set explode to false on cookie style', function (): void {
+            $parameter = Parameter::cookie(
+                'session',
+                CookieParameter::create(
+                    Schema::string(),
+                    Cookie::create()->explode(false),
+                ),
+            );
+
+            expect($parameter->compile())->toBe([
+                'name' => 'session',
+                'in' => 'cookie',
+                'style' => 'cookie',
+                'explode' => false,
+                'schema' => [
+                    'type' => 'string',
+                ],
+            ]);
+        });
+    });
+
+    describe('example and examples fields', function (): void {
+        it('can use example (singular) field', function (): void {
+            $parameter = Parameter::query(
+                'status',
+                QueryParameter::create(Schema::string())->example('active'),
+            );
+
+            expect($parameter->compile())->toBe([
+                'name' => 'status',
+                'in' => 'query',
+                'schema' => [
+                    'type' => 'string',
+                ],
+                'example' => 'active',
+            ]);
+        });
+
+        it('can use examples (plural) via fluent method', function (): void {
+            $parameter = Parameter::query(
+                'status',
+                QueryParameter::create(Schema::string())->examples(
+                    ExampleEntry::create('active', Example::create()->value('active')),
+                    ExampleEntry::create('inactive', Example::create()->value('inactive')),
+                ),
+            );
+
+            expect($parameter->compile())->toBe([
+                'name' => 'status',
+                'in' => 'query',
+                'schema' => [
+                    'type' => 'string',
+                ],
+                'examples' => [
+                    'active' => ['value' => 'active'],
+                    'inactive' => ['value' => 'inactive'],
+                ],
+            ]);
+        });
+
+        it('example field works with complex values', function (): void {
+            $parameter = Parameter::query(
+                'filter',
+                QueryParameter::create(Schema::object())->example(['status' => 'active', 'type' => 'user']),
+            );
+
+            expect($parameter->compile()['example'])->toBe(['status' => 'active', 'type' => 'user']);
+        });
+
+        it('prevents setting examples after example', function (): void {
+            expect(fn () => QueryParameter::create(Schema::string())
+                ->example('value')
+                ->examples(ExampleEntry::create('test', Example::create())))
+                ->toThrow(
+                    InvalidArgumentException::class,
+                    'examples and example fields are mutually exclusive',
+                );
+        });
+    });
+
+    describe('allowReserved on SchemaSerialized', function (): void {
+        it('works on cookie parameter', function (): void {
+            $parameter = Parameter::cookie(
+                'token',
+                CookieParameter::create(
+                    Schema::string(),
+                    Form::create()->explode(),
+                )->allowReserved(),
+            );
+
+            expect($parameter->compile())->toBe([
+                'name' => 'token',
+                'in' => 'cookie',
+                'style' => 'form',
+                'explode' => true,
+                'allowReserved' => true,
+                'schema' => [
+                    'type' => 'string',
+                ],
+            ]);
+        });
+
+        it('works on header parameter', function (): void {
+            $parameter = Parameter::header(
+                'X-Custom',
+                HeaderParameter::create(Schema::string())->allowReserved(),
+            );
+
+            expect($parameter->compile())->toBe([
+                'name' => 'X-Custom',
+                'in' => 'header',
+                'allowReserved' => true,
+                'schema' => [
+                    'type' => 'string',
+                ],
+            ]);
+        });
+    });
 })->covers(Parameter::class);

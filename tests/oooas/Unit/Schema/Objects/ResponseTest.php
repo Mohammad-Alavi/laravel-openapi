@@ -24,10 +24,6 @@ describe('Response', function (): void {
                     Example::create()
                         ->value('Example value'),
                 ),
-            )->content(
-                ContentEntry::json(
-                    MediaType::create(),
-                ),
             );
 
         $link = Link::create();
@@ -62,9 +58,6 @@ describe('Response', function (): void {
                             'value' => 'Example value',
                         ],
                     ],
-                    'content' => [
-                        'application/json' => [],
-                    ],
                 ],
             ],
             'content' => [
@@ -72,6 +65,39 @@ describe('Response', function (): void {
             ],
             'links' => [
                 'MyLink' => [],
+            ],
+        ]);
+    });
+
+    it('creates a response with content-based header', function (): void {
+        $header = Header::create()
+            ->description('Lorem ipsum')
+            ->required()
+            ->content(
+                ContentEntry::json(
+                    MediaType::create(),
+                ),
+            );
+
+        $response = Response::create(
+            'A response indicating success',
+        )->headers(
+            HeaderEntry::create(
+                'HeaderName',
+                $header,
+            ),
+        );
+
+        expect($response->compile())->toBe([
+            'description' => 'A response indicating success',
+            'headers' => [
+                'HeaderName' => [
+                    'description' => 'Lorem ipsum',
+                    'required' => true,
+                    'content' => [
+                        'application/json' => [],
+                    ],
+                ],
             ],
         ]);
     });

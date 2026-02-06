@@ -30,6 +30,7 @@ final class Header extends ExtensibleObject
     private true|null $required = null;
     private true|null $deprecated = null;
     private Simple|null $style = null;
+    private true|null $allowReserved = null;
     private JSONSchema|null $schema = null;
 
     /** @var mixed Example of the header; mutually exclusive with examples */
@@ -38,6 +39,11 @@ final class Header extends ExtensibleObject
     private Examples|null $examples = null;
     private Content|null $content = null;
 
+    public static function create(): self
+    {
+        return new self();
+    }
+
     public function description(string $description): self
     {
         $clone = clone $this;
@@ -45,11 +51,6 @@ final class Header extends ExtensibleObject
         $clone->description = Description::create($description);
 
         return $clone;
-    }
-
-    public static function create(): self
-    {
-        return new self();
     }
 
     public function required(): self
@@ -71,27 +72,42 @@ final class Header extends ExtensibleObject
     }
 
     /**
-     * Set the serialization style for this header.
+     * Set the schema and optional style for this header.
      *
      * Headers only support the 'simple' style per OpenAPI specification.
-     * Use Simple::create() optionally with ->explode() for array serialization.
+     * The schema field is mutually exclusive with the content field.
      *
-     * Example: ->style(Simple::create()->explode())
+     * @see https://spec.openapis.org/oas/v3.2.0#header-object
      */
-    public function style(Simple $style): self
+    public function schema(JSONSchema $schema, Simple|null $style = null): self
     {
+        Assert::null(
+            $this->content,
+            'schema and content fields are mutually exclusive. '
+            . 'See: https://spec.openapis.org/oas/v3.2.0#header-object',
+        );
+
         $clone = clone $this;
 
+        $clone->schema = $schema;
         $clone->style = $style;
 
         return $clone;
     }
 
-    public function schema(JSONSchema $schema): self
+    /**
+     * Allow reserved characters in header value without percent-encoding.
+     *
+     * When true, allows reserved characters as defined by RFC 3986
+     * (:/?#[]@!$&'()*+,;=) to be included without percent-encoding.
+     *
+     * @see https://spec.openapis.org/oas/v3.2.0#header-object
+     */
+    public function allowReserved(): self
     {
         $clone = clone $this;
 
-        $clone->schema = $schema;
+        $clone->allowReserved = true;
 
         return $clone;
     }
@@ -106,7 +122,8 @@ final class Header extends ExtensibleObject
     {
         Assert::null(
             $this->examples,
-            'example and examples fields are mutually exclusive.',
+            'example and examples fields are mutually exclusive. '
+            . 'See: https://spec.openapis.org/oas/v3.2.0#header-object',
         );
 
         $clone = clone $this;
@@ -126,7 +143,8 @@ final class Header extends ExtensibleObject
     {
         Assert::null(
             $this->example,
-            'examples and example fields are mutually exclusive.',
+            'examples and example fields are mutually exclusive. '
+            . 'See: https://spec.openapis.org/oas/v3.2.0#header-object',
         );
 
         $clone = clone $this;
@@ -136,8 +154,21 @@ final class Header extends ExtensibleObject
         return $clone;
     }
 
+    /**
+     * Set the content for this header.
+     *
+     * The content field is mutually exclusive with the schema field.
+     *
+     * @see https://spec.openapis.org/oas/v3.2.0#header-object
+     */
     public function content(ContentEntry ...$contentEntry): self
     {
+        Assert::null(
+            $this->schema,
+            'content and schema fields are mutually exclusive. '
+            . 'See: https://spec.openapis.org/oas/v3.2.0#header-object',
+        );
+
         $clone = clone $this;
 
         $clone->content = Content::create(...$contentEntry);
@@ -152,6 +183,7 @@ final class Header extends ExtensibleObject
             'required' => $this->required,
             'deprecated' => $this->deprecated,
             ...$this->mergeFields($this->style),
+            'allowReserved' => $this->allowReserved,
             'schema' => $this->schema,
             'example' => $this->example,
             'examples' => $this->examples,

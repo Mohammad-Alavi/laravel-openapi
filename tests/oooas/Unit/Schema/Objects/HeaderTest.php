@@ -12,28 +12,20 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles\Simple;
 use Webmozart\Assert\InvalidArgumentException;
 
 describe(class_basename(Header::class), function (): void {
-    it('can be created with all parameters', function (): void {
+    it('can be created with schema-based serialization', function (): void {
         $header = Header::create()
             ->description('Lorem ipsum')
             ->required()
             ->deprecated()
-            ->schema(Schema::object())
-            ->style(Simple::create()->explode())
+            ->schema(Schema::object(), Simple::create()->explode())
             ->examples(
                 ExampleEntry::create(
                     'ExampleName',
                     Example::create(),
                 ),
-            )
-            ->content(
-                ContentEntry::json(
-                    MediaType::create(),
-                ),
             );
 
-        $response = $header->compile();
-
-        expect($response)->toBe([
+        expect($header->compile())->toBe([
             'description' => 'Lorem ipsum',
             'required' => true,
             'deprecated' => true,
@@ -45,6 +37,20 @@ describe(class_basename(Header::class), function (): void {
             'examples' => [
                 'ExampleName' => [],
             ],
+        ]);
+    });
+
+    it('can be created with content-based serialization', function (): void {
+        $header = Header::create()
+            ->description('Lorem ipsum')
+            ->content(
+                ContentEntry::json(
+                    MediaType::create(),
+                ),
+            );
+
+        expect($header->compile())->toBe([
+            'description' => 'Lorem ipsum',
             'content' => [
                 'application/json' => [],
             ],
@@ -94,5 +100,96 @@ describe(class_basename(Header::class), function (): void {
         expect(fn () => $header->examples(
             ExampleEntry::create('ExampleName', Example::create()),
         ))->toThrow(InvalidArgumentException::class, 'examples and example fields are mutually exclusive.');
+    });
+
+    it('can be created with allowReserved (OAS 3.2)', function (): void {
+        $header = Header::create()
+            ->schema(Schema::string())
+            ->allowReserved();
+
+        expect($header->compile())->toBe([
+            'allowReserved' => true,
+            'schema' => [
+                'type' => 'string',
+            ],
+        ]);
+    });
+
+    it('can be created with style and allowReserved (OAS 3.2)', function (): void {
+        $header = Header::create()
+            ->schema(Schema::array(), Simple::create()->explode())
+            ->allowReserved();
+
+        expect($header->compile())->toBe([
+            'style' => 'simple',
+            'explode' => true,
+            'allowReserved' => true,
+            'schema' => [
+                'type' => 'array',
+            ],
+        ]);
+    });
+
+    it('can be created without serialization rule', function (): void {
+        $header = Header::create()
+            ->description('A simple header')
+            ->required();
+
+        expect($header->compile())->toBe([
+            'description' => 'A simple header',
+            'required' => true,
+        ]);
+    });
+
+    it('throws when setting content after schema', function (): void {
+        $header = Header::create()
+            ->schema(Schema::string());
+
+        expect(fn () => $header->content(ContentEntry::json(MediaType::create())))
+            ->toThrow(InvalidArgumentException::class, 'content and schema fields are mutually exclusive.');
+    });
+
+    it('throws when setting schema after content', function (): void {
+        $header = Header::create()
+            ->content(ContentEntry::json(MediaType::create()));
+
+        expect(fn () => $header->schema(Schema::string()))
+            ->toThrow(InvalidArgumentException::class, 'schema and content fields are mutually exclusive.');
+    });
+
+    it('can use example with content-based serialization', function (): void {
+        $header = Header::create()
+            ->content(
+                ContentEntry::json(MediaType::create()),
+            )
+            ->example('some-value');
+
+        expect($header->compile())->toBe([
+            'example' => 'some-value',
+            'content' => [
+                'application/json' => [],
+            ],
+        ]);
+    });
+
+    it('can use examples with content-based serialization', function (): void {
+        $header = Header::create()
+            ->content(
+                ContentEntry::json(MediaType::create()),
+            )
+            ->examples(
+                ExampleEntry::create('first', Example::create()->value('a')),
+                ExampleEntry::create('second', Example::create()->value('b')),
+            );
+
+        expect($header->compile())->toBe([
+            'examples' => [
+                'first' => ['value' => 'a'],
+                'second' => ['value' => 'b'],
+            ],
+            'content' => [
+                'application/json' => [],
+            ],
+        ]);
     });
 })->covers(Header::class);

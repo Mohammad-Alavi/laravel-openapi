@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\AllowReserved;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Explodable;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\QueryApplicable;
 
 /**
  * Form style serialization (RFC6570).
@@ -23,10 +21,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\QueryApplicable;
  *
  * @see https://spec.openapis.org/oas/v3.2.0#style-values
  */
-final class Form extends Explodable implements QueryApplicable
+final class Form extends Explodable
 {
-    use AllowReserved;
-
     protected function value(): string
     {
         return 'form';
