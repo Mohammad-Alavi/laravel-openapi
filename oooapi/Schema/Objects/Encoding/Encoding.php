@@ -56,11 +56,11 @@ final class Encoding extends ExtensibleObject
         return $clone;
     }
 
-    public function explode(): self
+    public function explode(bool $explode = true): self
     {
         $clone = clone $this;
 
-        $clone->explode = true;
+        $clone->explode = $explode;
 
         return $clone;
     }

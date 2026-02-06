@@ -10,7 +10,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Base;
  * Cookie style serialization (RFC6265).
  *
  * Applicable locations: cookie
- * Default explode: false
+ * Default explode: true
  *
  * Follows RFC6265 cookie syntax rules without percent-encoding.
  * Unlike form style, this uses the native cookie format.

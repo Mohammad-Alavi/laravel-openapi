@@ -12,7 +12,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Style;
  */
 abstract class Base implements Style
 {
-    private true|null $explode = null;
+    private bool|null $explode = null;
 
     final protected function __construct()
     {
@@ -27,14 +27,14 @@ abstract class Base implements Style
      * When true, generates separate parameters for each value of array or object.
      *
      * Default behavior varies by style:
-     * - form: explode defaults to true
+     * - form, cookie: explode defaults to true
      * - all others: explode defaults to false
      */
-    final public function explode(): static
+    final public function explode(bool $explode = true): static
     {
         $clone = clone $this;
 
-        $clone->explode = true;
+        $clone->explode = $explode;
 
         return $clone;
     }

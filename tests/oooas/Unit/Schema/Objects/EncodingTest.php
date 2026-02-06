@@ -76,4 +76,14 @@ describe(class_basename(Encoding::class), function (): void {
             ],
         ]);
     });
+    it('can explicitly set explode to false', function (): void {
+        $encoding = Encoding::create()
+            ->style('form')
+            ->explode(false);
+
+        expect($encoding->compile())->toBe([
+            'style' => 'form',
+            'explode' => false,
+        ]);
+    });
 })->covers(Encoding::class);
