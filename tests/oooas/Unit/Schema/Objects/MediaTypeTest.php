@@ -92,4 +92,43 @@ describe(class_basename(MediaType::class), function (): void {
             ExampleEntry::create('ExampleName', Example::create()),
         ))->toThrow(InvalidArgumentException::class, 'examples and example fields are mutually exclusive.');
     });
+
+    it('can be created with itemSchema for multipart arrays (OAS 3.2)', function (): void {
+        $mediaType = MediaType::create()
+            ->schema(Schema::object())
+            ->itemSchema(Schema::string());
+
+        expect($mediaType->compile())->toBe([
+            'schema' => [
+                'type' => 'object',
+            ],
+            'itemSchema' => [
+                'type' => 'string',
+            ],
+        ]);
+    });
+
+    it('can be created with itemSchema and encoding (OAS 3.2)', function (): void {
+        $mediaType = MediaType::create()
+            ->schema(Schema::object())
+            ->itemSchema(Schema::object())
+            ->encoding(
+                EncodingEntry::create(
+                    'files',
+                    Encoding::create(),
+                ),
+            );
+
+        expect($mediaType->compile())->toBe([
+            'schema' => [
+                'type' => 'object',
+            ],
+            'itemSchema' => [
+                'type' => 'object',
+            ],
+            'encoding' => [
+                'files' => [],
+            ],
+        ]);
+    });
 })->covers(MediaType::class);

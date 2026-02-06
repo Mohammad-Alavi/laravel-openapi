@@ -8,6 +8,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ExampleFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\HeaderFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\LinkFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\MediaTypeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\PathItemFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
@@ -19,6 +20,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Callback\Callback;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header\Header;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\PathItem;
@@ -35,7 +37,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
  * on the API unless they are explicitly referenced from properties
  * outside the components object.
  *
- * @see https://spec.openapis.org/oas/v3.1.0#components-object
+ * @see https://spec.openapis.org/oas/v3.2.0#components-object
  */
 final class Components extends ExtensibleObject
 {
@@ -69,6 +71,9 @@ final class Components extends ExtensibleObject
     /** @var array<string, PathItem>|null */
     private array|null $pathItems = null;
 
+    /** @var array<string, MediaType>|null */
+    private array|null $mediaTypes = null;
+
     public static function from(OpenAPI $openAPI, self|null $use = null): self
     {
         $instance = $use ?? self::create();
@@ -85,6 +90,7 @@ final class Components extends ExtensibleObject
                 $ref instanceof LinkFactory => $instance->links($ref::create()),
                 $ref instanceof CallbackFactory => $instance->callbacks($ref::create()),
                 $ref instanceof PathItemFactory => $instance->pathItems($ref::create()),
+                $ref instanceof MediaTypeFactory => $instance->mediaTypes($ref::create()),
             };
         }
 
@@ -243,6 +249,17 @@ final class Components extends ExtensibleObject
         return $clone;
     }
 
+    public function mediaTypes(MediaTypeFactory ...$mediaTypeFactory): self
+    {
+        $clone = clone $this;
+
+        foreach ($mediaTypeFactory as $factory) {
+            $clone->mediaTypes[$factory::name()] = $factory->component();
+        }
+
+        return $clone;
+    }
+
     public function toArray(): array
     {
         return Arr::filter([
@@ -256,6 +273,7 @@ final class Components extends ExtensibleObject
             'links' => $this->links,
             'callbacks' => $this->callbacks,
             'pathItems' => $this->pathItems,
+            'mediaTypes' => $this->mediaTypes,
         ]);
     }
 }

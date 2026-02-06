@@ -7,6 +7,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ExampleFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\HeaderFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\LinkFactory;
+use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\MediaTypeFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\ParameterFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\PathItemFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\RequestBodyFactory;
@@ -265,6 +266,80 @@ describe(class_basename(Components::class), function (): void {
             ],
             'pathItems' => [
                 'PathItemExample' => [],
+            ],
+        ]);
+    });
+
+    it('can be created with mediaTypes (OAS 3.2)', function (): void {
+        $mediaType = new class extends MediaTypeFactory {
+            public function component(): MediaType
+            {
+                return MediaType::create()
+                    ->schema(Schema::object());
+            }
+
+            public static function name(): string
+            {
+                return 'JsonContent';
+            }
+        };
+
+        $components = Components::create()
+            ->mediaTypes($mediaType);
+
+        expect($components->compile())->toBe([
+            'mediaTypes' => [
+                'JsonContent' => [
+                    'schema' => [
+                        'type' => 'object',
+                    ],
+                ],
+            ],
+        ]);
+    });
+
+    it('can be created with multiple mediaTypes (OAS 3.2)', function (): void {
+        $jsonMediaType = new class extends MediaTypeFactory {
+            public function component(): MediaType
+            {
+                return MediaType::create()
+                    ->schema(Schema::object());
+            }
+
+            public static function name(): string
+            {
+                return 'JsonPayload';
+            }
+        };
+
+        $xmlMediaType = new class extends MediaTypeFactory {
+            public function component(): MediaType
+            {
+                return MediaType::create()
+                    ->schema(Schema::string());
+            }
+
+            public static function name(): string
+            {
+                return 'XmlPayload';
+            }
+        };
+
+        $components = Components::create()
+            ->mediaTypes($jsonMediaType, $xmlMediaType);
+
+        expect($components->compile())->toBe([
+            'mediaTypes' => [
+                'JsonPayload' => [
+                    'schema' => [
+                        'type' => 'object',
+                    ],
+                ],
+                'XmlPayload' => [
+                    'schema' => [
+                        'type' => 'string',
+                    ],
+                ],
             ],
         ]);
     });

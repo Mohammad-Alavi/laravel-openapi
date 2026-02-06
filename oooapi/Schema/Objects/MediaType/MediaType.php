@@ -24,6 +24,17 @@ final class MediaType extends ExtensibleObject
 {
     private JSONSchema|SchemaFactory|null $schema = null;
 
+    /**
+     * Schema for items in array-valued properties.
+     *
+     * When a media type schema specifies properties as arrays, this field
+     * provides the schema for the items of those arrays. Only applicable
+     * for multipart/* media types.
+     *
+     * @see https://spec.openapis.org/oas/v3.2.0#media-type-object
+     */
+    private JSONSchema|SchemaFactory|null $itemSchema = null;
+
     /** @var mixed Example of the media type; mutually exclusive with examples */
     private mixed $example = null;
 
@@ -35,6 +46,22 @@ final class MediaType extends ExtensibleObject
         $clone = clone $this;
 
         $clone->schema = $schema;
+
+        return $clone;
+    }
+
+    /**
+     * Schema for array items in multipart requests.
+     *
+     * When a property in the request body schema is an array, this field
+     * specifies the schema for items of that array. This is only used
+     * with multipart/* media types.
+     */
+    public function itemSchema(JSONSchema|SchemaFactory $itemSchema): self
+    {
+        $clone = clone $this;
+
+        $clone->itemSchema = $itemSchema;
 
         return $clone;
     }
@@ -97,6 +124,7 @@ final class MediaType extends ExtensibleObject
     {
         return Arr::filter([
             'schema' => $this->schema,
+            'itemSchema' => $this->itemSchema,
             'example' => $this->example,
             'examples' => $this->examples,
             'encoding' => $this->encoding,
