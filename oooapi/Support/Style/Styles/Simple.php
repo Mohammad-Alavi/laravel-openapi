@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Base;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Explodable;
 
 /**
  * Simple style serialization (RFC6570).
@@ -23,7 +23,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Base;
  *
  * @see https://spec.openapis.org/oas/v3.2.0#style-values
  */
-final class Simple extends Base
+final class Simple extends Explodable
 {
     protected function value(): string
     {

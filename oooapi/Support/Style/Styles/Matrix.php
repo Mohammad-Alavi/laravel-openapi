@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Base;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Explodable;
 
 /**
  * Matrix style serialization (RFC6570 path-style expansion).
@@ -21,7 +21,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Base;
  *
  * @see https://spec.openapis.org/oas/v3.2.0#style-values
  */
-final class Matrix extends Base
+final class Matrix extends Explodable
 {
     protected function value(): string
     {

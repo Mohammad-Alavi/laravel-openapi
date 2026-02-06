@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles;
 
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Base;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Explodable;
 
 /**
  * Cookie style serialization (RFC6265).
@@ -23,7 +23,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Base;
  * @see https://spec.openapis.org/oas/v3.2.0#style-values
  * @see https://www.rfc-editor.org/rfc/rfc6265
  */
-final class Cookie extends Base
+final class Cookie extends Explodable
 {
     protected function value(): string
     {
