@@ -5,17 +5,23 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecuritySc
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Contracts\Scheme;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\OAuthFlows;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Scope;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 
 final readonly class OAuth2 implements Scheme
 {
+    /**
+     * @param OAuthFlows $OAuthFlows OAuth flows configuration
+     * @param string|null $oauth2MetadataUrl URL for OAuth 2.0 Authorization Server Metadata (RFC 8414)
+     */
     private function __construct(
         private OAuthFlows $OAuthFlows,
+        private string|null $oauth2MetadataUrl = null,
     ) {
     }
 
-    public static function create(OAuthFlows $OAuthFlows): self
+    public static function create(OAuthFlows $OAuthFlows, string|null $oauth2MetadataUrl = null): self
     {
-        return new self($OAuthFlows);
+        return new self($OAuthFlows, $oauth2MetadataUrl);
     }
 
     public function type(): string
@@ -35,8 +41,9 @@ final readonly class OAuth2 implements Scheme
 
     public function jsonSerialize(): array|null
     {
-        return [
+        return Arr::filter([
+            'oauth2MetadataUrl' => $this->oauth2MetadataUrl,
             'flows' => $this->OAuthFlows,
-        ];
+        ]);
     }
 }

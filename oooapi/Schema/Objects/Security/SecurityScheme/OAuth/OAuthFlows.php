@@ -5,6 +5,7 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecuritySc
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Generatable;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Flows\AuthorizationCode;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Flows\ClientCredentials;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Flows\DeviceAuthorization;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Flows\Implicit;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\OAuth\Flows\Password;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
@@ -13,7 +14,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
  * OAuth Flows Object.
  *
  * Allows configuration of the supported OAuth Flows. Supports implicit,
- * password, clientCredentials, and authorizationCode flows.
+ * password, clientCredentials, authorizationCode, and deviceAuthorization flows.
  *
  * @see https://spec.openapis.org/oas/v3.2.0#oauth-flows-object
  */
@@ -24,6 +25,7 @@ final class OAuthFlows extends Generatable
         private Password|null $password = null,
         private ClientCredentials|null $clientCredentials = null,
         private AuthorizationCode|null $authorizationCode = null,
+        private DeviceAuthorization|null $deviceAuthorization = null,
     ) {
     }
 
@@ -33,11 +35,12 @@ final class OAuthFlows extends Generatable
     public function scopeCollection(): ScopeCollection
     {
         /** @var Flow[] $flows */
-        $flows = Arr::filter([
+        $flows = array_filter([
             $this->implicit,
             $this->password,
             $this->clientCredentials,
             $this->authorizationCode,
+            $this->deviceAuthorization,
         ]);
 
         $scopeCollection = ScopeCollection::create();
@@ -54,8 +57,9 @@ final class OAuthFlows extends Generatable
         Password|null $password = null,
         ClientCredentials|null $clientCredentials = null,
         AuthorizationCode|null $authorizationCode = null,
+        DeviceAuthorization|null $deviceAuthorization = null,
     ): self {
-        return new self($implicit, $password, $clientCredentials, $authorizationCode);
+        return new self($implicit, $password, $clientCredentials, $authorizationCode, $deviceAuthorization);
     }
 
     public function implicit(Implicit $implicit): self
@@ -94,6 +98,15 @@ final class OAuthFlows extends Generatable
         return $clone;
     }
 
+    public function deviceAuthorization(DeviceAuthorization $deviceAuthorization): self
+    {
+        $clone = clone $this;
+
+        $clone->deviceAuthorization = $deviceAuthorization;
+
+        return $clone;
+    }
+
     public function toArray(): array
     {
         return Arr::filter([
@@ -101,6 +114,7 @@ final class OAuthFlows extends Generatable
             'password' => $this->password,
             'clientCredentials' => $this->clientCredentials,
             'authorizationCode' => $this->authorizationCode,
+            'deviceAuthorization' => $this->deviceAuthorization,
         ]);
     }
 }

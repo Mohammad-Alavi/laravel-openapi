@@ -26,6 +26,16 @@ final class SecurityScheme extends ExtensibleObject
 {
     private Description|null $description = null;
 
+    /**
+     * Declares this security scheme to be deprecated.
+     *
+     * Consumers SHOULD refrain from usage of the declared scheme.
+     * Default value is false.
+     *
+     * @see https://spec.openapis.org/oas/v3.2.0#security-scheme-object
+     */
+    private true|null $deprecated = null;
+
     private function __construct(
         private readonly Scheme $scheme,
     ) {
@@ -65,11 +75,26 @@ final class SecurityScheme extends ExtensibleObject
         return $clone;
     }
 
+    /**
+     * Mark this security scheme as deprecated.
+     *
+     * Consumers SHOULD refrain from usage of the declared scheme.
+     */
+    public function deprecated(): self
+    {
+        $clone = clone $this;
+
+        $clone->deprecated = true;
+
+        return $clone;
+    }
+
     public function toArray(): array
     {
         return Arr::filter([
             'type' => $this->scheme->type(),
             'description' => $this->description,
+            'deprecated' => $this->deprecated,
             ...$this->mergeFields($this->scheme),
         ]);
     }
