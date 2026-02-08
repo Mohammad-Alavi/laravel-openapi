@@ -1,8 +1,8 @@
-# Implementation Plan: Laragen Features F1-F6 (COMPLETED + F5↔F4 Integration)
+# Implementation Plan: Laragen Features F1-F6 (COMPLETED + F4 Expansion + Architecture Extraction)
 
-## Status: All Features Implemented + F5↔F4 Integration Complete
+## Status: All Features Implemented + F4 Pattern Expansion + ArraySchemaAnalyzer Extraction + Directory Restructure
 
-All 6 P0 features have been implemented with TDD, passing tests, clean code style, and clean static analysis. F5 (Model Schema) has been integrated into F4 (Response Schema) so response schemas get accurate types from underlying Eloquent models.
+All 6 P0 features have been implemented with TDD, passing tests, clean code style, and clean static analysis. F5 (Model Schema) has been integrated into F4 (Response Schema) so response schemas get accurate types from underlying Eloquent models. F4's AST pattern coverage has been expanded from 4 to 10 patterns, the generic array analysis logic has been extracted into a reusable `ArraySchemaAnalyzer`, and the `ResponseSchema` directory has been restructured for multi-strategy support.
 
 ## Implementation Order (Completed)
 
@@ -20,6 +20,7 @@ F6 (Auth) → F1 (Route Discovery) → F2 (Path Params) → F3 (FormRequest) →
 | F4: JsonResource | `65a3e419` | 3+6+4 unit |
 | E2E Validation | `ff2c5d5d` | 8 feature (all features combined) |
 | F5↔F4 Integration | `249ae437` | 2 unit (detector) + 1 unit (builder) + E2E updated |
+| F4 Pattern Expansion + Extraction + Restructure | `c047840e` | 9 unit (ArraySchemaAnalyzer) + 8 unit (builder) + 3+2 unit (detectors) + 6 test doubles |
 
 ---
 
@@ -229,30 +230,57 @@ Track in-progress models. If model A references model B which references model A
 
 **Goal**: Analyze JsonResource classes to auto-generate response schemas.
 
-### New Files
+### Architecture (Current)
+
+```
+laragen/
+├── ArraySchema/
+│   ├── ArrayField.php              # Generic field value object (produced by analyzer)
+│   └── ArraySchemaAnalyzer.php     # Generic AST analysis for any class method returning an array
+└── ResponseSchema/
+    └── JsonResource/
+        ├── JsonResourceDetector.php        # Detects JsonResource return type from controller methods
+        ├── JsonResourceModelDetector.php   # Resolves Resource → Model via @mixin DocBlock
+        └── JsonResourceSchemaBuilder.php   # Builds JSON Schema from JsonResource (uses ArraySchemaAnalyzer)
+```
+
+Future response strategies (Fractal Transformers, raw controller arrays) will be sibling directories to `JsonResource/`, each calling `ArraySchemaAnalyzer::analyzeMethod()` directly.
+
+### Files
 
 | File | Purpose |
 |------|---------|
-| `laragen/ResponseSchema/ResponseDetector.php` | Detects JsonResource return type from controller methods |
-| `laragen/ResponseSchema/JsonResourceAnalyzer.php` | Parses `toArray()` method body using `nikic/php-parser` AST |
-| `laragen/ResponseSchema/ResourceFieldExtractor.php` | Extracts fields from AST nodes |
-| `laragen/ResponseSchema/FieldType.php` | Value object for extracted field type info |
-| `laragen/ResponseSchema/ResponseSchemaBuilder.php` | Builds oooapi Response objects from detected info |
-| `tests/Laragen/Unit/ResponseSchema/ResponseDetectorTest.php` | Return type + AST detection |
-| `tests/Laragen/Unit/ResponseSchema/JsonResourceAnalyzerTest.php` | AST pattern parsing |
-| `tests/Laragen/Unit/ResponseSchema/ResponseSchemaBuilderTest.php` | Response building |
-| `tests/Laragen/Support/Doubles/Resources/` | Stub JsonResource classes |
+| `laragen/ArraySchema/ArrayField.php` | Generic field value object with factory methods (modelProperty, literal, relationship, collection, conditional, unknown) |
+| `laragen/ArraySchema/ArraySchemaAnalyzer.php` | Generic AST analysis: parses any class method returning an array literal, extracts and classifies fields |
+| `laragen/ResponseSchema/JsonResource/JsonResourceDetector.php` | Detects JsonResource return type from controller methods |
+| `laragen/ResponseSchema/JsonResource/JsonResourceModelDetector.php` | Resolves `class-string<JsonResource>` → `class-string<Model>` via `@mixin` DocBlock |
+| `laragen/ResponseSchema/JsonResource/JsonResourceSchemaBuilder.php` | Builds JSON Schema from JsonResource: calls `ArraySchemaAnalyzer`, resolves model types, handles `$wrap` |
+| `tests/Laragen/Unit/ArraySchema/ArraySchemaAnalyzerTest.php` | 9 tests covering all AST patterns |
+| `tests/Laragen/Unit/ResponseSchema/JsonResource/JsonResourceDetectorTest.php` | Return type detection |
+| `tests/Laragen/Unit/ResponseSchema/JsonResource/JsonResourceModelDetectorTest.php` | @mixin resolution |
+| `tests/Laragen/Unit/ResponseSchema/JsonResource/JsonResourceSchemaBuilderTest.php` | Schema building (8 tests) |
+| `tests/Laragen/Support/Doubles/Resources/` | 10 stub JsonResource classes for all patterns |
 
-### AST Patterns to Handle
+### AST Patterns Handled (10 patterns)
 
-| Pattern | Handling |
-|---------|----------|
-| `'name' => $this->name` | Look up type from model schema (F5) |
-| `'type' => 'user'` | Const/literal type |
-| `$this->whenLoaded('posts', ...)` | Optional relationship, recursive resource analysis |
-| `$this->when($cond, $val)` | Optional/conditional field |
-| `SomeResource::collection(...)` | Array of resource item schema |
-| `$this->merge([...])` | Flatten merged fields into parent |
+| Pattern | Classification | Schema Output |
+|---------|---------------|---------------|
+| `'name' => $this->name` | `modelProperty` | Type from model schema (F5), or `string` fallback |
+| `'type' => 'user'` | `literal` (string) | `enum: ['user']` |
+| `'count' => 42` | `literal` (int/float) | `enum: [42]` |
+| `'is_verified' => true` / `false` | `literal` (bool) | `enum: [true]` / `enum: [false]` |
+| `'deleted_at' => null` | `literal` (null) | `enum: [null]` |
+| `'created_date' => $this->created_at->format(...)` | `modelProperty` | Resolves root property (`created_at`) |
+| `'resource_name' => $this->resource->name` | `modelProperty` | Resolves property via explicit resource access |
+| `'author' => new UserResource($this->whenLoaded(...))` | `relationship` | Nested object schema (recursive) |
+| `'posts' => PostResource::collection($this->posts)` | `collection` | `{type: "array", items: {nested schema}}` |
+| `$this->when*()` / `$this->unless()` (12 methods) | `conditional` | `string` (graceful fallback) |
+| `$this->merge([...])` / `$this->mergeWhen(...)` / `$this->mergeUnless(...)` | (flattened) | Merged fields become top-level properties |
+| Ternary / null coalescing / unrecognized | `unknown` | `string` (graceful degradation) |
+
+### Conditional Methods Recognized
+
+`when`, `unless`, `whenLoaded`, `whenHas`, `whenNotNull`, `whenNull`, `whenAppended`, `whenCounted`, `whenAggregated`, `whenExistsLoaded`, `whenPivotLoaded`, `whenPivotLoadedAs`
 
 ### Response Wrapping
 
@@ -274,26 +302,16 @@ Unrecognized AST patterns fall back to `Schema::string()` with a logged warning.
 
 ---
 
-## Laragen.php Refactoring (Done Incrementally)
+## Laragen.php (Static — Services Resolved from Container)
 
-Convert from static utility to instance-based with DI as features are added:
+`Laragen::generate()` is the single entry point. Rather than instance-based DI, `enrichSpec()` resolves services from the container via `app()`:
 
 ```php
-final readonly class Laragen
-{
-    public function __construct(
-        private AuthDetector $authDetector,           // F6
-        private SecuritySchemeRegistry $securityRegistry, // F6
-        private ResponseDetector $responseDetector,   // F4
-        private ResponseSchemaBuilder $responseSchemaBuilder, // F4
-        // ... existing deps
-    ) {}
-
-    public function generate(string $collection): OpenAPI { ... }
-}
+$responseDetector = app(JsonResourceDetector::class);
+$responseSchemaBuilder = app(JsonResourceSchemaBuilder::class);
 ```
 
-Registered as singleton in `LaragenServiceProvider`.
+This works well for the static entry point pattern. Future response strategies will be resolved similarly.
 
 ---
 
@@ -314,19 +332,35 @@ End-to-end validation ✅: `tests/Laragen/Feature/EndToEndTest.php` registers te
 
 ### F5↔F4 Integration (Post-Feature)
 
-F5 (`ModelSchemaInferrer`) and F4 (`ResponseSchemaBuilder`) were implemented independently. The integration (`249ae437`) wired them together:
+F5 (`ModelSchemaInferrer`) and F4 (`JsonResourceSchemaBuilder`) were implemented independently. The integration (`249ae437`) wired them together:
 
-- **`ResourceModelDetector`** (`laragen/ResponseSchema/ResourceModelDetector.php`): Resolves `class-string<JsonResource>` → `class-string<Model>|null` by parsing the `@mixin` DocBlock annotation (Laravel community convention used by IDE Helper, PHPStan extensions, etc.). Laravel has no built-in mechanism for static Resource→Model detection (see D22).
-- **`ResponseSchemaBuilder`** now accepts `ModelSchemaInferrer` + `ResourceModelDetector` via constructor injection. When a resource has `@mixin ModelClass`, model properties get accurate types (`integer`, `boolean`, etc.) instead of defaulting to `string`.
+- **`JsonResourceModelDetector`** (`laragen/ResponseSchema/JsonResource/JsonResourceModelDetector.php`): Resolves `class-string<JsonResource>` → `class-string<Model>|null` by parsing the `@mixin` DocBlock annotation (Laravel community convention used by IDE Helper, PHPStan extensions, etc.). Laravel has no built-in mechanism for static Resource→Model detection (see D22).
+- **`JsonResourceSchemaBuilder`** accepts `ArraySchemaAnalyzer` + `ModelSchemaInferrer` + `JsonResourceModelDetector` via constructor injection. When a resource has `@mixin ModelClass`, model properties get accurate types (`integer`, `boolean`, etc.) instead of defaulting to `string`.
 - **Graceful degradation**: Resources without `@mixin` still work — fields default to `string` as before.
 - **E2E test updated**: Added `E2EArticle` model with casts, `@mixin` on `E2EResource`, assertions for `id→integer`, `title→string`, `is_published→boolean`.
+
+### F4 Pattern Expansion + Architecture Extraction (`c047840e`)
+
+F4's original implementation handled 4 AST patterns (model property, string/int/float literals, `new Resource()`, `when`/`whenLoaded`). This was expanded in phases:
+
+1. **Boolean & null literals**: `true`, `false`, `null` via `Expr\ConstFetch` detection
+2. **All conditional methods**: Expanded from 2 to 12 methods (extracted `CONDITIONAL_METHODS` constant)
+3. **Method chains**: `$this->created_at->format(...)` → extracts root property; `$this->resource->prop` → explicit resource access
+4. **`Resource::collection()`**: Static call detection producing `{type: "array", items: {...}}`
+5. **`merge()`/`mergeWhen()`/`mergeUnless()`**: Flattens unkeyed array items into parent field list
+6. **Ternary expressions**: Documented as intentional graceful degradation → `unknown` → `string`
+
+**Architecture extraction**: The generic array-return AST analysis was extracted from `JsonResourceAnalyzer` into `ArraySchemaAnalyzer` (`laragen/ArraySchema/`). This analyzer takes any `class-string` + `methodName` and works for any PHP class method returning an array literal. `ResourceField` was renamed to `ArrayField` and co-located with its producer.
+
+**Directory restructure**: JsonResource-specific classes moved from `ResponseSchema/` into `ResponseSchema/JsonResource/` with explicit `JsonResource*` prefixed names. The intermediate `JsonResourceAnalyzer` wrapper was removed — `JsonResourceSchemaBuilder` calls `ArraySchemaAnalyzer::analyzeMethod()` directly. This prepares the namespace for future sibling strategy directories (`FractalTransformer/`, etc.).
 
 ### Key Decisions Made During Implementation
 
 - **Laragen.php stays static**: Rather than refactoring to instance-based DI (as originally planned), `enrichSpec()` resolves services from the container via `app()`. This works well since `Laragen::generate()` is the single entry point.
 - **F3 was mostly verification**: The vendor package `riley19280/laravel-rules-to-schema` already handled `sometimes`, `nullable`, and all 17 rule mappings. F3 focused on adding verification tests and removing dead code (`RouteSpecCollector::bodyParams()`).
 - **F5 implemented without MigrationAnalyzer**: Only `$casts`-based inference was needed for the initial implementation. Migration parsing can be added later if needed.
-- **F4 simplified from plan**: `ResourceFieldExtractor` and `FieldType` were consolidated into `ResourceField` (value object with factory methods). `JsonResourceAnalyzer` handles both extraction and classification.
+- **F4 simplified from plan**: `ResourceFieldExtractor` and `FieldType` were consolidated into `ArrayField` (value object with factory methods). Generic analysis lives in `ArraySchemaAnalyzer`; JsonResource-specific logic lives in `JsonResourceSchemaBuilder`.
+- **No wrapper analyzers needed**: Thin wrappers like `JsonResourceAnalyzer` (which only hardcoded `'toArray'` as the method name) were eliminated. Each builder calls `ArraySchemaAnalyzer::analyzeMethod()` directly with the appropriate class and method name.
 
 ### PHPStan Issues in Laragen.php (Resolved)
 

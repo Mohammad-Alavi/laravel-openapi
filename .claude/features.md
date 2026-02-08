@@ -165,22 +165,30 @@ Generates JSON Schema from Eloquent model `$casts`, excludes `$hidden`, includes
 ---
 
 ### F4: JsonResource Detection
-**Status**: Implemented
+**Status**: Implemented (expanded)
 
 Analyzes controller return types and JsonResource `toArray()` AST to generate response schemas.
 
-**Files**: `laragen/ResponseSchema/ResponseDetector.php`, `JsonResourceAnalyzer.php`, `ResourceField.php`, `ResponseSchemaBuilder.php`, `ResourceModelDetector.php`
+**Files**: `laragen/ArraySchema/ArraySchemaAnalyzer.php`, `ArrayField.php`, `laragen/ResponseSchema/JsonResource/JsonResourceDetector.php`, `JsonResourceModelDetector.php`, `JsonResourceSchemaBuilder.php`
 **Config**: `autogen.response` flag
 
-**AST Patterns Handled**:
+**AST Patterns Handled** (10 patterns):
 | Pattern | Result |
 |---------|--------|
 | `'key' => $this->prop` | Model property → type from model schema (via `@mixin`) or `string` fallback |
-| `'key' => 'literal'` | Literal → `enum` with const value |
+| `'key' => 'literal'` / `42` / `3.14` | Literal → `enum` with const value |
+| `'key' => true` / `false` / `null` | Bool/null literal → `enum` |
+| `'key' => $this->prop->method(...)` | Method chain → resolves root model property |
+| `'key' => $this->resource->prop` | Explicit resource access → model property |
 | `new Resource($this->whenLoaded(...))` | Nested resource → recursive schema |
-| `$this->when(...)` / `$this->whenLoaded(...)` | Conditional → `string` fallback |
+| `Resource::collection($this->items)` | Collection → `{type: "array", items: {...}}` |
+| `$this->when*(...)` / `$this->unless(...)` | Conditional (12 methods) → `string` fallback |
+| `$this->merge([...])` / `mergeWhen` / `mergeUnless` | Flatten merged fields into parent |
+| Ternary / unrecognized | Unknown → `string` (graceful degradation) |
 
-**F5↔F4 Integration**: `ResourceModelDetector` resolves the Eloquent model from `@mixin` DocBlock on the JsonResource. `ResponseSchemaBuilder` then uses `ModelSchemaInferrer` to get accurate property types (`integer`, `boolean`, etc.) instead of defaulting all model properties to `string`. Resources without `@mixin` gracefully degrade.
+**F5↔F4 Integration**: `JsonResourceModelDetector` resolves the Eloquent model from `@mixin` DocBlock on the JsonResource. `JsonResourceSchemaBuilder` then uses `ModelSchemaInferrer` to get accurate property types (`integer`, `boolean`, etc.) instead of defaulting all model properties to `string`. Resources without `@mixin` gracefully degrade.
+
+**Architecture**: Generic AST analysis lives in `ArraySchemaAnalyzer` (reusable for Fractal Transformers, raw controller arrays, etc.). JsonResource-specific logic lives in `ResponseSchema/JsonResource/`.
 
 **Response Wrapping**: Respects `JsonResource::$wrap` (default `data`, `null` = no wrap)
 

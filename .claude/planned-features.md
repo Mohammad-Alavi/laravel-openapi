@@ -19,11 +19,14 @@ laragen/
 ├── PathParameters/        # F2: Path parameter detection
 │   └── PathParameterAnalyzer.php
 ├── Providers/             # Service providers
-├── ResponseSchema/        # F4: Response schema detection
-│   ├── JsonResourceAnalyzer.php
-│   ├── ResourceField.php
-│   ├── ResponseDetector.php
-│   └── ResponseSchemaBuilder.php
+├── ArraySchema/           # Generic array-return AST analysis
+│   ├── ArrayField.php
+│   └── ArraySchemaAnalyzer.php
+├── ResponseSchema/        # F4: Response schema strategies
+│   └── JsonResource/
+│       ├── JsonResourceDetector.php
+│       ├── JsonResourceModelDetector.php
+│       └── JsonResourceSchemaBuilder.php
 ├── RouteDiscovery/        # F1: Route discovery
 │   ├── AutoRouteCollector.php
 │   └── PatternMatcher.php
@@ -68,7 +71,7 @@ laragen/
 All enrichment services are resolved via Laravel's service container in `enrichSpec()`:
 - `AuthDetector` + `SecuritySchemeRegistry` (F6)
 - `PathParameterAnalyzer` (F2)
-- `ResponseDetector` + `ResponseSchemaBuilder` (F4)
+- `JsonResourceDetector` + `JsonResourceSchemaBuilder` (F4)
 
 Each enrichment is controlled by its `autogen.*` config flag and only applies when the operation doesn't already have that data (no overwriting user-defined specs)
 

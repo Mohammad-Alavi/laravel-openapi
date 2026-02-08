@@ -29,11 +29,14 @@ laragen/
 ├── PathParameters/        # F2: Route constraints → typed Parameters
 │   └── PathParameterAnalyzer.php
 ├── Providers/             # Service providers
-├── ResponseSchema/        # F4: JsonResource → response schemas
-│   ├── JsonResourceAnalyzer.php
-│   ├── ResourceField.php
-│   ├── ResponseDetector.php
-│   └── ResponseSchemaBuilder.php
+├── ArraySchema/           # Generic array-return AST analysis (reusable)
+│   ├── ArrayField.php
+│   └── ArraySchemaAnalyzer.php
+├── ResponseSchema/        # F4: Response schema strategies
+│   └── JsonResource/
+│       ├── JsonResourceDetector.php
+│       ├── JsonResourceModelDetector.php
+│       └── JsonResourceSchemaBuilder.php
 ├── RouteDiscovery/        # F1: Pattern-based route discovery
 │   ├── AutoRouteCollector.php
 │   └── PatternMatcher.php
