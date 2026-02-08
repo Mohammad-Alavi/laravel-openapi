@@ -1,14 +1,23 @@
-# Implementation Plan: Laragen Features F1-F6
+# Implementation Plan: Laragen Features F1-F6 (COMPLETED)
 
-## Context
+## Status: All Features Implemented
 
-The Laragen package has 6 planned P0 features for zero-config OpenAPI generation. Significant infrastructure already exists (RuleToSchema, RuleExtractor, RouteSpecCollector, ExampleGenerator). We keep the Scribe dependency (per updated D14) but wrap it behind clear boundaries. Features are implemented in dependency order with TDD.
+All 6 P0 features have been implemented with TDD, passing tests, clean code style, and clean static analysis.
 
-## Implementation Order
+## Implementation Order (Completed)
 
 ```
 F6 (Auth) → F1 (Route Discovery) → F2 (Path Params) → F3 (FormRequest) → F5 (Model Schema) → F4 (JsonResource)
 ```
+
+| Feature | Commit | Tests |
+|---------|--------|-------|
+| F6: Auth Detection | `aa4be104` | Unit + Feature |
+| F1: Route Discovery | `a92fdbf3` | 9 unit + 5 feature |
+| F2: Path Parameters | `62028e49` | 11 unit + 3 feature |
+| F3: FormRequest | `a7e65d53` | 2+1+2 feature (verification) |
+| F5: Model Schema | `b8af7912` | 11+8 unit |
+| F4: JsonResource | `65a3e419` | 3+6+4 unit |
 
 ---
 
@@ -298,6 +307,21 @@ For each feature:
 End-to-end validation: Create test routes in `workbench/` exercising all features, run `Laragen::generate()`, verify output spec contains expected security schemes, path parameters, request bodies, response schemas.
 
 ---
+
+## Implementation Notes
+
+### Key Decisions Made During Implementation
+
+- **Laragen.php stays static**: Rather than refactoring to instance-based DI (as originally planned), `enrichSpec()` resolves services from the container via `app()`. This works well since `Laragen::generate()` is the single entry point.
+- **F3 was mostly verification**: The vendor package `riley19280/laravel-rules-to-schema` already handled `sometimes`, `nullable`, and all 17 rule mappings. F3 focused on adding verification tests and removing dead code (`RouteSpecCollector::bodyParams()`).
+- **F5 implemented without MigrationAnalyzer**: Only `$casts`-based inference was needed for the initial implementation. Migration parsing can be added later if needed.
+- **F4 simplified from plan**: `ResourceFieldExtractor` and `FieldType` were consolidated into `ResourceField` (value object with factory methods). `JsonResourceAnalyzer` handles both extraction and classification.
+
+### Known Pre-existing PHPStan Issues
+
+Lines 152 and 272 of `Laragen.php` have pre-existing type mismatches (not introduced by F1-F6):
+- Line 152: Collection map callback type mismatch (`StringMapEntry` vs `Path`)
+- Line 272: `enrichObjectWithExample()` return type vs `ExampleGenerator::for()` input type
 
 ## Pre-Implementation Checklist (Completed)
 
