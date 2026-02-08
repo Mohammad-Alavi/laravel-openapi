@@ -10,6 +10,8 @@ use MohammadAlavi\Laragen\Auth\AuthDetector;
 use MohammadAlavi\Laragen\Auth\SecuritySchemeRegistry;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleGenerator;
 use MohammadAlavi\Laragen\PathParameters\PathParameterAnalyzer;
+use MohammadAlavi\Laragen\ResponseSchema\ResponseDetector;
+use MohammadAlavi\Laragen\ResponseSchema\ResponseSchemaBuilder;
 use MohammadAlavi\Laragen\RouteDiscovery\AutoRouteCollector;
 use MohammadAlavi\Laragen\RouteDiscovery\PatternMatcher;
 use MohammadAlavi\Laragen\Support\Config\Config;
@@ -31,6 +33,10 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\PathItem\Support\Operatio
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Fields\Path;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Fields\HTTPStatusCode;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Responses;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Responses\Support\ResponseEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
@@ -133,14 +139,17 @@ final readonly class Laragen
         $authDetector = app(AuthDetector::class);
         $securityRegistry = app(SecuritySchemeRegistry::class);
         $pathParameterAnalyzer = app(PathParameterAnalyzer::class);
+        $responseDetector = app(ResponseDetector::class);
+        $responseSchemaBuilder = app(ResponseSchemaBuilder::class);
         $securityEnabled = config()->boolean('laragen.autogen.security');
         $pathParamsEnabled = config()->boolean('laragen.autogen.path_parameters');
+        $responseEnabled = config()->boolean('laragen.autogen.response');
 
         return $spec->paths(
             Paths::create(
                 ...collect($spec->getPaths()?->entries())
                 ->map(
-                    static function (Path $path) use ($authDetector, $securityRegistry, $pathParameterAnalyzer, $securityEnabled, $pathParamsEnabled): Path {
+                    static function (Path $path) use ($authDetector, $securityRegistry, $pathParameterAnalyzer, $responseDetector, $responseSchemaBuilder, $securityEnabled, $pathParamsEnabled, $responseEnabled): Path {
                         /** @var Operations $operations */
                         $operations = $path->value()->getOperations();
                         /** @var AvailableOperation[] $availableOperations */
@@ -179,6 +188,15 @@ final readonly class Laragen
                                         $securityRegistry->securityFor($authScheme),
                                     );
                                 }
+                            }
+
+                            if ($responseEnabled && !is_null($route) && !self::hasResponses($operation)) {
+                                $operation = self::enrichWithResponse(
+                                    $operation,
+                                    $route,
+                                    $responseDetector,
+                                    $responseSchemaBuilder,
+                                );
                             }
 
                             $processedAvailableOps[] = AvailableOperation::create(
@@ -255,6 +273,50 @@ final readonly class Laragen
         }
 
         return $descriptor;
+    }
+
+    private static function hasResponses(Operation $operation): bool
+    {
+        return Arr::has($operation->compile(), 'responses');
+    }
+
+    private static function enrichWithResponse(
+        Operation $operation,
+        Route $route,
+        ResponseDetector $responseDetector,
+        ResponseSchemaBuilder $responseSchemaBuilder,
+    ): Operation {
+        $actionName = $route->getActionName();
+
+        if (!str_contains($actionName, '@')) {
+            return $operation;
+        }
+
+        [$controllerClass, $method] = explode('@', $actionName, 2);
+
+        /** @var class-string $controllerClass */
+        $resourceClass = $responseDetector->detect($controllerClass, $method);
+
+        if (null === $resourceClass) {
+            return $operation;
+        }
+
+        $schema = $responseSchemaBuilder->build($resourceClass);
+
+        return $operation->responses(
+            Responses::create(
+                ResponseEntry::create(
+                    HTTPStatusCode::ok(),
+                    Response::create()
+                        ->description('Successful response')
+                        ->content(
+                            ContentEntry::json(
+                                MediaType::create()->schema($schema),
+                            ),
+                        ),
+                ),
+            ),
+        );
     }
 
     public static function configs(): Config
