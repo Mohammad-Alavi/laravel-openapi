@@ -5,13 +5,22 @@ namespace MohammadAlavi\Laragen;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use MohammadAlavi\Laragen\Auth\AuthDetector;
 use MohammadAlavi\Laragen\Auth\SecuritySchemeRegistry;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleGenerator;
+use MohammadAlavi\Laragen\RouteDiscovery\AutoRouteCollector;
+use MohammadAlavi\Laragen\RouteDiscovery\PatternMatcher;
 use MohammadAlavi\Laragen\Support\Config\Config;
 use MohammadAlavi\Laragen\Support\RuleToSchema;
+use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\ComponentsBuilder;
+use MohammadAlavi\LaravelOpenApi\Builders\PathsBuilder;
+use MohammadAlavi\LaravelOpenApi\Factories\OpenAPIFactory;
 use MohammadAlavi\LaravelOpenApi\Generator;
+use MohammadAlavi\LaravelOpenApi\Support\RouteCollector;
+use MohammadAlavi\LaravelOpenApi\Support\RouteInfo;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Restrictors\ObjectRestrictor;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Components\Components;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\OpenAPI\OpenAPI;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Operation\Operation;
@@ -23,15 +32,102 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
+use Webmozart\Assert\Assert;
 
 final readonly class Laragen
 {
+    /**
+     * @param non-empty-string $collection
+     */
     public static function generate(string $collection): OpenAPI
     {
-        /** @var Generator $generator */
-        $generator = app(Generator::class);
-        $spec = $generator->generate($collection);
+        $mode = config()->string('laragen.route_discovery.mode', 'attribute');
+        $spec = self::buildBaseSpec($collection, $mode);
 
+        return self::enrichSpec($spec);
+    }
+
+    /**
+     * @param non-empty-string $collection
+     */
+    private static function buildBaseSpec(string $collection, string $mode): OpenAPI
+    {
+        if ('attribute' === $mode) {
+            return app(Generator::class)->generate($collection);
+        }
+
+        $autoRoutes = self::collectAutoRoutes();
+
+        if ('auto' === $mode) {
+            return self::buildSpecFromRoutes($autoRoutes, $collection);
+        }
+
+        // combined: merge attribute-discovered and auto-discovered routes
+        $attributeRoutes = app(RouteCollector::class)->whereShouldBeCollectedFor($collection);
+        $merged = self::mergeRoutes($attributeRoutes, $autoRoutes);
+
+        return self::buildSpecFromRoutes($merged, $collection);
+    }
+
+    /**
+     * @return Collection<int, RouteInfo>
+     */
+    private static function collectAutoRoutes(): Collection
+    {
+        /** @var string[] $include */
+        $include = config('laragen.route_discovery.include', ['api/*']);
+        /** @var string[] $exclude */
+        $exclude = config('laragen.route_discovery.exclude', []);
+
+        $matcher = new PatternMatcher($include, $exclude);
+
+        return app(AutoRouteCollector::class)->collect($matcher);
+    }
+
+    /**
+     * @param Collection<int, RouteInfo> $routes
+     * @param non-empty-string $collection
+     */
+    private static function buildSpecFromRoutes(Collection $routes, string $collection): OpenAPI
+    {
+        /** @var class-string<OpenAPIFactory> $openApiFactory */
+        $openApiFactory = config()->string('openapi.collections.' . $collection . '.openapi');
+        Assert::isAOf($openApiFactory, OpenAPIFactory::class);
+
+        $paths = app(PathsBuilder::class)->build($routes);
+        $openApi = $openApiFactory::create()->paths($paths);
+
+        $components = app(ComponentsBuilder::class)->build($collection);
+        if ($components instanceof Components) {
+            return $openApi->components($components);
+        }
+
+        return $openApi;
+    }
+
+    /**
+     * Merge two route collections, deduplicating by URI+method.
+     *
+     * @param Collection<int, RouteInfo> $primary
+     * @param Collection<int, RouteInfo> $secondary
+     *
+     * @return Collection<int, RouteInfo>
+     */
+    private static function mergeRoutes(Collection $primary, Collection $secondary): Collection
+    {
+        $seen = $primary->mapWithKeys(
+            static fn (RouteInfo $r): array => [$r->method() . ':' . $r->uri() => true],
+        );
+
+        $unique = $secondary->filter(
+            static fn (RouteInfo $r): bool => !$seen->has($r->method() . ':' . $r->uri()),
+        );
+
+        return $primary->merge($unique)->values();
+    }
+
+    private static function enrichSpec(OpenAPI $spec): OpenAPI
+    {
         $authDetector = app(AuthDetector::class);
         $securityRegistry = app(SecuritySchemeRegistry::class);
         $securityEnabled = config()->boolean('laragen.autogen.security');
