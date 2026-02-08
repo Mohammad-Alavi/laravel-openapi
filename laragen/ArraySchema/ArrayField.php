@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MohammadAlavi\Laragen\ResponseSchema;
+namespace MohammadAlavi\Laragen\ArraySchema;
 
-final readonly class ResourceField
+final readonly class ArrayField
 {
     private function __construct(
         public string $name,
@@ -15,6 +15,7 @@ final readonly class ResourceField
         public bool $isRelationship = false,
         public string|null $resourceClass = null,
         public bool $isConditional = false,
+        public bool $isCollection = false,
     ) {
     }
 
@@ -27,7 +28,7 @@ final readonly class ResourceField
         );
     }
 
-    public static function literal(string $name, string|int|float|bool $value): self
+    public static function literal(string $name, string|int|float|bool|null $value): self
     {
         return new self(
             name: $name,
@@ -53,6 +54,18 @@ final readonly class ResourceField
         return new self(
             name: $name,
             isConditional: true,
+        );
+    }
+
+    /**
+     * @param class-string $resourceClass
+     */
+    public static function collection(string $name, string $resourceClass): self
+    {
+        return new self(
+            name: $name,
+            isCollection: true,
+            resourceClass: $resourceClass,
         );
     }
 

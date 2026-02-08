@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MohammadAlavi\Laragen\ResponseSchema;
+namespace MohammadAlavi\Laragen\ResponseSchema\JsonResource;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use MohammadAlavi\Laragen\ArraySchema\ArrayField;
+use MohammadAlavi\Laragen\ArraySchema\ArraySchemaAnalyzer;
 use MohammadAlavi\Laragen\ModelSchema\ModelSchemaInferrer;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Compilable;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
@@ -12,12 +14,12 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Prope
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use Webmozart\Assert\Assert;
 
-final readonly class ResponseSchemaBuilder
+final readonly class JsonResourceSchemaBuilder
 {
     public function __construct(
-        private JsonResourceAnalyzer $analyzer,
+        private ArraySchemaAnalyzer $analyzer,
         private ModelSchemaInferrer $modelSchemaInferrer,
-        private ResourceModelDetector $modelDetector,
+        private JsonResourceModelDetector $modelDetector,
     ) {
     }
 
@@ -28,8 +30,8 @@ final readonly class ResponseSchemaBuilder
      */
     public function build(string $resourceClass): JSONSchema
     {
-        $fields = $this->analyzer->analyze($resourceClass);
-        $wrapKey = $this->analyzer->getWrapKey($resourceClass);
+        $fields = $this->analyzer->analyzeMethod($resourceClass, 'toArray');
+        $wrapKey = $this->getWrapKey($resourceClass);
         $propertySchemas = $this->resolveModelPropertySchemas($resourceClass);
 
         $innerSchema = $this->buildFieldsSchema($fields, $propertySchemas);
@@ -41,6 +43,20 @@ final readonly class ResponseSchemaBuilder
         return Schema::object()->properties(
             Property::create($wrapKey, $innerSchema),
         );
+    }
+
+    /**
+     * @param class-string<JsonResource> $resourceClass
+     */
+    private function getWrapKey(string $resourceClass): string|null
+    {
+        $reflection = new \ReflectionClass($resourceClass);
+        $wrapProperty = $reflection->getProperty('wrap');
+
+        /** @var string|null $wrap */
+        $wrap = $wrapProperty->getValue();
+
+        return $wrap;
     }
 
     /**
@@ -69,7 +85,7 @@ final readonly class ResponseSchemaBuilder
     }
 
     /**
-     * @param ResourceField[] $fields
+     * @param ArrayField[] $fields
      * @param array<string, array<string, mixed>> $propertySchemas
      */
     private function buildFieldsSchema(array $fields, array $propertySchemas): JSONSchema
@@ -90,7 +106,7 @@ final readonly class ResponseSchemaBuilder
     /**
      * @param array<string, array<string, mixed>> $propertySchemas
      */
-    private function fieldToSchema(ResourceField $field, array $propertySchemas): JSONSchema
+    private function fieldToSchema(ArrayField $field, array $propertySchemas): JSONSchema
     {
         if ($field->isLiteral) {
             return Schema::enum($field->literalValue);
@@ -99,10 +115,19 @@ final readonly class ResponseSchemaBuilder
         if ($field->isRelationship && null !== $field->resourceClass) {
             /** @var class-string<JsonResource> $resourceClass */
             $resourceClass = $field->resourceClass;
-            $nestedFields = $this->analyzer->analyze($resourceClass);
+            $nestedFields = $this->analyzer->analyzeMethod($resourceClass, 'toArray');
             $nestedPropertySchemas = $this->resolveModelPropertySchemas($resourceClass);
 
             return $this->buildFieldsSchema($nestedFields, $nestedPropertySchemas);
+        }
+
+        if ($field->isCollection && null !== $field->resourceClass) {
+            /** @var class-string<JsonResource> $resourceClass */
+            $resourceClass = $field->resourceClass;
+            $nestedFields = $this->analyzer->analyzeMethod($resourceClass, 'toArray');
+            $nestedPropertySchemas = $this->resolveModelPropertySchemas($resourceClass);
+
+            return Schema::array()->items($this->buildFieldsSchema($nestedFields, $nestedPropertySchemas));
         }
 
         if ($field->isModelProperty && isset($propertySchemas[$field->modelProperty])) {

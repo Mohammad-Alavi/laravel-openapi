@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MohammadAlavi\Laragen\ResponseSchema;
+namespace MohammadAlavi\Laragen\ResponseSchema\JsonResource;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -10,7 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use function Safe\file_get_contents;
 use function Safe\preg_match;
 
-final class ResourceModelDetector
+final class JsonResourceModelDetector
 {
     /**
      * Detect which Eloquent Model a JsonResource represents via @mixin DocBlock.

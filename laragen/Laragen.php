@@ -10,8 +10,8 @@ use MohammadAlavi\Laragen\Auth\AuthDetector;
 use MohammadAlavi\Laragen\Auth\SecuritySchemeRegistry;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleGenerator;
 use MohammadAlavi\Laragen\PathParameters\PathParameterAnalyzer;
-use MohammadAlavi\Laragen\ResponseSchema\ResponseDetector;
-use MohammadAlavi\Laragen\ResponseSchema\ResponseSchemaBuilder;
+use MohammadAlavi\Laragen\ResponseSchema\JsonResource\JsonResourceDetector;
+use MohammadAlavi\Laragen\ResponseSchema\JsonResource\JsonResourceSchemaBuilder;
 use MohammadAlavi\Laragen\RouteDiscovery\AutoRouteCollector;
 use MohammadAlavi\Laragen\RouteDiscovery\PatternMatcher;
 use MohammadAlavi\Laragen\Support\Config\Config;
@@ -139,8 +139,8 @@ final readonly class Laragen
         $authDetector = app(AuthDetector::class);
         $securityRegistry = app(SecuritySchemeRegistry::class);
         $pathParameterAnalyzer = app(PathParameterAnalyzer::class);
-        $responseDetector = app(ResponseDetector::class);
-        $responseSchemaBuilder = app(ResponseSchemaBuilder::class);
+        $responseDetector = app(JsonResourceDetector::class);
+        $responseSchemaBuilder = app(JsonResourceSchemaBuilder::class);
         $securityEnabled = config()->boolean('laragen.autogen.security');
         $pathParamsEnabled = config()->boolean('laragen.autogen.path_parameters');
         $responseEnabled = config()->boolean('laragen.autogen.response');
@@ -286,8 +286,8 @@ final readonly class Laragen
     private static function enrichWithResponse(
         Operation $operation,
         Route $route,
-        ResponseDetector $responseDetector,
-        ResponseSchemaBuilder $responseSchemaBuilder,
+        JsonResourceDetector $responseDetector,
+        JsonResourceSchemaBuilder $responseSchemaBuilder,
     ): Operation {
         $actionName = $route->getActionName();
 
