@@ -215,19 +215,25 @@ Instead of accepting any `SerializationRule` and throwing at runtime if the styl
 
 ---
 
-## D14: Study, Don't Depend on Scramble/Scribe
+## D14: Leverage Open-Source, Maintain Clear Boundaries
 
-**Decision**: Learn from Scramble and Scribe patterns, but don't add as dependencies.
+**Decision**: Depend on open-source tools (Scribe, laravel-rules-to-schema, nikic/php-parser, etc.) but maintain clear dependency boundaries in code.
 
 **Rationale**:
-- Their architectures differ from ours
-- We need control over the analysis pipeline
-- Reduces dependency complexity
-- Allows us to innovate beyond their patterns
+- Don't reinvent the wheel — use battle-tested open-source implementations
+- Wrap external dependencies behind our own interfaces
+- Swappable without affecting consumers
+- Study their patterns AND use their code
 
-**What to Study**:
-- Scramble: Type inference, response detection, AST analysis
-- Scribe: FormRequest extraction, validation rule parsing
+**Boundaries**:
+- External dependencies should be wrapped/abstracted at integration points
+- No direct Scribe/external types in our public API
+- Internal code depends on our interfaces, not external implementations
+
+**What to Leverage**:
+- Scribe: FormRequest extraction, validation rule parsing (already used via `RuleExtractor`)
+- laravel-rules-to-schema: Base rule-to-schema conversion (already used via `RuleToSchema`)
+- nikic/php-parser: AST analysis for JsonResource and migration parsing (F4, F5)
 
 ---
 

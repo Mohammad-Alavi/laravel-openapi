@@ -56,8 +56,20 @@ SAAS product layer for zero-config OpenAPI generation.
 
 ## Planned Features (Laragen Package)
 
+### Implementation Order
+
+```
+F6 (Auth) → F1 (Route Discovery) → F2 (Path Params) → F3 (FormRequest) → F5 (Model Schema) → F4 (JsonResource)
+```
+
+F6 has no dependencies. F1 enables F2-F4. F5 (Model Schema) is needed by F4 (JsonResource) for `$this->field` type inference.
+
+See `.claude/implementation-plan.md` for full implementation details.
+
+---
+
 ### F1: Route Discovery (Auto)
-**Priority**: P0
+**Priority**: P0 | **Status**: Planned | **Order**: 2nd
 
 Automatically discover API routes from Laravel's router without annotations.
 
@@ -68,10 +80,12 @@ Automatically discover API routes from Laravel's router without annotations.
 - Handle resource routes and API resource routes
 - Extract HTTP method(s), URI, controller, middleware
 
+**Implementation**: `AutoRouteCollector`, `PatternMatcher` in `laragen/RouteDiscovery/`
+
 ---
 
 ### F2: Path Parameter Detection (Auto)
-**Priority**: P0
+**Priority**: P0 | **Status**: Planned | **Order**: 3rd | **Depends on**: F1
 
 Extract and type path parameters from route definitions automatically.
 
@@ -79,23 +93,25 @@ Extract and type path parameters from route definitions automatically.
 - Parse `{param}` from URI → required path parameter
 - Parse `{param?}` → optional parameter
 - Detect type from route model binding
-- Detect type from `whereNumber()`, `whereUuid()` constraints
+- Detect type from `whereNumber()`, `whereUuid()`, `whereAlpha()`, `whereAlphaNumeric()`, `whereIn()` constraints
 - Fall back to string if type unknown
+
+**Implementation**: `PathParameterAnalyzer` in `laragen/PathParameters/`. Enhances existing `RouteSpecCollector`.
 
 ---
 
 ### F3: FormRequest Extraction (Auto)
-**Priority**: P0
+**Priority**: P0 | **Status**: Partially implemented | **Order**: 4th | **Depends on**: F1
 
 Convert Laravel FormRequest validation rules to OpenAPI request body schema automatically.
 
-**Requirements**:
-- Detect FormRequest from controller method signature
-- Extract `rules()` array
-- Map Laravel rules to JSON Schema (see validation rule mapping)
-- Handle nested rules (`user.email`, `items.*.name`)
-- Respect `required` vs `sometimes`
-- Handle `nullable`
+**What already works**: `RuleExtractor` (via Scribe), `RuleToSchema`, `RuleParsers/`, injection in `Laragen::generate()`.
+
+**Gaps to fill**:
+- `sometimes` rule handling (field NOT in `required` array)
+- `nullable` rule verification (null type addition)
+- Broken `RouteSpecCollector::bodyParams()` (references non-existent `JSONSchemaUtil`)
+- Verify all validation rule mappings are covered
 
 **Validation Rule Mapping**:
 
@@ -122,36 +138,41 @@ Convert Laravel FormRequest validation rules to OpenAPI request body schema auto
 ---
 
 ### F4: JsonResource Detection (Auto)
-**Priority**: P0
+**Priority**: P0 | **Status**: Planned | **Order**: 6th (last) | **Depends on**: F1, F5
 
 Analyze JsonResource classes to generate response schemas automatically.
 
 **Requirements**:
 - Detect JsonResource return type from controller
-- Parse `toArray()` method body using AST
-- Infer types from `$this->field` access
+- Parse `toArray()` method body using AST (nikic/php-parser)
+- Infer types from `$this->field` access (via F5 Model Schema)
 - Handle `whenLoaded()` for relationships
 - Handle `when()` for conditional fields
 - Support resource collections
+- Respect `JsonResource::$wrap` property
+
+**Implementation**: `ResponseDetector`, `JsonResourceAnalyzer`, `ResourceFieldExtractor`, `FieldType`, `ResponseSchemaBuilder` in `laragen/ResponseSchema/`
 
 ---
 
 ### F5: Model Schema Inference (Auto)
-**Priority**: P0
+**Priority**: P0 | **Status**: Planned | **Order**: 5th
 
 Infer JSON Schema from Eloquent model definitions.
 
 **Requirements**:
-- Parse model's `$casts` array for type hints
-- Analyze migration files for column types
+- Parse model's `$casts` array for type hints (primary)
+- Analyze migration files for column types (secondary, via nikic/php-parser)
 - Respect `$hidden` (exclude from schema)
 - Include `$appends` (custom accessors)
-- Handle relationships (as $ref or inline)
+- Handle circular references via `$ref`
+
+**Implementation**: `ModelSchemaInferrer`, `CastAnalyzer`, `MigrationAnalyzer`, `ColumnTypeMapper` in `laragen/ModelSchema/`
 
 ---
 
 ### F6: Authentication Detection (Auto)
-**Priority**: P0
+**Priority**: P0 | **Status**: Planned | **Order**: 1st (no dependencies)
 
 Detect authentication requirements from route middleware.
 
@@ -159,8 +180,12 @@ Detect authentication requirements from route middleware.
 - Detect `auth:sanctum` → Bearer token
 - Detect `auth:api` (Passport) → Bearer token
 - Detect `auth.basic` → HTTP Basic
+- Detect `auth:*` (generic) → Bearer token with guard name
 - Generate appropriate security schemes
 - Apply security to operations
+- Register unique schemes in Components
+
+**Implementation**: `AuthDetector`, `AuthScheme`, `SecuritySchemeRegistry` in `laragen/Auth/`
 
 ---
 

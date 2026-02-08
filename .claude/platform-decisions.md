@@ -38,6 +38,7 @@ Decisions specific to the Laragen package layer.
 - Some rules (like `password`) have complex interactions with schema output
 - Conditional rules (`required_without`) need context about other fields
 - Parsers can handle edge cases that simple mapping cannot
+- Leverages open-source base (per D14) with custom extensions on top
 
 ---
 
