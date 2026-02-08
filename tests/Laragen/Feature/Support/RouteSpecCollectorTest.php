@@ -1,11 +1,10 @@
 <?php
 
-use Knuckles\Scribe\Extracting\Extractor;
 use MohammadAlavi\Laragen\Support\RouteSpecCollector;
 use Tests\Laragen\Support\Doubles\PathController;
 
-describe(class_basename(RouteSpecCollector::class), function () {
-    it('normalizes php types correctly', function () {
+describe(class_basename(RouteSpecCollector::class), function (): void {
+    it('normalizes php types correctly', function (): void {
         $map = [
             'int' => 'integer',
             'integer' => 'integer',
@@ -24,31 +23,7 @@ describe(class_basename(RouteSpecCollector::class), function () {
         }
     });
 
-    it('collects path params correctly', function () {
-        $route = Route::get(
-            'users/{user}/posts/{slug}/comments/{id}/{not_in_method_sig}/{not_in_method_sig_opt?}/{noTypeParam}/{user_id?}',
-            [PathController::class, 'methodWithParams'],
-        );
-        $collector = new RouteSpecCollector();
-
-        $endpointData = (new Extractor())->processRoute($route);
-        //        dd($endpointData->toArray());
-        $pathParams = $endpointData->toArray()['urlParameters'];
-        //        $pathParams = $endpointData->toArray()['bodyParameters'];
-        //        $pathParams = $collector->pathParams($route);
-
-        expect($pathParams)->toBeArray()
-            ->and($pathParams)->toHaveKeys(['id', 'slug'])
-//            ->and($pathParams['user'])->toMatchArray(['type' => 'integer', 'required' => true])
-            ->and($pathParams['slug'])->toMatchArray(['type' => 'string', 'required' => true])
-//            ->and($pathParams['id'])->toMatchArray(['type' => 'integer', 'required' => true])
-            ->and($pathParams['not_in_method_sig'])->toMatchArray(['type' => 'string', 'required' => true])
-            ->and($pathParams['not_in_method_sig_opt'])->toMatchArray(['type' => 'string', 'required' => false])
-            ->and($pathParams['noTypeParam'])->toMatchArray(['type' => 'string', 'required' => true])
-            ->and($pathParams['user_id'])->toMatchArray(['type' => 'integer', 'required' => false]);
-    })->skip();
-
-    it('skips FormRequest in path params', function () {
+    it('skips FormRequest in path params', function (): void {
         $route = Route::get('test/{foo}', [PathController::class, 'methodWithFormRequest']);
         $collector = new RouteSpecCollector();
 
@@ -63,25 +38,4 @@ describe(class_basename(RouteSpecCollector::class), function () {
             ],
         );
     });
-
-    it('collects body params correctly', function () {
-        $route = Route::post('test', [PathController::class, 'methodWithFormRequest']);
-        $collector = new RouteSpecCollector();
-
-        $bodyParams = $collector->bodyParams($route);
-
-        expect($bodyParams)->toBeArray()
-            ->and($bodyParams)->toHaveKeys(['foo', 'bar'])
-            ->and($bodyParams['foo']['type'])->toBe('string')
-            ->and($bodyParams['bar']['type'])->toBe('integer');
-    });
-
-    it('returns empty body params when no FormRequest', function () {
-        $route = Route::post('test', [PathController::class, 'methodWithoutFormRequest']);
-        $collector = new RouteSpecCollector();
-
-        $bodyParams = $collector->bodyParams($route);
-
-        expect($bodyParams)->toBeArray()->and($bodyParams)->toBeEmpty();
-    });
-})->covers(RouteSpecCollector::class)->skip();
+})->covers(RouteSpecCollector::class);

@@ -6,26 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\RouteSignatureParameters;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Route as RouteFacade;
 
 final readonly class RouteSpecCollector
 {
-    /** @return Collection<int,array> */
-    public function collect(): Collection
-    {
-        return collect(RouteFacade::getRoutes())->map(function (Route $route) {
-            return [
-                'uri' => $route->uri(),
-                'methods' => $route->methods(),
-                'path' => $this->pathParams($route),
-                'body' => $this->bodyParams($route),
-                'name' => $route->getName(),
-                'middleware' => $route->middleware(),
-            ];
-        });
-    }
-
     public function pathParams(Route $route): array
     {
         $uriParams = $route->parameterNames();
@@ -45,7 +28,7 @@ final readonly class RouteSpecCollector
                 },
             );
 
-        /** @var Collection<string, \ReflectionParameter> $paramsByName */
+        /** @var \Illuminate\Support\Collection<string, \ReflectionParameter> $paramsByName */
         $paramsByName = $routeParams->keyBy(static fn (\ReflectionParameter $parameter) => $parameter->getName());
 
         return collect($uriParams)->mapWithKeys(
@@ -103,31 +86,5 @@ final readonly class RouteSpecCollector
         }
 
         return 'string';
-    }
-
-    /**
-     * @return array<string,mixed>
-     */
-    public function bodyParams(Route $route): array
-    {
-        /** @var \ReflectionParameter|null $requestParam */
-        $requestParam = collect(
-            RouteSignatureParameters::fromAction($route->getAction(), ['subClass' => FormRequest::class]),
-        )->first();
-
-        if (is_null($requestParam)) {
-            return [];
-        }
-
-        /** @var FormRequest $request */
-        $request = new ($requestParam->getType()?->getName())();
-
-        if (!method_exists($request, 'rules')) {
-            return [];
-        }
-
-        $validator = validator([], $request->rules(), $request->messages(), $request->attributes());
-
-        return JSONSchemaUtil::fromRequestRules($validator->getRules())->toArray()['properties'];
     }
 }
