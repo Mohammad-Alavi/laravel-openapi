@@ -19,6 +19,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
  */
 final class Discriminator extends ExtensibleObject
 {
+    private string|null $defaultMapping = null;
+
     private function __construct(
         private readonly PropertyName $propertyName,
         private readonly Mapping|null $mapping = null,
@@ -35,11 +37,21 @@ final class Discriminator extends ExtensibleObject
         );
     }
 
+    public function defaultMapping(string $schemaNameOrUri): self
+    {
+        $clone = clone $this;
+
+        $clone->defaultMapping = $schemaNameOrUri;
+
+        return $clone;
+    }
+
     public function toArray(): array
     {
         return Arr::filter([
             'propertyName' => $this->propertyName,
             'mapping' => $this->mapping,
+            'defaultMapping' => $this->defaultMapping,
         ]);
     }
 }

@@ -32,4 +32,39 @@ describe('Discriminator', function (): void {
             'propertyName' => 'something',
         ]);
     });
+
+    it('can set defaultMapping', function (): void {
+        $discriminator = Discriminator::create('petType')
+            ->defaultMapping('GenericPet');
+
+        expect($discriminator->compile())->toBe([
+            'propertyName' => 'petType',
+            'defaultMapping' => 'GenericPet',
+        ]);
+    });
+
+    it('can set defaultMapping with mapping', function (): void {
+        $discriminator = Discriminator::create(
+            'petType',
+            Entry::create('cat', Name::create('Cat')),
+        )->defaultMapping('GenericPet');
+
+        expect($discriminator->compile())->toBe([
+            'propertyName' => 'petType',
+            'mapping' => [
+                'cat' => 'Cat',
+            ],
+            'defaultMapping' => 'GenericPet',
+        ]);
+    });
+
+    it('can set defaultMapping as URL', function (): void {
+        $discriminator = Discriminator::create('petType')
+            ->defaultMapping('https://example.com/schemas/GenericPet');
+
+        expect($discriminator->compile())->toBe([
+            'propertyName' => 'petType',
+            'defaultMapping' => 'https://example.com/schemas/GenericPet',
+        ]);
+    });
 })->covers(Discriminator::class);
