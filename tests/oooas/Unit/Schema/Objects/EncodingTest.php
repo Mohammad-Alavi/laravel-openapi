@@ -78,4 +78,53 @@ describe(class_basename(Encoding::class), function (): void {
             'explode' => false,
         ]);
     });
+    it('can have nested encoding map (OAS 3.2)', function (): void {
+        $encoding = Encoding::create()
+            ->contentType('multipart/mixed')
+            ->encoding(
+                EncodingEntry::create(
+                    'nestedProp',
+                    Encoding::create()->contentType('application/json'),
+                ),
+            );
+
+        expect($encoding->compile())->toBe([
+            'contentType' => 'multipart/mixed',
+            'encoding' => [
+                'nestedProp' => ['contentType' => 'application/json'],
+            ],
+        ]);
+    });
+
+    it('can have prefixEncoding for positional encoding (OAS 3.2)', function (): void {
+        $encoding = Encoding::create()
+            ->contentType('multipart/mixed')
+            ->prefixEncoding(
+                Encoding::create()->contentType('image/png'),
+                Encoding::create()->contentType('text/plain'),
+            );
+
+        expect($encoding->compile())->toBe([
+            'contentType' => 'multipart/mixed',
+            'prefixEncoding' => [
+                ['contentType' => 'image/png'],
+                ['contentType' => 'text/plain'],
+            ],
+        ]);
+    });
+
+    it('can have itemEncoding for array items (OAS 3.2)', function (): void {
+        $encoding = Encoding::create()
+            ->contentType('multipart/mixed')
+            ->itemEncoding(
+                Encoding::create()->contentType('application/octet-stream'),
+            );
+
+        expect($encoding->compile())->toBe([
+            'contentType' => 'multipart/mixed',
+            'itemEncoding' => [
+                'contentType' => 'application/octet-stream',
+            ],
+        ]);
+    });
 })->covers(Encoding::class);
