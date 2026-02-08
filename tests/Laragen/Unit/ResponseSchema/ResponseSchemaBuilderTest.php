@@ -2,16 +2,22 @@
 
 declare(strict_types=1);
 
+use MohammadAlavi\Laragen\ModelSchema\ModelSchemaInferrer;
 use MohammadAlavi\Laragen\ResponseSchema\JsonResourceAnalyzer;
+use MohammadAlavi\Laragen\ResponseSchema\ResourceModelDetector;
 use MohammadAlavi\Laragen\ResponseSchema\ResponseSchemaBuilder;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
+use Tests\Laragen\Support\Doubles\Resources\ResourceWithMixin;
 use Tests\Laragen\Support\Doubles\Resources\UnwrappedResource;
 use Tests\Laragen\Support\Doubles\Resources\UserResource;
 
 describe(class_basename(ResponseSchemaBuilder::class), function (): void {
     it('builds schema from resource fields', function (): void {
-        $analyzer = new JsonResourceAnalyzer();
-        $builder = new ResponseSchemaBuilder($analyzer);
+        $builder = new ResponseSchemaBuilder(
+            new JsonResourceAnalyzer(),
+            new ModelSchemaInferrer(),
+            new ResourceModelDetector(),
+        );
 
         $schema = $builder->build(UserResource::class);
 
@@ -30,8 +36,11 @@ describe(class_basename(ResponseSchemaBuilder::class), function (): void {
     });
 
     it('builds unwrapped schema when wrap is null', function (): void {
-        $analyzer = new JsonResourceAnalyzer();
-        $builder = new ResponseSchemaBuilder($analyzer);
+        $builder = new ResponseSchemaBuilder(
+            new JsonResourceAnalyzer(),
+            new ModelSchemaInferrer(),
+            new ResourceModelDetector(),
+        );
 
         $schema = $builder->build(UnwrappedResource::class);
         $compiled = $schema->compile();
@@ -41,26 +50,49 @@ describe(class_basename(ResponseSchemaBuilder::class), function (): void {
             ->and($compiled['properties'])->not->toHaveKey('data');
     });
 
-    it('generates string type for model property fields', function (): void {
-        $analyzer = new JsonResourceAnalyzer();
-        $builder = new ResponseSchemaBuilder($analyzer);
+    it('generates string type for model property fields without model context', function (): void {
+        $builder = new ResponseSchemaBuilder(
+            new JsonResourceAnalyzer(),
+            new ModelSchemaInferrer(),
+            new ResourceModelDetector(),
+        );
 
         $schema = $builder->build(UserResource::class);
         $compiled = $schema->compile();
         $dataProps = $compiled['properties']['data']['properties'];
 
-        // Model properties default to string when no model context
+        // Model properties default to string when no @mixin annotation
         expect($dataProps['name']['type'])->toBe('string');
     });
 
     it('generates const value for literal fields', function (): void {
-        $analyzer = new JsonResourceAnalyzer();
-        $builder = new ResponseSchemaBuilder($analyzer);
+        $builder = new ResponseSchemaBuilder(
+            new JsonResourceAnalyzer(),
+            new ModelSchemaInferrer(),
+            new ResourceModelDetector(),
+        );
 
         $schema = $builder->build(UserResource::class);
         $compiled = $schema->compile();
         $dataProps = $compiled['properties']['data']['properties'];
 
         expect($dataProps['type']['enum'])->toBe(['user']);
+    });
+
+    it('infers model property types from model schema via @mixin', function (): void {
+        $builder = new ResponseSchemaBuilder(
+            new JsonResourceAnalyzer(),
+            new ModelSchemaInferrer(),
+            new ResourceModelDetector(),
+        );
+
+        $schema = $builder->build(ResourceWithMixin::class);
+        $compiled = $schema->compile();
+        $dataProps = $compiled['properties']['data']['properties'];
+
+        // BasicModel has integer key type (default) → id should be integer
+        expect($dataProps['id']['type'])->toBe('integer')
+            // BasicModel has 'name' => 'string' cast → should be string
+            ->and($dataProps['name']['type'])->toBe('string');
     });
 })->covers(ResponseSchemaBuilder::class);

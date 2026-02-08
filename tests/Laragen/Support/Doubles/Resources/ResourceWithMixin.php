@@ -2,23 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Tests\Laragen\Support\Doubles\E2E;
+namespace Tests\Laragen\Support\Doubles\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Tests\Laragen\Support\Doubles\Models\BasicModel;
 
 /**
- * @mixin E2EArticle
+ * @mixin BasicModel
  */
-class E2EResource extends JsonResource
+class ResourceWithMixin extends JsonResource
 {
     public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'type' => 'article',
-            'is_published' => $this->is_published,
+            'name' => $this->name,
         ];
     }
 }

@@ -130,6 +130,9 @@ describe('End-to-end generation', function (): void {
         $dataProps = $responseSchema['properties']['data']['properties'];
 
         expect($dataProps)->toHaveKeys(['id', 'title', 'type', 'is_published'])
+            ->and($dataProps['id']['type'])->toBe('integer')
+            ->and($dataProps['title']['type'])->toBe('string')
+            ->and($dataProps['is_published']['type'])->toBe('boolean')
             ->and($dataProps['type']['enum'])->toBe(['article']);
     });
 

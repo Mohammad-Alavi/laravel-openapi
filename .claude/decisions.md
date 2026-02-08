@@ -347,6 +347,20 @@ GitHub Push → Webhook → Queue Job → Container → Build → Update Docs
 
 ---
 
+## D22: Prefer Laravel Built-in Features Over Custom Implementations
+
+**Decision**: Always try to use Laravel built-in features to detect and get info about the code. Only implement custom solutions when Laravel doesn't provide the functionality.
+
+**Rationale**:
+- Laravel has extensive reflection, service container, and convention support
+- Built-in features are battle-tested and maintained by the framework team
+- Reduces maintenance burden — framework updates may improve detection
+- Keeps codebase aligned with Laravel ecosystem conventions
+
+**Application**: Before implementing any code analysis or detection logic, first check if Laravel's Router, Reflection, Service Container, or other built-in APIs provide the needed information.
+
+---
+
 ## Open Questions (To Decide Later)
 
 ### Q1: How to handle Livewire/Inertia responses?
