@@ -5,9 +5,10 @@ namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\Factories\Components\SchemaFactory;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\Encoding;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\EncodingEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding\Encoding;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Encodings\EncodingEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Encodings\EncodingMap;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\Examples;
 use Webmozart\Assert\Assert;
@@ -39,7 +40,12 @@ final class MediaType extends ExtensibleObject
     private mixed $example = null;
 
     private Examples|null $examples = null;
-    private Encoding|null $encoding = null;
+    private EncodingMap|null $encoding = null;
+
+    /** @var Encoding[]|null */
+    private array|null $prefixEncoding = null;
+
+    private Encoding|null $itemEncoding = null;
 
     public function schema(JSONSchema|SchemaFactory $schema): self
     {
@@ -115,7 +121,25 @@ final class MediaType extends ExtensibleObject
     {
         $clone = clone $this;
 
-        $clone->encoding = Encoding::create(...$encodingEntry);
+        $clone->encoding = EncodingMap::create(...$encodingEntry);
+
+        return $clone;
+    }
+
+    public function prefixEncoding(Encoding ...$encoding): self
+    {
+        $clone = clone $this;
+
+        $clone->prefixEncoding = $encoding;
+
+        return $clone;
+    }
+
+    public function itemEncoding(Encoding $encoding): self
+    {
+        $clone = clone $this;
+
+        $clone->itemEncoding = $encoding;
 
         return $clone;
     }
@@ -128,6 +152,8 @@ final class MediaType extends ExtensibleObject
             'example' => $this->example,
             'examples' => $this->examples,
             'encoding' => $this->encoding,
+            'prefixEncoding' => $this->prefixEncoding,
+            'itemEncoding' => $this->itemEncoding,
         ]);
     }
 }

@@ -2,9 +2,9 @@
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding\Encoding;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\EncodingEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Encodings\EncodingEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 use Webmozart\Assert\InvalidArgumentException;
 
@@ -128,6 +128,70 @@ describe(class_basename(MediaType::class), function (): void {
             ],
             'encoding' => [
                 'files' => [],
+            ],
+        ]);
+    });
+    it('can set prefixEncoding for positional encoding (OAS 3.2)', function (): void {
+        $mediaType = MediaType::create()
+            ->schema(Schema::object())
+            ->prefixEncoding(
+                Encoding::create()->contentType('image/png'),
+                Encoding::create()->contentType('application/json'),
+            );
+
+        expect($mediaType->compile())->toBe([
+            'schema' => [
+                'type' => 'object',
+            ],
+            'prefixEncoding' => [
+                ['contentType' => 'image/png'],
+                ['contentType' => 'application/json'],
+            ],
+        ]);
+    });
+
+    it('can set itemEncoding for array items (OAS 3.2)', function (): void {
+        $mediaType = MediaType::create()
+            ->schema(Schema::object())
+            ->itemEncoding(
+                Encoding::create()->contentType('application/octet-stream'),
+            );
+
+        expect($mediaType->compile())->toBe([
+            'schema' => [
+                'type' => 'object',
+            ],
+            'itemEncoding' => [
+                'contentType' => 'application/octet-stream',
+            ],
+        ]);
+    });
+
+    it('can combine all encoding fields (OAS 3.2)', function (): void {
+        $mediaType = MediaType::create()
+            ->schema(Schema::object())
+            ->encoding(
+                EncodingEntry::create('file', Encoding::create()->contentType('image/png')),
+            )
+            ->prefixEncoding(
+                Encoding::create()->contentType('text/plain'),
+            )
+            ->itemEncoding(
+                Encoding::create()->contentType('application/octet-stream'),
+            );
+
+        expect($mediaType->compile())->toBe([
+            'schema' => [
+                'type' => 'object',
+            ],
+            'encoding' => [
+                'file' => ['contentType' => 'image/png'],
+            ],
+            'prefixEncoding' => [
+                ['contentType' => 'text/plain'],
+            ],
+            'itemEncoding' => [
+                'contentType' => 'application/octet-stream',
             ],
         ]);
     });

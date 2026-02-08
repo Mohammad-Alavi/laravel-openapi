@@ -3,9 +3,9 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Encoding;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\Encoding as EncodingMap;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\Fields\Encoding\EncodingEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Encodings\EncodingEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Encodings\EncodingMap;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\HeaderEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\Headers;
 
@@ -23,6 +23,7 @@ final class Encoding extends ExtensibleObject
     private string|null $contentType = null;
     private Headers|null $headers = null;
     private EncodingMap|null $encoding = null;
+
     /** @var self[]|null */
     private array|null $prefixEncoding = null;
     private self|null $itemEncoding = null;
