@@ -14,7 +14,6 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Server\Server;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Tag\Tag;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Webhooks\Webhooks;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Validator;
 
 /**
@@ -31,7 +30,6 @@ final class OpenAPI extends ExtensibleObject
     /** @var string|null JSON Pointer to self within a bundled document */
     private string|null $self = null;
 
-    private Summary|null $summary = null;
     private Paths|null $paths = null;
     private Webhooks|null $webhooks = null;
     private Components|null $components = null;
@@ -76,20 +74,6 @@ final class OpenAPI extends ExtensibleObject
         $clone = clone $this;
 
         $clone->self = $jsonPointer;
-
-        return $clone;
-    }
-
-    /**
-     * A short summary of the API.
-     *
-     * @see https://spec.openapis.org/oas/v3.2.0#fixed-fields
-     */
-    public function summary(string $summary): self
-    {
-        $clone = clone $this;
-
-        $clone->summary = Summary::create($summary);
 
         return $clone;
     }
@@ -247,7 +231,6 @@ final class OpenAPI extends ExtensibleObject
             'openapi' => $this->openAPIField,
             '$self' => $this->self,
             'info' => $this->info,
-            'summary' => $this->summary,
             'jsonSchemaDialect' => $this->jsonSchemaDialect,
             'servers' => when(blank($this->servers), [Server::default()], $this->servers),
             'paths' => $this->toObjectIfEmpty($this->paths),

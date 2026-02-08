@@ -417,17 +417,6 @@ describe(class_basename(OpenAPI::class), function (): void {
         ]);
     });
 
-    it('can set summary field', function (): void {
-        $info = Info::create('My API', '1.0.0');
-
-        $openApi = OpenAPI::v311($info)
-            ->summary('A short summary of the API');
-
-        $result = $openApi->compile();
-
-        expect($result['summary'])->toBe('A short summary of the API');
-    });
-
     it('can set webhooks', function (): void {
         $info = Info::create('My API', '1.0.0');
 
@@ -494,7 +483,7 @@ describe(class_basename(OpenAPI::class), function (): void {
         expect($openApi->getWebhooks())->toBeNull();
     });
 
-    it('can combine summary, webhooks, and paths in same spec', function (): void {
+    it('can combine webhooks and paths in same spec', function (): void {
         $info = Info::create('Pet Store API', '1.0.0');
 
         $paths = Paths::create(
@@ -539,14 +528,12 @@ describe(class_basename(OpenAPI::class), function (): void {
         );
 
         $openApi = OpenAPI::v311($info)
-            ->summary('Pet store API with webhooks support')
             ->paths($paths)
             ->webhooks($webhooks);
 
         $result = $openApi->compile();
 
-        expect($result)->toHaveKeys(['openapi', 'info', 'summary', 'paths', 'webhooks'])
-            ->and($result['summary'])->toBe('Pet store API with webhooks support')
+        expect($result)->toHaveKeys(['openapi', 'info', 'paths', 'webhooks'])
             ->and($result['paths'])->toHaveKey('/pets')
             ->and($result['webhooks'])->toHaveKey('newPet');
     });
