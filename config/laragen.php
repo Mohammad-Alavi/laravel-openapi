@@ -12,5 +12,6 @@ return [
         'request_body' => env('LARAGEN_AUTOGEN_REQUEST_BODY', true),
         'example' => env('LARAGEN_AUTOGEN_EXAMPLE', true),
         'security' => env('LARAGEN_AUTOGEN_SECURITY', true),
+        'path_parameters' => env('LARAGEN_AUTOGEN_PATH_PARAMETERS', true),
     ],
 ];

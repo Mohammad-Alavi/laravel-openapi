@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use MohammadAlavi\Laragen\Auth\AuthDetector;
 use MohammadAlavi\Laragen\Auth\SecuritySchemeRegistry;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleGenerator;
+use MohammadAlavi\Laragen\PathParameters\PathParameterAnalyzer;
 use MohammadAlavi\Laragen\RouteDiscovery\AutoRouteCollector;
 use MohammadAlavi\Laragen\RouteDiscovery\PatternMatcher;
 use MohammadAlavi\Laragen\Support\Config\Config;
@@ -32,6 +33,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Paths\Paths;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\RequestBody\RequestBody;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 use Webmozart\Assert\Assert;
 
 final readonly class Laragen
@@ -130,22 +132,29 @@ final readonly class Laragen
     {
         $authDetector = app(AuthDetector::class);
         $securityRegistry = app(SecuritySchemeRegistry::class);
+        $pathParameterAnalyzer = app(PathParameterAnalyzer::class);
         $securityEnabled = config()->boolean('laragen.autogen.security');
+        $pathParamsEnabled = config()->boolean('laragen.autogen.path_parameters');
 
         return $spec->paths(
             Paths::create(
                 ...collect($spec->getPaths()?->entries())
                 ->map(
-                    static function (Path $path) use ($authDetector, $securityRegistry, $securityEnabled): Path {
+                    static function (Path $path) use ($authDetector, $securityRegistry, $pathParameterAnalyzer, $securityEnabled, $pathParamsEnabled): Path {
                         /** @var Operations $operations */
                         $operations = $path->value()->getOperations();
                         /** @var AvailableOperation[] $availableOperations */
                         $availableOperations = $operations->entries();
                         $processedAvailableOps = [];
+                        $pathRoute = null;
 
                         foreach ($availableOperations as $availableOperation) {
                             $route = self::getRouteByUri($availableOperation->key(), $path->key());
                             $operation = $availableOperation->value();
+
+                            if (null === $pathRoute && null !== $route) {
+                                $pathRoute = $route;
+                            }
 
                             if (!is_null($route) && !self::hasRequestBody($availableOperation)) {
                                 $schema = self::extractRequestBodySchema($route);
@@ -178,10 +187,19 @@ final readonly class Laragen
                             );
                         }
 
-                        return Path::create(
-                            $path->key(),
-                            $path->value()->operations(...$processedAvailableOps),
-                        );
+                        $pathItem = $path->value()->operations(...$processedAvailableOps);
+
+                        if ($pathParamsEnabled && null !== $pathRoute) {
+                            $parameters = $pathParameterAnalyzer->analyze($pathRoute);
+
+                            if ([] !== $parameters) {
+                                $pathItem = $pathItem->parameters(
+                                    Parameters::create(...$parameters),
+                                );
+                            }
+                        }
+
+                        return Path::create($path->key(), $pathItem);
                     },
                 ),
             ),
