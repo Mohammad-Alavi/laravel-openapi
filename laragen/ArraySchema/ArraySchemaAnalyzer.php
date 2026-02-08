@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MohammadAlavi\Laragen\ArraySchema;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\NodeTraverser;
@@ -237,6 +236,114 @@ final readonly class ArraySchemaAnalyzer
             }
         }
 
+        // $this->name ?? 'default' — null coalescing
+        if ($expr instanceof Expr\BinaryOp\Coalesce) {
+            return $this->classifyExpression($name, $expr->left, $contextClass);
+        }
+
+        // $this->relation?->name — nullsafe property fetch
+        if (
+            $expr instanceof Expr\NullsafePropertyFetch
+            && $expr->var instanceof Expr\PropertyFetch
+            && $this->isThisExpr($expr->var->var)
+        ) {
+            $property = $expr->var->name instanceof Node\Identifier ? $expr->var->name->name : $name;
+
+            return ArrayField::modelProperty($name, $property);
+        }
+
+        // $this->relation?->method() — nullsafe method call
+        if (
+            $expr instanceof Expr\NullsafeMethodCall
+            && $expr->var instanceof Expr\PropertyFetch
+            && $this->isThisExpr($expr->var->var)
+        ) {
+            $property = $expr->var->name instanceof Node\Identifier ? $expr->var->name->name : $name;
+
+            return ArrayField::modelProperty($name, $property);
+        }
+
+        // (int) $this->count, (string) $this->label, etc. — type casting
+        if ($expr instanceof Expr\Cast) {
+            return $this->classifyExpression($name, $expr->expr, $contextClass);
+        }
+
+        // ['nested' => 'value'] — inline array literal (nested object)
+        if ($expr instanceof Expr\Array_) {
+            $children = $this->processArrayItems($expr->items, $contextClass);
+
+            return ArrayField::nestedObject($name, $children);
+        }
+
+        // strtoupper($this->name) — function call wrapping model property
+        if ($expr instanceof Expr\FuncCall) {
+            foreach ($expr->args as $arg) {
+                if (!$arg instanceof Node\Arg) {
+                    continue;
+                }
+
+                $inner = $this->classifyExpression($name, $arg->value, $contextClass);
+
+                if ($inner->isModelProperty) {
+                    return $inner;
+                }
+            }
+
+            return ArrayField::unknown($name);
+        }
+
+        // self::TYPE_ADMIN or SomeClass::VALUE — class constant fetch
+        if ($expr instanceof Expr\ClassConstFetch && $expr->name instanceof Node\Identifier) {
+            $constValue = $this->resolveClassConstant($expr, $contextClass);
+
+            if (null !== $constValue) {
+                return ArrayField::literal($name, $constValue);
+            }
+
+            return ArrayField::unknown($name);
+        }
+
+        // $this->first . ' ' . $this->last — string concatenation
+        if ($expr instanceof Expr\BinaryOp\Concat) {
+            return ArrayField::typedExpression($name, 'string');
+        }
+
+        // $this->price * 100, / 2, + b, - b, % n — arithmetic
+        if (
+            $expr instanceof Expr\BinaryOp\Mul
+            || $expr instanceof Expr\BinaryOp\Div
+            || $expr instanceof Expr\BinaryOp\Plus
+            || $expr instanceof Expr\BinaryOp\Minus
+            || $expr instanceof Expr\BinaryOp\Mod
+        ) {
+            return ArrayField::typedExpression($name, 'number');
+        }
+
+        // !$this->active — boolean NOT
+        if ($expr instanceof Expr\BooleanNot) {
+            return ArrayField::typedExpression($name, 'boolean');
+        }
+
+        // $this->age > 18, ===, !==, >=, <=, <, instanceof — comparison
+        if (
+            $expr instanceof Expr\BinaryOp\Greater
+            || $expr instanceof Expr\BinaryOp\GreaterOrEqual
+            || $expr instanceof Expr\BinaryOp\Smaller
+            || $expr instanceof Expr\BinaryOp\SmallerOrEqual
+            || $expr instanceof Expr\BinaryOp\Equal
+            || $expr instanceof Expr\BinaryOp\NotEqual
+            || $expr instanceof Expr\BinaryOp\Identical
+            || $expr instanceof Expr\BinaryOp\NotIdentical
+            || $expr instanceof Expr\Instanceof_
+        ) {
+            return ArrayField::typedExpression($name, 'boolean');
+        }
+
+        // match($this->status) { ... } — match expression
+        if ($expr instanceof Expr\Match_) {
+            return ArrayField::typedExpression($name, 'string');
+        }
+
         return ArrayField::unknown($name);
     }
 
@@ -286,17 +393,60 @@ final readonly class ArraySchemaAnalyzer
     {
         $name = $className->toString();
 
-        if (!class_exists($name)) {
-            $namespace = (new \ReflectionClass($contextClass))->getNamespaceName();
-            $fqcn = $namespace . '\\' . $name;
-
-            if (class_exists($fqcn) && is_subclass_of($fqcn, JsonResource::class)) {
-                return $fqcn;
-            }
+        if (class_exists($name)) {
+            return $name;
         }
 
-        if (class_exists($name) && is_subclass_of($name, JsonResource::class)) {
-            return $name;
+        $namespace = (new \ReflectionClass($contextClass))->getNamespaceName();
+        $fqcn = $namespace . '\\' . $name;
+
+        if (class_exists($fqcn)) {
+            return $fqcn;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param class-string $contextClass
+     */
+    private function resolveClassConstant(Expr\ClassConstFetch $expr, string $contextClass): string|int|float|bool|null
+    {
+        if (!$expr->name instanceof Node\Identifier) {
+            return null;
+        }
+
+        $constName = $expr->name->name;
+
+        if ('class' === $constName) {
+            return null;
+        }
+
+        if ($expr->class instanceof Node\Name) {
+            $className = $expr->class->toString();
+
+            if ('self' === $className || 'static' === $className) {
+                $className = $contextClass;
+            } else {
+                $resolved = $this->resolveClassName($expr->class, $contextClass);
+
+                if (null === $resolved) {
+                    return null;
+                }
+
+                $className = $resolved;
+            }
+
+            try {
+                $reflection = new \ReflectionClassConstant($className, $constName);
+                $value = $reflection->getValue();
+
+                if (is_string($value) || is_int($value) || is_float($value) || is_bool($value) || null === $value) {
+                    return $value;
+                }
+            } catch (\ReflectionException) {
+                return null;
+            }
         }
 
         return null;

@@ -10,8 +10,7 @@ use MohammadAlavi\Laragen\Auth\AuthDetector;
 use MohammadAlavi\Laragen\Auth\SecuritySchemeRegistry;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleGenerator;
 use MohammadAlavi\Laragen\PathParameters\PathParameterAnalyzer;
-use MohammadAlavi\Laragen\ResponseSchema\JsonResource\JsonResourceDetector;
-use MohammadAlavi\Laragen\ResponseSchema\JsonResource\JsonResourceSchemaBuilder;
+use MohammadAlavi\Laragen\ResponseSchema\ResponseSchemaResolver;
 use MohammadAlavi\Laragen\RouteDiscovery\AutoRouteCollector;
 use MohammadAlavi\Laragen\RouteDiscovery\PatternMatcher;
 use MohammadAlavi\Laragen\Support\Config\Config;
@@ -139,8 +138,7 @@ final readonly class Laragen
         $authDetector = app(AuthDetector::class);
         $securityRegistry = app(SecuritySchemeRegistry::class);
         $pathParameterAnalyzer = app(PathParameterAnalyzer::class);
-        $responseDetector = app(JsonResourceDetector::class);
-        $responseSchemaBuilder = app(JsonResourceSchemaBuilder::class);
+        $responseSchemaResolver = app(ResponseSchemaResolver::class);
         $securityEnabled = config()->boolean('laragen.autogen.security');
         $pathParamsEnabled = config()->boolean('laragen.autogen.path_parameters');
         $responseEnabled = config()->boolean('laragen.autogen.response');
@@ -152,7 +150,7 @@ final readonly class Laragen
             Paths::create(
                 ...collect($pathEntries)
                 ->map(
-                    static function (Path $path) use ($authDetector, $securityRegistry, $pathParameterAnalyzer, $responseDetector, $responseSchemaBuilder, $securityEnabled, $pathParamsEnabled, $responseEnabled): Path {
+                    static function (Path $path) use ($authDetector, $securityRegistry, $pathParameterAnalyzer, $responseSchemaResolver, $securityEnabled, $pathParamsEnabled, $responseEnabled): Path {
                         /** @var Operations $operations */
                         $operations = $path->value()->getOperations();
                         /** @var AvailableOperation[] $availableOperations */
@@ -197,8 +195,7 @@ final readonly class Laragen
                                 $operation = self::enrichWithResponse(
                                     $operation,
                                     $route,
-                                    $responseDetector,
-                                    $responseSchemaBuilder,
+                                    $responseSchemaResolver,
                                 );
                             }
 
@@ -286,8 +283,7 @@ final readonly class Laragen
     private static function enrichWithResponse(
         Operation $operation,
         Route $route,
-        JsonResourceDetector $responseDetector,
-        JsonResourceSchemaBuilder $responseSchemaBuilder,
+        ResponseSchemaResolver $responseSchemaResolver,
     ): Operation {
         $actionName = $route->getActionName();
 
@@ -298,13 +294,11 @@ final readonly class Laragen
         [$controllerClass, $method] = explode('@', $actionName, 2);
 
         /** @var class-string $controllerClass */
-        $resourceClass = $responseDetector->detect($controllerClass, $method);
+        $schema = $responseSchemaResolver->resolve($controllerClass, $method);
 
-        if (null === $resourceClass) {
+        if (null === $schema) {
             return $operation;
         }
-
-        $schema = $responseSchemaBuilder->build($resourceClass);
 
         return $operation->responses(
             Responses::create(

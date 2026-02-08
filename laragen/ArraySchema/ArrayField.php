@@ -6,6 +6,9 @@ namespace MohammadAlavi\Laragen\ArraySchema;
 
 final readonly class ArrayField
 {
+    /**
+     * @param ArrayField[] $children
+     */
     private function __construct(
         public string $name,
         public bool $isModelProperty = false,
@@ -16,6 +19,10 @@ final readonly class ArrayField
         public string|null $resourceClass = null,
         public bool $isConditional = false,
         public bool $isCollection = false,
+        public bool $isNestedObject = false,
+        public array $children = [],
+        public bool $isTypedExpression = false,
+        public string|null $expressionType = null,
     ) {
     }
 
@@ -66,6 +73,27 @@ final readonly class ArrayField
             name: $name,
             isCollection: true,
             resourceClass: $resourceClass,
+        );
+    }
+
+    /**
+     * @param ArrayField[] $children
+     */
+    public static function nestedObject(string $name, array $children): self
+    {
+        return new self(
+            name: $name,
+            isNestedObject: true,
+            children: $children,
+        );
+    }
+
+    public static function typedExpression(string $name, string $jsonSchemaType): self
+    {
+        return new self(
+            name: $name,
+            isTypedExpression: true,
+            expressionType: $jsonSchemaType,
         );
     }
 

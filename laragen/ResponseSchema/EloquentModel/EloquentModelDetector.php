@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace MohammadAlavi\Laragen\ResponseSchema\JsonResource;
+namespace MohammadAlavi\Laragen\ResponseSchema\EloquentModel;
 
-use Illuminate\Http\Resources\Json\JsonResource as LaravelJsonResource;
+use Illuminate\Database\Eloquent\Model;
 use MohammadAlavi\Laragen\ResponseSchema\ResponseDetector;
 
-final readonly class JsonResourceDetector implements ResponseDetector
+final readonly class EloquentModelDetector implements ResponseDetector
 {
     /**
-     * Detect if a controller method returns a JsonResource subclass.
+     * Detect if a controller method returns an Eloquent Model subclass.
      *
      * @param class-string $controllerClass
      *
-     * @return class-string<LaravelJsonResource>|null
+     * @return class-string<Model>|null
      */
     public function detect(string $controllerClass, string $method): string|null
     {
@@ -31,11 +31,11 @@ final readonly class JsonResourceDetector implements ResponseDetector
 
         $typeName = $returnType->getName();
 
-        if (!is_subclass_of($typeName, LaravelJsonResource::class)) {
+        if (!is_subclass_of($typeName, Model::class)) {
             return null;
         }
 
-        /* @var class-string<LaravelJsonResource> $typeName */
+        /* @var class-string<Model> $typeName */
         return $typeName;
     }
 }

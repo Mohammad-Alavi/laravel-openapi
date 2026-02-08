@@ -11,6 +11,7 @@ use Tests\Laragen\Support\Doubles\Resources\ResourceWithCollection;
 use Tests\Laragen\Support\Doubles\Resources\ResourceWithLiterals;
 use Tests\Laragen\Support\Doubles\Resources\ResourceWithMerge;
 use Tests\Laragen\Support\Doubles\Resources\ResourceWithMixin;
+use Tests\Laragen\Support\Doubles\Resources\ResourceWithNestedArray;
 use Tests\Laragen\Support\Doubles\Resources\UnwrappedResource;
 use Tests\Laragen\Support\Doubles\Resources\UserResource;
 
@@ -126,6 +127,21 @@ describe(class_basename(JsonResourceSchemaBuilder::class), function (): void {
         $dataProps = $compiled['properties']['data']['properties'];
 
         expect($dataProps)->toHaveKeys(['id', 'first_name', 'last_name', 'role', 'permissions', 'settings']);
+    });
+
+    it('builds nested object schema for inline array literals', function (): void {
+        $builder = new JsonResourceSchemaBuilder(
+            new ArraySchemaAnalyzer(),
+            new ModelSchemaInferrer(),
+            new JsonResourceModelDetector(),
+        );
+
+        $schema = $builder->build(ResourceWithNestedArray::class);
+        $compiled = $schema->compile();
+        $dataProps = $compiled['properties']['data']['properties'];
+
+        expect($dataProps['meta']['type'])->toBe('object')
+            ->and($dataProps['meta']['properties'])->toHaveKeys(['created_at', 'version']);
     });
 
     it('infers model property types from model schema via @mixin', function (): void {

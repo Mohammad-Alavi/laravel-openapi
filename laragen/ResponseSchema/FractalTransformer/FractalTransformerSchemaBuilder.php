@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace MohammadAlavi\Laragen\ResponseSchema\JsonResource;
+namespace MohammadAlavi\Laragen\ResponseSchema\FractalTransformer;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use MohammadAlavi\Laragen\ArraySchema\ArrayField;
 use MohammadAlavi\Laragen\ArraySchema\ArraySchemaAnalyzer;
 use MohammadAlavi\Laragen\ModelSchema\ModelSchemaInferrer;
@@ -15,55 +14,34 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Prope
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use Webmozart\Assert\Assert;
 
-final readonly class JsonResourceSchemaBuilder implements ResponseSchemaBuilder
+final readonly class FractalTransformerSchemaBuilder implements ResponseSchemaBuilder
 {
     public function __construct(
         private ArraySchemaAnalyzer $analyzer,
         private ModelSchemaInferrer $modelSchemaInferrer,
-        private JsonResourceModelDetector $modelDetector,
+        private FractalTransformerModelDetector $modelDetector,
     ) {
     }
 
-    public function build(string $resourceClass): JSONSchema
-    {
-        /** @var class-string<JsonResource> $resourceClass */
-        $fields = $this->analyzer->analyzeMethod($resourceClass, 'toArray');
-        $wrapKey = $this->getWrapKey($resourceClass);
-        $propertySchemas = $this->resolveModelPropertySchemas($resourceClass);
-
-        $innerSchema = $this->buildFieldsSchema($fields, $propertySchemas);
-
-        if (null === $wrapKey) {
-            return $innerSchema;
-        }
-
-        return Schema::object()->properties(
-            Property::create($wrapKey, $innerSchema),
-        );
-    }
-
     /**
-     * @param class-string<JsonResource> $resourceClass
+     * @param class-string $responseClass
      */
-    private function getWrapKey(string $resourceClass): string|null
+    public function build(string $responseClass): JSONSchema
     {
-        $reflection = new \ReflectionClass($resourceClass);
-        $wrapProperty = $reflection->getProperty('wrap');
+        $fields = $this->analyzer->analyzeMethod($responseClass, 'transform');
+        $propertySchemas = $this->resolveModelPropertySchemas($responseClass);
 
-        /** @var string|null $wrap */
-        $wrap = $wrapProperty->getValue();
-
-        return $wrap;
+        return $this->buildFieldsSchema($fields, $propertySchemas);
     }
 
     /**
-     * @param class-string<JsonResource> $resourceClass
+     * @param class-string $transformerClass
      *
      * @return array<string, array<string, mixed>>
      */
-    private function resolveModelPropertySchemas(string $resourceClass): array
+    private function resolveModelPropertySchemas(string $transformerClass): array
     {
-        $modelClass = $this->modelDetector->detect($resourceClass);
+        $modelClass = $this->modelDetector->detect($transformerClass);
 
         if (null === $modelClass) {
             return [];
@@ -109,24 +87,6 @@ final readonly class JsonResourceSchemaBuilder implements ResponseSchemaBuilder
             return Schema::enum($field->literalValue);
         }
 
-        if ($field->isRelationship && null !== $field->resourceClass) {
-            /** @var class-string<JsonResource> $resourceClass */
-            $resourceClass = $field->resourceClass;
-            $nestedFields = $this->analyzer->analyzeMethod($resourceClass, 'toArray');
-            $nestedPropertySchemas = $this->resolveModelPropertySchemas($resourceClass);
-
-            return $this->buildFieldsSchema($nestedFields, $nestedPropertySchemas);
-        }
-
-        if ($field->isCollection && null !== $field->resourceClass) {
-            /** @var class-string<JsonResource> $resourceClass */
-            $resourceClass = $field->resourceClass;
-            $nestedFields = $this->analyzer->analyzeMethod($resourceClass, 'toArray');
-            $nestedPropertySchemas = $this->resolveModelPropertySchemas($resourceClass);
-
-            return Schema::array()->items($this->buildFieldsSchema($nestedFields, $nestedPropertySchemas));
-        }
-
         if ($field->isNestedObject) {
             return $this->buildFieldsSchema($field->children, $propertySchemas);
         }
@@ -144,7 +104,6 @@ final readonly class JsonResourceSchemaBuilder implements ResponseSchemaBuilder
             return Schema::from($propertySchemas[$field->modelProperty]);
         }
 
-        // Model properties and conditional/unknown fields default to string
         return Schema::string();
     }
 }
