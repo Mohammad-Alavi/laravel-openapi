@@ -67,7 +67,7 @@ describe(class_basename(CastAnalyzer::class), function (): void {
     });
 
     it('maps backed enum to enum schema', function (): void {
-        $schema = CastAnalyzer::resolve(\Tests\Laragen\Support\Doubles\Models\StatusEnum::class);
+        $schema = CastAnalyzer::resolve(Tests\Laragen\Support\Doubles\Models\StatusEnum::class);
         $compiled = $schema->compile();
 
         expect($compiled)->toHaveKey('enum')
