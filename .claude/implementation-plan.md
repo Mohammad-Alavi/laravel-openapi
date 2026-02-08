@@ -318,11 +318,11 @@ End-to-end validation ✅: `tests/Laragen/Feature/EndToEndTest.php` registers te
 - **F5 implemented without MigrationAnalyzer**: Only `$casts`-based inference was needed for the initial implementation. Migration parsing can be added later if needed.
 - **F4 simplified from plan**: `ResourceFieldExtractor` and `FieldType` were consolidated into `ResourceField` (value object with factory methods). `JsonResourceAnalyzer` handles both extraction and classification.
 
-### Known Pre-existing PHPStan Issues
+### PHPStan Issues in Laragen.php (Resolved)
 
-Lines 152 and 272 of `Laragen.php` have pre-existing type mismatches (not introduced by F1-F6):
-- Line 152: Collection map callback type mismatch (`StringMapEntry` vs `Path`)
-- Line 272: `enrichObjectWithExample()` return type vs `ExampleGenerator::for()` input type
+Pre-existing type mismatches in `Laragen.php` have been fixed (`d2df3fbe`):
+- **Collection generic invariance**: `StringKeyedMap::entries()` returns `StringMapEntry[]` but `Paths` entries are `Path[]`. Fixed by extracting entries into a `@var Path[]` annotated variable before wrapping in `collect()` — arrays are covariant in PHPStan while Collections are invariant.
+- **ObjectRestrictor vs LooseFluentDescriptor**: `Schema::from()` returns `ObjectRestrictor`, `ExampleGenerator::for()` accepts `LooseFluentDescriptor` — unrelated interfaces bridged only by `StrictFluentDescriptor` at runtime. Fixed with `@phpstan-ignore` at the boundary call, since the runtime type always satisfies both.
 
 ## Pre-Implementation Checklist (Completed)
 
