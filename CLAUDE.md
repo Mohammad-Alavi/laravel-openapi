@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Read `.claude/` files for deeper context** — architecture details, technical decisions, planned features, coding standards, and Laragen-specific knowledge.
+
 ## Project Overview
 
 This repository contains **4 separate packages** developed together for convenience (will be split into separate composer packages later). The goal is to auto-generate OpenAPI definitions for Laravel projects with minimal configuration.
