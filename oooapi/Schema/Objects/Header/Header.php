@@ -2,15 +2,14 @@
 
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Header;
 
-use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\Content;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\Content;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\HeaderParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\SerializationRule;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\Examples;
-use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles\Simple;
 use Webmozart\Assert\Assert;
 
 /**
@@ -29,19 +28,20 @@ final class Header extends ExtensibleObject
     private Description|null $description = null;
     private true|null $required = null;
     private true|null $deprecated = null;
-    private Simple|null $style = null;
-    private true|null $allowReserved = null;
-    private JSONSchema|null $schema = null;
 
     /** @var mixed Example of the header; mutually exclusive with examples */
     private mixed $example = null;
 
     private Examples|null $examples = null;
-    private Content|null $content = null;
 
-    public static function create(): self
+    private function __construct(
+        private readonly SerializationRule|null $serializationRule = null,
+    ) {
+    }
+
+    public static function create(Content|HeaderParameter|null $serializationRule = null): self
     {
-        return new self();
+        return new self($serializationRule);
     }
 
     public function description(string $description): self
@@ -67,47 +67,6 @@ final class Header extends ExtensibleObject
         $clone = clone $this;
 
         $clone->deprecated = true;
-
-        return $clone;
-    }
-
-    /**
-     * Set the schema and optional style for this header.
-     *
-     * Headers only support the 'simple' style per OpenAPI specification.
-     * The schema field is mutually exclusive with the content field.
-     *
-     * @see https://spec.openapis.org/oas/v3.2.0#header-object
-     */
-    public function schema(JSONSchema $schema, Simple|null $style = null): self
-    {
-        Assert::null(
-            $this->content,
-            'schema and content fields are mutually exclusive. '
-            . 'See: https://spec.openapis.org/oas/v3.2.0#header-object',
-        );
-
-        $clone = clone $this;
-
-        $clone->schema = $schema;
-        $clone->style = $style;
-
-        return $clone;
-    }
-
-    /**
-     * Allow reserved characters in header value without percent-encoding.
-     *
-     * When true, allows reserved characters as defined by RFC 3986
-     * (:/?#[]@!$&'()*+,;=) to be included without percent-encoding.
-     *
-     * @see https://spec.openapis.org/oas/v3.2.0#header-object
-     */
-    public function allowReserved(): self
-    {
-        $clone = clone $this;
-
-        $clone->allowReserved = true;
 
         return $clone;
     }
@@ -154,40 +113,15 @@ final class Header extends ExtensibleObject
         return $clone;
     }
 
-    /**
-     * Set the content for this header.
-     *
-     * The content field is mutually exclusive with the schema field.
-     *
-     * @see https://spec.openapis.org/oas/v3.2.0#header-object
-     */
-    public function content(ContentEntry ...$contentEntry): self
-    {
-        Assert::null(
-            $this->schema,
-            'content and schema fields are mutually exclusive. '
-            . 'See: https://spec.openapis.org/oas/v3.2.0#header-object',
-        );
-
-        $clone = clone $this;
-
-        $clone->content = Content::create(...$contentEntry);
-
-        return $clone;
-    }
-
     public function toArray(): array
     {
         return Arr::filter([
             'description' => $this->description,
             'required' => $this->required,
             'deprecated' => $this->deprecated,
-            ...$this->mergeFields($this->style),
-            'allowReserved' => $this->allowReserved,
-            'schema' => $this->schema,
+            ...$this->mergeFields($this->serializationRule),
             'example' => $this->example,
             'examples' => $this->examples,
-            'content' => $this->content,
         ]);
     }
 }

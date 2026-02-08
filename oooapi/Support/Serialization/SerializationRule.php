@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Interface\MergeableFields;
 

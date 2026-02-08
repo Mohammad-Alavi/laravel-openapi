@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common;
+namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\ParameterLocation;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\StringField;

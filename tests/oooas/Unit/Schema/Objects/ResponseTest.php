@@ -6,6 +6,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Link\Link;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Response\Response;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\Content;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\HeaderParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\HeaderEntry;
@@ -13,11 +15,11 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Links\LinkEntry;
 
 describe('Response', function (): void {
     it('creates a response with all parameters', function (): void {
-        $header = Header::create()
-            ->description('Lorem ipsum')
+        $header = Header::create(
+            HeaderParameter::create(Schema::string()),
+        )->description('Lorem ipsum')
             ->required()
             ->deprecated()
-            ->schema(Schema::string())
             ->examples(
                 ExampleEntry::create(
                     'ExampleName',
@@ -70,14 +72,14 @@ describe('Response', function (): void {
     });
 
     it('creates a response with content-based header', function (): void {
-        $header = Header::create()
-            ->description('Lorem ipsum')
-            ->required()
-            ->content(
+        $header = Header::create(
+            Content::create(
                 ContentEntry::json(
                     MediaType::create(),
                 ),
-            );
+            ),
+        )->description('Lorem ipsum')
+            ->required();
 
         $response = Response::create()
             ->description('A response indicating success')

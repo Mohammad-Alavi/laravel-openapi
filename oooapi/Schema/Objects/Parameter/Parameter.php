@@ -3,17 +3,20 @@
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Contracts\Abstract\ExtensibleObject;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\Common\In;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\Content;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\CookieParameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\HeaderParameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\PathParameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\SerializationRule;
+use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Fields\In;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Arr;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\ParameterLocation;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\Content;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\CookieParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\HeaderParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\PathParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\QueryParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\SerializationRule;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Description;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\Examples;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
+use Webmozart\Assert\Assert;
 
 /**
  * Parameter Object.
@@ -25,10 +28,15 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Name;
  */
 final class Parameter extends ExtensibleObject
 {
-    private true|null $required = null;
     private Description|null $description = null;
+    private true|null $required = null;
     private true|null $deprecated = null;
     private true|null $allowEmptyValue = null;
+
+    /** @var mixed Example of the parameter's potential value */
+    private mixed $example = null;
+
+    private Examples|null $examples = null;
 
     private function __construct(
         private readonly Name $name,
@@ -142,6 +150,54 @@ final class Parameter extends ExtensibleObject
         return $clone;
     }
 
+    /**
+     * Set a single example of the parameter's potential value.
+     *
+     * The example SHOULD match the specified schema if present.
+     * The example field is mutually exclusive of the examples field.
+     *
+     * @param mixed $example Any value representing the example
+     *
+     * @see https://spec.openapis.org/oas/v3.2.0#parameter-object
+     */
+    public function example(mixed $example): self
+    {
+        Assert::null(
+            $this->examples,
+            'example and examples fields are mutually exclusive. '
+            . 'See: https://spec.openapis.org/oas/v3.2.0#parameter-object',
+        );
+
+        $clone = clone $this;
+
+        $clone->example = $example;
+
+        return $clone;
+    }
+
+    /**
+     * Set multiple examples of the parameter's potential value.
+     *
+     * Each example SHOULD match the specified schema if present.
+     * The examples field is mutually exclusive of the example field.
+     *
+     * @see https://spec.openapis.org/oas/v3.2.0#parameter-object
+     */
+    public function examples(ExampleEntry ...$exampleEntry): self
+    {
+        Assert::null(
+            $this->example,
+            'examples and example fields are mutually exclusive. '
+            . 'See: https://spec.openapis.org/oas/v3.2.0#parameter-object',
+        );
+
+        $clone = clone $this;
+
+        $clone->examples = Examples::create(...$exampleEntry);
+
+        return $clone;
+    }
+
     public function getName(): string
     {
         return $this->name->value();
@@ -167,6 +223,8 @@ final class Parameter extends ExtensibleObject
             'deprecated' => $this->deprecated,
             'allowEmptyValue' => $this->allowEmptyValue,
             ...$this->mergeFields($this->serializationRule),
+            'example' => $this->example,
+            'examples' => $this->examples,
         ]);
     }
 }

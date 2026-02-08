@@ -4,10 +4,10 @@ namespace Tests\src\Support\Doubles\Stubs\Attributes;
 
 use MohammadAlavi\LaravelOpenApi\Contracts\Factories\ParametersFactory;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\CookieParameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\HeaderParameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\PathParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\CookieParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\HeaderParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\PathParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Parameters;
 use Tests\src\Support\Doubles\Stubs\TestParameter;
 

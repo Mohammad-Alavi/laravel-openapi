@@ -3,12 +3,12 @@
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Example\Example;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\MediaType\MediaType;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\Parameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\Content;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\CookieParameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\HeaderParameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\PathParameter;
-use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Parameter\SerializationRule\QueryParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\Content;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\CookieParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\HeaderParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\PathParameter;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\Serialization\QueryParameter;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Content\ContentEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Examples\ExampleEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles\Cookie;
@@ -32,15 +32,15 @@ describe('Parameter', function (): void {
                 CookieParameter::create(
                     Schema::integer(),
                     $style,
-                )->examples(
-                    ExampleEntry::create(
-                        'example_test',
-                        Example::create(),
-                    ),
-                    ExampleEntry::create(
-                        'ExampleName',
-                        Example::create(),
-                    ),
+                ),
+            )->examples(
+                ExampleEntry::create(
+                    'example_test',
+                    Example::create(),
+                ),
+                ExampleEntry::create(
+                    'ExampleName',
+                    Example::create(),
                 ),
             )->description('User ID')
                 ->required()
@@ -94,11 +94,11 @@ describe('Parameter', function (): void {
                 HeaderParameter::create(
                     Schema::object(),
                     $style,
-                )->examples(
-                    ExampleEntry::create(
-                        'example_test',
-                        Example::create(),
-                    ),
+                ),
+            )->examples(
+                ExampleEntry::create(
+                    'example_test',
+                    Example::create(),
                 ),
             )->description('User ID')
                 ->deprecated();
@@ -373,8 +373,8 @@ describe('Parameter', function (): void {
         it('can use example (singular) field', function (): void {
             $parameter = Parameter::query(
                 'status',
-                QueryParameter::create(Schema::string())->example('active'),
-            );
+                QueryParameter::create(Schema::string()),
+            )->example('active');
 
             expect($parameter->compile())->toBe([
                 'name' => 'status',
@@ -389,10 +389,10 @@ describe('Parameter', function (): void {
         it('can use examples (plural) via fluent method', function (): void {
             $parameter = Parameter::query(
                 'status',
-                QueryParameter::create(Schema::string())->examples(
-                    ExampleEntry::create('active', Example::create()->value('active')),
-                    ExampleEntry::create('inactive', Example::create()->value('inactive')),
-                ),
+                QueryParameter::create(Schema::string()),
+            )->examples(
+                ExampleEntry::create('active', Example::create()->value('active')),
+                ExampleEntry::create('inactive', Example::create()->value('inactive')),
             );
 
             expect($parameter->compile())->toBe([
@@ -411,15 +411,17 @@ describe('Parameter', function (): void {
         it('example field works with complex values', function (): void {
             $parameter = Parameter::query(
                 'filter',
-                QueryParameter::create(Schema::object())->example(['status' => 'active', 'type' => 'user']),
-            );
+                QueryParameter::create(Schema::object()),
+            )->example(['status' => 'active', 'type' => 'user']);
 
             expect($parameter->compile()['example'])->toBe(['status' => 'active', 'type' => 'user']);
         });
 
         it('prevents setting examples after example', function (): void {
-            expect(fn () => QueryParameter::create(Schema::string())
-                ->example('value')
+            expect(fn () => Parameter::query(
+                'status',
+                QueryParameter::create(Schema::string()),
+            )->example('value')
                 ->examples(ExampleEntry::create('test', Example::create())))
                 ->toThrow(
                     InvalidArgumentException::class,
