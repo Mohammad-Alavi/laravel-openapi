@@ -5,6 +5,8 @@ namespace MohammadAlavi\Laragen;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
+use MohammadAlavi\Laragen\Auth\AuthDetector;
+use MohammadAlavi\Laragen\Auth\SecuritySchemeRegistry;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleGenerator;
 use MohammadAlavi\Laragen\Support\Config\Config;
 use MohammadAlavi\Laragen\Support\RuleToSchema;
@@ -30,33 +32,54 @@ final readonly class Laragen
         $generator = app(Generator::class);
         $spec = $generator->generate($collection);
 
+        $authDetector = app(AuthDetector::class);
+        $securityRegistry = app(SecuritySchemeRegistry::class);
+        $securityEnabled = config()->boolean('laragen.autogen.security');
+
         return $spec->paths(
             Paths::create(
                 ...collect($spec->getPaths()?->entries())
                 ->map(
-                    static function (Path $path): Path {
+                    static function (Path $path) use ($authDetector, $securityRegistry, $securityEnabled): Path {
                         /** @var Operations $operations */
                         $operations = $path->value()->getOperations();
                         /** @var AvailableOperation[] $availableOperations */
                         $availableOperations = $operations->entries();
-                        $operationMap = [];
+                        $processedAvailableOps = [];
+
                         foreach ($availableOperations as $availableOperation) {
                             $route = self::getRouteByUri($availableOperation->key(), $path->key());
+                            $operation = $availableOperation->value();
 
-                            if (is_null($route) || self::hasRequestBody($availableOperation)) {
-                                $operationMap[$availableOperation->key()] = $availableOperation->value();
-                            } else {
+                            if (!is_null($route) && !self::hasRequestBody($availableOperation)) {
                                 $schema = self::extractRequestBodySchema($route);
 
-                                $operationMap[$availableOperation->key()] = self::hasAtLeastOneProperty($schema)
-                                    ? self::setRequestBody($availableOperation, self::enrichObjectWithExample($schema))
-                                    : $availableOperation->value();
+                                if (self::hasAtLeastOneProperty($schema)) {
+                                    $operation = $operation->requestBody(
+                                        RequestBody::create(
+                                            ContentEntry::json(
+                                                MediaType::create()
+                                                    ->schema(self::enrichObjectWithExample($schema)),
+                                            ),
+                                        ),
+                                    );
+                                }
                             }
-                        }
 
-                        $processedAvailableOps = [];
-                        foreach ($operationMap as $key => $operation) {
-                            $processedAvailableOps[] = AvailableOperation::create(HttpMethod::from($key), $operation);
+                            if ($securityEnabled && !is_null($route) && !self::hasSecurity($operation)) {
+                                $authScheme = $authDetector->detect($route);
+
+                                if (null !== $authScheme) {
+                                    $operation = $operation->security(
+                                        $securityRegistry->securityFor($authScheme),
+                                    );
+                                }
+                            }
+
+                            $processedAvailableOps[] = AvailableOperation::create(
+                                HttpMethod::from($availableOperation->key()),
+                                $operation,
+                            );
                         }
 
                         return Path::create(
@@ -86,6 +109,11 @@ final readonly class Laragen
         return Arr::has($operation->value()->compile(), 'requestBody');
     }
 
+    private static function hasSecurity(Operation $operation): bool
+    {
+        return Arr::has($operation->compile(), 'security');
+    }
+
     public static function extractRequestBodySchema(Route $route): ObjectRestrictor
     {
         $schema = RuleToSchema::transform(
@@ -104,22 +132,6 @@ final readonly class Laragen
         $requestBody = $schema->compile();
 
         return Arr::has($requestBody, 'properties') && filled($requestBody['properties']);
-    }
-
-    private static function setRequestBody(
-        AvailableOperation $availableOperation,
-        ObjectRestrictor $requestBodySchema,
-    ): Operation {
-        return $availableOperation
-            ->value()
-            ->requestBody(
-                RequestBody::create(
-                    ContentEntry::json(
-                        MediaType::create()
-                            ->schema($requestBodySchema),
-                    ),
-                ),
-            );
     }
 
     public static function enrichObjectWithExample(ObjectRestrictor $descriptor): ObjectRestrictor

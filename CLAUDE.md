@@ -112,6 +112,11 @@ expect($schema->value())->toBeTrue()
     ->and($schema->isFalse())->toBeFalse();
 ```
 
+## Git Commits
+
+- **Never add Co-Authored-By or any co-author line** to commit messages
+- The repository owner is the sole author of all commits
+
 ## Workflow
 
 **CRITICAL: Test-Driven Development (TDD) is mandatory.**

@@ -13,4 +13,9 @@ final readonly class Autogen
     {
         return config('laragen.autogen.example');
     }
+
+    public function security(): bool
+    {
+        return config('laragen.autogen.security');
+    }
 }

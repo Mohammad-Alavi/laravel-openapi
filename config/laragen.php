@@ -6,5 +6,6 @@ return [
     'autogen' => [
         'request_body' => env('LARAGEN_AUTOGEN_REQUEST_BODY', true),
         'example' => env('LARAGEN_AUTOGEN_EXAMPLE', true),
+        'security' => env('LARAGEN_AUTOGEN_SECURITY', true),
     ],
 ];
