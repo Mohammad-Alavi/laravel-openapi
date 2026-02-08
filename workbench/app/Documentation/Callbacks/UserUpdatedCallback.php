@@ -81,9 +81,7 @@ class UserUpdatedCallback extends CallbackFactory implements ShouldBeReferenced
                                 Responses::create(
                                     ResponseEntry::create(
                                         HTTPStatusCode::ok(),
-                                        Response::create(
-                                            'OK',
-                                        ),
+                                        Response::create()->description('OK'),
                                     ),
                                 ),
                             ),

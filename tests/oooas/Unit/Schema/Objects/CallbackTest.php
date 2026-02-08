@@ -35,9 +35,7 @@ describe(class_basename(Callback::class), function (): void {
                                     Responses::create(
                                         ResponseEntry::create(
                                             HTTPStatusCode::unauthorized(),
-                                            Response::create(
-                                                'Unauthorized',
-                                            ),
+                                            Response::create()->description('Unauthorized'),
                                         ),
                                     ),
                                 ),

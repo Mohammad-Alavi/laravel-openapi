@@ -14,12 +14,11 @@ final class UnprocessableEntityResponse extends ResponseFactory implements Shoul
 {
     public function component(): Response
     {
-        return Response::create(
-            'Unprocessable Entity',
-        )->content(
-            ContentEntry::json(
-                MediaType::create()->schema(
-                    Schema::object()
+        return Response::create()->description('Unprocessable Entity')
+            ->content(
+                ContentEntry::json(
+                    MediaType::create()->schema(
+                        Schema::object()
                     ->properties(
                         Property::create(
                             'message',
@@ -32,8 +31,8 @@ final class UnprocessableEntityResponse extends ResponseFactory implements Shoul
                             )->description('A map of field names to validation errors.'),
                         ),
                     ),
+                    ),
                 ),
-            ),
-        );
+            );
     }
 }

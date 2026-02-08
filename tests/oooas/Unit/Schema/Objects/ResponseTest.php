@@ -28,20 +28,20 @@ describe('Response', function (): void {
 
         $link = Link::create();
 
-        $response = Response::create(
-            'A response indicating success',
-        )->headers(
-            HeaderEntry::create(
-                'HeaderName',
-                $header,
-            ),
-        )->content(
-            ContentEntry::json(
-                MediaType::create(),
-            ),
-        )->links(
-            LinkEntry::create('MyLink', $link),
-        );
+        $response = Response::create()
+            ->description('A response indicating success')
+            ->headers(
+                HeaderEntry::create(
+                    'HeaderName',
+                    $header,
+                ),
+            )->content(
+                ContentEntry::json(
+                    MediaType::create(),
+                ),
+            )->links(
+                LinkEntry::create('MyLink', $link),
+            );
 
         expect($response->compile())->toBe([
             'description' => 'A response indicating success',
@@ -79,14 +79,14 @@ describe('Response', function (): void {
                 ),
             );
 
-        $response = Response::create(
-            'A response indicating success',
-        )->headers(
-            HeaderEntry::create(
-                'HeaderName',
-                $header,
-            ),
-        );
+        $response = Response::create()
+            ->description('A response indicating success')
+            ->headers(
+                HeaderEntry::create(
+                    'HeaderName',
+                    $header,
+                ),
+            );
 
         expect($response->compile())->toBe([
             'description' => 'A response indicating success',
@@ -98,6 +98,35 @@ describe('Response', function (): void {
                         'application/json' => [],
                     ],
                 ],
+            ],
+        ]);
+    });
+    it('can set summary field', function (): void {
+        $response = Response::create()
+            ->description('OK')
+            ->summary('Successful operation');
+
+        expect($response->compile())->toBe([
+            'description' => 'OK',
+            'summary' => 'Successful operation',
+        ]);
+    });
+
+    it('can set summary with other fields', function (): void {
+        $response = Response::create()
+            ->description('OK')
+            ->summary('Successful operation')
+            ->content(
+                ContentEntry::json(
+                    MediaType::create(),
+                ),
+            );
+
+        expect($response->compile())->toBe([
+            'description' => 'OK',
+            'summary' => 'Successful operation',
+            'content' => [
+                'application/json' => [],
             ],
         ]);
     });

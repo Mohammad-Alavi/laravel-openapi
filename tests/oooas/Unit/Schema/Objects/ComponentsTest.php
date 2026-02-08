@@ -54,7 +54,7 @@ describe(class_basename(Components::class), function (): void {
         $response = new class extends ResponseFactory {
             public function component(): Response
             {
-                return Response::create('Deleted');
+                return Response::create()->description('Deleted');
             }
 
             public static function name(): string
@@ -159,9 +159,7 @@ describe(class_basename(Components::class), function (): void {
                                         Responses::create(
                                             ResponseEntry::create(
                                                 HTTPStatusCode::ok(),
-                                                Response::create(
-                                                    'OK',
-                                                ),
+                                                Response::create()->description('OK'),
                                             ),
                                         ),
                                     ),

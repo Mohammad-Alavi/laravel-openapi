@@ -81,13 +81,12 @@ describe(class_basename(OpenAPI::class), function (): void {
         $responses = Responses::create(
             ResponseEntry::create(
                 HTTPStatusCode::ok(),
-                Response::create(
-                    'OK',
-                )->content(
-                    ContentEntry::json(
-                        MediaType::create()->schema($objectDescriptor),
+                Response::create()->description('OK')
+                    ->content(
+                        ContentEntry::json(
+                            MediaType::create()->schema($objectDescriptor),
+                        ),
                     ),
-                ),
             ),
         );
 
@@ -431,7 +430,7 @@ describe(class_basename(OpenAPI::class), function (): void {
                             Responses::create(
                                 ResponseEntry::create(
                                     HTTPStatusCode::ok(),
-                                    Response::create('Webhook acknowledged'),
+                                    Response::create()->description('Webhook acknowledged'),
                                 ),
                             ),
                         ),
@@ -499,7 +498,7 @@ describe(class_basename(OpenAPI::class), function (): void {
                                     Responses::create(
                                         ResponseEntry::create(
                                             HTTPStatusCode::ok(),
-                                            Response::create('List of pets'),
+                                            Response::create()->description('List of pets'),
                                         ),
                                     ),
                                 ),
@@ -519,7 +518,7 @@ describe(class_basename(OpenAPI::class), function (): void {
                                 Responses::create(
                                     ResponseEntry::create(
                                         HTTPStatusCode::ok(),
-                                        Response::create('OK'),
+                                        Response::create()->description('OK'),
                                     ),
                                 ),
                             ),

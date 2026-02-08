@@ -9,6 +9,6 @@ class TestResponse extends ResponseFactory
 {
     public function component(): Response
     {
-        return Response::create('Reusable Response');
+        return Response::create()->description('Reusable Response');
     }
 }

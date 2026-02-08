@@ -27,12 +27,11 @@ final class ValidationErrorResponse extends ResponseFactory implements ShouldBeR
             ),
         );
 
-        return Response::create(
-            'Unprocessable Entity',
-        )->content(
-            ContentEntry::json(
-                MediaType::create()->schema($objectDescriptor),
-            ),
-        );
+        return Response::create()->description('Unprocessable Entity')
+            ->content(
+                ContentEntry::json(
+                    MediaType::create()->schema($objectDescriptor),
+                ),
+            );
     }
 }

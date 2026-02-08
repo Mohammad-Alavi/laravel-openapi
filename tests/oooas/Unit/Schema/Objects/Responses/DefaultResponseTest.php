@@ -28,11 +28,11 @@ describe('Responses with Default', function (): void {
         $responses = Responses::create(
             ResponseEntry::create(
                 HTTPStatusCode::ok(),
-                Response::create('Successful response'),
+                Response::create()->description('Successful response'),
             ),
             ResponseEntry::create(
                 DefaultResponse::create(),
-                Response::create('Default error response'),
+                Response::create()->description('Default error response'),
             ),
         );
 
@@ -50,7 +50,7 @@ describe('Responses with Default', function (): void {
         $responses = Responses::create(
             ResponseEntry::create(
                 DefaultResponse::create(),
-                Response::create('Catch-all response'),
+                Response::create()->description('Catch-all response'),
             ),
         );
 
@@ -65,15 +65,15 @@ describe('Responses with Default', function (): void {
         $responses = Responses::create(
             ResponseEntry::create(
                 HTTPStatusCode::ok(),
-                Response::create('Success'),
+                Response::create()->description('Success'),
             ),
             ResponseEntry::create(
                 HTTPStatusCode::notFound(),
-                Response::create('Not found'),
+                Response::create()->description('Not found'),
             ),
             ResponseEntry::create(
                 DefaultResponse::create(),
-                Response::create('Unexpected error'),
+                Response::create()->description('Unexpected error'),
             ),
         );
 

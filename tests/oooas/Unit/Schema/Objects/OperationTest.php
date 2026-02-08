@@ -50,7 +50,7 @@ describe(class_basename(Operation::class), function (): void {
                     Responses::create(
                         ResponseEntry::create(
                             HTTPStatusCode::ok(),
-                            Response::create('OK'),
+                            Response::create()->description('OK'),
                         ),
                     ),
                 )->deprecated()

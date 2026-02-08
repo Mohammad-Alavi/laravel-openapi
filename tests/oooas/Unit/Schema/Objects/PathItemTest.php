@@ -36,7 +36,7 @@ describe(class_basename(PathItem::class), function (): void {
                                     Responses::create(
                                         ResponseEntry::create(
                                             HTTPStatusCode::ok(),
-                                            Response::create('OK'),
+                                            Response::create()->description('OK'),
                                         ),
                                     ),
                                 ),
@@ -124,7 +124,7 @@ describe(class_basename(PathItem::class), function (): void {
                             Responses::create(
                                 ResponseEntry::create(
                                     HTTPStatusCode::ok(),
-                                    Response::create('Search results'),
+                                    Response::create()->description('Search results'),
                                 ),
                             ),
                         ),
@@ -154,7 +154,7 @@ describe(class_basename(PathItem::class), function (): void {
                             Responses::create(
                                 ResponseEntry::create(
                                     HTTPStatusCode::ok(),
-                                    Response::create('Custom response'),
+                                    Response::create()->description('Custom response'),
                                 ),
                             ),
                         ),
@@ -186,7 +186,7 @@ describe(class_basename(PathItem::class), function (): void {
                             Responses::create(
                                 ResponseEntry::create(
                                     HTTPStatusCode::ok(),
-                                    Response::create('OK'),
+                                    Response::create()->description('OK'),
                                 ),
                             ),
                         ),
@@ -201,7 +201,7 @@ describe(class_basename(PathItem::class), function (): void {
                             Responses::create(
                                 ResponseEntry::create(
                                     HTTPStatusCode::ok(),
-                                    Response::create('Subscribed'),
+                                    Response::create()->description('Subscribed'),
                                 ),
                             ),
                         ),

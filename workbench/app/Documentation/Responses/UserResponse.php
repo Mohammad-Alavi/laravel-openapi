@@ -15,12 +15,11 @@ final class UserResponse extends ResponseFactory implements ShouldBeReferenced
 {
     public function component(): Response
     {
-        return Response::create(
-            'UserResponse',
-        )->content(
-            ContentEntry::json(
-                MediaType::create()->schema(
-                    Schema::object()
+        return Response::create()->description('UserResponse')
+            ->content(
+                ContentEntry::json(
+                    MediaType::create()->schema(
+                        Schema::object()
                         ->description('Generic response for a user object')
                         ->properties(
                             Property::create(
@@ -46,8 +45,8 @@ final class UserResponse extends ResponseFactory implements ShouldBeReferenced
                                     ->format(StringFormat::EMAIL),
                             ),
                         ),
+                    ),
                 ),
-            ),
-        );
+            );
     }
 }

@@ -62,7 +62,7 @@ describe('OpenApi', function (): void {
         $responses = Responses::create(
             ResponseEntry::create(
                 HTTPStatusCode::ok(),
-                Response::create('OK')
+                Response::create()->description('OK')
                     ->content(
                         ContentEntry::json(
                             MediaType::create()->schema($schema),
@@ -71,7 +71,7 @@ describe('OpenApi', function (): void {
             ),
             ResponseEntry::create(
                 HTTPStatusCode::unprocessableEntity(),
-                Response::create('Unprocessable Entity')
+                Response::create()->description('Unprocessable Entity')
                     ->content(
                         ContentEntry::json(
                             MediaType::create()->schema($schema),

@@ -23,7 +23,7 @@ class MultiResponseMixedWithReusable implements ResponsesFactory
             ),
             ResponseEntry::create(
                 HTTPStatusCode::ok(),
-                Response::create('Resource created')
+                Response::create()->description('Resource created')
                     ->content(
                         ContentEntry::json(
                             MediaType::create()->schema(PetSchema::create()),
@@ -32,7 +32,7 @@ class MultiResponseMixedWithReusable implements ResponsesFactory
             ),
             ResponseEntry::create(
                 HTTPStatusCode::forbidden(),
-                Response::create('Forbidden'),
+                Response::create()->description('Forbidden'),
             ),
         );
     }

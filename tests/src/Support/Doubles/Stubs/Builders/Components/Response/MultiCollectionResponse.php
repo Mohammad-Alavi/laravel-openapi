@@ -12,6 +12,6 @@ class MultiCollectionResponse extends ResponseFactory implements ShouldBeReferen
 {
     public function component(): Response
     {
-        return Response::create('OK');
+        return Response::create()->description('OK');
     }
 }

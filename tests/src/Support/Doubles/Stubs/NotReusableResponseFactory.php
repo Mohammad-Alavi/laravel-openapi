@@ -8,6 +8,6 @@ class NotReusableResponseFactory
 {
     public function build(): Response
     {
-        return Response::create('OK');
+        return Response::create()->description('OK');
     }
 }

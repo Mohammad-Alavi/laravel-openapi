@@ -948,7 +948,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     Responses::create(
                         ResponseEntry::create(
                             HTTPStatusCode::ok(),
-                            Response::create('OK'),
+                            Response::create()->description('OK'),
                         ),
                     ),
                 ),
@@ -996,7 +996,7 @@ describe(class_basename(SecurityBuilder::class), function (): void {
                     Responses::create(
                         ResponseEntry::create(
                             HTTPStatusCode::ok(),
-                            Response::create('OK'),
+                            Response::create()->description('OK'),
                         ),
                     ),
                 )->security(

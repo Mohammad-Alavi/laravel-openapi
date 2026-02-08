@@ -11,6 +11,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\HeaderEntry
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Headers\Headers;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Links\LinkEntry;
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Links\Links;
+use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Summary;
 
 /**
  * Response Object.
@@ -23,15 +24,37 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Support\SharedFields\Links\Links;
  */
 final class Response extends ExtensibleObject
 {
+    private Summary|null $summary = null;
+    private Description|null $description = null;
     private Headers|null $headers = null;
-
     private Content|null $content = null;
-
     private Links|null $links = null;
 
-    private function __construct(
-        private readonly Description $description,
-    ) {
+    private function __construct()
+    {
+    }
+
+    public static function create(): self
+    {
+        return new self();
+    }
+
+    public function description(string $description): self
+    {
+        $clone = clone $this;
+
+        $clone->description = Description::create($description);
+
+        return $clone;
+    }
+
+    public function summary(string $summary): self
+    {
+        $clone = clone $this;
+
+        $clone->summary = Summary::create($summary);
+
+        return $clone;
     }
 
     public function headers(HeaderEntry ...$headerEntry): self
@@ -41,11 +64,6 @@ final class Response extends ExtensibleObject
         $clone->headers = Headers::create(...$headerEntry);
 
         return $clone;
-    }
-
-    public static function create(string $description): self
-    {
-        return new self(Description::create($description));
     }
 
     public function content(ContentEntry ...$contentEntry): self
@@ -70,6 +88,7 @@ final class Response extends ExtensibleObject
     {
         return Arr::filter([
             'description' => $this->description,
+            'summary' => $this->summary,
             'headers' => $this->headers,
             'content' => $this->content,
             'links' => $this->links,

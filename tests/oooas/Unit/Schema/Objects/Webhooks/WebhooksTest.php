@@ -25,7 +25,7 @@ describe(class_basename(Webhooks::class), function (): void {
                             Responses::create(
                                 ResponseEntry::create(
                                     HTTPStatusCode::ok(),
-                                    Response::create('Webhook received'),
+                                    Response::create()->description('Webhook received'),
                                 ),
                             ),
                         ),
@@ -62,7 +62,7 @@ describe(class_basename(Webhooks::class), function (): void {
                             Responses::create(
                                 ResponseEntry::create(
                                     HTTPStatusCode::ok(),
-                                    Response::create('OK'),
+                                    Response::create()->description('OK'),
                                 ),
                             ),
                         ),
@@ -80,7 +80,7 @@ describe(class_basename(Webhooks::class), function (): void {
                             Responses::create(
                                 ResponseEntry::create(
                                     HTTPStatusCode::ok(),
-                                    Response::create('OK'),
+                                    Response::create()->description('OK'),
                                 ),
                             ),
                         ),

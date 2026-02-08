@@ -18,7 +18,7 @@ describe(class_basename(AdditionalOperation::class), function (): void {
                 Responses::create(
                     ResponseEntry::create(
                         HTTPStatusCode::ok(),
-                        Response::create('OK'),
+                        Response::create()->description('OK'),
                     ),
                 ),
             );
@@ -34,7 +34,7 @@ describe(class_basename(AdditionalOperation::class), function (): void {
             ->operationId('test')
             ->responses(
                 Responses::create(
-                    ResponseEntry::create(HTTPStatusCode::ok(), Response::create('OK')),
+                    ResponseEntry::create(HTTPStatusCode::ok(), Response::create()->description('OK')),
                 ),
             );
 
@@ -51,7 +51,7 @@ describe(class_basename(AdditionalOperation::class), function (): void {
             ->operationId('test')
             ->responses(
                 Responses::create(
-                    ResponseEntry::create(HTTPStatusCode::ok(), Response::create('OK')),
+                    ResponseEntry::create(HTTPStatusCode::ok(), Response::create()->description('OK')),
                 ),
             );
 
@@ -68,7 +68,7 @@ describe(class_basename(AdditionalOperation::class), function (): void {
             ->operationId('test')
             ->responses(
                 Responses::create(
-                    ResponseEntry::create(HTTPStatusCode::ok(), Response::create('OK')),
+                    ResponseEntry::create(HTTPStatusCode::ok(), Response::create()->description('OK')),
                 ),
             );
 
@@ -83,7 +83,7 @@ describe(class_basename(AdditionalOperation::class), function (): void {
             ->operationId('test')
             ->responses(
                 Responses::create(
-                    ResponseEntry::create(HTTPStatusCode::ok(), Response::create('OK')),
+                    ResponseEntry::create(HTTPStatusCode::ok(), Response::create()->description('OK')),
                 ),
             );
 
@@ -117,7 +117,7 @@ describe(class_basename(AdditionalOperations::class), function (): void {
             ->operationId('test')
             ->responses(
                 Responses::create(
-                    ResponseEntry::create(HTTPStatusCode::ok(), Response::create('OK')),
+                    ResponseEntry::create(HTTPStatusCode::ok(), Response::create()->description('OK')),
                 ),
             );
 

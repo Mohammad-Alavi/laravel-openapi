@@ -36,7 +36,7 @@ describe(class_basename(Extension::class), function (): void {
         ],
         [
             function (): Response {
-                return Response::create('OK');
+                return Response::create()->description('OK');
             }, $expectations + [
                 'description' => 'OK',
             ],

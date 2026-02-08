@@ -12,6 +12,6 @@ class ExplicitCollectionResponse extends ResponseFactory implements ShouldBeRefe
 {
     public function component(): Response
     {
-        return Response::create('OK');
+        return Response::create()->description('OK');
     }
 }

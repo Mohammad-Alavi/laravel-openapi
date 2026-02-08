@@ -74,39 +74,36 @@ describe('PetStoreTest', function (): void {
 
         $responseEntry = ResponseEntry::create(
             HTTPStatusCode::ok(),
-            Response::create(
-                'pet response',
-            )->content(
-                ContentEntry::json(
-                    MediaType::create()->schema(Pet::create()),
+            Response::create()->description('pet response')
+                ->content(
+                    ContentEntry::json(
+                        MediaType::create()->schema(Pet::create()),
+                    ),
                 ),
-            ),
         );
 
         $petListingResponse = ResponseEntry::create(
             HTTPStatusCode::ok(),
-            Response::create(
-                'pet response',
-            )->content(
-                ContentEntry::json(
-                    MediaType::create()->schema(
-                        Schema::array()->items(
-                            Pet::create(),
+            Response::create()->description('pet response')
+                ->content(
+                    ContentEntry::json(
+                        MediaType::create()->schema(
+                            Schema::array()->items(
+                                Pet::create(),
+                            ),
                         ),
                     ),
                 ),
-            ),
         );
 
         $defaultErrorResponse = ResponseEntry::create(
             HTTPStatusCode::internalServerError(),
-            Response::create(
-                'unexpected error',
-            )->content(
-                ContentEntry::json(
-                    MediaType::create()->schema(ValidationError::create()),
+            Response::create()->description('unexpected error')
+                ->content(
+                    ContentEntry::json(
+                        MediaType::create()->schema(ValidationError::create()),
+                    ),
                 ),
-            ),
         );
 
         $operation = Operation::create()
@@ -188,7 +185,7 @@ describe('PetStoreTest', function (): void {
 
         $petDeletedResponse = ResponseEntry::create(
             HTTPStatusCode::noContent(),
-            Response::create('pet deleted'),
+            Response::create()->description('pet deleted'),
         );
 
         $deletePetById = Operation::create()

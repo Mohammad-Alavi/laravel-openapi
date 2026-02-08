@@ -19,12 +19,11 @@ final class SingleResponse implements ResponsesFactory
         return Responses::create(
             ResponseEntry::create(
                 HTTPStatusCode::unprocessableEntity(),
-                Response::create(
-                    'Unprocessable Entity',
-                )->content(
-                    ContentEntry::json(
-                        MediaType::create()->schema(
-                            Schema::object()
+                Response::create()->description('Unprocessable Entity')
+                    ->content(
+                        ContentEntry::json(
+                            MediaType::create()->schema(
+                                Schema::object()
                                 ->properties(
                                     Property::create(
                                         'message',
@@ -37,9 +36,9 @@ final class SingleResponse implements ResponsesFactory
                                         )->examples(['field' => ['Something is wrong with this field!']]),
                                     ),
                                 ),
+                            ),
                         ),
                     ),
-                ),
             ),
         );
     }
