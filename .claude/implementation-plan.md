@@ -18,6 +18,7 @@ F6 (Auth) → F1 (Route Discovery) → F2 (Path Params) → F3 (FormRequest) →
 | F3: FormRequest | `a7e65d53` | 2+1+2 feature (verification) |
 | F5: Model Schema | `b8af7912` | 11+8 unit |
 | F4: JsonResource | `65a3e419` | 3+6+4 unit |
+| E2E Validation | `ff2c5d5d` | 8 feature (all features combined) |
 
 ---
 
@@ -295,16 +296,16 @@ Registered as singleton in `LaragenServiceProvider`.
 
 ---
 
-## Verification Plan
+## Verification Plan (Completed)
 
 For each feature:
-1. Write tests first (TDD)
-2. Implement code
-3. `composer test` — all tests pass
-4. `composer fixer` — code style
-5. `composer lint` — static analysis
+1. Write tests first (TDD) ✅
+2. Implement code ✅
+3. `composer test` — all tests pass ✅
+4. `composer fixer` — code style ✅
+5. `composer lint` — static analysis ✅
 
-End-to-end validation: Create test routes in `workbench/` exercising all features, run `Laragen::generate()`, verify output spec contains expected security schemes, path parameters, request bodies, response schemas.
+End-to-end validation ✅: `tests/Laragen/Feature/EndToEndTest.php` registers test routes exercising all 6 features in auto-discovery mode, calls `Laragen::generate()`, and verifies the output contains correct security schemes, path parameters, request bodies, response schemas. Also validates structural OpenAPI compliance via `redocly lint --extends minimal`.
 
 ---
 
