@@ -46,35 +46,26 @@ Laravel integration layer for generating OpenAPI from annotated controllers.
 
 SAAS product layer for zero-config OpenAPI generation.
 
-- **Auth Detection** (`laragen/Auth/`): Auto-detect authentication from route middleware → SecurityScheme components
+- **Auth Detection** (`laragen/Auth/`): Auto-detect authentication from route middleware -> SecurityScheme components
 - **Route Discovery** (`laragen/RouteDiscovery/`): Auto-discover API routes by URI patterns (no annotations needed)
 - **Path Parameters** (`laragen/PathParameters/`): Detect path parameter types from route constraints (`whereUuid`, `whereAlpha`, etc.)
 - **FormRequest Extraction** (`laragen/Support/`): Convert validation rules to JSON Schema request bodies (via Scribe + laravel-rules-to-schema)
 - **Model Schema** (`laragen/ModelSchema/`): Infer JSON Schema from Eloquent `$casts`, `$hidden`, `$appends`
-- **Response Schema** (`laragen/ResponseSchema/`): Analyze JsonResource `toArray()` AST to generate response schemas
+- **Response Schema** (`laragen/ResponseSchema/`): Multi-strategy response detection via pluggable `ResponseStrategy` chain (JsonResource, FractalTransformer, EloquentModel)
 - **RuleParsers** (`laragen/RuleParsers/`): Custom parsers for complex validation rules (`PasswordParser`, `RequiredWithoutParser`, `ExampleOverride`)
 - **ExampleGenerator** (`laragen/ExampleGenerator/`): Generate example values from schemas
 - Configuration via `config/laragen.php` and `config/rules-to-schema.php`
 
 ---
 
-## Implemented Features (Laragen Package)
-
-All P0 features are implemented. Implementation order was:
-
-```
-F6 (Auth) → F1 (Route Discovery) → F2 (Path Params) → F3 (FormRequest) → F5 (Model Schema) → F4 (JsonResource)
-```
-
----
+## Laragen Feature Details
 
 ### F6: Authentication Detection
-**Status**: Implemented
 
 Detects auth middleware on routes and generates SecurityScheme components + per-operation security.
 
 **Files**: `laragen/Auth/AuthDetector.php`, `AuthScheme.php`, `SecuritySchemeRegistry.php`
-**Config**: `autogen.security` flag in `config/laragen.php`
+**Config**: `autogen.security` flag
 
 | Middleware | SecurityScheme |
 |-----------|---------------|
@@ -86,7 +77,6 @@ Detects auth middleware on routes and generates SecurityScheme components + per-
 ---
 
 ### F1: Route Discovery (Auto)
-**Status**: Implemented
 
 Discovers API routes by URI patterns without requiring `#[Collection]` attributes.
 
@@ -96,7 +86,6 @@ Discovers API routes by URI patterns without requiring `#[Collection]` attribute
 ---
 
 ### F2: Path Parameter Detection
-**Status**: Implemented
 
 Detects path parameter types from route constraints and generates typed `Parameter` objects.
 
@@ -115,13 +104,8 @@ Detects path parameter types from route constraints and generates typed `Paramet
 ---
 
 ### F3: FormRequest Extraction
-**Status**: Implemented
 
 Converts Laravel FormRequest validation rules to OpenAPI request body schemas. Uses Scribe's `RuleExtractor` and `riley19280/laravel-rules-to-schema`.
-
-**Key findings during implementation**: All 17 rule mappings were already handled by the vendor package. `sometimes` and `nullable` work correctly. Broken `RouteSpecCollector::bodyParams()` dead code was removed.
-
-**Validation Rule Mapping**:
 
 | Laravel Rule | JSON Schema |
 |--------------|-------------|
@@ -144,7 +128,6 @@ Converts Laravel FormRequest validation rules to OpenAPI request body schemas. U
 ---
 
 ### F5: Model Schema Inference
-**Status**: Implemented
 
 Generates JSON Schema from Eloquent model `$casts`, excludes `$hidden`, includes `$appends`.
 
@@ -164,75 +147,51 @@ Generates JSON Schema from Eloquent model `$casts`, excludes `$hidden`, includes
 
 ---
 
-### F4: JsonResource Detection
-**Status**: Implemented (expanded)
+### F4: Response Schema Detection (Multi-Strategy)
 
-Analyzes controller return types and JsonResource `toArray()` AST to generate response schemas.
+Pluggable `ResponseStrategy` chain analyzes controller return types to auto-generate response schemas.
 
-**Files**: `laragen/ArraySchema/ArraySchemaAnalyzer.php`, `ArrayField.php`, `laragen/ResponseSchema/JsonResource/JsonResourceDetector.php`, `JsonResourceModelDetector.php`, `JsonResourceSchemaBuilder.php`
-**Config**: `autogen.response` flag
+**Strategy chain** (tried in order, first match wins):
+1. **JsonResource** -- detects `JsonResource` return type, analyzes `toArray()` AST
+2. **FractalTransformer** -- conditional on `league/fractal`, detects transformer references in controller AST
+3. **EloquentModel** -- detects `Model` return type, delegates to `ModelSchemaInferrer`
 
-**AST Patterns Handled** (10 patterns):
-| Pattern | Result |
-|---------|--------|
-| `'key' => $this->prop` | Model property → type from model schema (via `@mixin`) or `string` fallback |
-| `'key' => 'literal'` / `42` / `3.14` | Literal → `enum` with const value |
-| `'key' => true` / `false` / `null` | Bool/null literal → `enum` |
-| `'key' => $this->prop->method(...)` | Method chain → resolves root model property |
-| `'key' => $this->resource->prop` | Explicit resource access → model property |
-| `new Resource($this->whenLoaded(...))` | Nested resource → recursive schema |
-| `Resource::collection($this->items)` | Collection → `{type: "array", items: {...}}` |
-| `$this->when*(...)` / `$this->unless(...)` | Conditional (12 methods) → `string` fallback |
-| `$this->merge([...])` / `mergeWhen` / `mergeUnless` | Flatten merged fields into parent |
-| Ternary / unrecognized | Unknown → `string` (graceful degradation) |
+**Architecture**: Generic AST analysis lives in `ArraySchemaAnalyzer` (reusable across strategies). Each strategy has a `ResponseDetector` (finds the response class) and `ResponseSchemaBuilder` (builds JSON Schema from it). `ResponseSchemaResolver` iterates the chain.
 
-**F5↔F4 Integration**: `JsonResourceModelDetector` resolves the Eloquent model from `@mixin` DocBlock on the JsonResource. `JsonResourceSchemaBuilder` then uses `ModelSchemaInferrer` to get accurate property types (`integer`, `boolean`, etc.) instead of defaulting all model properties to `string`. Resources without `@mixin` gracefully degrade.
+**Key files**:
+- `laragen/ArraySchema/ArraySchemaAnalyzer.php` -- generic AST analysis (21 patterns)
+- `laragen/ArraySchema/ArrayField.php` -- field value object (8 factory methods)
+- `laragen/ResponseSchema/ResponseSchemaResolver.php` -- strategy chain
+- `laragen/ResponseSchema/JsonResource/` -- JsonResource strategy
+- `laragen/ResponseSchema/EloquentModel/` -- Eloquent Model strategy
+- `laragen/ResponseSchema/FractalTransformer/` -- Fractal strategy (conditional)
 
-**Architecture**: Generic AST analysis lives in `ArraySchemaAnalyzer` (reusable for Fractal Transformers, raw controller arrays, etc.). JsonResource-specific logic lives in `ResponseSchema/JsonResource/`.
+**AST Patterns** (21): model property, string/int/float/bool/null literals, method chains, explicit resource access, nested resources, collections, 12 conditional methods, merge/mergeWhen/mergeUnless, null coalescing, nullsafe property/method, type casting, nested arrays, function calls, class constants, concat, arithmetic, boolean NOT, comparisons.
 
-**Response Wrapping**: Respects `JsonResource::$wrap` (default `data`, `null` = no wrap)
+**Config**: `autogen.response` flag. Respects `JsonResource::$wrap` property.
 
 ---
 
 ## Planned Platform Features (Future SaaS)
 
-### P1: GitHub OAuth Connection
-Connect GitHub repositories to auto-generate documentation.
+- **GitHub OAuth** -- Connect repos to auto-generate docs
+- **Webhook Processing** -- Auto-rebuild on push events
+- **Containerized Analysis** -- Isolated Docker containers for user code
+- **Hosted Documentation** -- Interactive docs with Stoplight Elements
+- **Custom Domains** -- User's own domain for hosted docs
+- **Changelog Generation** -- Detect API changes between versions
+- **Breaking Change Detection** -- Alert on breaking API changes
+- **Team Collaboration** -- Org-based role access
+- **Billing** -- Stripe subscriptions
 
-### P2: Webhook Processing
-Automatically rebuild docs on push events.
+## Competitive Context
 
-### P3: Containerized Analysis
-Run analysis safely in isolated Docker containers.
+| Feature | Laragen | Scramble | Scribe |
+|---------|---------|----------|--------|
+| Zero annotations | Yes | Yes | No |
+| OpenAPI 3.2 | Yes | 3.1 | 3.1 |
+| Open source | Yes | Yes | Yes |
+| Hosted docs | Planned | No | No |
+| Webhook auto-sync | Planned | No | No |
 
-### P4: Hosted Documentation
-Serve interactive documentation with Stoplight Elements.
-
-### P5: Custom Domains
-Allow users to use their own domains for hosted docs.
-
-### P6: Changelog Generation
-Automatically detect and document API changes between versions.
-
-### P7: Breaking Change Detection
-Alert users when API changes might break clients.
-
-### P8: Team Collaboration
-Multiple users per organization with role-based access.
-
-### P9: Billing
-Stripe integration for subscription management.
-
----
-
-## Feature Status Matrix
-
-| Feature | Package | Status | Commit |
-|---------|---------|--------|--------|
-| F6: Auth Detection | laragen | Implemented | `aa4be104` |
-| F1: Route Discovery | laragen | Implemented | `a92fdbf3` |
-| F2: Path Parameters | laragen | Implemented | `62028e49` |
-| F3: FormRequest | laragen | Implemented | `a7e65d53` |
-| F5: Model Schema | laragen | Implemented | `b8af7912` |
-| F4: JsonResource | laragen | Implemented | `65a3e419` |
-| F5↔F4 Integration | laragen | Implemented | `249ae437` |
+**Key Differentiators**: Webhook auto-sync, open-source core with SaaS layer, agency-friendly pricing, changelog detection.

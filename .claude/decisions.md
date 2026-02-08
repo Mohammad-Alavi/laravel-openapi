@@ -11,14 +11,8 @@ Key decisions made in this project and their rationale.
 **Rationale**:
 - 3.2 is fully JSON Schema compatible (Draft 2020-12)
 - Adds querystring parameter location, encoding improvements
-- Simplifies codebase — one spec version
+- Simplifies codebase -- one spec version
 - 3.0.x had awkward JSON Schema subset differences
-
-**Trade-offs**:
-- (+) Cleaner codebase, one spec version
-- (+) Better JSON Schema tooling compatibility
-- (-) Some legacy tools only support older versions
-- (-) May need to add conversion layer later
 
 **Mitigation**: Most modern tools support 3.1+; provide export to 3.0.x if demand exists.
 
@@ -40,16 +34,12 @@ Key decisions made in this project and their rationale.
 
 **Decision**: All schema/OpenAPI objects are immutable. Methods return cloned instances.
 
-**Rationale**:
 ```php
 $a = Schema::string();
 $b = $a->format('email');  // $a is unchanged
 ```
-- Prevents bugs from shared references
-- Easier to reason about
-- Works naturally with fluent chaining
 
-**Trade-off**: Slightly more memory (cloning), but negligible for spec generation.
+**Rationale**: Prevents bugs from shared references, easier to reason about, works naturally with fluent chaining.
 
 ---
 
@@ -59,42 +49,28 @@ $b = $a->format('email');  // $a is unchanged
 
 **Chain**: `JSONSchema -> oooapi -> src (LaravelOpenApi) -> laragen`
 
-**Rationale**:
-- Clear boundaries and testable in isolation
-- json-schema and oooapi are framework-agnostic
-- Will eventually be split into separate repos
-- Prevents accidental tight coupling
+**Rationale**: Clear boundaries, testable in isolation. Will eventually be split into separate repos.
 
 ---
 
 ## D5: Type-System Enforcement Over Runtime Checks
 
-**Decision**: Use PHP union types and class hierarchy to enforce constraints at the type level where possible, rather than runtime assertions.
+**Decision**: Use PHP union types and class hierarchy to enforce constraints at the type level where possible.
 
-**Example** — Parameter serialization:
 ```php
-// Type system enforces valid styles per location
 public static function query(string $name, Content|QueryParameter $serialization): self
 public static function header(string $name, Content|HeaderParameter $serialization): self
 ```
-Instead of accepting any `SerializationRule` and throwing at runtime if the style doesn't match.
 
-**Rationale**:
-- Catches errors at write-time (IDE support) rather than runtime
-- Self-documenting API
-- No invalid state possible
+**Rationale**: Catches errors at write-time (IDE support), self-documenting API, no invalid state possible.
 
 ---
 
 ## D6: Serialization Rules as Mergeable Fields
 
-**Decision**: Parameter and Header serialization (schema-based or content-based) is modeled as `SerializationRule` objects that implement `MergeableFields`. Their fields spread into the parent's `toArray()`.
+**Decision**: Parameter and Header serialization is modeled as `SerializationRule` objects that implement `MergeableFields`. Their fields spread into the parent's `toArray()`.
 
-**Rationale**:
-- OAS 3.2 section 4.21.1 defines three field groups for parameters/headers
-- Common fields live on Parameter/Header directly
-- Serialization fields are composed via `SerializationRule`
-- `MergeableFields` + `...$this->mergeFields()` keeps the output flat (no nesting)
+**Rationale**: OAS 3.2 section 4.21.1 defines three field groups. `MergeableFields` + `...$this->mergeFields()` keeps the output flat.
 
 ---
 
@@ -102,12 +78,7 @@ Instead of accepting any `SerializationRule` and throwing at runtime if the styl
 
 **Decision**: Use Pest PHP (v3) over raw PHPUnit.
 
-**Rationale**:
-- More expressive syntax with `describe()`/`it()`
-- `covers()` for explicit class coverage tracking
-- `->and()` chaining for related assertions
-- First-class Laravel support
-- Modern standard for Laravel packages
+**Rationale**: More expressive syntax with `describe()`/`it()`, `covers()` for coverage tracking, `->and()` chaining, first-class Laravel support.
 
 ---
 
@@ -115,24 +86,13 @@ Instead of accepting any `SerializationRule` and throwing at runtime if the styl
 
 **Decision**: Use `webmozart/assert` for assertion-based precondition checks, not for user input validation.
 
-**Rationale**:
-- Throws `InvalidArgumentException` on violations
-- Cleaner than manual if/throw blocks
-- Used for developer-facing API constraints (e.g., mutual exclusivity of `example`/`examples`)
+**Rationale**: Cleaner than manual if/throw blocks. Used for developer-facing API constraints.
 
 ---
 
 ## D9: No Premature Abstractions
 
-**Decision**: Tolerate some code duplication rather than extracting shared abstractions too early.
-
-**Example**: `description()`, `example()`, `examples()` methods are duplicated across `Parameter`, `Header`, `MediaType` rather than extracted into a trait or base class.
-
-**Rationale**:
-- Only extract when there are 4+ identical usages with no divergence risk
-- `self` return type prevents shared trait usage cleanly
-- Each class may diverge in validation rules or error messages
-- Three occurrences is not enough to justify abstraction
+**Decision**: Tolerate some code duplication rather than extracting shared abstractions too early. Only extract when there are 4+ identical usages with no divergence risk.
 
 ---
 
@@ -140,39 +100,15 @@ Instead of accepting any `SerializationRule` and throwing at runtime if the styl
 
 **Decision**: Open-source the analysis engine (MIT), keep SaaS platform proprietary.
 
-**Rationale**:
-- MIT builds community trust (no bait-and-switch fears)
-- Community contributions improve the core engine
-- Hosted features (webhooks, containers, team collaboration) are hard to replicate
-- GitLab model has proven successful
-
-**Trade-offs**:
-- (+) Community adoption and contributions
-- (+) Marketing through open source
-- (-) Someone could build competing SaaS
-- (-) Support burden for free users
-
-**Mitigation**: Our SaaS value is in the infrastructure and convenience, not the code.
+**Rationale**: Community trust, contributions improve core. Hosted features (webhooks, containers, collaboration) are hard to replicate.
 
 ---
 
 ## D11: Graceful Degradation Over Strict Errors
 
-**Decision**: When analysis fails for a route/component, skip it with a warning rather than failing the entire generation.
+**Decision**: When analysis fails for a route/component, skip it with a warning rather than failing entire generation.
 
-**Rationale**:
-- Real-world projects have edge cases we can't anticipate
-- 90% documentation is better than 0% due to one error
-- Users can incrementally fix issues
-- Matches user expectations from similar tools
-
-**Trade-offs**:
-- (+) More forgiving, works on more projects
-- (+) Better user experience
-- (-) May hide real problems
-- (-) Incomplete documentation without clear indication
-
-**Mitigation**: Always log warnings; provide a `--strict` flag that fails on any issue.
+**Rationale**: 90% documentation is better than 0% due to one error. Provide a `--strict` flag for those who want failures.
 
 ---
 
@@ -180,60 +116,55 @@ Instead of accepting any `SerializationRule` and throwing at runtime if the styl
 
 **Decision**: Build internal PHP objects representing OpenAPI structures, then serialize to JSON.
 
-**Rationale**:
-- Type safety catches errors at compile time
-- Objects can validate themselves
-- Easier to manipulate (add/remove/modify)
-- Can implement JsonSerializable for clean output
-
-**Trade-offs**:
-- (+) Type safety and IDE support
-- (+) Validation before output
-- (+) Easier testing
-- (-) More code than simple arrays
-- (-) Slight memory overhead
+**Rationale**: Type safety, self-validating objects, easier manipulation, JsonSerializable for clean output.
 
 ---
 
 ## D13: Schema Registry for $ref Management
 
-**Decision**: Use a central registry (Components) to manage component references.
+**Decision**: Use a central registry (Components) to manage component references. `ShouldBeReferenced` interface marks factories that should become components.
 
-**Rationale**:
-- OpenAPI encourages reusable schemas via $ref
-- Without central management, we'd duplicate schemas
-- Registry can detect circular references
-- Simplifies generator code
-- `ShouldBeReferenced` interface marks factories that should become components
-
-**Trade-offs**:
-- (+) DRY specs
-- (+) Smaller output files
-- (+) Handles circular refs
-- (-) Additional complexity
-- (-) Must ensure unique names
+**Rationale**: DRY specs, smaller output, handles circular refs.
 
 ---
 
 ## D14: Leverage Open-Source, Maintain Clear Boundaries
 
-**Decision**: Depend on open-source tools (Scribe, laravel-rules-to-schema, nikic/php-parser, etc.) but maintain clear dependency boundaries in code.
+**Decision**: Depend on open-source tools (Scribe, laravel-rules-to-schema, nikic/php-parser) but wrap external dependencies behind our own interfaces.
 
-**Rationale**:
-- Don't reinvent the wheel — use battle-tested open-source implementations
-- Wrap external dependencies behind our own interfaces
-- Swappable without affecting consumers
-- Study their patterns AND use their code
+**Boundaries**: No direct Scribe/external types in our public API. Internal code depends on our interfaces.
 
-**Boundaries**:
-- External dependencies should be wrapped/abstracted at integration points
-- No direct Scribe/external types in our public API
-- Internal code depends on our interfaces, not external implementations
+---
 
-**What to Leverage**:
-- Scribe: FormRequest extraction, validation rule parsing (already used via `RuleExtractor`)
-- laravel-rules-to-schema: Base rule-to-schema conversion (already used via `RuleToSchema`)
-- nikic/php-parser: AST analysis for JsonResource and migration parsing (F4, F5)
+## D22: Prefer Laravel Built-in Features Over Custom Implementations
+
+**Decision**: Always try to use Laravel built-in features first. Only implement custom solutions when Laravel doesn't provide the functionality.
+
+**Application**: Before implementing any detection logic, check if Laravel's Router, Reflection, Service Container, or other built-in APIs already provide the needed information.
+
+---
+
+## Laragen-Specific Decisions
+
+### LD1: Extend, Don't Replace LaravelOpenApi
+
+**Decision**: Laragen extends the LaravelOpenApi generators and builders rather than replacing them. Users who want manual control use LaravelOpenApi directly; users who want zero-config use Laragen.
+
+### LD2: Configurable Rule-to-Schema Mapping
+
+**Decision**: Validation rule -> JSON Schema mapping is configurable via `config/rules-to-schema.php`. Custom rules need custom mappings without code changes.
+
+### LD3: Custom RuleParsers for Complex Rules
+
+**Decision**: Complex validation rules get dedicated parser classes (`PasswordParser`, `RequiredWithoutParser`) rather than simple config mappings. These handle edge cases that simple mapping cannot.
+
+### LD4: Example Generation from Schema
+
+**Decision**: Auto-generate example values from JSON Schema definitions. `ExampleOverride` allows manual overrides when auto-generation isn't sufficient.
+
+### LD5: Strategy Chain for Response Detection
+
+**Decision**: Pluggable `ResponseStrategy` chain (detector + builder pairs) tried in order. Enables adding new strategies (Spatie Data, raw arrays) without modifying existing code. Current order: JsonResource -> FractalTransformer (conditional) -> EloquentModel.
 
 ---
 
@@ -241,144 +172,37 @@ Instead of accepting any `SerializationRule` and throwing at runtime if the styl
 
 ### D15: Stoplight Elements for Documentation UI
 
-**Decision**: Use Stoplight Elements (React) instead of Swagger UI or custom build for the hosted docs platform.
-
-**Rationale**:
-- Modern, clean design (Swagger UI looks dated)
-- Active development and maintenance
-- MIT licensed
-- "Try It Out" functionality built-in
-- Responsive design
-
-**Alternatives Considered**:
-- Swagger UI: Dated appearance, heavier bundle
-- Redoc: Beautiful but read-only (no "Try It Out")
-- Custom build: 2-3 months of work, maintenance burden
-
----
+Use Stoplight Elements (React) instead of Swagger UI. Modern design, MIT licensed, "Try It Out" built-in.
 
 ### D16: Containerized Analysis for Security
 
-**Decision**: Run user code analysis in isolated Docker containers.
-
-**Rationale**:
-- Users' composer.json may have install scripts
-- Code analysis requires loading PHP files
-- We can't trust arbitrary user code
-- Containers provide strong isolation
-
-**Container Constraints**:
-```yaml
-read_only: true        # Can't write to filesystem
-network_mode: none     # No network access
-mem_limit: 512m        # Memory limit
-cpus: 0.5             # CPU limit
-timeout: 300s          # 5 minute max
-```
-
----
+Run user code analysis in isolated Docker containers. Read-only filesystem, no network, 512MB memory limit, 5-minute timeout.
 
 ### D17: PostgreSQL Over MySQL
 
-**Decision**: Use PostgreSQL as the primary database for the platform.
-
-**Rationale**:
-- Native JSONB support (better for storing OpenAPI specs)
-- Better performance for complex queries
-- More advanced features (CTEs, window functions)
-
----
+Native JSONB support for storing OpenAPI specs, better performance for complex queries.
 
 ### D18: Webhook-First Architecture
 
-**Decision**: Design the build system around webhooks as the primary trigger.
-
-**Rationale**:
-- Enables "living documentation" value proposition
-- Matches developer workflow (push → docs update)
-- More reliable than polling
-- Industry standard for CI/CD
-
-**Flow**:
-```
-GitHub Push → Webhook → Queue Job → Container → Build → Update Docs
-```
-
----
+`GitHub Push -> Webhook -> Queue Job -> Container -> Build -> Update Docs`
 
 ### D19: Subdomain-Based Project Routing
 
-**Decision**: Each project gets a subdomain (`project-slug.laragen.com`) rather than path-based routing.
-
-**Rationale**:
-- Cleaner URLs for users
-- Better separation (cookies, caching)
-- Easier custom domain support later
-- Professional appearance
-
----
+Each project gets `{project-slug}.laragen.com`. Cleaner URLs, easier custom domain support.
 
 ### D20: Inertia.js Over Livewire
 
-**Decision**: Use Inertia.js with React for the dashboard, not Livewire.
-
-**Rationale**:
-- Stoplight Elements is React-based
-- Better TypeScript support
-- More flexible for complex UI
-- SPA-like experience with SSR
-
----
+Inertia.js with React for the dashboard. Consistent with Stoplight Elements (React), better TypeScript support.
 
 ### D21: Stripe via Laravel Cashier
 
-**Decision**: Use Stripe for payments via Laravel Cashier.
-
-**Rationale**:
-- First-party Laravel integration
-- Handles subscriptions, trials, webhooks
-- Stripe is industry standard
-
-**Pricing Tiers**:
-- Solo: $19/mo (3 projects)
-- Team: $49/mo (10 projects)
-- Agency: $99/mo (25 projects)
-- Enterprise: $249/mo (unlimited)
+Stripe for payments. Solo: $19/mo (3 projects), Team: $49/mo (10), Agency: $99/mo (25), Enterprise: $249/mo (unlimited).
 
 ---
 
-## D22: Prefer Laravel Built-in Features Over Custom Implementations
+## Open Questions
 
-**Decision**: Always try to use Laravel built-in features to detect and get info about the code. Only implement custom solutions when Laravel doesn't provide the functionality.
-
-**Rationale**:
-- Laravel has extensive reflection, service container, and convention support
-- Built-in features are battle-tested and maintained by the framework team
-- Reduces maintenance burden — framework updates may improve detection
-- Keeps codebase aligned with Laravel ecosystem conventions
-
-**Application**: Before implementing any code analysis or detection logic, first check if Laravel's Router, Reflection, Service Container, or other built-in APIs provide the needed information.
-
----
-
-## Open Questions (To Decide Later)
-
-### Q1: How to handle Livewire/Inertia responses?
-- These aren't traditional JSON APIs
-- May need to skip or provide special handling
-- Decision: Skip for MVP, add support based on demand
-
-### Q2: Should we support API versioning?
-- Some APIs use /v1/, /v2/ prefixes
-- Some use headers for versioning
-- Decision: Support path-based versioning in MVP, headers later
-
-### Q3: How to handle authentication in "Try It Out"?
-- Users need to provide tokens to test endpoints
-- Security implications of storing tokens
-- Decision: Client-side only storage, clear warnings
-
-### Q4: Rate limiting for free tier?
-- How many builds per month?
-- How many projects?
-- Decision: Free tier = 3 projects, 50 builds/month
+- **Livewire/Inertia responses**: Skip for MVP, not traditional JSON APIs.
+- **API versioning**: Support path-based (`/v1/`) in MVP, headers later.
+- **"Try It Out" auth**: Client-side only token storage with clear warnings.
+- **Free tier limits**: 3 projects, 50 builds/month.
