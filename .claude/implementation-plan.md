@@ -1,8 +1,8 @@
-# Implementation Plan: Laragen Features F1-F6 (COMPLETED)
+# Implementation Plan: Laragen Features F1-F6 (COMPLETED + F5↔F4 Integration)
 
-## Status: All Features Implemented
+## Status: All Features Implemented + F5↔F4 Integration Complete
 
-All 6 P0 features have been implemented with TDD, passing tests, clean code style, and clean static analysis.
+All 6 P0 features have been implemented with TDD, passing tests, clean code style, and clean static analysis. F5 (Model Schema) has been integrated into F4 (Response Schema) so response schemas get accurate types from underlying Eloquent models.
 
 ## Implementation Order (Completed)
 
@@ -19,6 +19,7 @@ F6 (Auth) → F1 (Route Discovery) → F2 (Path Params) → F3 (FormRequest) →
 | F5: Model Schema | `b8af7912` | 11+8 unit |
 | F4: JsonResource | `65a3e419` | 3+6+4 unit |
 | E2E Validation | `ff2c5d5d` | 8 feature (all features combined) |
+| F5↔F4 Integration | `249ae437` | 2 unit (detector) + 1 unit (builder) + E2E updated |
 
 ---
 
@@ -311,6 +312,15 @@ End-to-end validation ✅: `tests/Laragen/Feature/EndToEndTest.php` registers te
 
 ## Implementation Notes
 
+### F5↔F4 Integration (Post-Feature)
+
+F5 (`ModelSchemaInferrer`) and F4 (`ResponseSchemaBuilder`) were implemented independently. The integration (`249ae437`) wired them together:
+
+- **`ResourceModelDetector`** (`laragen/ResponseSchema/ResourceModelDetector.php`): Resolves `class-string<JsonResource>` → `class-string<Model>|null` by parsing the `@mixin` DocBlock annotation (Laravel community convention used by IDE Helper, PHPStan extensions, etc.). Laravel has no built-in mechanism for static Resource→Model detection (see D22).
+- **`ResponseSchemaBuilder`** now accepts `ModelSchemaInferrer` + `ResourceModelDetector` via constructor injection. When a resource has `@mixin ModelClass`, model properties get accurate types (`integer`, `boolean`, etc.) instead of defaulting to `string`.
+- **Graceful degradation**: Resources without `@mixin` still work — fields default to `string` as before.
+- **E2E test updated**: Added `E2EArticle` model with casts, `@mixin` on `E2EResource`, assertions for `id→integer`, `title→string`, `is_published→boolean`.
+
 ### Key Decisions Made During Implementation
 
 - **Laragen.php stays static**: Rather than refactoring to instance-based DI (as originally planned), `enrichSpec()` resolves services from the container via `app()`. This works well since `Laragen::generate()` is the single entry point.
@@ -331,3 +341,4 @@ Pre-existing type mismatches in `Laragen.php` have been fixed (`d2df3fbe`):
 - [x] `.claude/planned-features.md` — Added full implementation details (file structure, integration points)
 - [x] `.claude/platform-decisions.md` — Updated LD3 reference to align with D14 update
 - [x] `.claude/implementation-plan.md` — This file (full standalone plan for reference)
+- [x] `.claude/decisions.md` — Added D22: Prefer Laravel Built-in Features Over Custom Implementations

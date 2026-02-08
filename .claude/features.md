@@ -169,16 +169,18 @@ Generates JSON Schema from Eloquent model `$casts`, excludes `$hidden`, includes
 
 Analyzes controller return types and JsonResource `toArray()` AST to generate response schemas.
 
-**Files**: `laragen/ResponseSchema/ResponseDetector.php`, `JsonResourceAnalyzer.php`, `ResourceField.php`, `ResponseSchemaBuilder.php`
+**Files**: `laragen/ResponseSchema/ResponseDetector.php`, `JsonResourceAnalyzer.php`, `ResourceField.php`, `ResponseSchemaBuilder.php`, `ResourceModelDetector.php`
 **Config**: `autogen.response` flag
 
 **AST Patterns Handled**:
 | Pattern | Result |
 |---------|--------|
-| `'key' => $this->prop` | Model property → `string` type |
+| `'key' => $this->prop` | Model property → type from model schema (via `@mixin`) or `string` fallback |
 | `'key' => 'literal'` | Literal → `enum` with const value |
 | `new Resource($this->whenLoaded(...))` | Nested resource → recursive schema |
 | `$this->when(...)` / `$this->whenLoaded(...)` | Conditional → `string` fallback |
+
+**F5↔F4 Integration**: `ResourceModelDetector` resolves the Eloquent model from `@mixin` DocBlock on the JsonResource. `ResponseSchemaBuilder` then uses `ModelSchemaInferrer` to get accurate property types (`integer`, `boolean`, etc.) instead of defaulting all model properties to `string`. Resources without `@mixin` gracefully degrade.
 
 **Response Wrapping**: Respects `JsonResource::$wrap` (default `data`, `null` = no wrap)
 
@@ -225,3 +227,4 @@ Stripe integration for subscription management.
 | F3: FormRequest | laragen | Implemented | `a7e65d53` |
 | F5: Model Schema | laragen | Implemented | `b8af7912` |
 | F4: JsonResource | laragen | Implemented | `65a3e419` |
+| F5↔F4 Integration | laragen | Implemented | `249ae437` |
