@@ -59,6 +59,7 @@
         "rector/rector": "^2.0",
         "roave/security-advisories": "dev-latest",
         "slevomat/coding-standard": "^8.15",
+        "spatie/laravel-data": "^4.19",
         "squizlabs/php_codesniffer": "*",
         "thecodingmachine/phpstan-safe-rule": "^1.4",
         "vimeo/psalm": "^6.0.0"

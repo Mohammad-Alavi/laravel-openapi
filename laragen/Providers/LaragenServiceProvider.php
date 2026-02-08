@@ -17,8 +17,12 @@ use MohammadAlavi\Laragen\ResponseSchema\FractalTransformer\FractalTransformerDe
 use MohammadAlavi\Laragen\ResponseSchema\FractalTransformer\FractalTransformerSchemaBuilder;
 use MohammadAlavi\Laragen\ResponseSchema\JsonResource\JsonResourceDetector;
 use MohammadAlavi\Laragen\ResponseSchema\JsonResource\JsonResourceSchemaBuilder;
+use MohammadAlavi\Laragen\ResponseSchema\ResourceCollection\ResourceCollectionDetector;
+use MohammadAlavi\Laragen\ResponseSchema\ResourceCollection\ResourceCollectionSchemaBuilder;
 use MohammadAlavi\Laragen\ResponseSchema\ResponseSchemaResolver;
 use MohammadAlavi\Laragen\ResponseSchema\ResponseStrategy;
+use MohammadAlavi\Laragen\ResponseSchema\SpatieData\SpatieDataDetector;
+use MohammadAlavi\Laragen\ResponseSchema\SpatieData\SpatieDataSchemaBuilder;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 final class LaragenServiceProvider extends ServiceProvider
@@ -37,10 +41,21 @@ final class LaragenServiceProvider extends ServiceProvider
         $this->app->singleton(ResponseSchemaResolver::class, static function (Application $app): ResponseSchemaResolver {
             $strategies = [
                 new ResponseStrategy(
+                    $app->make(ResourceCollectionDetector::class),
+                    $app->make(ResourceCollectionSchemaBuilder::class),
+                ),
+                new ResponseStrategy(
                     $app->make(JsonResourceDetector::class),
                     $app->make(JsonResourceSchemaBuilder::class),
                 ),
             ];
+
+            if (class_exists('Spatie\LaravelData\Data')) {
+                $strategies[] = new ResponseStrategy(
+                    $app->make(SpatieDataDetector::class),
+                    $app->make(SpatieDataSchemaBuilder::class),
+                );
+            }
 
             if (class_exists('League\Fractal\TransformerAbstract')) {
                 $strategies[] = new ResponseStrategy(
