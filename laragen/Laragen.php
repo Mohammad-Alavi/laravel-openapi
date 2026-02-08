@@ -145,9 +145,12 @@ final readonly class Laragen
         $pathParamsEnabled = config()->boolean('laragen.autogen.path_parameters');
         $responseEnabled = config()->boolean('laragen.autogen.response');
 
+        /** @var Path[] $pathEntries */
+        $pathEntries = $spec->getPaths()?->entries() ?? [];
+
         return $spec->paths(
             Paths::create(
-                ...collect($spec->getPaths()?->entries())
+                ...collect($pathEntries)
                 ->map(
                     static function (Path $path) use ($authDetector, $securityRegistry, $pathParameterAnalyzer, $responseDetector, $responseSchemaBuilder, $securityEnabled, $pathParamsEnabled, $responseEnabled): Path {
                         /** @var Operations $operations */
@@ -269,7 +272,7 @@ final readonly class Laragen
     public static function enrichObjectWithExample(ObjectRestrictor $descriptor): ObjectRestrictor
     {
         if (config()->boolean('laragen.autogen.example')) {
-            return app(ExampleGenerator::class)->for($descriptor);
+            return app(ExampleGenerator::class)->for($descriptor); // @phpstan-ignore argument.type, return.type (runtime type is StrictFluentDescriptor which satisfies both)
         }
 
         return $descriptor;
