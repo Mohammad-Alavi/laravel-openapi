@@ -12,7 +12,7 @@ use LaravelRulesToSchema\Parsers\TypeParser;
 use MohammadAlavi\Laragen\RuleParsers\ExampleOverride;
 use MohammadAlavi\Laragen\RuleParsers\FileUploadParser;
 use MohammadAlavi\Laragen\RuleParsers\PasswordParser;
-use MohammadAlavi\Laragen\RuleParsers\RequiredWithoutParser;
+use MohammadAlavi\Laragen\RuleParsers\RequiredWithParser;
 
 return [
     /*
@@ -38,7 +38,7 @@ return [
         FileUploadParser::class,
         PasswordParser::class,
         ExampleOverride::class,
-        RequiredWithoutParser::class,
+        RequiredWithParser::class,
     ],
 
     /*

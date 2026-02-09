@@ -54,14 +54,11 @@ final class RuleToSchema extends LaravelRulesToSchema
             }
         }
 
+        // Context-aware parsers may restructure the base schema directly
+        // (e.g. RequiredWithParser replaces properties with anyOf/allOf).
+        // We run them but don't re-add property schemas to the root.
         foreach ($ruleSets as $property => $rawRules) {
-            $propertySchema = self::parseContextAwareRules($property, $rawRules, $schema, $ruleSets, $request);
-
-            if ($propertySchema instanceof FluentSchema) {
-                $schema->object()->property($property, $propertySchema);
-            } elseif (is_array($propertySchema)) {
-                $schema->object()->properties($propertySchema);
-            }
+            self::parseContextAwareRules($property, $rawRules, $schema, $ruleSets, $request);
         }
 
         return self::distinctRequired($schema);
@@ -161,7 +158,8 @@ final class RuleToSchema extends LaravelRulesToSchema
 
     private static function distinctRequired(FluentSchema $schema): FluentSchema
     {
-        $schema->getSchemaDTO()->required = array_values(array_unique($schema->getSchemaDTO()->required ?? []));
+        $required = array_values(array_unique($schema->getSchemaDTO()->required ?? []));
+        $schema->getSchemaDTO()->required = [] === $required ? null : $required;
 
         return $schema;
     }
