@@ -3,62 +3,71 @@
 namespace MohammadAlavi\Laragen\RuleParsers;
 
 use FluentJsonSchema\FluentSchema;
-use LaravelRulesToSchema\Contracts\RuleParser;
 use MohammadAlavi\Laragen\ExampleGenerator\Example;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleProvider;
 
-final readonly class ExampleOverride implements RuleParser
+final class ExampleOverride implements ContextAwareRuleParser
 {
+    private FluentSchema|null $baseSchema = null;
+
+    /** @var array<string, mixed>|null */
+    private array|null $allRules = null;
+
+    private string|null $request = null;
+
+    public function withContext(FluentSchema $baseSchema, array $allRules, string|null $request): static
+    {
+        $clone = clone $this;
+        $clone->baseSchema = $baseSchema;
+        $clone->allRules = $allRules;
+        $clone->request = $request;
+
+        return $clone;
+    }
+
     public function __invoke(
         string $attribute,
         FluentSchema $schema,
         array $validationRules,
         array $nestedRuleset,
     ): array|FluentSchema|null {
-        if (config()->boolean('laragen.autogen.example')) {
-            if (func_num_args() < 7) {
-                return $schema;
-            }
-            /** @var FluentSchema $baseSchema */
-            $baseSchema = func_get_arg(4);
-            /** @var array<int, array{0: string|object, 1: array}> $allRules */
-            $allRules = func_get_arg(5);
-            /** @var string|null $request */
-            $request = func_get_arg(6);
-            if (!($baseSchema instanceof FluentSchema) || !is_array($allRules)) {
-                return $schema;
-            }
+        if (!config()->boolean('laragen.autogen.example')) {
+            return $schema;
+        }
 
-            foreach ($validationRules as $ruleArgs) {
-                [$rule, $args] = $ruleArgs;
+        if (null === $this->baseSchema || null === $this->allRules) {
+            return $schema;
+        }
 
-                $ruleName = is_object($rule) ? get_class($rule) : $rule;
+        foreach ($validationRules as $ruleArgs) {
+            [$rule, $args] = $ruleArgs;
 
-                if (ExampleProvider::has($ruleName)) {
-                    $example = ExampleProvider::getExample($ruleName);
+            $ruleName = is_object($rule) ? get_class($rule) : $rule;
 
-                    if (is_string($example) && !is_null($request)) {
-                        /** @var Example $instance */
-                        $instance = resolve(
-                            $example,
-                            compact(
-                                'attribute',
-                                'schema',
-                                'validationRules',
-                                'nestedRuleset',
-                                'baseSchema',
-                                'allRules',
-                            ),
-                        );
+            if (ExampleProvider::has($ruleName)) {
+                $example = ExampleProvider::getExample($ruleName);
 
-                        if ($instance->shouldBeGeneratedFor($request, $attribute)) {
-                            $currentExamples = $schema->getSchemaDTO()->examples ?? [];
-                            $schema->examples([...$currentExamples, ...$instance->values()]);
+                if (is_string($example) && !is_null($this->request)) {
+                    /** @var Example $instance */
+                    $instance = resolve(
+                        $example,
+                        [
+                            'attribute' => $attribute,
+                            'schema' => $schema,
+                            'validationRules' => $validationRules,
+                            'nestedRuleset' => $nestedRuleset,
+                            'baseSchema' => $this->baseSchema,
+                            'allRules' => $this->allRules,
+                        ],
+                    );
 
-                            $format = $instance->format();
-                            if (!is_null($format)) {
-                                $schema->format()->custom($format->value());
-                            }
+                    if ($instance->shouldBeGeneratedFor($this->request, $attribute)) {
+                        $currentExamples = $schema->getSchemaDTO()->examples ?? [];
+                        $schema->examples([...$currentExamples, ...$instance->values()]);
+
+                        $format = $instance->format();
+                        if (!is_null($format)) {
+                            $schema->format()->custom($format->value());
                         }
                     }
                 }

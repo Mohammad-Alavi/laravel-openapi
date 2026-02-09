@@ -8,7 +8,7 @@ use Illuminate\Routing\Route;
 use LaravelRulesToSchema\Contracts\RuleParser;
 use LaravelRulesToSchema\LaravelRulesToSchema;
 use LaravelRulesToSchema\ValidationRuleNormalizer;
-use MohammadAlavi\Laragen\RuleParsers\ExampleOverride;
+use MohammadAlavi\Laragen\RuleParsers\ContextAwareRuleParser;
 use Webmozart\Assert\Assert;
 
 final class RuleToSchema extends LaravelRulesToSchema
@@ -55,7 +55,7 @@ final class RuleToSchema extends LaravelRulesToSchema
         }
 
         foreach ($ruleSets as $property => $rawRules) {
-            $propertySchema = self::parseCustomRules($property, $rawRules, $schema, $ruleSets, $request);
+            $propertySchema = self::parseContextAwareRules($property, $rawRules, $schema, $ruleSets, $request);
 
             if ($propertySchema instanceof FluentSchema) {
                 $schema->object()->property($property, $propertySchema);
@@ -81,6 +81,11 @@ final class RuleToSchema extends LaravelRulesToSchema
 
             if (!$instance instanceof RuleParser) {
                 throw new \RuntimeException('Rule parsers must implement ' . RuleParser::class);
+            }
+
+            // Skip context-aware parsers in this phase — they run in parseContextAwareRules
+            if ($instance instanceof ContextAwareRuleParser) {
+                continue;
             }
 
             $newSchemas = [];
@@ -111,7 +116,7 @@ final class RuleToSchema extends LaravelRulesToSchema
         return $schemas;
     }
 
-    private static function parseCustomRules(string $name, array $nestedRuleset, FluentSchema $baseSchema, array $ruleSets, string|null $request): FluentSchema|array|null
+    private static function parseContextAwareRules(string $name, array $nestedRuleset, FluentSchema $baseSchema, array $ruleSets, string|null $request): FluentSchema|array|null
     {
         $validationRules = $nestedRuleset[config('rules-to-schema.validation_rule_token')] ?? [];
 
@@ -119,20 +124,30 @@ final class RuleToSchema extends LaravelRulesToSchema
 
         $newSchemas = [];
 
-        foreach ($schemas as $attribute => $schema) {
-            $resultSchema = app(ExampleOverride::class)($attribute, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets, $request);
+        foreach (\LaravelRulesToSchema\Facades\LaravelRulesToSchema::getParsers() as $parserClass) {
+            $instance = app($parserClass);
 
-            if (null === $resultSchema) {
+            if (!$instance instanceof ContextAwareRuleParser) {
                 continue;
             }
 
-            if (is_array($resultSchema)) {
-                $newSchemas = [...$newSchemas, ...$resultSchema];
-            } else {
-                $newSchemas[$attribute] = $resultSchema;
-            }
+            $contextualParser = $instance->withContext($baseSchema, $ruleSets, $request);
 
-            $schemas = $newSchemas;
+            foreach ($schemas as $attribute => $schema) {
+                $resultSchema = $contextualParser($attribute, $schema, $validationRules, $nestedRuleset);
+
+                if (null === $resultSchema) {
+                    continue;
+                }
+
+                if (is_array($resultSchema)) {
+                    $newSchemas = [...$newSchemas, ...$resultSchema];
+                } else {
+                    $newSchemas[$attribute] = $resultSchema;
+                }
+
+                $schemas = $newSchemas;
+            }
         }
 
         if (0 == count($schemas)) {

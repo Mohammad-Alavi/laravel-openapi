@@ -3,28 +3,36 @@
 namespace MohammadAlavi\Laragen\RuleParsers;
 
 use FluentJsonSchema\FluentSchema;
-use LaravelRulesToSchema\Contracts\RuleParser;
 
-final class RequiredWithoutParser implements RuleParser
+final class RequiredWithoutParser implements ContextAwareRuleParser
 {
+    private FluentSchema|null $baseSchema = null;
+
+    /** @var array<string, mixed>|null */
+    private array|null $allRules = null;
+
+    public function withContext(FluentSchema $baseSchema, array $allRules, string|null $request): static
+    {
+        $clone = clone $this;
+        $clone->baseSchema = $baseSchema;
+        $clone->allRules = $allRules;
+
+        return $clone;
+    }
+
     public function __invoke(
         string $attribute,
         FluentSchema $schema,
         array $validationRules,
         array $nestedRuleset,
     ): array|FluentSchema|null {
-        if (func_num_args() < 6) {
-            return $schema;
-        }
-        $baseSchema = func_get_arg(4);
-        $allRules = func_get_arg(5);
-        if (!($baseSchema instanceof FluentSchema) || !is_array($allRules)) {
+        if (null === $this->baseSchema || null === $this->allRules) {
             return $schema;
         }
 
         $shouldWrapInAllOf = false;
         $hasRequiredWithout = [];
-        foreach ($allRules as $attr => $ruleSet) {
+        foreach ($this->allRules as $attr => $ruleSet) {
             foreach ($ruleSet['##_VALIDATION_RULES_##'] as $set) {
                 [$rule, $args] = $set;
                 if ('required_without' === $rule) {
@@ -37,13 +45,13 @@ final class RequiredWithoutParser implements RuleParser
             return $schema;
         }
 
-        if (!$this->allAttributesHaveRequireWithRule($hasRequiredWithout, $allRules)) {
+        if (!$this->allAttributesHaveRequireWithRule($hasRequiredWithout, $this->allRules)) {
             $shouldWrapInAllOf = true;
         }
 
-        $lastAttribute = array_key_last($allRules);
+        $lastAttribute = array_key_last($this->allRules);
         if ($lastAttribute === $attribute) {
-            $properties = $baseSchema->getSchemaDTO()?->properties ?? [];
+            $properties = $this->baseSchema->getSchemaDTO()?->properties ?? [];
             /** @var array<string, FluentSchema> $allOf */
             $allOf = array_filter(
                 $properties,
@@ -70,22 +78,22 @@ final class RequiredWithoutParser implements RuleParser
                 ];
             }
 
-            $baseSchema->getSchemaDTO()->properties = null;
+            $this->baseSchema->getSchemaDTO()->properties = null;
             if ($shouldWrapInAllOf) {
                 $processedAllOf = [];
                 foreach ($allOf as $prop => $propSchema) {
                     $processedAllOf['properties'][$prop] = $propSchema;
                 }
-                if (!is_null($baseSchema->getSchemaDTO()->required) && [] !== $baseSchema->getSchemaDTO()->required) {
-                    $processedAllOf['required'] = $baseSchema->getSchemaDTO()->required;
+                if (!is_null($this->baseSchema->getSchemaDTO()->required) && [] !== $this->baseSchema->getSchemaDTO()->required) {
+                    $processedAllOf['required'] = $this->baseSchema->getSchemaDTO()->required;
                 }
-                $baseSchema->getSchemaDTO()->required = null;
-                $baseSchema->allOf([
+                $this->baseSchema->getSchemaDTO()->required = null;
+                $this->baseSchema->allOf([
                     ['oneOf' => $processedOneOf],
                     $processedAllOf,
                 ]);
             } else {
-                $baseSchema->oneOf($processedOneOf);
+                $this->baseSchema->oneOf($processedOneOf);
             }
         }
 
