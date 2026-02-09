@@ -9,6 +9,7 @@ use LaravelRulesToSchema\Parsers\MiscPropertyParser;
 use LaravelRulesToSchema\Parsers\NestedObjectParser;
 use LaravelRulesToSchema\Parsers\RequiredParser;
 use LaravelRulesToSchema\Parsers\TypeParser;
+use MohammadAlavi\Laragen\RuleParsers\CustomRuleDocsParser;
 use MohammadAlavi\Laragen\RuleParsers\ExampleOverride;
 use MohammadAlavi\Laragen\RuleParsers\FileUploadParser;
 use MohammadAlavi\Laragen\RuleParsers\PasswordParser;
@@ -35,6 +36,7 @@ return [
         ExcludedParser::class,
         ConfirmedParser::class,
         CustomRuleSchemaParser::class,
+        CustomRuleDocsParser::class,
         FileUploadParser::class,
         PasswordParser::class,
         ExampleOverride::class,
