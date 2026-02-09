@@ -30,7 +30,9 @@ final readonly class ValidationRulesSchemaBuilder implements RequestSchemaBuilde
 
     private static function determineTarget(Route $route): RequestTarget
     {
-        $method = strtoupper($route->methods()[0]);
+        /** @var string $httpMethod */
+        $httpMethod = $route->methods()[0];
+        $method = strtoupper($httpMethod);
 
         return match ($method) {
             'GET', 'DELETE', 'HEAD' => RequestTarget::QUERY,

@@ -27,8 +27,8 @@ final readonly class ValidationRulesDetector implements RequestDetector
         }
 
         $formRequest = $this->ruleExtractor->getFormRequestInstance($route);
-        $formRequestClass = $formRequest ? get_class($formRequest) : null;
+        $formRequestClass = null !== $formRequest ? get_class($formRequest) : null;
 
-        return new DetectedValidationRules($rules, $formRequestClass);
+        return new DetectedValidationRules($rules, $formRequestClass); // @phpstan-ignore argument.type (Scribe returns untyped array)
     }
 }

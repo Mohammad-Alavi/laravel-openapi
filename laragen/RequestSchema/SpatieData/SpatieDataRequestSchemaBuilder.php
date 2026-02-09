@@ -28,11 +28,10 @@ final readonly class SpatieDataRequestSchemaBuilder implements RequestSchemaBuil
 
         Assert::isInstanceOf($jsonSchema, Compilable::class);
 
-        /** @var Compilable $jsonSchema */
         $compiled = $jsonSchema->compile();
 
         return new RequestSchemaResult(
-            schema: Schema::from(is_array($compiled) ? $compiled : []),
+            schema: Schema::from($compiled),
             target: RequestTarget::BODY,
             encoding: ContentEncoding::JSON,
         );

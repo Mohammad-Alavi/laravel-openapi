@@ -45,8 +45,8 @@ describe('RequestSchema extensibility', function (): void {
         $resolver = app(RequestSchemaResolver::class);
 
         // Register a real route with a controller that has no FormRequest or SpatieData params
-        \Illuminate\Support\Facades\Route::post('/fallback', [Tests\Laragen\Support\Doubles\E2E\E2EController::class, 'delete']);
-        $route = \Illuminate\Support\Facades\Route::getRoutes()->getByAction(Tests\Laragen\Support\Doubles\E2E\E2EController::class . '@delete');
+        Illuminate\Support\Facades\Route::post('/fallback', [Tests\Laragen\Support\Doubles\E2E\E2EController::class, 'delete']);
+        $route = Illuminate\Support\Facades\Route::getRoutes()->getByAction(Tests\Laragen\Support\Doubles\E2E\E2EController::class . '@delete');
 
         $result = $resolver->resolve($route, Tests\Laragen\Support\Doubles\E2E\E2EController::class, 'delete');
 

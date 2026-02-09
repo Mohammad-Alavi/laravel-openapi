@@ -8,7 +8,6 @@ use MohammadAlavi\Laragen\RequestSchema\RequestSchemaResult;
 use MohammadAlavi\Laragen\RequestSchema\RequestTarget;
 use MohammadAlavi\Laragen\RequestSchema\ValidationRules\ValidationRulesDetector;
 use MohammadAlavi\Laragen\RequestSchema\ValidationRules\ValidationRulesSchemaBuilder;
-use MohammadAlavi\Laragen\Support\RuleExtractor;
 use Tests\Laragen\Support\Doubles\E2E\E2EController;
 use Tests\Laragen\Support\Doubles\E2E\E2EFormRequest;
 

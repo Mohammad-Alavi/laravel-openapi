@@ -39,7 +39,7 @@ final readonly class SpatieDataRequestDetector implements RequestDetector
             $typeName = $type->getName();
 
             if (is_subclass_of($typeName, Data::class)) {
-                /** @var class-string<Data> $typeName */
+                /* @var class-string<Data> $typeName */
                 return $typeName;
             }
         }

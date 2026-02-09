@@ -11,6 +11,8 @@ use MohammadAlavi\Laragen\ExampleGenerator\Email;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleProvider;
 use MohammadAlavi\Laragen\ExampleGenerator\Integer;
 use MohammadAlavi\Laragen\ExampleGenerator\Password;
+use MohammadAlavi\Laragen\RequestSchema\RequestDetector;
+use MohammadAlavi\Laragen\RequestSchema\RequestSchemaBuilder;
 use MohammadAlavi\Laragen\RequestSchema\RequestSchemaResolver;
 use MohammadAlavi\Laragen\RequestSchema\RequestStrategy;
 use MohammadAlavi\Laragen\RequestSchema\SpatieData\SpatieDataRequestDetector;
@@ -25,6 +27,8 @@ use MohammadAlavi\Laragen\ResponseSchema\JsonResource\JsonResourceDetector;
 use MohammadAlavi\Laragen\ResponseSchema\JsonResource\JsonResourceSchemaBuilder;
 use MohammadAlavi\Laragen\ResponseSchema\ResourceCollection\ResourceCollectionDetector;
 use MohammadAlavi\Laragen\ResponseSchema\ResourceCollection\ResourceCollectionSchemaBuilder;
+use MohammadAlavi\Laragen\ResponseSchema\ResponseDetector;
+use MohammadAlavi\Laragen\ResponseSchema\ResponseSchemaBuilder;
 use MohammadAlavi\Laragen\ResponseSchema\ResponseSchemaResolver;
 use MohammadAlavi\Laragen\ResponseSchema\ResponseStrategy;
 use MohammadAlavi\Laragen\ResponseSchema\SpatieData\SpatieDataDetector;
@@ -161,10 +165,14 @@ final class LaragenServiceProvider extends ServiceProvider
     private static function buildRequestStrategiesFromConfig(Application $app, array $config): array
     {
         return array_map(
-            static fn (array $pair): RequestStrategy => new RequestStrategy(
-                $app->make($pair[0]),
-                $app->make($pair[1]),
-            ),
+            static function (array $pair) use ($app): RequestStrategy {
+                /** @var RequestDetector $detector */
+                $detector = $app->make($pair[0]);
+                /** @var RequestSchemaBuilder $builder */
+                $builder = $app->make($pair[1]);
+
+                return new RequestStrategy($detector, $builder);
+            },
             $config,
         );
     }
@@ -177,10 +185,14 @@ final class LaragenServiceProvider extends ServiceProvider
     private static function buildResponseStrategiesFromConfig(Application $app, array $config): array
     {
         return array_map(
-            static fn (array $pair): ResponseStrategy => new ResponseStrategy(
-                $app->make($pair[0]),
-                $app->make($pair[1]),
-            ),
+            static function (array $pair) use ($app): ResponseStrategy {
+                /** @var ResponseDetector $detector */
+                $detector = $app->make($pair[0]);
+                /** @var ResponseSchemaBuilder $builder */
+                $builder = $app->make($pair[1]);
+
+                return new ResponseStrategy($detector, $builder);
+            },
             $config,
         );
     }
