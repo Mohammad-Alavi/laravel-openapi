@@ -18,6 +18,11 @@ class E2EController
         return new E2EResource(null);
     }
 
+    // File upload with image validation rule
+    public function upload(E2EFileUploadFormRequest $request): void
+    {
+    }
+
     // No typed return — should not get auto-response
     public function delete(): void
     {

@@ -14,6 +14,8 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 final readonly class ValidationRulesSchemaBuilder implements RequestSchemaBuilder
 {
+    private const FILE_RULES = ['file', 'image', 'mimes', 'mimetypes'];
+
     public function build(mixed $detected, Route $route): RequestSchemaResult
     {
         $schema = RuleToSchema::transform($route)->compile();
@@ -21,10 +23,15 @@ final readonly class ValidationRulesSchemaBuilder implements RequestSchemaBuilde
             ? Schema::from($schema)
             : Schema::from([]);
 
+        /** @var DetectedValidationRules|null $detected */
+        $encoding = null !== $detected && self::hasFileRules($detected)
+            ? ContentEncoding::MULTIPART_FORM_DATA
+            : ContentEncoding::JSON;
+
         return new RequestSchemaResult(
             schema: $objectSchema,
             target: self::determineTarget($route),
-            encoding: ContentEncoding::JSON,
+            encoding: $encoding,
         );
     }
 
@@ -38,5 +45,24 @@ final readonly class ValidationRulesSchemaBuilder implements RequestSchemaBuilde
             'GET', 'DELETE', 'HEAD' => RequestTarget::QUERY,
             default => RequestTarget::BODY,
         };
+    }
+
+    private static function hasFileRules(DetectedValidationRules $detected): bool
+    {
+        foreach ($detected->rules as $fieldRules) {
+            if (!is_array($fieldRules)) {
+                continue;
+            }
+
+            foreach ($fieldRules as $rule) {
+                $ruleName = is_string($rule) ? explode(':', $rule)[0] : null;
+
+                if (null !== $ruleName && in_array($ruleName, self::FILE_RULES, true)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
