@@ -13,6 +13,7 @@ use MohammadAlavi\Laragen\PathParameters\PathParameterAnalyzer;
 use MohammadAlavi\Laragen\RequestSchema\ContentEncoding;
 use MohammadAlavi\Laragen\RequestSchema\RequestSchemaResolver;
 use MohammadAlavi\Laragen\RequestSchema\RequestTarget;
+use MohammadAlavi\Laragen\RequestSchema\SchemaToQueryParameters;
 use MohammadAlavi\Laragen\ResponseSchema\ResponseSchemaResolver;
 use MohammadAlavi\Laragen\RouteDiscovery\AutoRouteCollector;
 use MohammadAlavi\Laragen\RouteDiscovery\PatternMatcher;
@@ -314,8 +315,17 @@ final readonly class Laragen
             return $operation->requestBody(RequestBody::create($contentEntry));
         }
 
-        // RequestTarget::QUERY — handled in Phase 2
-        return $operation;
+        $queryParameters = (new SchemaToQueryParameters())->convert(
+            self::enrichObjectWithExample($result->schema),
+        );
+
+        if ([] === $queryParameters) {
+            return $operation;
+        }
+
+        return $operation->parameters(
+            Parameters::create(...$queryParameters),
+        );
     }
 
     private static function enrichWithResponse(
