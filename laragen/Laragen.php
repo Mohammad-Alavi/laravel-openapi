@@ -139,6 +139,7 @@ final readonly class Laragen
         $securityRegistry = app(SecuritySchemeRegistry::class);
         $pathParameterAnalyzer = app(PathParameterAnalyzer::class);
         $responseSchemaResolver = app(ResponseSchemaResolver::class);
+        $requestBodyEnabled = config()->boolean('laragen.autogen.request_body');
         $securityEnabled = config()->boolean('laragen.autogen.security');
         $pathParamsEnabled = config()->boolean('laragen.autogen.path_parameters');
         $responseEnabled = config()->boolean('laragen.autogen.response');
@@ -150,7 +151,7 @@ final readonly class Laragen
             Paths::create(
                 ...collect($pathEntries)
                 ->map(
-                    static function (Path $path) use ($authDetector, $securityRegistry, $pathParameterAnalyzer, $responseSchemaResolver, $securityEnabled, $pathParamsEnabled, $responseEnabled): Path {
+                    static function (Path $path) use ($authDetector, $securityRegistry, $pathParameterAnalyzer, $responseSchemaResolver, $requestBodyEnabled, $securityEnabled, $pathParamsEnabled, $responseEnabled): Path {
                         /** @var Operations $operations */
                         $operations = $path->value()->getOperations();
                         /** @var AvailableOperation[] $availableOperations */
@@ -166,7 +167,7 @@ final readonly class Laragen
                                 $pathRoute = $route;
                             }
 
-                            if (!is_null($route) && !self::hasRequestBody($availableOperation)) {
+                            if ($requestBodyEnabled && !is_null($route) && !self::hasRequestBody($availableOperation)) {
                                 $schema = self::extractRequestBodySchema($route);
 
                                 if (self::hasAtLeastOneProperty($schema)) {

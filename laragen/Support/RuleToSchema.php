@@ -8,10 +8,7 @@ use Illuminate\Routing\Route;
 use LaravelRulesToSchema\Contracts\RuleParser;
 use LaravelRulesToSchema\LaravelRulesToSchema;
 use LaravelRulesToSchema\ValidationRuleNormalizer;
-use Mockery\Exception;
 use MohammadAlavi\Laragen\RuleParsers\ExampleOverride;
-use MohammadAlavi\Laragen\RuleParsers\RequiredWithoutParser;
-use MohammadAlavi\Laragen\RuleParsers\RequiredWithParser;
 use Webmozart\Assert\Assert;
 
 final class RuleToSchema extends LaravelRulesToSchema
@@ -83,7 +80,7 @@ final class RuleToSchema extends LaravelRulesToSchema
             $instance = app($parserClass);
 
             if (!$instance instanceof RuleParser) {
-                throw new Exception('Rule parsers must implement ' . RuleParser::class);
+                throw new \RuntimeException('Rule parsers must implement ' . RuleParser::class);
             }
 
             $newSchemas = [];
@@ -124,8 +121,6 @@ final class RuleToSchema extends LaravelRulesToSchema
 
         foreach ($schemas as $attribute => $schema) {
             $resultSchema = app(ExampleOverride::class)($attribute, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets, $request);
-            //            app(RequiredWithoutParser::class)($attribute, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets);
-            //            app(RequiredWithParser::class)($attribute, $schema, $validationRules, $nestedRuleset, $baseSchema, $ruleSets);
 
             if (null === $resultSchema) {
                 continue;
