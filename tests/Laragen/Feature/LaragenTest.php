@@ -4,6 +4,7 @@ use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use MohammadAlavi\Laragen\Laragen;
 use MohammadAlavi\Laragen\RequestSchema\Parsers\RequiredWithoutParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\RequiredWithParser;
 use Tests\Laragen\Support\Doubles\ExtractController;
 use Tests\Laragen\Support\Doubles\RequireWith\RequireWithController;
 
@@ -43,25 +44,19 @@ describe(class_basename(Laragen::class), function () {
         ]);
     })->todo();
 
-    $name = [
-        'properties' => [
-            'name' => [
-                'type' => 'string',
-                'maxLength' => 20,
-                'minLength' => 3,
-            ],
+    $nameProperty = [
+        'name' => [
+            'type' => 'string',
+            'maxLength' => 20,
+            'minLength' => 3,
         ],
-        'required' => ['email'],
     ];
 
-    $email = [
-        'properties' => [
-            'email' => [
-                'type' => 'string',
-                'format' => 'email',
-            ],
+    $emailProperty = [
+        'email' => [
+            'type' => 'string',
+            'format' => 'email',
         ],
-        'required' => ['name'],
     ];
 
     $password = [
@@ -91,76 +86,84 @@ describe(class_basename(Laragen::class), function () {
         ],
     ];
 
+    $ifEmailThenName = ['if' => ['required' => ['email']], 'then' => ['required' => ['name']]];
+    $ifNameThenEmail = ['if' => ['required' => ['name']], 'then' => ['required' => ['email']]];
+    $ifNameOrEmailThenAge = [
+        'if' => ['anyOf' => [['required' => ['name']], ['required' => ['email']]]],
+        'then' => ['required' => ['age']],
+    ];
+
     it(
         'can parse required_with rules',
         function (Route $route, array $expectation): void {
             config(['laragen.autogen.example' => false]);
 
-            expect(Laragen::extractRequestBodySchema($route)->compile())->toEqualCanonicalizing($expectation);
+            $compiled = Laragen::extractRequestBodySchema($route)->compile();
+            expect($compiled)->toBe($expectation);
         },
     )->with([
         'justTwoRequireWithRules' => [
             fn (): Route => RouteFacade::get('test', [RequireWithController::class, 'justTwoRequireWithRules']),
             [
+                'allOf' => [
+                    $ifEmailThenName,
+                    $ifNameThenEmail,
+                ],
                 'type' => 'object',
-                'anyOf' => [
-                    $name,
-                    $email,
+                'properties' => [
+                    ...$nameProperty,
+                    ...$emailProperty,
                 ],
             ],
         ],
         'justThreeRequireWithRules' => [
             fn (): Route => RouteFacade::get('test', [RequireWithController::class, 'justThreeRequireWithRules']),
             [
+                'allOf' => [
+                    $ifEmailThenName,
+                    $ifNameThenEmail,
+                    $ifNameOrEmailThenAge,
+                ],
                 'type' => 'object',
-                'anyOf' => [
-                    $name,
-                    $email,
-                    [
-                        'properties' => $age,
-                        'required' => ['name', 'email'],
-                    ],
+                'properties' => [
+                    ...$nameProperty,
+                    ...$emailProperty,
+                    ...$age,
                 ],
             ],
         ],
         'withAfterRule' => [
             fn (): Route => RouteFacade::get('test', [RequireWithController::class, 'withAfterRule']),
             [
-                'type' => 'object',
                 'allOf' => [
-                    [
-                        'anyOf' => [
-                            $name,
-                            $email,
-                        ],
-                    ],
-                    [
-                        'properties' => $age,
-                    ],
+                    $ifEmailThenName,
+                    $ifNameThenEmail,
+                ],
+                'type' => 'object',
+                'properties' => [
+                    ...$nameProperty,
+                    ...$emailProperty,
+                    ...$age,
                 ],
             ],
         ],
         'withBeforeAfterRules' => [
             fn (): Route => RouteFacade::get('test', [RequireWithController::class, 'withBeforeAfterRules']),
             [
-                'type' => 'object',
                 'allOf' => [
-                    [
-                        'anyOf' => [
-                            $name,
-                            $email,
-                        ],
-                    ],
-                    [
-                        'properties' => [
-                            ...$password,
-                            ...$passwordConfirmed,
-                            ...$address,
-                            ...$age,
-                        ],
-                        'required' => ['address', 'password', 'password_confirmed'],
-                    ],
+                    $ifEmailThenName,
+                    $ifNameThenEmail,
                 ],
+                'type' => 'object',
+                'properties' => [
+                    ...$password,
+                    ...$passwordConfirmed,
+                    ...$address,
+                    ...$nameProperty,
+                    ...$emailProperty,
+                    ...$age,
+                ],
+                'required' => ['password', 'password_confirmed', 'address'],
             ],
         ],
         'withoutRequireWithRule' => [
@@ -173,70 +176,58 @@ describe(class_basename(Laragen::class), function () {
         'withMixedOrderRulesRequest' => [
             fn (): Route => RouteFacade::get('test', [RequireWithController::class, 'withMixedOrderRulesRequest']),
             [
-                'type' => 'object',
                 'allOf' => [
-                    [
-                        'anyOf' => [
-                            $email,
-                            $name,
-                        ],
-                    ],
-                    [
-                        'properties' => [
-                            ...$password,
-                            ...$passwordConfirmed,
-                            ...$address,
-                            ...$age,
-                        ],
-                        'required' => ['address', 'password', 'password_confirmed'],
-                    ],
+                    $ifNameThenEmail,
+                    $ifEmailThenName,
                 ],
+                'type' => 'object',
+                'properties' => [
+                    ...$password,
+                    ...$passwordConfirmed,
+                    ...$emailProperty,
+                    ...$address,
+                    ...$nameProperty,
+                    ...$age,
+                ],
+                'required' => ['password', 'password_confirmed', 'address'],
             ],
         ],
         'anotherWithMixedOrderRulesRequest' => [
             fn (): Route => RouteFacade::get('test', [RequireWithController::class, 'anotherWithMixedOrderRulesRequest']),
             [
-                'type' => 'object',
                 'allOf' => [
-                    [
-                        'anyOf' => [
-                            $name,
-                            $email,
-                        ],
-                    ],
-                    [
-                        'properties' => [
-                            ...$password,
-                            ...$passwordConfirmed,
-                            ...$age,
-                            ...$address,
-                        ],
-                        'required' => ['address', 'password', 'password_confirmed'],
-                    ],
+                    $ifEmailThenName,
+                    $ifNameThenEmail,
                 ],
+                'type' => 'object',
+                'properties' => [
+                    ...$password,
+                    ...$passwordConfirmed,
+                    ...$nameProperty,
+                    ...$age,
+                    ...$emailProperty,
+                    ...$address,
+                ],
+                'required' => ['password', 'password_confirmed', 'address'],
             ],
         ],
         'withEverythingMixedRulesRequest' => [
             fn (): Route => RouteFacade::get('test', [RequireWithController::class, 'withEverythingMixedRulesRequest']),
             [
-                'type' => 'object',
                 'allOf' => [
-                    [
-                        'anyOf' => [
-                            $email,
-                            $name,
-                        ],
-                    ],
-                    [
-                        'properties' => [
-                            ...$password,
-                            ...$passwordConfirmed,
-                            ...$address,
-                            ...$age,
-                        ],
-                        'required' => ['address', 'password', 'password_confirmed'],
-                    ],
+                    $ifNameThenEmail,
+                    $ifEmailThenName,
                 ],
+                'type' => 'object',
+                'properties' => [
+                    ...$password,
+                    ...$passwordConfirmed,
+                    ...$emailProperty,
+                    ...$address,
+                    ...$nameProperty,
+                    ...$age,
+                ],
+                'required' => ['password', 'password_confirmed', 'address'],
             ],
         ],
     ]);
@@ -253,4 +244,4 @@ describe(class_basename(Laragen::class), function () {
             },
         );
     });
-})->covers(Laragen::class, RequiredWithoutParser::class);
+})->covers(Laragen::class, RequiredWithParser::class, RequiredWithoutParser::class);
