@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use MohammadAlavi\Laragen\Support\RuleToSchema;
+use MohammadAlavi\Laragen\RequestSchema\RuleToSchema;
 use Tests\Laragen\Support\Doubles\SometimesFormRequest;
 
 describe('sometimes rule', function (): void {

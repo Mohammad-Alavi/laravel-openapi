@@ -1,7 +1,7 @@
 <?php
 
 use Knuckles\Scribe\Extracting\Strategies\BodyParameters\GetFromFormRequest as GetFromFormRequestBase;
-use MohammadAlavi\Laragen\Support\RuleExtractor;
+use MohammadAlavi\Laragen\RequestSchema\RuleExtractor;
 use Tests\Laragen\Support\Doubles\ExtractController;
 
 describe(class_basename(RuleExtractor::class), function () {

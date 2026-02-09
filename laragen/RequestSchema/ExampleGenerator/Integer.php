@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\Laragen\ExampleGenerator;
+namespace MohammadAlavi\Laragen\RequestSchema\ExampleGenerator;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\DefinedFormat;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Formats\IntegerFormat;

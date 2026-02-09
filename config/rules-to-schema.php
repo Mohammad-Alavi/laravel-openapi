@@ -9,11 +9,11 @@ use LaravelRulesToSchema\Parsers\MiscPropertyParser;
 use LaravelRulesToSchema\Parsers\NestedObjectParser;
 use LaravelRulesToSchema\Parsers\RequiredParser;
 use LaravelRulesToSchema\Parsers\TypeParser;
-use MohammadAlavi\Laragen\RuleParsers\CustomRuleDocsParser;
-use MohammadAlavi\Laragen\RuleParsers\ExampleOverride;
-use MohammadAlavi\Laragen\RuleParsers\FileUploadParser;
-use MohammadAlavi\Laragen\RuleParsers\PasswordParser;
-use MohammadAlavi\Laragen\RuleParsers\RequiredWithParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\CustomRuleDocsParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\ExampleOverride;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\FileUploadParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\PasswordParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\RequiredWithParser;
 
 return [
     /*

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use FluentJsonSchema\FluentSchema;
-use MohammadAlavi\Laragen\RuleParsers\FileUploadParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\FileUploadParser;
 
 describe(class_basename(FileUploadParser::class), function (): void {
     it('sets type string and format binary for file rule', function (): void {

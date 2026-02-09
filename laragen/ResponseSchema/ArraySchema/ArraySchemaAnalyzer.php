@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MohammadAlavi\Laragen\ArraySchema;
+namespace MohammadAlavi\Laragen\ResponseSchema\ArraySchema;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr;

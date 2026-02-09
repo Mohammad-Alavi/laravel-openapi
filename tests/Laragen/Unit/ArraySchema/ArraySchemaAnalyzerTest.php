@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use MohammadAlavi\Laragen\ArraySchema\ArrayField;
-use MohammadAlavi\Laragen\ArraySchema\ArraySchemaAnalyzer;
+use MohammadAlavi\Laragen\ResponseSchema\ArraySchema\ArrayField;
+use MohammadAlavi\Laragen\ResponseSchema\ArraySchema\ArraySchemaAnalyzer;
 use Tests\Laragen\Support\Doubles\Resources\PostResource;
 use Tests\Laragen\Support\Doubles\Resources\ResourceWithCasts;
 use Tests\Laragen\Support\Doubles\Resources\ResourceWithClassConstants;

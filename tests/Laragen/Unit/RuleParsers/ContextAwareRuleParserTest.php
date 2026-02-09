@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use FluentJsonSchema\FluentSchema;
 use LaravelRulesToSchema\Contracts\RuleParser;
-use MohammadAlavi\Laragen\RuleParsers\ContextAwareRuleParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\ContextAwareRuleParser;
 
 describe(class_basename(ContextAwareRuleParser::class), function (): void {
     it('extends the RuleParser interface', function (): void {

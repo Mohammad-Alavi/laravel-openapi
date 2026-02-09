@@ -6,7 +6,7 @@ namespace MohammadAlavi\Laragen\RequestSchema\ValidationRules;
 
 use Illuminate\Routing\Route;
 use MohammadAlavi\Laragen\RequestSchema\RequestDetector;
-use MohammadAlavi\Laragen\Support\RuleExtractor;
+use MohammadAlavi\Laragen\RequestSchema\RuleExtractor;
 
 final readonly class ValidationRulesDetector implements RequestDetector
 {

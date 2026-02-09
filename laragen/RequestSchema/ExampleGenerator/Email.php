@@ -1,24 +1,24 @@
 <?php
 
-namespace MohammadAlavi\Laragen\ExampleGenerator;
+namespace MohammadAlavi\Laragen\RequestSchema\ExampleGenerator;
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\DefinedFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
 
-final readonly class Password extends Example
+final readonly class Email extends Example
 {
     public static function rule(): string
     {
-        return \Illuminate\Validation\Rules\Password::class;
+        return 'email';
     }
 
     public function values(): array
     {
-        return [fake()->password($this->schema->getSchemaDTO()->minLength)];
+        return ['example@laragen.com'];
     }
 
     public function format(): DefinedFormat
     {
-        return StringFormat::PASSWORD;
+        return StringFormat::EMAIL;
     }
 }

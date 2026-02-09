@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\Laragen\Support;
+namespace MohammadAlavi\Laragen\RequestSchema\ExampleGenerator;
 
 enum Applicator: string
 {

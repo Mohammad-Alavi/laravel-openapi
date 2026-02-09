@@ -1,10 +1,11 @@
 <?php
 
-namespace MohammadAlavi\Laragen;
+namespace MohammadAlavi\Laragen\Scribe;
 
 use Illuminate\Support\Arr;
 use Knuckles\Camel\Output\OutputEndpointData;
 use Knuckles\Scribe\Writing\OpenApiSpecGenerators\BaseGenerator as ScribeOpenApiGenerator;
+use MohammadAlavi\Laragen\Laragen;
 
 final class OpenAPIGenerator extends ScribeOpenApiGenerator
 {

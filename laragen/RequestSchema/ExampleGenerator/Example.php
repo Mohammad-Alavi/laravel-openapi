@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\Laragen\ExampleGenerator;
+namespace MohammadAlavi\Laragen\RequestSchema\ExampleGenerator;
 
 use FluentJsonSchema\FluentSchema;
 use Illuminate\Foundation\Http\FormRequest;

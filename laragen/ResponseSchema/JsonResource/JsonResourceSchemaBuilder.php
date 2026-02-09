@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace MohammadAlavi\Laragen\ResponseSchema\JsonResource;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use MohammadAlavi\Laragen\ArraySchema\ArrayField;
-use MohammadAlavi\Laragen\ArraySchema\ArraySchemaAnalyzer;
 use MohammadAlavi\Laragen\ModelSchema\ModelSchemaInferrer;
+use MohammadAlavi\Laragen\ResponseSchema\ArraySchema\ArrayField;
+use MohammadAlavi\Laragen\ResponseSchema\ArraySchema\ArraySchemaAnalyzer;
 use MohammadAlavi\Laragen\ResponseSchema\ResponseSchemaBuilder;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Compilable;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;

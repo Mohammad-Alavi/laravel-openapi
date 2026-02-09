@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\Laragen\Support;
+namespace MohammadAlavi\Laragen\RequestSchema;
 
 use FluentJsonSchema\FluentSchema;
 use Illuminate\Foundation\Http\FormRequest;
@@ -8,7 +8,7 @@ use Illuminate\Routing\Route;
 use LaravelRulesToSchema\Contracts\RuleParser;
 use LaravelRulesToSchema\LaravelRulesToSchema;
 use LaravelRulesToSchema\ValidationRuleNormalizer;
-use MohammadAlavi\Laragen\RuleParsers\ContextAwareRuleParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\ContextAwareRuleParser;
 use Webmozart\Assert\Assert;
 
 final class RuleToSchema extends LaravelRulesToSchema

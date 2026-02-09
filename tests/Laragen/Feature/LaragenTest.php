@@ -3,7 +3,7 @@
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use MohammadAlavi\Laragen\Laragen;
-use MohammadAlavi\Laragen\RuleParsers\RequiredWithoutParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\RequiredWithoutParser;
 use Tests\Laragen\Support\Doubles\ExtractController;
 use Tests\Laragen\Support\Doubles\RequireWith\RequireWithController;
 

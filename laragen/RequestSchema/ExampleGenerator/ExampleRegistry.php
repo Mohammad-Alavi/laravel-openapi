@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MohammadAlavi\Laragen\ExampleGenerator;
+namespace MohammadAlavi\Laragen\RequestSchema\ExampleGenerator;
 
 final readonly class ExampleRegistry
 {

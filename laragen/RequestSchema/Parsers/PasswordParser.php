@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\Laragen\RuleParsers;
+namespace MohammadAlavi\Laragen\RequestSchema\Parsers;
 
 use FluentJsonSchema\FluentSchema;
 use Illuminate\Validation\Rules\Password;

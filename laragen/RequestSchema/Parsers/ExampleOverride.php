@@ -1,10 +1,10 @@
 <?php
 
-namespace MohammadAlavi\Laragen\RuleParsers;
+namespace MohammadAlavi\Laragen\RequestSchema\Parsers;
 
 use FluentJsonSchema\FluentSchema;
-use MohammadAlavi\Laragen\ExampleGenerator\Example;
-use MohammadAlavi\Laragen\ExampleGenerator\ExampleRegistry;
+use MohammadAlavi\Laragen\RequestSchema\ExampleGenerator\Example;
+use MohammadAlavi\Laragen\RequestSchema\ExampleGenerator\ExampleRegistry;
 
 final class ExampleOverride implements ContextAwareRuleParser
 {

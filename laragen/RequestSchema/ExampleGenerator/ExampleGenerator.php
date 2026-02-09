@@ -1,8 +1,7 @@
 <?php
 
-namespace MohammadAlavi\Laragen\ExampleGenerator;
+namespace MohammadAlavi\Laragen\RequestSchema\ExampleGenerator;
 
-use MohammadAlavi\Laragen\Support\Applicator;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 

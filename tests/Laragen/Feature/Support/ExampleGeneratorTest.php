@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\Laragen\ExampleGenerator\ExampleGenerator;
+use MohammadAlavi\Laragen\RequestSchema\ExampleGenerator\ExampleGenerator;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\StrictFluentDescriptor;

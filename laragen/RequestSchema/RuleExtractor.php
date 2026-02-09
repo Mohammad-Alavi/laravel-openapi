@@ -1,6 +1,6 @@
 <?php
 
-namespace MohammadAlavi\Laragen\Support;
+namespace MohammadAlavi\Laragen\RequestSchema;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Routing\Route;

@@ -1,10 +1,10 @@
 <?php
 
-namespace MohammadAlavi\Laragen\RuleParsers;
+namespace MohammadAlavi\Laragen\RequestSchema\Parsers;
 
 use FluentJsonSchema\FluentSchema;
 
-final class RequiredWithParser implements ContextAwareRuleParser
+final class RequiredWithoutParser implements ContextAwareRuleParser
 {
     private FluentSchema|null $baseSchema = null;
 
@@ -31,21 +31,21 @@ final class RequiredWithParser implements ContextAwareRuleParser
         }
 
         $shouldWrapInAllOf = false;
-        $hasRequiredWith = [];
+        $hasRequiredWithout = [];
         foreach ($this->allRules as $attr => $ruleSet) {
             foreach ($ruleSet['##_VALIDATION_RULES_##'] as $set) {
                 [$rule, $args] = $set;
-                if ('required_with' === $rule) {
-                    $hasRequiredWith[$attr] = $args;
+                if ('required_without' === $rule) {
+                    $hasRequiredWithout[$attr] = $args;
                 }
             }
         }
 
-        if ([] === $hasRequiredWith) {
+        if ([] === $hasRequiredWithout) {
             return $schema;
         }
 
-        if (!$this->allAttributesHaveRequiredWithRule($hasRequiredWith, $this->allRules)) {
+        if (!$this->allAttributesHaveRequireWithRule($hasRequiredWithout, $this->allRules)) {
             $shouldWrapInAllOf = true;
         }
 
@@ -55,16 +55,16 @@ final class RequiredWithParser implements ContextAwareRuleParser
             /** @var array<string, FluentSchema> $allOf */
             $allOf = array_filter(
                 $properties,
-                static function (FluentSchema $schema, string $property) use ($hasRequiredWith) {
-                    return !array_key_exists($property, $hasRequiredWith);
+                static function (FluentSchema $schema, string $property) use ($hasRequiredWithout) {
+                    return !array_key_exists($property, $hasRequiredWithout);
                 },
                 ARRAY_FILTER_USE_BOTH,
             );
             /** @var array<string, FluentSchema> $oneOf */
             $oneOf = array_filter(
                 $properties,
-                static function (FluentSchema $schema, string $property) use ($hasRequiredWith) {
-                    return array_key_exists($property, $hasRequiredWith);
+                static function (FluentSchema $schema, string $property) use ($hasRequiredWithout) {
+                    return array_key_exists($property, $hasRequiredWithout);
                 },
                 ARRAY_FILTER_USE_BOTH,
             );
@@ -74,7 +74,7 @@ final class RequiredWithParser implements ContextAwareRuleParser
                     'properties' => [
                         $prop => $propSchema,
                     ],
-                    'required' => $hasRequiredWith[$prop],
+                    'required' => $prop,
                 ];
             }
 
@@ -89,19 +89,19 @@ final class RequiredWithParser implements ContextAwareRuleParser
                 }
                 $this->baseSchema->getSchemaDTO()->required = null;
                 $this->baseSchema->allOf([
-                    ['anyOf' => $processedOneOf],
+                    ['oneOf' => $processedOneOf],
                     $processedAllOf,
                 ]);
             } else {
-                $this->baseSchema->anyOf($processedOneOf);
+                $this->baseSchema->oneOf($processedOneOf);
             }
         }
 
         return $schema;
     }
 
-    private function allAttributesHaveRequiredWithRule(array $hasRequiredWith, array $allRules): bool
+    private function allAttributesHaveRequireWithRule(array $hasRequiredWithout, array $allRules): bool
     {
-        return count($allRules) === count($hasRequiredWith);
+        return count($allRules) === count($hasRequiredWithout);
     }
 }

@@ -9,7 +9,7 @@ use MohammadAlavi\Laragen\RequestSchema\ContentEncoding;
 use MohammadAlavi\Laragen\RequestSchema\RequestSchemaBuilder;
 use MohammadAlavi\Laragen\RequestSchema\RequestSchemaResult;
 use MohammadAlavi\Laragen\RequestSchema\RequestTarget;
-use MohammadAlavi\Laragen\Support\RuleToSchema;
+use MohammadAlavi\Laragen\RequestSchema\RuleToSchema;
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 
 final readonly class ValidationRulesSchemaBuilder implements RequestSchemaBuilder

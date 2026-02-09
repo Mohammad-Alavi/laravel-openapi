@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use MohammadAlavi\Laragen\ExampleGenerator\Date;
-use MohammadAlavi\Laragen\ExampleGenerator\Email;
-use MohammadAlavi\Laragen\ExampleGenerator\ExampleRegistry;
+use MohammadAlavi\Laragen\RequestSchema\ExampleGenerator\Date;
+use MohammadAlavi\Laragen\RequestSchema\ExampleGenerator\Email;
+use MohammadAlavi\Laragen\RequestSchema\ExampleGenerator\ExampleRegistry;
 
 describe(class_basename(ExampleRegistry::class), function (): void {
     it('registers and retrieves examples by rule name', function (): void {

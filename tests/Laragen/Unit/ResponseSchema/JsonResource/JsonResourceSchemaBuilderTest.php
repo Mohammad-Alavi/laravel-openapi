@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use MohammadAlavi\Laragen\ArraySchema\ArraySchemaAnalyzer;
 use MohammadAlavi\Laragen\ModelSchema\ModelSchemaInferrer;
+use MohammadAlavi\Laragen\ResponseSchema\ArraySchema\ArraySchemaAnalyzer;
 use MohammadAlavi\Laragen\ResponseSchema\JsonResource\JsonResourceModelDetector;
 use MohammadAlavi\Laragen\ResponseSchema\JsonResource\JsonResourceSchemaBuilder;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;

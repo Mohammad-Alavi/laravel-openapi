@@ -3,7 +3,7 @@
 use Knuckles\Scribe\Config\AuthIn;
 use Knuckles\Scribe\Config\Defaults;
 use Knuckles\Scribe\Extracting\Strategies;
-use MohammadAlavi\Laragen\OpenAPIGenerator;
+use MohammadAlavi\Laragen\Scribe\OpenAPIGenerator;
 
 use function Knuckles\Scribe\Config\configureStrategy;
 use function Knuckles\Scribe\Config\removeStrategies;

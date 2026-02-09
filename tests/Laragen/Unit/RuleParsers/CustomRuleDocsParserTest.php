@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use FluentJsonSchema\FluentSchema;
-use MohammadAlavi\Laragen\RuleParsers\CustomRuleDocsParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\CustomRuleDocsParser;
 use Tests\Laragen\Support\Doubles\Rules\DocumentedRule;
 use Tests\Laragen\Support\Doubles\Rules\EnumDocumentedRule;
 use Tests\Laragen\Support\Doubles\Rules\UndocumentedRule;
