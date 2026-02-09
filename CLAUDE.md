@@ -79,7 +79,7 @@ From `agent.md`:
 - **Webmozart\Assert** for assertions (not runtime validation)
 - **Value Objects** for complex data structures (avoid arrays/stdClass)
 - **No `Interface`/`Trait` suffixes** - use descriptive names (e.g., `Logger` not `LoggerInterface`)
-- **Minimal PHPDoc** - only when code isn't self-explanatory
+- **Minimal PHPDoc** - only when code isn't self-explanatory. Do not add robotic or unnecessary PHPDoc blocks
 
 ## Testing
 
@@ -88,6 +88,7 @@ From `agent.md`:
 - Use `describe()` with `covers()` to specify class under test
 - Use `class_basename()` for outer describe block names
 - All test methods must have `void` return type
+- **Avoid mocks** — use real implementations wherever possible and practical. Only mock when absolutely necessary
 - **Chain multiple expectations** using `->and()` instead of separate `expect()` calls
 
 ```php
