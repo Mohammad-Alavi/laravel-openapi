@@ -9,11 +9,22 @@ use LaravelRulesToSchema\Parsers\MiscPropertyParser;
 use LaravelRulesToSchema\Parsers\NestedObjectParser;
 use LaravelRulesToSchema\Parsers\RequiredParser;
 use LaravelRulesToSchema\Parsers\TypeParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\AcceptedDeclinedParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\AdditionalConstraintParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\ComparisonConstraintParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\ConditionalAcceptedParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\ConditionalExcludeParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\ConditionalProhibitedParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\ConditionalRequiredParser;
 use MohammadAlavi\Laragen\RequestSchema\Parsers\CustomRuleDocsParser;
 use MohammadAlavi\Laragen\RequestSchema\Parsers\ExampleOverride;
 use MohammadAlavi\Laragen\RequestSchema\Parsers\FileUploadParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\NotInParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\NumericConstraintParser;
 use MohammadAlavi\Laragen\RequestSchema\Parsers\PasswordParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\PresentFieldParser;
 use MohammadAlavi\Laragen\RequestSchema\Parsers\RequiredWithParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\StringPatternParser;
 
 return [
     /*
@@ -39,8 +50,20 @@ return [
         CustomRuleDocsParser::class,
         FileUploadParser::class,
         PasswordParser::class,
+        StringPatternParser::class,
+        ComparisonConstraintParser::class,
+        NumericConstraintParser::class,
+        NotInParser::class,
+        AcceptedDeclinedParser::class,
+        AdditionalConstraintParser::class,
         ExampleOverride::class,
         RequiredWithParser::class,
+        // RequiredWithoutParser — not registered; has known issue with nullable field restructuring
+        ConditionalRequiredParser::class,
+        ConditionalExcludeParser::class,
+        ConditionalProhibitedParser::class,
+        PresentFieldParser::class,
+        ConditionalAcceptedParser::class,
     ],
 
     /*
