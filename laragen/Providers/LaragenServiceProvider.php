@@ -6,6 +6,10 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use MohammadAlavi\Laragen\Console\Generate;
+use MohammadAlavi\Laragen\RequestSchema\Annotation\AnnotationBodyParamDetector;
+use MohammadAlavi\Laragen\RequestSchema\Annotation\AnnotationBodyParamSchemaBuilder;
+use MohammadAlavi\Laragen\RequestSchema\Annotation\AnnotationQueryParamDetector;
+use MohammadAlavi\Laragen\RequestSchema\Annotation\AnnotationQueryParamSchemaBuilder;
 use MohammadAlavi\Laragen\RequestSchema\ExampleGenerator\Date;
 use MohammadAlavi\Laragen\RequestSchema\ExampleGenerator\Email;
 use MohammadAlavi\Laragen\RequestSchema\ExampleGenerator\ExampleRegistry;
@@ -19,6 +23,8 @@ use MohammadAlavi\Laragen\RequestSchema\SpatieData\SpatieDataRequestDetector;
 use MohammadAlavi\Laragen\RequestSchema\SpatieData\SpatieDataRequestSchemaBuilder;
 use MohammadAlavi\Laragen\RequestSchema\ValidationRules\ValidationRulesDetector;
 use MohammadAlavi\Laragen\RequestSchema\ValidationRules\ValidationRulesSchemaBuilder;
+use MohammadAlavi\Laragen\ResponseSchema\Annotation\AnnotationResponseDetector;
+use MohammadAlavi\Laragen\ResponseSchema\Annotation\AnnotationResponseSchemaBuilder;
 use MohammadAlavi\Laragen\ResponseSchema\EloquentModel\EloquentModelDetector;
 use MohammadAlavi\Laragen\ResponseSchema\EloquentModel\EloquentModelSchemaBuilder;
 use MohammadAlavi\Laragen\ResponseSchema\FractalTransformer\FractalTransformerDetector;
@@ -91,7 +97,16 @@ final class LaragenServiceProvider extends ServiceProvider
 
             $prependStrategies = self::buildRequestStrategiesFromConfig($app, $prepend);
 
-            $builtInStrategies = [];
+            $builtInStrategies = [
+                new RequestStrategy(
+                    $app->make(AnnotationBodyParamDetector::class),
+                    $app->make(AnnotationBodyParamSchemaBuilder::class),
+                ),
+                new RequestStrategy(
+                    $app->make(AnnotationQueryParamDetector::class),
+                    $app->make(AnnotationQueryParamSchemaBuilder::class),
+                ),
+            ];
 
             if (class_exists('Spatie\LaravelData\Data')) {
                 $builtInStrategies[] = new RequestStrategy(
@@ -126,6 +141,10 @@ final class LaragenServiceProvider extends ServiceProvider
             $prependStrategies = self::buildResponseStrategiesFromConfig($app, $prepend);
 
             $builtInStrategies = [
+                new ResponseStrategy(
+                    $app->make(AnnotationResponseDetector::class),
+                    $app->make(AnnotationResponseSchemaBuilder::class),
+                ),
                 new ResponseStrategy(
                     $app->make(ResourceCollectionDetector::class),
                     $app->make(ResourceCollectionSchemaBuilder::class),
