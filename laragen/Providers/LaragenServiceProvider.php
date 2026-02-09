@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use MohammadAlavi\Laragen\Console\Generate;
 use MohammadAlavi\Laragen\ExampleGenerator\Date;
 use MohammadAlavi\Laragen\ExampleGenerator\Email;
-use MohammadAlavi\Laragen\ExampleGenerator\ExampleProvider;
+use MohammadAlavi\Laragen\ExampleGenerator\ExampleRegistry;
 use MohammadAlavi\Laragen\ExampleGenerator\Integer;
 use MohammadAlavi\Laragen\ExampleGenerator\Password;
 use MohammadAlavi\Laragen\RequestSchema\RequestDetector;
@@ -48,19 +48,13 @@ final class LaragenServiceProvider extends ServiceProvider
             Generate::class,
         ]);
 
+        $this->registerExampleRegistry();
         $this->registerRequestSchemaResolver();
         $this->registerResponseSchemaResolver();
     }
 
     public function boot(): void
     {
-        ExampleProvider::addExample(
-            Date::class,
-            Email::class,
-            Password::class,
-            Integer::class,
-        );
-
         $this->publishes([
             __DIR__ . '/../../config/laragen.php' => config_path('laragen.php'),
         ], 'laragen-config');
@@ -71,6 +65,20 @@ final class LaragenServiceProvider extends ServiceProvider
                 return response()->file(base_path(config()->string('laragen.docs_path')));
             },
         );
+    }
+
+    private function registerExampleRegistry(): void
+    {
+        $this->app->singleton(ExampleRegistry::class, static function (): ExampleRegistry {
+            $builtIn = [
+                Date::rule() => Date::class,
+                Email::rule() => Email::class,
+                Password::rule() => Password::class,
+                Integer::rule() => Integer::class,
+            ];
+
+            return new ExampleRegistry($builtIn);
+        });
     }
 
     private function registerRequestSchemaResolver(): void

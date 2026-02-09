@@ -4,7 +4,7 @@ namespace MohammadAlavi\Laragen\RuleParsers;
 
 use FluentJsonSchema\FluentSchema;
 use MohammadAlavi\Laragen\ExampleGenerator\Example;
-use MohammadAlavi\Laragen\ExampleGenerator\ExampleProvider;
+use MohammadAlavi\Laragen\ExampleGenerator\ExampleRegistry;
 
 final class ExampleOverride implements ContextAwareRuleParser
 {
@@ -14,6 +14,11 @@ final class ExampleOverride implements ContextAwareRuleParser
     private array|null $allRules = null;
 
     private string|null $request = null;
+
+    public function __construct(
+        private readonly ExampleRegistry $registry,
+    ) {
+    }
 
     public function withContext(FluentSchema $baseSchema, array $allRules, string|null $request): static
     {
@@ -44,8 +49,8 @@ final class ExampleOverride implements ContextAwareRuleParser
 
             $ruleName = is_object($rule) ? get_class($rule) : $rule;
 
-            if (ExampleProvider::has($ruleName)) {
-                $example = ExampleProvider::getExample($ruleName);
+            if ($this->registry->has($ruleName)) {
+                $example = $this->registry->get($ruleName);
 
                 if (is_string($example) && !is_null($this->request)) {
                     /** @var Example $instance */
