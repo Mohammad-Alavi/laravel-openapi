@@ -67,7 +67,7 @@ final readonly class PathParameterAnalyzer
         $pattern = $route->wheres[$name] ?? null;
 
         if (null === $pattern) {
-            return Schema::string();
+            return $this->resolveFromModelBinding($route, $name) ?? Schema::string();
         }
 
         if ($this->isIntegerPattern($pattern)) {
@@ -96,6 +96,53 @@ final readonly class PathParameterAnalyzer
 
         // Unknown pattern — keep as string with the regex as pattern
         return Schema::string()->pattern($pattern);
+    }
+
+    private function resolveFromModelBinding(Route $route, string $name): JSONSchema|null
+    {
+        /** @var string|null $uses */
+        $uses = $route->getAction()['uses'] ?? null;
+
+        if (!is_string($uses) || !str_contains($uses, '@')) {
+            return null;
+        }
+
+        [$controllerClass, $method] = explode('@', $uses, 2);
+
+        if (!class_exists($controllerClass) || !method_exists($controllerClass, $method)) {
+            return null;
+        }
+
+        $reflection = new \ReflectionMethod($controllerClass, $method);
+
+        foreach ($reflection->getParameters() as $parameter) {
+            if ($parameter->getName() !== $name) {
+                continue;
+            }
+
+            $type = $parameter->getType();
+
+            if (!$type instanceof \ReflectionNamedType || $type->isBuiltin()) {
+                return null;
+            }
+
+            /** @var class-string $typeName */
+            $typeName = $type->getName();
+
+            if (!is_subclass_of($typeName, \Illuminate\Database\Eloquent\Model::class)) {
+                return null;
+            }
+
+            /** @var \Illuminate\Database\Eloquent\Model $model */
+            $model = new $typeName();
+
+            return match ($model->getKeyType()) {
+                'int', 'integer' => Schema::integer(),
+                default => Schema::string(),
+            };
+        }
+
+        return null;
     }
 
     private function isIntegerPattern(string $pattern): bool

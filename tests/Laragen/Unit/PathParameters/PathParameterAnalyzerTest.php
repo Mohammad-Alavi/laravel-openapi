@@ -150,6 +150,76 @@ describe(class_basename(PathParameterAnalyzer::class), function (): void {
             ->and($userCompiled['schema']['type'])->toBe('integer');
     });
 
+    it('resolves integer type from model binding with integer key', function (): void {
+        $route = new Route(
+            ['GET'],
+            'items/{basic}',
+            ['uses' => 'Tests\Laragen\Support\Doubles\PathParameters\ModelBindingController@showBasic'],
+        );
+
+        $analyzer = new PathParameterAnalyzer();
+        $params = $analyzer->analyze($route);
+
+        expect($params)->toHaveCount(1);
+
+        $compiled = $params[0]->compile();
+
+        expect($compiled['schema'])->toBe(['type' => 'integer']);
+    });
+
+    it('resolves string type from model binding with string key', function (): void {
+        $route = new Route(
+            ['GET'],
+            'items/{stringKey}',
+            ['uses' => 'Tests\Laragen\Support\Doubles\PathParameters\ModelBindingController@showStringKey'],
+        );
+
+        $analyzer = new PathParameterAnalyzer();
+        $params = $analyzer->analyze($route);
+
+        expect($params)->toHaveCount(1);
+
+        $compiled = $params[0]->compile();
+
+        expect($compiled['schema'])->toBe(['type' => 'string']);
+    });
+
+    it('falls back to string when controller parameter has no type hint', function (): void {
+        $route = new Route(
+            ['GET'],
+            'items/{item}',
+            ['uses' => 'Tests\Laragen\Support\Doubles\PathParameters\ModelBindingController@showNoTypeHint'],
+        );
+
+        $analyzer = new PathParameterAnalyzer();
+        $params = $analyzer->analyze($route);
+
+        expect($params)->toHaveCount(1);
+
+        $compiled = $params[0]->compile();
+
+        expect($compiled['schema'])->toBe(['type' => 'string']);
+    });
+
+    it('prefers explicit where constraint over model binding', function (): void {
+        $route = new Route(
+            ['GET'],
+            'items/{basic}',
+            ['uses' => 'Tests\Laragen\Support\Doubles\PathParameters\ModelBindingController@showBasic'],
+        );
+        $route->whereUuid('basic');
+
+        $analyzer = new PathParameterAnalyzer();
+        $params = $analyzer->analyze($route);
+
+        expect($params)->toHaveCount(1);
+
+        $compiled = $params[0]->compile();
+
+        expect($compiled['schema']['type'])->toBe('string')
+            ->and($compiled['schema']['format'])->toBe('uuid');
+    });
+
     it('falls back to string for unknown constraint patterns', function (): void {
         $route = new Route(['GET'], 'items/{code}', fn () => 'ok');
         $route->where('code', '[A-Z]{3}-\d{4}');
