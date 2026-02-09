@@ -1,64 +1,6 @@
 # Features
 
-## What Exists Today
-
-### JSONSchema Package
-
-PHP implementation of JSON Schema Draft 2020-12.
-
-- `Schema` static factory: `Schema::string()`, `Schema::object()`, `Schema::array()`, `Schema::integer()`, etc.
-- `Property` for defining object properties
-- `BooleanSchema` for true/false schemas
-- Keyword system for extensibility
-- Format registry for string format validation
-- Validation support
-
-### oooapi Package
-
-Object-oriented OpenAPI 3.2 builder with fluent API.
-
-- Full OpenAPI 3.2 object model: `OpenAPI`, `Info`, `Server`, `PathItem`, `Operation`, `Parameter`, `Header`, `Response`, `RequestBody`, `MediaType`, `Schema`, `Components`, `Encoding`, `Discriminator`, etc.
-- Immutable objects with `create()` factories and fluent setters
-- `compile()` for recursive serialization to arrays
-- Extension support (`x-*` fields) via `ExtensibleObject`
-- Parameter locations: `path`, `query`, `header`, `cookie`, `querystring`
-- Serialization rules per location: `HeaderParameter`, `QueryParameter`, `PathParameter`, `CookieParameter`
-- Content-based serialization via `Content` with `ContentEntry`
-- Style system: `Simple`, `Form`, `DeepObject`, `Label`, `Matrix`, `PipeDelimited`, `SpaceDelimited`, `Cookie`
-- Examples support (singular `example` and plural `examples` with `ExampleEntry`)
-- `$ref` support via reference objects
-- `ShouldBeReferenced` interface for components
-
-### LaravelOpenApi Package (src/)
-
-Laravel integration layer for generating OpenAPI from annotated controllers.
-
-- **Generator** (`Generator.php`): Main orchestrator
-- **Builders**: `PathBuilder`, `OperationBuilder`, `ParametersBuilder`, `RequestBodyBuilder`, `ResponsesBuilder`, `CallbacksBuilder`, `ComponentsBuilder`
-- **PHP 8 Attributes**: `#[Collection]`, `#[Operation]`, `#[PathItem]` for annotating controllers
-- **Factory pattern**: User-defined factories for schemas, parameters, responses, request bodies, callbacks, security schemes
-- **Collections**: Group related API documentation
-- **Service Provider**: `OpenApiServiceProvider` for Laravel registration
-- **Artisan Commands**: CLI commands for generation
-- **Workbench**: Test application under `workbench/` with sample controllers, factories, and Petstore example
-
-### Laragen Package
-
-SAAS product layer for zero-config OpenAPI generation.
-
-- **Auth Detection** (`laragen/Auth/`): Auto-detect authentication from route middleware -> SecurityScheme components
-- **Route Discovery** (`laragen/RouteDiscovery/`): Auto-discover API routes by URI patterns (no annotations needed)
-- **Path Parameters** (`laragen/PathParameters/`): Detect path parameter types from route constraints (`whereUuid`, `whereAlpha`, etc.)
-- **FormRequest Extraction** (`laragen/Support/`): Convert validation rules to JSON Schema request bodies (via Scribe + laravel-rules-to-schema)
-- **Model Schema** (`laragen/ModelSchema/`): Infer JSON Schema from Eloquent `$casts`, `$hidden`, `$appends`
-- **Response Schema** (`laragen/ResponseSchema/`): Multi-strategy response detection via pluggable `ResponseStrategy` chain (Annotation, JsonResource, ResourceCollection, SpatieData, FractalTransformer, EloquentModel)
-- **Request Schema** (`laragen/RequestSchema/`): Multi-strategy request detection via pluggable `RequestStrategy` chain (Annotation BodyParam/QueryParam, SpatieData, ValidationRules)
-- **Annotations** (`laragen/Annotations/`): Scribe-compatible docblock annotation parsing (`@response`, `@bodyParam`, `@queryParam`)
-- **RuleParsers** (`laragen/RequestSchema/Parsers/`): Custom parsers for complex validation rules (`PasswordParser`, `RequiredWithoutParser`, `ExampleOverride`, `FileUploadParser`)
-- **ExampleGenerator** (`laragen/RequestSchema/ExampleGenerator/`): Generate example values from schemas
-- Configuration via `config/laragen.php` and `config/rules-to-schema.php`
-
----
+See `architecture.md` for package structure and directory layout.
 
 ## Laragen Feature Details
 
@@ -66,7 +8,6 @@ SAAS product layer for zero-config OpenAPI generation.
 
 Detects auth middleware on routes and generates SecurityScheme components + per-operation security.
 
-**Files**: `laragen/Auth/AuthDetector.php`, `AuthScheme.php`, `SecuritySchemeRegistry.php`
 **Config**: `autogen.security` flag
 
 | Middleware | SecurityScheme |
@@ -82,7 +23,6 @@ Detects auth middleware on routes and generates SecurityScheme components + per-
 
 Discovers API routes by URI patterns without requiring `#[Collection]` attributes.
 
-**Files**: `laragen/RouteDiscovery/AutoRouteCollector.php`, `PatternMatcher.php`
 **Config**: `route_discovery.mode` (`auto` | `attribute` | `combined`), `include`/`exclude` patterns
 
 ---
@@ -91,7 +31,6 @@ Discovers API routes by URI patterns without requiring `#[Collection]` attribute
 
 Detects path parameter types from route constraints and generates typed `Parameter` objects.
 
-**Files**: `laragen/PathParameters/PathParameterAnalyzer.php`
 **Config**: `autogen.path_parameters` flag
 
 | Route Constraint | Schema Result |
@@ -126,14 +65,46 @@ Converts Laravel FormRequest validation rules to OpenAPI request body schemas. U
 | `regex:/pattern/` | `pattern: "pattern"` |
 | `nullable` | Wrapped with null in oneOf |
 | `sometimes` | Field excluded from `required` array |
+| `starts_with:foo,bar` | `pattern: ^(foo\|bar)` |
+| `ends_with:foo,bar` | `pattern: (foo\|bar)$` |
+| `doesnt_start_with:foo,bar` | `pattern: ^(?!foo\|bar)` |
+| `doesnt_end_with:foo,bar` | `pattern: (?!.*(foo\|bar)$)` |
+| `lowercase` | `pattern: ^[^A-Z]*$` |
+| `uppercase` | `pattern: ^[^a-z]*$` |
+| `ascii` | `pattern: ^[\x20-\x7E]*$` |
+| `hex_color` | `pattern: ^#([0-9a-fA-F]{3}\|[0-9a-fA-F]{6})$` |
+| `between:3,10` | `minLength`/`maxLength`, `minimum`/`maximum`, or `minItems`/`maxItems` (type-aware) |
+| `size:5` | Same as `between` with equal min/max |
+| `multiple_of:3` | `multipleOf: 3` |
+| `max_digits:5` | `maximum: 99999` |
+| `min_digits:3` | `minimum: 100` |
+| `not_in:a,b,c` | `not: { enum: ["a", "b", "c"] }` |
+| `accepted` / `declined` | `type: boolean` |
+| `active_url` | `format: uri` |
+| `timezone` | `format: timezone` |
+| `filled` | `minLength: 1` (string) or `minItems: 1` (array) |
+| `distinct` | `uniqueItems: true` |
+| `extensions:jpg,png` | `enum: ["jpg", "png"]` |
+| `required_if:field,value` | `if/then` conditional required |
+| `required_unless:field,value` | `if/then/else` conditional required |
+| `required_with_all:a,b` | `if/then` all fields present → required |
+| `required_without_all:a,b` | `if/then` all fields absent → required |
+| `required_if_accepted:field` | `if/then` field true → required |
+| `required_if_declined:field` | `if/then` field false → required |
+| `exclude_if` / `exclude_unless` / `exclude_with` / `exclude_without` | `if/then` conditional property removal |
+| `missing_if` / `missing_unless` / `missing_with` / `missing_with_all` | `if/then` conditional property removal |
+| `prohibited_if` / `prohibited_unless` | `if/then` conditional prohibition |
+| `prohibits:a,b` | When present, prohibit other fields |
+| `present` | Add to `required`, allow any value |
+| `present_if` / `present_unless` / `present_with` / `present_with_all` | `if/then` conditional required presence |
+| `accepted_if:field,value` | `if/then` conditional `type: boolean, const: true` |
+| `declined_if:field,value` | `if/then` conditional `type: boolean, const: false` |
 
 ---
 
 ### F5: Model Schema Inference
 
 Generates JSON Schema from Eloquent model `$casts`, excludes `$hidden`, includes `$appends`.
-
-**Files**: `laragen/ModelSchema/ModelSchemaInferrer.php`, `CastAnalyzer.php`
 
 | Laravel Cast | JSON Schema |
 |-------------|-------------|
@@ -161,18 +132,7 @@ Pluggable `ResponseStrategy` chain analyzes controller return types to auto-gene
 5. **FractalTransformer** -- conditional on `league/fractal`, detects transformer references in controller AST
 6. **EloquentModel** -- detects `Model` return type, delegates to `ModelSchemaInferrer`
 
-**Architecture**: Generic AST analysis lives in `ArraySchemaAnalyzer` (reusable across strategies). Each strategy has a `ResponseDetector` (finds the response context) and `ResponseSchemaBuilder` (builds JSON Schema from it). `ResponseSchemaResolver` iterates the chain. Detectors return `mixed` (class-string for code-analysis strategies, value objects for annotation strategies).
-
-**Key files**:
-- `laragen/ResponseSchema/ArraySchema/ArraySchemaAnalyzer.php` -- generic AST analysis (21 patterns)
-- `laragen/ResponseSchema/ArraySchema/ArrayField.php` -- field value object (8 factory methods)
-- `laragen/ResponseSchema/ResponseSchemaResolver.php` -- strategy chain
-- `laragen/ResponseSchema/Annotation/` -- Annotation strategy (`@response` docblock tags)
-- `laragen/ResponseSchema/JsonResource/` -- JsonResource strategy
-- `laragen/ResponseSchema/ResourceCollection/` -- ResourceCollection strategy
-- `laragen/ResponseSchema/SpatieData/` -- Spatie Data strategy (conditional)
-- `laragen/ResponseSchema/EloquentModel/` -- Eloquent Model strategy
-- `laragen/ResponseSchema/FractalTransformer/` -- Fractal strategy (conditional)
+Each strategy has a detector + builder pair. `ResponseSchemaResolver` iterates the chain. Generic AST analysis lives in `ArraySchemaAnalyzer` (reusable across strategies).
 
 ---
 
@@ -186,14 +146,7 @@ Pluggable `RequestStrategy` chain detects request schema from various sources.
 3. **SpatieData** -- conditional on `spatie/laravel-data`, detects Data parameter type-hints
 4. **ValidationRules** -- extracts FormRequest/inline validation rules, converts to JSON Schema
 
-**Architecture**: Each strategy has a `RequestDetector` (returns mixed context or null) and `RequestSchemaBuilder` (builds `RequestSchemaResult` containing schema, target, and encoding). `RequestSchemaResolver` iterates the chain.
-
-**Key files**:
-- `laragen/RequestSchema/RequestSchemaResolver.php` -- strategy chain
-- `laragen/RequestSchema/Annotation/` -- Annotation strategies (`@bodyParam`, `@queryParam`)
-- `laragen/RequestSchema/SpatieData/` -- Spatie Data strategy (conditional)
-- `laragen/RequestSchema/ValidationRules/` -- Validation rules strategy
-- `laragen/RequestSchema/Parsers/` -- Custom rule parsers
+Each strategy has a detector + builder pair. `RequestSchemaResolver` iterates the chain.
 
 ---
 
@@ -202,17 +155,11 @@ Pluggable `RequestStrategy` chain detects request schema from various sources.
 Scribe-compatible docblock annotations that override automatic code analysis.
 
 **Supported tags**:
-- `@response {status?} {json}` -- Define example response with optional status code
-- `@bodyParam {name} {type} {required?} {description?}` -- Define request body parameter
-- `@queryParam {name} {type?} {description?}` -- Define query parameter
+- `@response {status?} {json}`
+- `@bodyParam {name} {type} {required?} {description?}`
+- `@queryParam {name} {type?} {description?}`
 
-**Files**: `laragen/Annotations/DocBlockTagParser.php`, `DetectedResponseAnnotation.php`, `DetectedBodyParam.php`, `DetectedQueryParam.php`
-
-**Priority**: Annotations are checked first in the strategy chain, so explicit annotations always override automatic detection.
-
-**AST Patterns** (21): model property, string/int/float/bool/null literals, method chains, explicit resource access, nested resources, collections, 12 conditional methods, merge/mergeWhen/mergeUnless, null coalescing, nullsafe property/method, type casting, nested arrays, function calls, class constants, concat, arithmetic, boolean NOT, comparisons.
-
-**Config**: `autogen.response` flag. Respects `JsonResource::$wrap` property.
+Annotations are checked first in the strategy chain, so they always override automatic detection.
 
 ---
 

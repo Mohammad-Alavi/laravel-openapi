@@ -156,7 +156,12 @@ public static function header(string $name, Content|HeaderParameter $serializati
 
 ### LD3: Custom RuleParsers for Complex Rules
 
-**Decision**: Complex validation rules get dedicated parser classes (`PasswordParser`, `RequiredWithoutParser`) rather than simple config mappings. These handle edge cases that simple mapping cannot.
+**Decision**: Complex validation rules get dedicated parser classes rather than simple config mappings. Two categories:
+
+- **Schema-expressible** (`RuleParser`): Map directly to JSON Schema keywords (pattern, min/max, enum, etc.)
+- **Context-aware** (`ContextAwareRuleParser`): Need access to base schema and all rules for cross-field `if/then/else` logic
+
+**Note**: `RequiredWithoutParser` exists but is intentionally NOT registered in config due to a known bug where it breaks nullable field restructuring.
 
 ### LD4: Example Generation from Schema
 

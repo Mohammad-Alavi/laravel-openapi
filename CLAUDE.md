@@ -60,7 +60,7 @@ composer build                   # Build testbench workbench
 
 - **Generator** (`src/Generator.php`): Main orchestrator for OpenAPI spec generation from Laravel routes
 - **Builders** (`src/Builders/`): Factory pattern for building OpenAPI components (schemas, responses, parameters, paths)
-- **RuleParsers** (`laragen/RuleParsers/`): Convert Laravel validation rules to JSON Schema
+- **RuleParsers** (`laragen/RequestSchema/Parsers/`): Convert Laravel validation rules to JSON Schema
 - **OpenApiServiceProvider**: Laravel service provider for package registration
 
 ### Configuration Files
@@ -71,8 +71,6 @@ composer build                   # Build testbench workbench
 
 ## Coding Standards
 
-From `agent.md`:
-
 - **PHP 8.2** with strict types everywhere
 - **Final classes by default** - prevent unintended inheritance
 - **Composition over inheritance**
@@ -80,6 +78,18 @@ From `agent.md`:
 - **Value Objects** for complex data structures (avoid arrays/stdClass)
 - **No `Interface`/`Trait` suffixes** - use descriptive names (e.g., `Logger` not `LoggerInterface`)
 - **Minimal PHPDoc** - only when code isn't self-explanatory. Do not add robotic or unnecessary PHPDoc blocks
+
+### Naming Conventions
+
+| Type | Convention | Example |
+|------|------------|---------|
+| Classes | PascalCase, noun | `PathParameter`, `Generator` |
+| Interfaces | PascalCase, **no suffix** | `Generatable` not `GeneratableInterface` |
+| Traits | PascalCase, **no suffix** | Use descriptive name |
+| Methods | camelCase, verb | `analyzeRoute()`, `compile()` |
+| Properties | camelCase, noun | `$serializationRule` |
+| Constants | SCREAMING_SNAKE_CASE | `MAX_DEPTH` |
+| Config keys | snake_case | `exclude_patterns` |
 
 ## Testing
 

@@ -77,6 +77,25 @@ Key components:
 
 SAAS product for 1-click OpenAPI generation with minimal configuration.
 
-Key components:
-- **RuleParsers** (`laragen/RuleParsers/`) — Convert Laravel validation rules to JSON Schema
-- Configuration via `config/laragen.php` and `config/rules-to-schema.php`
+### Two-Phase Generation
+
+`Laragen::generate()` follows:
+1. **`buildBaseSpec()`** — Builds base OpenAPI spec using route discovery mode (attribute/auto/combined)
+2. **`enrichSpec()`** — Post-processes to add request bodies, security, path parameters, response schemas
+
+Each enrichment is controlled by `autogen.*` config flags and skips operations that already have the data.
+
+### Parser Architecture
+
+Parsers implement `RuleParser` (regular) or `ContextAwareRuleParser` (needs access to base schema and all rules). The pipeline runs in two phases:
+
+1. **Regular parsers** — process each field independently (type, format, pattern, constraints)
+2. **Context-aware parsers** — can inspect/modify the base schema across fields (conditional logic, cross-field dependencies)
+
+Parser categories:
+- **Schema-expressible** — map directly to JSON Schema keywords (pattern, min/max, enum, etc.)
+- **Conditional** — use `if/then/else` for cross-field dependencies (required_if, exclude_if, etc.)
+
+Configuration: `config/laragen.php` and `config/rules-to-schema.php`
+
+See `.claude/architecture/` for future plans: FluentSchema replacement, fork strategy, multi-framework support.
