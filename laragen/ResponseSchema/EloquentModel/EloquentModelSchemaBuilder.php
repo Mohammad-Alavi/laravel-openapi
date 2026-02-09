@@ -17,10 +17,11 @@ final readonly class EloquentModelSchemaBuilder implements ResponseSchemaBuilder
     ) {
     }
 
-    public function build(string $responseClass): JSONSchema
+    public function build(mixed $detected): JSONSchema
     {
-        Assert::isAOf($responseClass, Model::class);
+        Assert::string($detected);
+        Assert::isAOf($detected, Model::class);
 
-        return $this->modelSchemaInferrer->infer($responseClass);
+        return $this->modelSchemaInferrer->infer($detected);
     }
 }

@@ -24,9 +24,12 @@ final readonly class JsonResourceSchemaBuilder implements ResponseSchemaBuilder
     ) {
     }
 
-    public function build(string $resourceClass): JSONSchema
+    public function build(mixed $detected): JSONSchema
     {
-        /** @var class-string<JsonResource> $resourceClass */
+        Assert::string($detected);
+
+        /** @var class-string<JsonResource> $detected */
+        $resourceClass = $detected;
         $fields = $this->analyzer->analyzeMethod($resourceClass, 'toArray');
         $wrapKey = $this->getWrapKey($resourceClass);
         $propertySchemas = $this->resolveModelPropertySchemas($resourceClass);

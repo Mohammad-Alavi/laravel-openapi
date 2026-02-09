@@ -22,9 +22,12 @@ final readonly class ResourceCollectionSchemaBuilder implements ResponseSchemaBu
     ) {
     }
 
-    public function build(string $responseClass): JSONSchema
+    public function build(mixed $detected): JSONSchema
     {
-        /** @var class-string<ResourceCollection> $responseClass */
+        Assert::string($detected);
+
+        /** @var class-string<ResourceCollection> $detected */
+        $responseClass = $detected;
         $innerResourceClass = $this->resolveInnerResourceClass($responseClass);
         Assert::notNull($innerResourceClass, "Could not resolve inner resource class for {$responseClass}.");
 

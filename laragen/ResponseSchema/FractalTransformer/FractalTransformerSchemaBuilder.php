@@ -23,11 +23,12 @@ final readonly class FractalTransformerSchemaBuilder implements ResponseSchemaBu
     ) {
     }
 
-    /**
-     * @param class-string $responseClass
-     */
-    public function build(string $responseClass): JSONSchema
+    public function build(mixed $detected): JSONSchema
     {
+        Assert::string($detected);
+
+        /** @var class-string $detected */
+        $responseClass = $detected;
         $fields = $this->analyzer->analyzeMethod($responseClass, 'transform');
         $propertySchemas = $this->resolveModelPropertySchemas($responseClass);
 

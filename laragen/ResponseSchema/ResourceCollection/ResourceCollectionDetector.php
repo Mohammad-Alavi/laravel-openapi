@@ -16,7 +16,7 @@ final readonly class ResourceCollectionDetector implements ResponseDetector
      *
      * @return class-string<ResourceCollection>|null
      */
-    public function detect(string $controllerClass, string $method): string|null
+    public function detect(string $controllerClass, string $method): mixed
     {
         if (!method_exists($controllerClass, $method)) {
             return null;

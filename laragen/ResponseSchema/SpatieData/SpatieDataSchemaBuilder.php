@@ -14,6 +14,7 @@ use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Schema\Schema;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
+use Webmozart\Assert\Assert;
 
 final readonly class SpatieDataSchemaBuilder implements ResponseSchemaBuilder
 {
@@ -25,9 +26,12 @@ final readonly class SpatieDataSchemaBuilder implements ResponseSchemaBuilder
         'Carbon\CarbonImmutable',
     ];
 
-    public function build(string $responseClass): JSONSchema
+    public function build(mixed $detected): JSONSchema
     {
-        /** @var class-string<Data> $responseClass */
+        Assert::string($detected);
+
+        /** @var class-string<Data> $detected */
+        $responseClass = $detected;
         $reflection = new \ReflectionClass($responseClass);
         $constructor = $reflection->getConstructor();
 
@@ -242,7 +246,7 @@ final readonly class SpatieDataSchemaBuilder implements ResponseSchemaBuilder
 
     private function makeNullable(JSONSchema $schema): JSONSchema
     {
-        \Webmozart\Assert\Assert::isInstanceOf($schema, Compilable::class);
+        Assert::isInstanceOf($schema, Compilable::class);
 
         /** @var array<string, mixed> $compiled */
         $compiled = $schema->compile();

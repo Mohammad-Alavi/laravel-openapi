@@ -16,7 +16,7 @@ final readonly class SpatieDataDetector implements ResponseDetector
      *
      * @return class-string<Data>|null
      */
-    public function detect(string $controllerClass, string $method): string|null
+    public function detect(string $controllerClass, string $method): mixed
     {
         if (!class_exists(Data::class)) {
             return null;
