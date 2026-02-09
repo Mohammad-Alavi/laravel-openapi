@@ -122,10 +122,23 @@ Laragen uses custom rule parsers to handle complex Laravel validation rules. The
 
 Built-in parsers:
 - `PasswordParser` — handles `Password::defaults()` rule object
-- `RequiredWithParser` / `RequiredWithoutParser` — conditional required rules
+- `RequiredWithParser` — `required_with` using `if/then` conditions (single arg or `anyOf` for multiple)
+- `RequiredWithoutParser` — `required_without` using `if: { not: { required } }` conditions
+- `ConditionalRequiredParser` — `required_if` / `required_unless` conditional rules
+- `ConditionalExcludeParser` — `exclude_if` / `exclude_unless` / `exclude_with` / `exclude_without`
+- `ConditionalProhibitedParser` — `prohibited_if` / `prohibited_unless`
+- `ConditionalAcceptedParser` — `accepted_if` / `declined_if`
+- `PresentFieldParser` — `present` / `present_if` / `present_unless` / `present_with` / `present_with_all`
+- `StringPatternParser` — `starts_with` / `ends_with` / `doesnt_start_with` / `doesnt_end_with` / `lowercase` / `uppercase` / `ascii` / `hex_color`
+- `NumericConstraintParser` — `between` / `size` / `multiple_of` / `max_digits` / `min_digits`
+- `ComparisonConstraintParser` — `gt` / `gte` / `lt` / `lte`
+- `AdditionalConstraintParser` — `filled` / `distinct` / `extensions`
+- `AcceptedDeclinedParser` — `accepted` / `declined`
+- `NotInParser` — `not_in` using `not: { enum }`
 - `FileUploadParser` — file/image/mimes rules
 - `ExampleOverride` — custom example values for specific rules
-- `ContextAwareRuleParser` — base class for parsers needing rule context
 - `CustomRuleDocsParser` — handles custom rules with `docs()` method
+
+Context-aware parsers (`ContextAwareRuleParser` interface) have access to the base schema and all rules, enabling cross-field `if/then/else` logic. Regular parsers (`RuleParser`) process each field independently.
 
 To add custom parsers, extend the `rules-to-schema.php` config with your parser classes.

@@ -87,6 +87,10 @@ Converts Laravel FormRequest validation rules to OpenAPI request body schemas. U
 | `extensions:jpg,png` | `enum: ["jpg", "png"]` |
 | `required_if:field,value` | `if/then` conditional required |
 | `required_unless:field,value` | `if/then/else` conditional required |
+| `required_with:a` | `if/then` field present → required |
+| `required_with:a,b` | `if: { anyOf }` any field present → required |
+| `required_without:a` | `if: { not: { required } }` field absent → required |
+| `required_without:a,b` | `if: { not: { required } }` all fields absent → required |
 | `required_with_all:a,b` | `if/then` all fields present → required |
 | `required_without_all:a,b` | `if/then` all fields absent → required |
 | `required_if_accepted:field` | `if/then` field true → required |

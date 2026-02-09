@@ -161,7 +161,7 @@ public static function header(string $name, Content|HeaderParameter $serializati
 - **Schema-expressible** (`RuleParser`): Map directly to JSON Schema keywords (pattern, min/max, enum, etc.)
 - **Context-aware** (`ContextAwareRuleParser`): Need access to base schema and all rules for cross-field `if/then/else` logic
 
-**Note**: `RequiredWithoutParser` exists but is intentionally NOT registered in config due to a known bug where it breaks nullable field restructuring.
+Both `RequiredWithParser` and `RequiredWithoutParser` use the `if/then` approach on the base schema's `allOf`, preserving root-level properties. `RequiredWithParser` uses `if: { required: [arg] }` (single arg) or `if: { anyOf: [...] }` (multiple args) without a `not` wrapper, while `RequiredWithoutParser` wraps the if-condition in `not`.
 
 ### LD4: Example Generation from Schema
 
