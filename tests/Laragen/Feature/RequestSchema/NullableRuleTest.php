@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use MohammadAlavi\Laragen\RequestSchema\RuleToSchema;
-use Tests\Laragen\Support\Doubles\BodyFormRequest;
+use Tests\Laragen\Support\Doubles\NullableFormRequest;
 
 describe('nullable rule', function (): void {
     it('adds null type for nullable fields', function (): void {
-        $schema = RuleToSchema::transform(BodyFormRequest::class)->compile();
+        $schema = RuleToSchema::transform(NullableFormRequest::class)->compile();
 
         $ageSchema = $schema['properties']['age'] ?? [];
 

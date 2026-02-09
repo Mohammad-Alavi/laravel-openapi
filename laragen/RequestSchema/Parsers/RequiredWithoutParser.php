@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MohammadAlavi\Laragen\RequestSchema\Parsers;
 
 use FluentJsonSchema\FluentSchema;
@@ -30,7 +32,6 @@ final class RequiredWithoutParser implements ContextAwareRuleParser
             return $schema;
         }
 
-        $shouldWrapInAllOf = false;
         $hasRequiredWithout = [];
         foreach ($this->allRules as $attr => $ruleSet) {
             foreach ($ruleSet['##_VALIDATION_RULES_##'] as $set) {
@@ -45,63 +46,28 @@ final class RequiredWithoutParser implements ContextAwareRuleParser
             return $schema;
         }
 
-        if (!$this->allAttributesHaveRequireWithRule($hasRequiredWithout, $this->allRules)) {
-            $shouldWrapInAllOf = true;
-        }
-
         $lastAttribute = array_key_last($this->allRules);
         if ($lastAttribute === $attribute) {
-            $properties = $this->baseSchema->getSchemaDTO()?->properties ?? [];
-            /** @var array<string, FluentSchema> $allOf */
-            $allOf = array_filter(
-                $properties,
-                static function (FluentSchema $schema, string $property) use ($hasRequiredWithout) {
-                    return !array_key_exists($property, $hasRequiredWithout);
-                },
-                ARRAY_FILTER_USE_BOTH,
-            );
-            /** @var array<string, FluentSchema> $oneOf */
-            $oneOf = array_filter(
-                $properties,
-                static function (FluentSchema $schema, string $property) use ($hasRequiredWithout) {
-                    return array_key_exists($property, $hasRequiredWithout);
-                },
-                ARRAY_FILTER_USE_BOTH,
-            );
-            $processedOneOf = [];
-            foreach ($oneOf as $prop => $propSchema) {
-                $processedOneOf[] = [
-                    'properties' => [
-                        $prop => $propSchema,
-                    ],
-                    'required' => $prop,
-                ];
+            $conditions = [];
+            foreach ($hasRequiredWithout as $attr => $args) {
+                $notSchema = FluentSchema::make();
+                $notSchema->getSchemaDTO()->required($args);
+
+                $ifSchema = FluentSchema::make();
+                $ifSchema->not($notSchema);
+
+                $thenSchema = FluentSchema::make();
+                $thenSchema->getSchemaDTO()->required([$attr]);
+
+                $condition = FluentSchema::make();
+                $condition->if($ifSchema)->then($thenSchema);
+                $conditions[] = $condition;
             }
 
-            $this->baseSchema->getSchemaDTO()->properties = null;
-            if ($shouldWrapInAllOf) {
-                $processedAllOf = [];
-                foreach ($allOf as $prop => $propSchema) {
-                    $processedAllOf['properties'][$prop] = $propSchema;
-                }
-                if (!is_null($this->baseSchema->getSchemaDTO()->required) && [] !== $this->baseSchema->getSchemaDTO()->required) {
-                    $processedAllOf['required'] = $this->baseSchema->getSchemaDTO()->required;
-                }
-                $this->baseSchema->getSchemaDTO()->required = null;
-                $this->baseSchema->allOf([
-                    ['oneOf' => $processedOneOf],
-                    $processedAllOf,
-                ]);
-            } else {
-                $this->baseSchema->oneOf($processedOneOf);
-            }
+            $existing = $this->baseSchema->getSchemaDTO()->allOf ?? [];
+            $this->baseSchema->allOf([...$existing, ...$conditions]);
         }
 
         return $schema;
-    }
-
-    private function allAttributesHaveRequireWithRule(array $hasRequiredWithout, array $allRules): bool
-    {
-        return count($allRules) === count($hasRequiredWithout);
     }
 }

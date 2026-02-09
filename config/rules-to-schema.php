@@ -23,6 +23,7 @@ use MohammadAlavi\Laragen\RequestSchema\Parsers\NotInParser;
 use MohammadAlavi\Laragen\RequestSchema\Parsers\NumericConstraintParser;
 use MohammadAlavi\Laragen\RequestSchema\Parsers\PasswordParser;
 use MohammadAlavi\Laragen\RequestSchema\Parsers\PresentFieldParser;
+use MohammadAlavi\Laragen\RequestSchema\Parsers\RequiredWithoutParser;
 use MohammadAlavi\Laragen\RequestSchema\Parsers\RequiredWithParser;
 use MohammadAlavi\Laragen\RequestSchema\Parsers\StringPatternParser;
 
@@ -58,7 +59,7 @@ return [
         AdditionalConstraintParser::class,
         ExampleOverride::class,
         RequiredWithParser::class,
-        // RequiredWithoutParser — not registered; has known issue with nullable field restructuring
+        RequiredWithoutParser::class,
         ConditionalRequiredParser::class,
         ConditionalExcludeParser::class,
         ConditionalProhibitedParser::class,
