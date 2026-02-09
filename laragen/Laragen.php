@@ -10,11 +10,14 @@ use MohammadAlavi\Laragen\Auth\AuthDetector;
 use MohammadAlavi\Laragen\Auth\SecuritySchemeRegistry;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleGenerator;
 use MohammadAlavi\Laragen\PathParameters\PathParameterAnalyzer;
+use MohammadAlavi\Laragen\RequestSchema\ContentEncoding;
+use MohammadAlavi\Laragen\RequestSchema\RequestSchemaResolver;
+use MohammadAlavi\Laragen\RequestSchema\RequestTarget;
 use MohammadAlavi\Laragen\ResponseSchema\ResponseSchemaResolver;
+use MohammadAlavi\Laragen\Support\RuleToSchema;
 use MohammadAlavi\Laragen\RouteDiscovery\AutoRouteCollector;
 use MohammadAlavi\Laragen\RouteDiscovery\PatternMatcher;
 use MohammadAlavi\Laragen\Support\Config\Config;
-use MohammadAlavi\Laragen\Support\RuleToSchema;
 use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\ComponentsBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\PathsBuilder;
 use MohammadAlavi\LaravelOpenApi\Factories\OpenAPIFactory;
@@ -138,6 +141,7 @@ final readonly class Laragen
         $authDetector = app(AuthDetector::class);
         $securityRegistry = app(SecuritySchemeRegistry::class);
         $pathParameterAnalyzer = app(PathParameterAnalyzer::class);
+        $requestSchemaResolver = app(RequestSchemaResolver::class);
         $responseSchemaResolver = app(ResponseSchemaResolver::class);
         $requestBodyEnabled = config()->boolean('laragen.autogen.request_body');
         $securityEnabled = config()->boolean('laragen.autogen.security');
@@ -151,7 +155,7 @@ final readonly class Laragen
             Paths::create(
                 ...collect($pathEntries)
                 ->map(
-                    static function (Path $path) use ($authDetector, $securityRegistry, $pathParameterAnalyzer, $responseSchemaResolver, $requestBodyEnabled, $securityEnabled, $pathParamsEnabled, $responseEnabled): Path {
+                    static function (Path $path) use ($authDetector, $securityRegistry, $pathParameterAnalyzer, $requestSchemaResolver, $responseSchemaResolver, $requestBodyEnabled, $securityEnabled, $pathParamsEnabled, $responseEnabled): Path {
                         /** @var Operations $operations */
                         $operations = $path->value()->getOperations();
                         /** @var AvailableOperation[] $availableOperations */
@@ -168,18 +172,11 @@ final readonly class Laragen
                             }
 
                             if ($requestBodyEnabled && !is_null($route) && !self::hasRequestBody($availableOperation)) {
-                                $schema = self::extractRequestBodySchema($route);
-
-                                if (self::hasAtLeastOneProperty($schema)) {
-                                    $operation = $operation->requestBody(
-                                        RequestBody::create(
-                                            ContentEntry::json(
-                                                MediaType::create()
-                                                    ->schema(self::enrichObjectWithExample($schema)),
-                                            ),
-                                        ),
-                                    );
-                                }
+                                $operation = self::enrichWithRequest(
+                                    $operation,
+                                    $route,
+                                    $requestSchemaResolver,
+                                );
                             }
 
                             if ($securityEnabled && !is_null($route) && !self::hasSecurity($operation)) {
@@ -279,6 +276,46 @@ final readonly class Laragen
     private static function hasResponses(Operation $operation): bool
     {
         return Arr::has($operation->compile(), 'responses');
+    }
+
+    private static function enrichWithRequest(
+        Operation $operation,
+        Route $route,
+        RequestSchemaResolver $requestSchemaResolver,
+    ): Operation {
+        $actionName = $route->getActionName();
+
+        if (!str_contains($actionName, '@')) {
+            return $operation;
+        }
+
+        [$controllerClass, $method] = explode('@', $actionName, 2);
+
+        /** @var class-string $controllerClass */
+        $result = $requestSchemaResolver->resolve($route, $controllerClass, $method);
+
+        if (null === $result) {
+            return $operation;
+        }
+
+        if (!self::hasAtLeastOneProperty($result->schema)) {
+            return $operation;
+        }
+
+        if ($result->target === RequestTarget::BODY) {
+            $contentEntry = $result->encoding === ContentEncoding::MULTIPART_FORM_DATA
+                ? ContentEntry::multipartFormData(
+                    MediaType::create()->schema(self::enrichObjectWithExample($result->schema)),
+                )
+                : ContentEntry::json(
+                    MediaType::create()->schema(self::enrichObjectWithExample($result->schema)),
+                );
+
+            return $operation->requestBody(RequestBody::create($contentEntry));
+        }
+
+        // RequestTarget::QUERY — handled in Phase 2
+        return $operation;
     }
 
     private static function enrichWithResponse(

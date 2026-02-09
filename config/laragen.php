@@ -15,4 +15,14 @@ return [
         'path_parameters' => env('LARAGEN_AUTOGEN_PATH_PARAMETERS', true),
         'response' => env('LARAGEN_AUTOGEN_RESPONSE', true),
     ],
+    'strategies' => [
+        'request' => [
+            'prepend' => [], // [[DetectorClass::class, BuilderClass::class], ...]
+            'append' => [],
+        ],
+        'response' => [
+            'prepend' => [],
+            'append' => [],
+        ],
+    ],
 ];

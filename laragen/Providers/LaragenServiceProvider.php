@@ -11,6 +11,12 @@ use MohammadAlavi\Laragen\ExampleGenerator\Email;
 use MohammadAlavi\Laragen\ExampleGenerator\ExampleProvider;
 use MohammadAlavi\Laragen\ExampleGenerator\Integer;
 use MohammadAlavi\Laragen\ExampleGenerator\Password;
+use MohammadAlavi\Laragen\RequestSchema\RequestSchemaResolver;
+use MohammadAlavi\Laragen\RequestSchema\RequestStrategy;
+use MohammadAlavi\Laragen\RequestSchema\SpatieData\SpatieDataRequestDetector;
+use MohammadAlavi\Laragen\RequestSchema\SpatieData\SpatieDataRequestSchemaBuilder;
+use MohammadAlavi\Laragen\RequestSchema\ValidationRules\ValidationRulesDetector;
+use MohammadAlavi\Laragen\RequestSchema\ValidationRules\ValidationRulesSchemaBuilder;
 use MohammadAlavi\Laragen\ResponseSchema\EloquentModel\EloquentModelDetector;
 use MohammadAlavi\Laragen\ResponseSchema\EloquentModel\EloquentModelSchemaBuilder;
 use MohammadAlavi\Laragen\ResponseSchema\FractalTransformer\FractalTransformerDetector;
@@ -38,39 +44,8 @@ final class LaragenServiceProvider extends ServiceProvider
             Generate::class,
         ]);
 
-        $this->app->singleton(ResponseSchemaResolver::class, static function (Application $app): ResponseSchemaResolver {
-            $strategies = [
-                new ResponseStrategy(
-                    $app->make(ResourceCollectionDetector::class),
-                    $app->make(ResourceCollectionSchemaBuilder::class),
-                ),
-                new ResponseStrategy(
-                    $app->make(JsonResourceDetector::class),
-                    $app->make(JsonResourceSchemaBuilder::class),
-                ),
-            ];
-
-            if (class_exists('Spatie\LaravelData\Data')) {
-                $strategies[] = new ResponseStrategy(
-                    $app->make(SpatieDataDetector::class),
-                    $app->make(SpatieDataSchemaBuilder::class),
-                );
-            }
-
-            if (class_exists('League\Fractal\TransformerAbstract')) {
-                $strategies[] = new ResponseStrategy(
-                    $app->make(FractalTransformerDetector::class),
-                    $app->make(FractalTransformerSchemaBuilder::class),
-                );
-            }
-
-            $strategies[] = new ResponseStrategy(
-                $app->make(EloquentModelDetector::class),
-                $app->make(EloquentModelSchemaBuilder::class),
-            );
-
-            return new ResponseSchemaResolver($strategies);
-        });
+        $this->registerRequestSchemaResolver();
+        $this->registerResponseSchemaResolver();
     }
 
     public function boot(): void
@@ -91,6 +66,122 @@ final class LaragenServiceProvider extends ServiceProvider
             static function (): BinaryFileResponse {
                 return response()->file(base_path(config()->string('laragen.docs_path')));
             },
+        );
+    }
+
+    private function registerRequestSchemaResolver(): void
+    {
+        $this->app->singleton(RequestSchemaResolver::class, static function (Application $app): RequestSchemaResolver {
+            /** @var array<int, array{0: class-string, 1: class-string}> $prepend */
+            $prepend = config('laragen.strategies.request.prepend', []);
+            /** @var array<int, array{0: class-string, 1: class-string}> $append */
+            $append = config('laragen.strategies.request.append', []);
+
+            $prependStrategies = self::buildRequestStrategiesFromConfig($app, $prepend);
+
+            $builtInStrategies = [];
+
+            if (class_exists('Spatie\LaravelData\Data')) {
+                $builtInStrategies[] = new RequestStrategy(
+                    $app->make(SpatieDataRequestDetector::class),
+                    $app->make(SpatieDataRequestSchemaBuilder::class),
+                );
+            }
+
+            $builtInStrategies[] = new RequestStrategy(
+                $app->make(ValidationRulesDetector::class),
+                $app->make(ValidationRulesSchemaBuilder::class),
+            );
+
+            $appendStrategies = self::buildRequestStrategiesFromConfig($app, $append);
+
+            return new RequestSchemaResolver([
+                ...$prependStrategies,
+                ...$builtInStrategies,
+                ...$appendStrategies,
+            ]);
+        });
+    }
+
+    private function registerResponseSchemaResolver(): void
+    {
+        $this->app->singleton(ResponseSchemaResolver::class, static function (Application $app): ResponseSchemaResolver {
+            /** @var array<int, array{0: class-string, 1: class-string}> $prepend */
+            $prepend = config('laragen.strategies.response.prepend', []);
+            /** @var array<int, array{0: class-string, 1: class-string}> $append */
+            $append = config('laragen.strategies.response.append', []);
+
+            $prependStrategies = self::buildResponseStrategiesFromConfig($app, $prepend);
+
+            $builtInStrategies = [
+                new ResponseStrategy(
+                    $app->make(ResourceCollectionDetector::class),
+                    $app->make(ResourceCollectionSchemaBuilder::class),
+                ),
+                new ResponseStrategy(
+                    $app->make(JsonResourceDetector::class),
+                    $app->make(JsonResourceSchemaBuilder::class),
+                ),
+            ];
+
+            if (class_exists('Spatie\LaravelData\Data')) {
+                $builtInStrategies[] = new ResponseStrategy(
+                    $app->make(SpatieDataDetector::class),
+                    $app->make(SpatieDataSchemaBuilder::class),
+                );
+            }
+
+            if (class_exists('League\Fractal\TransformerAbstract')) {
+                $builtInStrategies[] = new ResponseStrategy(
+                    $app->make(FractalTransformerDetector::class),
+                    $app->make(FractalTransformerSchemaBuilder::class),
+                );
+            }
+
+            $builtInStrategies[] = new ResponseStrategy(
+                $app->make(EloquentModelDetector::class),
+                $app->make(EloquentModelSchemaBuilder::class),
+            );
+
+            $appendStrategies = self::buildResponseStrategiesFromConfig($app, $append);
+
+            return new ResponseSchemaResolver([
+                ...$prependStrategies,
+                ...$builtInStrategies,
+                ...$appendStrategies,
+            ]);
+        });
+    }
+
+    /**
+     * @param array<int, array{0: class-string, 1: class-string}> $config
+     *
+     * @return RequestStrategy[]
+     */
+    private static function buildRequestStrategiesFromConfig(Application $app, array $config): array
+    {
+        return array_map(
+            static fn (array $pair): RequestStrategy => new RequestStrategy(
+                $app->make($pair[0]),
+                $app->make($pair[1]),
+            ),
+            $config,
+        );
+    }
+
+    /**
+     * @param array<int, array{0: class-string, 1: class-string}> $config
+     *
+     * @return ResponseStrategy[]
+     */
+    private static function buildResponseStrategiesFromConfig(Application $app, array $config): array
+    {
+        return array_map(
+            static fn (array $pair): ResponseStrategy => new ResponseStrategy(
+                $app->make($pair[0]),
+                $app->make($pair[1]),
+            ),
+            $config,
         );
     }
 }
