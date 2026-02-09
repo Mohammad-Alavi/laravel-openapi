@@ -14,10 +14,10 @@ use MohammadAlavi\Laragen\RequestSchema\ContentEncoding;
 use MohammadAlavi\Laragen\RequestSchema\RequestSchemaResolver;
 use MohammadAlavi\Laragen\RequestSchema\RequestTarget;
 use MohammadAlavi\Laragen\ResponseSchema\ResponseSchemaResolver;
-use MohammadAlavi\Laragen\Support\RuleToSchema;
 use MohammadAlavi\Laragen\RouteDiscovery\AutoRouteCollector;
 use MohammadAlavi\Laragen\RouteDiscovery\PatternMatcher;
 use MohammadAlavi\Laragen\Support\Config\Config;
+use MohammadAlavi\Laragen\Support\RuleToSchema;
 use MohammadAlavi\LaravelOpenApi\Builders\ComponentsBuilder\ComponentsBuilder;
 use MohammadAlavi\LaravelOpenApi\Builders\PathsBuilder;
 use MohammadAlavi\LaravelOpenApi\Factories\OpenAPIFactory;
@@ -302,8 +302,8 @@ final readonly class Laragen
             return $operation;
         }
 
-        if ($result->target === RequestTarget::BODY) {
-            $contentEntry = $result->encoding === ContentEncoding::MULTIPART_FORM_DATA
+        if (RequestTarget::BODY === $result->target) {
+            $contentEntry = ContentEncoding::MULTIPART_FORM_DATA === $result->encoding
                 ? ContentEntry::multipartFormData(
                     MediaType::create()->schema(self::enrichObjectWithExample($result->schema)),
                 )
