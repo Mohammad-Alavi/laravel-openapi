@@ -116,6 +116,7 @@ expect($schema->value())->toBeTrue()
 
 - **Never add Co-Authored-By or any co-author line** to commit messages
 - The repository owner is the sole author of all commits
+- **Atomic and meaningful commits** — each commit should represent a single logical change with a clear title and description, to keep history readable and reviewable
 
 ## Workflow
 
