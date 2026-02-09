@@ -51,9 +51,11 @@ SAAS product layer for zero-config OpenAPI generation.
 - **Path Parameters** (`laragen/PathParameters/`): Detect path parameter types from route constraints (`whereUuid`, `whereAlpha`, etc.)
 - **FormRequest Extraction** (`laragen/Support/`): Convert validation rules to JSON Schema request bodies (via Scribe + laravel-rules-to-schema)
 - **Model Schema** (`laragen/ModelSchema/`): Infer JSON Schema from Eloquent `$casts`, `$hidden`, `$appends`
-- **Response Schema** (`laragen/ResponseSchema/`): Multi-strategy response detection via pluggable `ResponseStrategy` chain (JsonResource, FractalTransformer, EloquentModel)
-- **RuleParsers** (`laragen/RuleParsers/`): Custom parsers for complex validation rules (`PasswordParser`, `RequiredWithoutParser`, `ExampleOverride`)
-- **ExampleGenerator** (`laragen/ExampleGenerator/`): Generate example values from schemas
+- **Response Schema** (`laragen/ResponseSchema/`): Multi-strategy response detection via pluggable `ResponseStrategy` chain (Annotation, JsonResource, ResourceCollection, SpatieData, FractalTransformer, EloquentModel)
+- **Request Schema** (`laragen/RequestSchema/`): Multi-strategy request detection via pluggable `RequestStrategy` chain (Annotation BodyParam/QueryParam, SpatieData, ValidationRules)
+- **Annotations** (`laragen/Annotations/`): Scribe-compatible docblock annotation parsing (`@response`, `@bodyParam`, `@queryParam`)
+- **RuleParsers** (`laragen/RequestSchema/Parsers/`): Custom parsers for complex validation rules (`PasswordParser`, `RequiredWithoutParser`, `ExampleOverride`, `FileUploadParser`)
+- **ExampleGenerator** (`laragen/RequestSchema/ExampleGenerator/`): Generate example values from schemas
 - Configuration via `config/laragen.php` and `config/rules-to-schema.php`
 
 ---
@@ -152,19 +154,61 @@ Generates JSON Schema from Eloquent model `$casts`, excludes `$hidden`, includes
 Pluggable `ResponseStrategy` chain analyzes controller return types to auto-generate response schemas.
 
 **Strategy chain** (tried in order, first match wins):
-1. **JsonResource** -- detects `JsonResource` return type, analyzes `toArray()` AST
-2. **FractalTransformer** -- conditional on `league/fractal`, detects transformer references in controller AST
-3. **EloquentModel** -- detects `Model` return type, delegates to `ModelSchemaInferrer`
+1. **Annotation** -- detects `@response` docblock tags, infers schema from JSON example
+2. **ResourceCollection** -- detects `ResourceCollection` return type, resolves inner resource
+3. **JsonResource** -- detects `JsonResource` return type, analyzes `toArray()` AST
+4. **SpatieData** -- conditional on `spatie/laravel-data`, analyzes constructor params
+5. **FractalTransformer** -- conditional on `league/fractal`, detects transformer references in controller AST
+6. **EloquentModel** -- detects `Model` return type, delegates to `ModelSchemaInferrer`
 
-**Architecture**: Generic AST analysis lives in `ArraySchemaAnalyzer` (reusable across strategies). Each strategy has a `ResponseDetector` (finds the response class) and `ResponseSchemaBuilder` (builds JSON Schema from it). `ResponseSchemaResolver` iterates the chain.
+**Architecture**: Generic AST analysis lives in `ArraySchemaAnalyzer` (reusable across strategies). Each strategy has a `ResponseDetector` (finds the response context) and `ResponseSchemaBuilder` (builds JSON Schema from it). `ResponseSchemaResolver` iterates the chain. Detectors return `mixed` (class-string for code-analysis strategies, value objects for annotation strategies).
 
 **Key files**:
-- `laragen/ArraySchema/ArraySchemaAnalyzer.php` -- generic AST analysis (21 patterns)
-- `laragen/ArraySchema/ArrayField.php` -- field value object (8 factory methods)
+- `laragen/ResponseSchema/ArraySchema/ArraySchemaAnalyzer.php` -- generic AST analysis (21 patterns)
+- `laragen/ResponseSchema/ArraySchema/ArrayField.php` -- field value object (8 factory methods)
 - `laragen/ResponseSchema/ResponseSchemaResolver.php` -- strategy chain
+- `laragen/ResponseSchema/Annotation/` -- Annotation strategy (`@response` docblock tags)
 - `laragen/ResponseSchema/JsonResource/` -- JsonResource strategy
+- `laragen/ResponseSchema/ResourceCollection/` -- ResourceCollection strategy
+- `laragen/ResponseSchema/SpatieData/` -- Spatie Data strategy (conditional)
 - `laragen/ResponseSchema/EloquentModel/` -- Eloquent Model strategy
 - `laragen/ResponseSchema/FractalTransformer/` -- Fractal strategy (conditional)
+
+---
+
+### F7: Request Schema Detection (Multi-Strategy)
+
+Pluggable `RequestStrategy` chain detects request schema from various sources.
+
+**Strategy chain** (tried in order, first match wins):
+1. **AnnotationBodyParam** -- detects `@bodyParam` docblock tags, builds typed object schema
+2. **AnnotationQueryParam** -- detects `@queryParam` docblock tags, builds typed object schema
+3. **SpatieData** -- conditional on `spatie/laravel-data`, detects Data parameter type-hints
+4. **ValidationRules** -- extracts FormRequest/inline validation rules, converts to JSON Schema
+
+**Architecture**: Each strategy has a `RequestDetector` (returns mixed context or null) and `RequestSchemaBuilder` (builds `RequestSchemaResult` containing schema, target, and encoding). `RequestSchemaResolver` iterates the chain.
+
+**Key files**:
+- `laragen/RequestSchema/RequestSchemaResolver.php` -- strategy chain
+- `laragen/RequestSchema/Annotation/` -- Annotation strategies (`@bodyParam`, `@queryParam`)
+- `laragen/RequestSchema/SpatieData/` -- Spatie Data strategy (conditional)
+- `laragen/RequestSchema/ValidationRules/` -- Validation rules strategy
+- `laragen/RequestSchema/Parsers/` -- Custom rule parsers
+
+---
+
+### F8: Docblock Annotation Support
+
+Scribe-compatible docblock annotations that override automatic code analysis.
+
+**Supported tags**:
+- `@response {status?} {json}` -- Define example response with optional status code
+- `@bodyParam {name} {type} {required?} {description?}` -- Define request body parameter
+- `@queryParam {name} {type?} {description?}` -- Define query parameter
+
+**Files**: `laragen/Annotations/DocBlockTagParser.php`, `DetectedResponseAnnotation.php`, `DetectedBodyParam.php`, `DetectedQueryParam.php`
+
+**Priority**: Annotations are checked first in the strategy chain, so explicit annotations always override automatic detection.
 
 **AST Patterns** (21): model property, string/int/float/bool/null literals, method chains, explicit resource access, nested resources, collections, 12 conditional methods, merge/mergeWhen/mergeUnless, null coalescing, nullsafe property/method, type casting, nested arrays, function calls, class constants, concat, arithmetic, boolean NOT, comparisons.
 

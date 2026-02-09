@@ -106,6 +106,15 @@ function sidebarGuide() {
                 { text: 'Security', link: 'security' },
             ],
         },
+        {
+            text: 'Laragen',
+            collapsed: false,
+            items: [
+                { text: 'Auto-Generation', link: 'laragen-auto-generation' },
+                { text: 'Annotations', link: 'laragen-annotations' },
+                { text: 'Extending', link: 'laragen-extending' },
+            ],
+        },
         { text: 'Config & API Reference', base: '/reference/', link: 'generator-config' },
     ];
 }
