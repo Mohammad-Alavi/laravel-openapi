@@ -248,6 +248,24 @@ return app(RuleToSchema::class)->transform($ruleSets, $request);
 
 ---
 
+## D25: NestedRuleset Value Object Over Magic-Key Arrays
+
+**Decision**: Replace unstructured arrays with magic key (`##_VALIDATION_RULES_##`) with a typed `NestedRuleset` value object for the normalized validation ruleset flowing through parsers.
+
+**Before**: `['##_VALIDATION_RULES_##' => [ValidationRule, ...], 'child' => [...]]` — parsers filtered by magic key, used `array_diff_key` and `array_filter` to separate rules from children.
+
+**After**: `NestedRuleset(validationRules: [...], children: ['child' => NestedRuleset(...)])` — typed access via properties and methods.
+
+**Rationale**:
+- Self-documenting data structure — no magic string constants in parser code
+- Type safety — `NestedRuleset` in signatures instead of `array`
+- Only 2 of 26 parsers actually use the nested data; the value object makes this explicit
+- `RULES_KEY` constant retained on `ValidationRuleNormalizer` for potential external consumers
+
+**Scope**: `laravel-rules-to-schema/` package only. The `laragen/` `Example` class has its own `$nestedRuleset` array property in a separate domain — not affected.
+
+---
+
 ## Open Questions
 
 - **Livewire/Inertia responses**: Skip for MVP, not traditional JSON APIs.

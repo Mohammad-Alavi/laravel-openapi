@@ -96,6 +96,30 @@ Parser categories:
 - **Schema-expressible** — map directly to JSON Schema keywords (pattern, min/max, enum, etc.)
 - **Conditional** — use `if/then/else` for cross-field dependencies (required_if, exclude_if, etc.)
 
+### Data Flow: NestedRuleset
+
+`ValidationRuleNormalizer` converts raw Laravel validation rules into `NestedRuleset` trees:
+
+```
+Raw rules: ['name' => 'required|string', 'address.street' => 'string', 'tags.*' => 'string']
+     ↓ ValidationRuleNormalizer
+array<string, NestedRuleset>:
+  'name'    => NestedRuleset(validationRules: [required, string], children: [])
+  'address' => NestedRuleset(validationRules: [], children: ['street' => NestedRuleset(...)])
+  'tags'    => NestedRuleset(validationRules: [], children: ['*' => NestedRuleset(...)])
+```
+
+`NestedRuleset` is a `final readonly` value object with:
+- `validationRules` — `list<ValidationRule>` for this field
+- `children` — `array<string, NestedRuleset>` for nested fields
+- `hasChildren()`, `hasWildcardChild()`, `wildcardChild()` — convenience methods
+
+Only 2 of 26 parsers access `$nestedRuleset` body content:
+- **`NestedObjectParser`** — uses `->children` and `->hasWildcardChild()` to build nested object/array schemas
+- **`TypeParser`** — uses `->hasChildren()` to skip setting `type: array` when a nested schema handles it
+
+Context-aware parsers (`RequiredWithParser`, `RequiredWithoutParser`) access `->validationRules` on entries in `$allRules` (`array<string, NestedRuleset>`).
+
 Configuration: `config/laragen.php` and `config/rules-to-schema.php`
 
 See `.claude/architecture/` for future plans: FluentSchema replacement, fork strategy, multi-framework support.
