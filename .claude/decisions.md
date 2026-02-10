@@ -324,6 +324,28 @@ Typed accessors: `isSchema()`, `isExpanded()`, `isExcluded()`, `schema()`, `sche
 
 ---
 
+## D29: LaravelRuleInternals — Isolated Access to Laravel Protected Properties
+
+**Decision**: Centralize all reflection-based access to protected properties on Laravel validation rule objects behind a single `LaravelRuleInternals` wrapper class.
+
+**Before**: `EnumParser` and `TypeParser` each used `invade($rule)->type` / `invade($rule)->values` inline to read protected properties on `Illuminate\Validation\Rules\Enum` and `Illuminate\Validation\Rules\In`. PHPStan suppression (`@phpstan-ignore property.protected`) was scattered across 3 call sites in 2 files.
+
+**After**: `LaravelRuleInternals` provides two static methods:
+- `enumType(EnumRule): class-string<UnitEnum>` — reads protected `$type` property
+- `inValues(InRule): list<mixed>` — reads protected `$values` property
+
+Both use `ReflectionProperty` directly. PHPStan `return.type` suppression lives only in this one file.
+
+**Rationale**:
+- Laravel exposes no public getters for these properties — reflection is unavoidable
+- If Laravel changes the internal property names or structure, only one file needs updating
+- PHPStan ignore comments consolidated to a single location instead of scattered across parsers
+- Consistent with D14 (wrap external dependencies behind our own interfaces)
+
+**Scope**: `laravel-rules-to-schema/` package. `EnumParser` and `TypeParser` now call `LaravelRuleInternals` instead of using reflection directly.
+
+---
+
 ## Open Questions
 
 - **Livewire/Inertia responses**: Skip for MVP, not traditional JSON APIs.
