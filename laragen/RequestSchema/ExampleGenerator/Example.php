@@ -2,18 +2,18 @@
 
 namespace MohammadAlavi\Laragen\RequestSchema\ExampleGenerator;
 
-use FluentJsonSchema\FluentSchema;
 use Illuminate\Foundation\Http\FormRequest;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\DefinedFormat;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 abstract readonly class Example
 {
     final public function __construct(
         protected string $attribute,
-        protected FluentSchema $schema,
+        protected LooseFluentDescriptor $schema,
         protected array $validationRules,
         protected array $nestedRuleset,
-        protected FluentSchema $baseSchema,
+        protected LooseFluentDescriptor $baseSchema,
         protected array $allRules,
     ) {
     }

@@ -1,0 +1,51 @@
+<?php
+
+declare(strict_types=1);
+
+namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
+
+use MohammadAlavi\LaravelRulesToSchema\Concerns\TracksParserContext;
+use MohammadAlavi\LaravelRulesToSchema\Contracts\ContextAwareRuleParser;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\StrictFluentDescriptor;
+
+final class ConditionalAcceptedParser implements ContextAwareRuleParser
+{
+    use TracksParserContext;
+
+    public function __invoke(
+        string $attribute,
+        LooseFluentDescriptor $schema,
+        array $validationRules,
+        array $nestedRuleset,
+    ): array|LooseFluentDescriptor|null {
+        if (null === $this->baseSchema || null === $this->allRules) {
+            return $schema;
+        }
+
+        foreach ($validationRules as $validationRule) {
+            if (!$validationRule->isString()) {
+                continue;
+            }
+
+            $schema = match ($validationRule->rule) {
+                'accepted_if' => $this->applyConditional($schema, $validationRule->args, true),
+                'declined_if' => $this->applyConditional($schema, $validationRule->args, false),
+                default => $schema,
+            };
+        }
+
+        return $schema;
+    }
+
+    private function applyConditional(LooseFluentDescriptor $schema, array $args, bool $acceptedValue): LooseFluentDescriptor
+    {
+        $ifSchema = LooseFluentDescriptor::withoutSchema()
+            ->properties(Property::create($args[0], StrictFluentDescriptor::constant($args[1] ?? null)));
+
+        $thenSchema = StrictFluentDescriptor::boolean()->const($acceptedValue);
+
+        return $schema->if($ifSchema)->then($thenSchema);
+    }
+}

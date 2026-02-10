@@ -3,8 +3,8 @@
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use MohammadAlavi\Laragen\Laragen;
-use MohammadAlavi\Laragen\RequestSchema\Parsers\RequiredWithoutParser;
-use MohammadAlavi\Laragen\RequestSchema\Parsers\RequiredWithParser;
+use MohammadAlavi\LaravelRulesToSchema\Parsers\RequiredWithoutParser;
+use MohammadAlavi\LaravelRulesToSchema\Parsers\RequiredWithParser;
 use Tests\Laragen\Support\Doubles\ExtractController;
 use Tests\Laragen\Support\Doubles\RequireWith\RequireWithController;
 

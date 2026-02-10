@@ -28,7 +28,6 @@ class WorkbenchServiceProvider extends ServiceProvider
         ]);
         config(['cors.allowed_origins' => ['*']]);
 
-        $this->app['config']->set('rules-to-schema', require __DIR__ . '/../../../config/rules-to-schema.php');
         $this->app['config']->set('scalar', require __DIR__ . '/../../../config/scalar.php');
         $this->app['config']->set('scribe', require __DIR__ . '/../../../config/scribe.php');
 

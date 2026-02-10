@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace Tests\Laragen\Support\Doubles\Rules;
 
 use Illuminate\Contracts\Validation\ValidationRule;
+use MohammadAlavi\LaravelRulesToSchema\Contracts\HasDocs;
+use MohammadAlavi\LaravelRulesToSchema\RuleDocumentation;
 
-class DocumentedRule implements ValidationRule
+class DocumentedRule implements ValidationRule, HasDocs
 {
     public function validate(string $attribute, mixed $value, \Closure $fail): void
     {
     }
 
-    /** @return array{type?: string, format?: string, description?: string, enum?: string[]} */
-    public function docs(): array
+    public function docs(): RuleDocumentation
     {
-        return [
-            'type' => 'string',
-            'format' => 'date-time',
-            'description' => 'A valid datetime string',
-        ];
+        return new RuleDocumentation(
+            type: 'string',
+            format: 'date-time',
+            description: 'A valid datetime string',
+        );
     }
 }

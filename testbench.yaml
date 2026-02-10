@@ -16,6 +16,7 @@ workbench:
       to: workbench/public
       reverse: true
 providers:
+  - MohammadAlavi\LaravelRulesToSchema\Providers\RulesToSchemaServiceProvider
   - MohammadAlavi\LaravelOpenApi\Providers\OpenApiServiceProvider
   - Workbench\App\Providers\WorkbenchServiceProvider
   - MohammadAlavi\Laragen\Providers\LaragenServiceProvider

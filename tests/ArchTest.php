@@ -5,6 +5,7 @@ arch()
     ->expect('MohammadAlavi\ObjectOrientedJSONSchema')
     ->toOnlyBeUsedIn([
         'MohammadAlavi\LaravelOpenApi',
+        'MohammadAlavi\LaravelRulesToSchema',
         'MohammadAlavi\Laragen',
         'MohammadAlavi\ObjectOrientedJSONSchema',
         'MohammadAlavi\ObjectOrientedOpenAPI',
@@ -21,4 +22,8 @@ arch()
         'MohammadAlavi\Laragen',
         'MohammadAlavi\LaravelOpenApi',
         'Workbench',
+    ])->and('MohammadAlavi\LaravelRulesToSchema')
+    ->toOnlyBeUsedIn([
+        'MohammadAlavi\Laragen',
+        'MohammadAlavi\LaravelRulesToSchema',
     ]);

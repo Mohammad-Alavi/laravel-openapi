@@ -30,7 +30,6 @@
         "knuckleswtf/scribe": "^5.2",
         "laravel/framework": "^10.0|^11.0|^12.0",
         "myclabs/deep-copy": "^1.12",
-        "riley19280/laravel-rules-to-schema":  "dev-main",
         "scalar/laravel": "^0.2.0"
     },
     "require-dev": {
@@ -64,20 +63,12 @@
         "thecodingmachine/phpstan-safe-rule": "^1.4",
         "vimeo/psalm": "^6.0.0"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Mohammad-Alavi/laravel-rules-to-schema"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/Mohammad-Alavi/fluent-json-schema"
-        }
-    ],
+    "repositories": [],
     "autoload": {
         "psr-4": {
             "Agent\\": "src/Agent/",
             "MohammadAlavi\\Laragen\\": "laragen/",
+            "MohammadAlavi\\LaravelRulesToSchema\\": "laravel-rules-to-schema/",
             "MohammadAlavi\\LaravelOpenApi\\": "src/",
             "MohammadAlavi\\ObjectOrientedJSONSchema\\": "JSONSchema/",
             "MohammadAlavi\\ObjectOrientedOpenAPI\\": "oooapi/"
@@ -110,6 +101,7 @@
     "extra": {
         "laravel": {
             "providers": [
+                "MohammadAlavi\\LaravelRulesToSchema\\Providers\\RulesToSchemaServiceProvider",
                 "MohammadAlavi\\LaravelOpenApi\\Providers\\OpenApiServiceProvider"
             ]
         }

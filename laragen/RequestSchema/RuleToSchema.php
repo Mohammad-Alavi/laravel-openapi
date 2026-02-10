@@ -1,19 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MohammadAlavi\Laragen\RequestSchema;
 
-use FluentJsonSchema\FluentSchema;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Routing\Route;
-use LaravelRulesToSchema\Contracts\RuleParser;
-use LaravelRulesToSchema\LaravelRulesToSchema;
-use LaravelRulesToSchema\ValidationRuleNormalizer;
-use MohammadAlavi\Laragen\RequestSchema\Parsers\ContextAwareRuleParser;
+use MohammadAlavi\LaravelRulesToSchema\RuleToSchema as BaseRuleToSchema;
+use MohammadAlavi\LaravelRulesToSchema\ValidationRuleNormalizer;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 use Webmozart\Assert\Assert;
 
-final class RuleToSchema extends LaravelRulesToSchema
+final class RuleToSchema
 {
-    public static function transform(array|string|Route $rule): FluentSchema
+    public static function transform(array|string|Route $rule): LooseFluentDescriptor
     {
         $request = null;
         if (is_string($rule)) {
@@ -38,129 +38,9 @@ final class RuleToSchema extends LaravelRulesToSchema
             $rule = $extractor->extractFrom($route);
         }
 
-        $ruleSets = (new ValidationRuleNormalizer($rule))->getRules();
-
-        $schema = FluentSchema::make()
-            ->type()->object()
-            ->return();
-
-        foreach ($ruleSets as $property => $rawRules) {
-            $propertySchema = self::parseRulesetOverride($property, $rawRules);
-
-            if ($propertySchema instanceof FluentSchema) {
-                $schema->object()->property($property, $propertySchema);
-            } elseif (is_array($propertySchema)) {
-                $schema->object()->properties($propertySchema);
-            }
-        }
-
-        // Context-aware parsers may restructure the base schema directly
-        // (e.g. RequiredWithParser replaces properties with anyOf/allOf).
-        // We run them but don't re-add property schemas to the root.
-        foreach ($ruleSets as $property => $rawRules) {
-            self::parseContextAwareRules($property, $rawRules, $schema, $ruleSets, $request);
-        }
-
-        return self::distinctRequired($schema);
-    }
-
-    /*
-     * This is a temporary method to allow for overriding the ruleset parsing logic, parseRuleset() method.
-     */
-    private static function parseRulesetOverride(string $name, array $nestedRuleset): FluentSchema|array|null
-    {
-        $validationRules = $nestedRuleset[config('rules-to-schema.validation_rule_token')] ?? [];
-
-        $schemas = [$name => FluentSchema::make()];
-
-        foreach (\LaravelRulesToSchema\Facades\LaravelRulesToSchema::getParsers() as $parserClass) {
-            $instance = app($parserClass);
-
-            if (!$instance instanceof RuleParser) {
-                throw new \RuntimeException('Rule parsers must implement ' . RuleParser::class);
-            }
-
-            // Skip context-aware parsers in this phase — they run in parseContextAwareRules
-            if ($instance instanceof ContextAwareRuleParser) {
-                continue;
-            }
-
-            $newSchemas = [];
-
-            foreach ($schemas as $schemaKey => $schema) {
-                $resultSchema = $instance($schemaKey, $schema, $validationRules, $nestedRuleset);
-
-                if (null === $resultSchema) {
-                    continue;
-                }
-
-                if (is_array($resultSchema)) {
-                    $newSchemas = [...$newSchemas, ...$resultSchema];
-                } else {
-                    $newSchemas[$schemaKey] = $resultSchema;
-                }
-            }
-
-            $schemas = $newSchemas;
-        }
-
-        if (0 == count($schemas)) {
-            return null;
-        } elseif (1 == count($schemas)) {
-            return array_values($schemas)[0];
-        }
-
-        return $schemas;
-    }
-
-    private static function parseContextAwareRules(string $name, array $nestedRuleset, FluentSchema $baseSchema, array $ruleSets, string|null $request): FluentSchema|array|null
-    {
-        $validationRules = $nestedRuleset[config('rules-to-schema.validation_rule_token')] ?? [];
-
-        $schemas = [$name => $baseSchema->getSchemaDTO()->properties[$name] ?? FluentSchema::make()];
-
-        $newSchemas = [];
-
-        foreach (\LaravelRulesToSchema\Facades\LaravelRulesToSchema::getParsers() as $parserClass) {
-            $instance = app($parserClass);
-
-            if (!$instance instanceof ContextAwareRuleParser) {
-                continue;
-            }
-
-            $contextualParser = $instance->withContext($baseSchema, $ruleSets, $request);
-
-            foreach ($schemas as $attribute => $schema) {
-                $resultSchema = $contextualParser($attribute, $schema, $validationRules, $nestedRuleset);
-
-                if (null === $resultSchema) {
-                    continue;
-                }
-
-                if (is_array($resultSchema)) {
-                    $newSchemas = [...$newSchemas, ...$resultSchema];
-                } else {
-                    $newSchemas[$attribute] = $resultSchema;
-                }
-
-                $schemas = $newSchemas;
-            }
-        }
-
-        if (0 == count($schemas)) {
-            return null;
-        } elseif (1 == count($schemas)) {
-            return array_values($schemas)[0];
-        }
-
-        return $schemas;
-    }
-
-    private static function distinctRequired(FluentSchema $schema): FluentSchema
-    {
-        $required = array_values(array_unique($schema->getSchemaDTO()->required ?? []));
-        $schema->getSchemaDTO()->required = [] === $required ? null : $required;
-
-        return $schema;
+        return app(BaseRuleToSchema::class)->transform(
+            (new ValidationRuleNormalizer($rule))->getRules(),
+            $request,
+        );
     }
 }

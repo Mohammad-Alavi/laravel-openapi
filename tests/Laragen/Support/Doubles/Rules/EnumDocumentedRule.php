@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace Tests\Laragen\Support\Doubles\Rules;
 
 use Illuminate\Contracts\Validation\ValidationRule;
+use MohammadAlavi\LaravelRulesToSchema\Contracts\HasDocs;
+use MohammadAlavi\LaravelRulesToSchema\RuleDocumentation;
 
-class EnumDocumentedRule implements ValidationRule
+class EnumDocumentedRule implements ValidationRule, HasDocs
 {
     public function validate(string $attribute, mixed $value, \Closure $fail): void
     {
     }
 
-    /** @return array{type?: string, enum?: string[]} */
-    public function docs(): array
+    public function docs(): RuleDocumentation
     {
-        return [
-            'type' => 'string',
-            'enum' => ['active', 'inactive', 'pending'],
-        ];
+        return new RuleDocumentation(
+            type: 'string',
+            enum: ['active', 'inactive', 'pending'],
+        );
     }
 }
