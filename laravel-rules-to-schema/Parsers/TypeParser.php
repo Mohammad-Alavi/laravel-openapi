@@ -7,6 +7,7 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 use Illuminate\Validation\Rules\Enum as EnumRule;
 use Illuminate\Validation\Rules\In as InRule;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
+use MohammadAlavi\LaravelRulesToSchema\LaravelRuleInternals;
 use MohammadAlavi\LaravelRulesToSchema\LaravelRuleType;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\ParseResult;
@@ -71,7 +72,7 @@ final class TypeParser implements RuleParser
                 return $value;
             }, $args ?? []);
         } elseif ($ruleName instanceof InRule) {
-            $values = invade($ruleName)->values; /** @phpstan-ignore property.protected */
+            $values = LaravelRuleInternals::inValues($ruleName);
         }
 
         if (!$values) {
@@ -114,7 +115,7 @@ final class TypeParser implements RuleParser
     /** @return list<Type> */
     private function parseEnumRuleTypes(EnumRule $rule): array
     {
-        $enumType = invade($rule)->type; /** @phpstan-ignore property.protected */
+        $enumType = LaravelRuleInternals::enumType($rule);
         $reflection = new ReflectionClass($enumType);
 
         if (
