@@ -266,6 +266,24 @@ return app(RuleToSchema::class)->transform($ruleSets, $request);
 
 ---
 
+## D26: CustomRuleSchemaMapping Value Object Over Untyped Config Arrays
+
+**Decision**: Replace `array<string, mixed>` config entries for custom rule schemas with a typed `CustomRuleSchemaMapping` value object.
+
+**Before**: `CustomRuleSchemaParser` accepted raw config values (`class-string`, `'string'`, `['null', 'string']`) and used inline `is_string`/`is_array`/`class_exists`/`instanceof` checks to discriminate between the 3 shapes.
+
+**After**: `CustomRuleSchemaMapping` is a discriminated union with named constructors (`schemaProvider()`, `type()`, `types()`), a `from()` factory for raw config conversion, and an `apply()` method encapsulating schema generation. `CustomRuleSchemaParser` accepts `array<string, CustomRuleSchemaMapping>` and delegates to `$mapping->apply()`.
+
+**Rationale**:
+- Type discrimination logic extracted from parser into self-contained value object
+- `from()` factory handles backward-compatible conversion of raw config values
+- `apply()` method encapsulates schema generation — parser only routes to the right mapping
+- Service provider converts raw config at binding time via `CustomRuleSchemaMapping::from()`
+
+**Scope**: `laravel-rules-to-schema/` package only. Config file format unchanged — `from()` handles conversion.
+
+---
+
 ## Open Questions
 
 - **Livewire/Inertia responses**: Skip for MVP, not traditional JSON APIs.

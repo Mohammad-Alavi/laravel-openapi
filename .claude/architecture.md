@@ -120,6 +120,17 @@ Only 2 of 26 parsers access `$nestedRuleset` body content:
 
 Context-aware parsers (`RequiredWithParser`, `RequiredWithoutParser`) access `->validationRules` on entries in `$allRules` (`array<string, NestedRuleset>`).
 
+### Custom Rule Schema Mapping
+
+`CustomRuleSchemaMapping` is a typed discriminated union for custom rule → JSON Schema mappings configured in `config/rules-to-schema.php`:
+
+- `CustomRuleSchemaMapping::schemaProvider($class)` — delegates to a `HasJsonSchema` implementation resolved via the container
+- `CustomRuleSchemaMapping::type('string')` — sets a single JSON Schema type
+- `CustomRuleSchemaMapping::types(['null', 'string'])` — sets multiple JSON Schema types
+- `CustomRuleSchemaMapping::from($raw)` — factory that converts raw config values (class-string, type string, or array) into the appropriate variant
+
+`RulesToSchemaServiceProvider` converts raw config entries at binding time. `CustomRuleSchemaParser` accepts `array<string, CustomRuleSchemaMapping>` and delegates to `$mapping->apply()`. Inline `HasJsonSchema` rule objects (passed directly in validation rules) take priority over config mappings.
+
 Configuration: `config/laragen.php` and `config/rules-to-schema.php`
 
 See `.claude/architecture/` for future plans: FluentSchema replacement, fork strategy, multi-framework support.
