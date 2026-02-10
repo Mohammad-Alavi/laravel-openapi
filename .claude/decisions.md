@@ -205,6 +205,49 @@ Stripe for payments. Solo: $19/mo (3 projects), Team: $49/mo (10), Agency: $99/m
 
 ---
 
+## D24: No Redundant Intermediate Variables
+
+**Decision**: Inline single-use variables that add no clarity. If a variable is assigned and immediately used/returned with nothing else in between, inline the expression directly.
+
+**Examples**:
+```php
+// Bad: $x assigned then immediately returned
+$transformer = app(RuleToSchema::class);
+return $transformer->transform($ruleSets, $request);
+
+// Good: inline
+return app(RuleToSchema::class)->transform($ruleSets, $request);
+```
+
+**Exceptions**: Keep intermediate variables when they:
+- Are used more than once (avoids duplicate computation)
+- Name a complex expression for readability (e.g., `$ifSchema`, `$thenSchema` in conditional logic)
+- Would create excessively long lines if inlined
+
+**Applied to**: `laravel-rules-to-schema/` and `laragen/RequestSchema/` — completed.
+
+**Remaining work**: Audit `src/`, `oooapi/`, `JSONSchema/`, and remaining `laragen/` directories.
+
+---
+
+## D23: Strict Keyword Objects Over Loose Strings
+
+**Decision**: Always use typed keyword objects (`Type::string()`, `StringFormat::EMAIL`) instead of loose string literals (`'string'`, `'email'`) when calling JSONSchema fluent descriptor methods.
+
+**Rationale**:
+- Type-safety: IDE autocomplete, compile-time errors vs runtime failures
+- Self-documenting: `Type::object()` is clearer intent than `'object'`
+- Consistent with D5 (Type-System Enforcement Over Runtime Checks)
+
+**Applied to**: `laravel-rules-to-schema/` package (source + tests) — completed.
+
+**Remaining work**:
+- `tests/JSONSchema/` — ~90 instances of `->type('...')` and `->format('...')` with string literals. These are in the JSONSchema package's own tests and should use `Type::*()` and `StringFormat::*` where applicable.
+- Custom/dynamic values from external config or user-defined rules (`CustomRuleDocsParser`, `CustomRuleSchemaParser`) stay as strings since the values aren't known at compile time.
+- Non-standard format strings (`'binary'`, `'timezone'`) stay as strings since they have no `StringFormat` enum case.
+
+---
+
 ## Open Questions
 
 - **Livewire/Inertia responses**: Skip for MVP, not traditional JSON APIs.
