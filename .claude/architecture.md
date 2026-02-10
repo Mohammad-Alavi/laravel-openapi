@@ -120,6 +120,10 @@ Only 2 of 26 parsers access `$nestedRuleset` body content:
 
 Context-aware parsers (`RequiredWithParser`, `RequiredWithoutParser`) access `->validationRules` on entries in `$allRules` (`array<string, NestedRuleset>`).
 
+### Rule Type Resolution
+
+`LaravelRuleType` maps Laravel validation rule names to JSON Schema types. Static methods (`string()`, `integer()`, `number()`, `boolean()`, `array()`, `nullable()`) return rule name lists, and `resolve(string): Type|null` maps a rule name to its JSON Schema `Type` object. `TypeParser` uses `resolve()` for type detection; the `array` type has special handling (skipped when `$nestedRuleset->hasChildren()`). `ExcludedParser` uses `exclude()` separately for field exclusion logic.
+
 ### Custom Rule Schema Mapping
 
 `CustomRuleSchemaMapping` is a typed discriminated union for custom rule → JSON Schema mappings configured in `config/rules-to-schema.php`:

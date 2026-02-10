@@ -284,6 +284,23 @@ return app(RuleToSchema::class)->transform($ruleSets, $request);
 
 ---
 
+## D27: LaravelRuleType Resolver Over Repeated in_array Checks
+
+**Decision**: Add a `resolve(string): Type|null` method to `LaravelRuleType` that centralizes the rule-name-to-JSON-Schema-type mapping.
+
+**Before**: `TypeParser` had 6 separate `in_array($ruleName, LaravelRuleType::*(), true)` blocks, each mapping to `Type::string()`, `Type::integer()`, etc.
+
+**After**: Single `LaravelRuleType::resolve($ruleName)` call returns the appropriate `Type` object or `null`. `TypeParser` reduced from 6 blocks to one `resolve()` call with a special case for `array` (skipped when nested schema handles it).
+
+**Rationale**:
+- Single point of truth for rule-name → JSON Schema type mapping
+- Independently testable (38 tests covering all rule categories)
+- `TypeParser` simplified from 19 lines of `in_array` checks to 6 lines
+
+**Scope**: `LaravelRuleType::resolve()` + `TypeParser` simplification. `ExcludedParser` uses `LaravelRuleType::exclude()` for a different purpose (field exclusion, not type resolution) — unchanged.
+
+---
+
 ## Open Questions
 
 - **Livewire/Inertia responses**: Skip for MVP, not traditional JSON APIs.
