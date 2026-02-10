@@ -23,7 +23,7 @@ describe(class_basename(CustomRuleSchemaParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule($rule)], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
         expect($compiled['type'])->toBe('string')
             ->and($compiled['description'])->toBe('from-rule');
     });
@@ -39,7 +39,7 @@ describe(class_basename(CustomRuleSchemaParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule($providerClass)], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
         expect($compiled['type'])->toBe('integer')
             ->and($compiled['description'])->toBe('from-config');
     });
@@ -52,7 +52,7 @@ describe(class_basename(CustomRuleSchemaParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('custom_rule')], new NestedRuleset());
 
-        expect($result->compile()['type'])->toBe('string');
+        expect($result->schema()->compile()['type'])->toBe('string');
     });
 
     it('applies multiple types from config mapping', function (): void {
@@ -63,7 +63,7 @@ describe(class_basename(CustomRuleSchemaParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('custom_rule')], new NestedRuleset());
 
-        expect($result->compile()['type'])->toBe(['null', 'string']);
+        expect($result->schema()->compile()['type'])->toBe(['null', 'string']);
     });
 
     it('does not modify schema for unmatched rules', function (): void {
@@ -74,7 +74,7 @@ describe(class_basename(CustomRuleSchemaParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('required')], new NestedRuleset());
 
-        expect($result->compile())->toBe([]);
+        expect($result->schema()->compile())->toBe([]);
     });
 
     it('returns schema unchanged with no custom schemas configured', function (): void {
@@ -83,7 +83,7 @@ describe(class_basename(CustomRuleSchemaParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('required')], new NestedRuleset());
 
-        expect($result->compile())->toBe([]);
+        expect($result->schema()->compile())->toBe([]);
     });
 
     it('prioritizes HasJsonSchema rule over config mapping', function (): void {
@@ -101,6 +101,6 @@ describe(class_basename(CustomRuleSchemaParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule($rule)], new NestedRuleset());
 
-        expect($result->compile()['type'])->toBe('boolean');
+        expect($result->schema()->compile()['type'])->toBe('boolean');
     });
 })->covers(CustomRuleSchemaParser::class);

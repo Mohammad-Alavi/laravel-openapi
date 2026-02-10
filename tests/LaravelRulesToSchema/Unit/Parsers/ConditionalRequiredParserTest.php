@@ -20,7 +20,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
 
         $result = $contextual('name', $schema, [new ValidationRule('string'), new ValidationRule('required_if', ['role', 'admin'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['role'])->toBe(['const' => 'admin'])
@@ -39,7 +39,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
 
         $result = $contextual('name', $schema, [new ValidationRule('string'), new ValidationRule('required_unless', ['role', 'guest'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['role'])->toBe(['const' => 'guest'])
@@ -58,7 +58,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
 
         $result = $contextual('city', $schema, [new ValidationRule('string'), new ValidationRule('required_with_all', ['street', 'zip'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if'])->toBe(['required' => ['street', 'zip']])
@@ -77,7 +77,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
 
         $result = $contextual('email', $schema, [new ValidationRule('string'), new ValidationRule('required_without_all', ['phone', 'fax'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['then'])->toBe(['required' => ['email']]);
@@ -95,7 +95,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
 
         $result = $contextual('reason', $schema, [new ValidationRule('string'), new ValidationRule('required_if_accepted', ['terms'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['terms'])->toBe(['const' => true])
@@ -114,7 +114,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
 
         $result = $contextual('reason', $schema, [new ValidationRule('string'), new ValidationRule('required_if_declined', ['agree'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['agree'])->toBe(['const' => false])
@@ -133,7 +133,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
 
         $result = $contextual('name', $schema, [new ValidationRule('string'), new ValidationRule('required')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('if');
     });
@@ -144,7 +144,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('required_if', ['role', 'admin'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('if');
     });
@@ -161,7 +161,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
 
         $result = $contextual('name', $schema, [new ValidationRule('required_if', ['role', 'admin', 'role', 'super'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if');
     });

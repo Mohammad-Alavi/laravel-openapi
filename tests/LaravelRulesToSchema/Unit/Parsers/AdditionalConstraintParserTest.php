@@ -15,7 +15,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
 
         $result = $parser('website', $schema, [new ValidationRule('active_url')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['format'])->toBe('uri');
     });
@@ -26,7 +26,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
 
         $result = $parser('tz', $schema, [new ValidationRule('timezone')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['format'])->toBe('timezone');
     });
@@ -37,7 +37,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
 
         $result = $parser('name', $schema, [new ValidationRule('filled')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minLength'])->toBe(1);
     });
@@ -48,7 +48,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
 
         $result = $parser('tags', $schema, [new ValidationRule('filled')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minItems'])->toBe(1);
     });
@@ -59,7 +59,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('filled')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minLength'])->toBe(1);
     });
@@ -70,7 +70,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
 
         $result = $parser('items', $schema, [new ValidationRule('distinct')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['uniqueItems'])->toBeTrue();
     });
@@ -81,7 +81,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
 
         $result = $parser('file', $schema, [new ValidationRule('extensions', ['jpg', 'png', 'gif'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['enum'])->toBe(['jpg', 'png', 'gif']);
     });
@@ -92,7 +92,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('format')
             ->and($compiled)->not->toHaveKey('minLength')

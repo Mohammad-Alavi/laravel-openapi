@@ -14,7 +14,7 @@ describe(class_basename(FileUploadParser::class), function (): void {
 
         $result = $parser('avatar', $schema, [new ValidationRule('file')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['type'])->toBe('string')
             ->and($compiled['format'])->toBe('binary');
@@ -26,7 +26,7 @@ describe(class_basename(FileUploadParser::class), function (): void {
 
         $result = $parser('photo', $schema, [new ValidationRule('image')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['type'])->toBe('string')
             ->and($compiled['format'])->toBe('binary');
@@ -38,7 +38,7 @@ describe(class_basename(FileUploadParser::class), function (): void {
 
         $result = $parser('document', $schema, [new ValidationRule('mimes', ['pdf', 'doc'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['type'])->toBe('string')
             ->and($compiled['format'])->toBe('binary');
@@ -50,7 +50,7 @@ describe(class_basename(FileUploadParser::class), function (): void {
 
         $result = $parser('upload', $schema, [new ValidationRule('mimetypes', ['application/pdf'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['type'])->toBe('string')
             ->and($compiled['format'])->toBe('binary');
@@ -62,7 +62,7 @@ describe(class_basename(FileUploadParser::class), function (): void {
 
         $result = $parser('name', $schema, [new ValidationRule('string'), new ValidationRule('required')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('format');
     });

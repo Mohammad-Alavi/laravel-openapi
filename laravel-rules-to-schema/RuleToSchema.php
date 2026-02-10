@@ -12,6 +12,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Prope
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
+
 final class RuleToSchema
 {
     /**
@@ -36,7 +37,7 @@ final class RuleToSchema
         foreach ($normalizedRuleSets as $propertyName => $rawRules) {
             $result = $this->parseRuleset($propertyName, $rawRules);
 
-            if (null === $result) {
+            if ($result->isExcluded()) {
                 continue;
             }
 
@@ -46,10 +47,10 @@ final class RuleToSchema
                 $requiredFields[] = $propertyName;
             }
 
-            if ($result instanceof LooseFluentDescriptor) {
-                $properties[] = Property::create($propertyName, $result);
-            } elseif (is_array($result)) {
-                foreach ($result as $key => $schema) {
+            if ($result->isSchema()) {
+                $properties[] = Property::create($propertyName, $result->schema());
+            } elseif ($result->isExpanded()) {
+                foreach ($result->schemas() as $key => $schema) {
                     $properties[] = Property::create($key, $schema);
                     // If the original field is required, expanded fields (e.g. confirmed) are also required
                     if ($this->isRequired($validationRules) && $key !== $propertyName) {
@@ -82,7 +83,7 @@ final class RuleToSchema
         return $baseSchema;
     }
 
-    private function parseRuleset(string $name, NestedRuleset $nestedRuleset): LooseFluentDescriptor|array|null
+    private function parseRuleset(string $name, NestedRuleset $nestedRuleset): ParseResult
     {
         $validationRules = $nestedRuleset->validationRules;
 
@@ -102,16 +103,16 @@ final class RuleToSchema
             $newSchemas = [];
 
             foreach ($schemas as $schemaKey => $schema) {
-                $resultSchema = $instance($schemaKey, $schema, $validationRules, $nestedRuleset);
+                $result = $instance($schemaKey, $schema, $validationRules, $nestedRuleset);
 
-                if (null === $resultSchema) {
+                if ($result->isExcluded()) {
                     continue;
                 }
 
-                if (is_array($resultSchema)) {
-                    $newSchemas = [...$newSchemas, ...$resultSchema];
+                if ($result->isExpanded()) {
+                    $newSchemas = [...$newSchemas, ...$result->schemas()];
                 } else {
-                    $newSchemas[$schemaKey] = $resultSchema;
+                    $newSchemas[$schemaKey] = $result->schema();
                 }
             }
 
@@ -119,13 +120,13 @@ final class RuleToSchema
         }
 
         if (0 === count($schemas)) {
-            return null;
+            return ParseResult::excluded();
         }
         if (1 === count($schemas)) {
-            return array_values($schemas)[0];
+            return ParseResult::single(array_values($schemas)[0]);
         }
 
-        return $schemas;
+        return ParseResult::expanded($schemas);
     }
 
     private function parseContextAwareRules(

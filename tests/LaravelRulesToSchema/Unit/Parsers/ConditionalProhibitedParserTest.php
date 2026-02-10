@@ -20,7 +20,7 @@ describe(class_basename(ConditionalProhibitedParser::class), function (): void {
 
         $result = $contextual('coupon', $schema, [new ValidationRule('prohibited_if', ['type', 'free'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['type'])->toBe(['const' => 'free'])
@@ -39,7 +39,7 @@ describe(class_basename(ConditionalProhibitedParser::class), function (): void {
 
         $result = $contextual('coupon', $schema, [new ValidationRule('prohibited_unless', ['type', 'premium'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['type'])->toBe(['const' => 'premium'])
@@ -58,7 +58,7 @@ describe(class_basename(ConditionalProhibitedParser::class), function (): void {
 
         $result = $contextual('email', $schema, [new ValidationRule('prohibits', ['phone', 'fax'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if'])->toBe(['required' => ['email']])
@@ -71,7 +71,7 @@ describe(class_basename(ConditionalProhibitedParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('prohibited_if', ['type', 'free'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('if');
     });
@@ -88,7 +88,7 @@ describe(class_basename(ConditionalProhibitedParser::class), function (): void {
 
         $result = $contextual('name', $schema, [new ValidationRule('required')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('if');
     });

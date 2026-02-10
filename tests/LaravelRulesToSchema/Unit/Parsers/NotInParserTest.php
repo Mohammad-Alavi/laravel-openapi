@@ -15,7 +15,7 @@ describe(class_basename(NotInParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('not_in', ['foo', 'bar', 'baz'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['not'])->toBe(['enum' => ['foo', 'bar', 'baz']]);
     });
@@ -27,7 +27,7 @@ describe(class_basename(NotInParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule($rule)], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['not'])->toBe(['enum' => ['alpha', 'beta']]);
     });
@@ -38,7 +38,7 @@ describe(class_basename(NotInParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('not');
     });
@@ -49,7 +49,7 @@ describe(class_basename(NotInParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('not_in', ['only'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['not'])->toBe(['enum' => ['only']]);
     });

@@ -7,6 +7,7 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 use Illuminate\Validation\Rules\Password;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
@@ -17,7 +18,7 @@ final readonly class PasswordParser implements RuleParser
         LooseFluentDescriptor $schema,
         array $validationRules,
         NestedRuleset $nestedRuleset,
-    ): array|LooseFluentDescriptor|null {
+    ): ParseResult {
         foreach ($validationRules as $validationRule) {
             if ($validationRule->rule instanceof Password) {
                 $rules = $validationRule->rule->appliedRules();
@@ -47,6 +48,6 @@ final readonly class PasswordParser implements RuleParser
             }
         }
 
-        return $schema;
+        return ParseResult::single($schema);
     }
 }

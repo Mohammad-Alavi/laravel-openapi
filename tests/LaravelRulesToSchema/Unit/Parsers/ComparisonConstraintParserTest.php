@@ -15,7 +15,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('between', ['3', '10'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minLength'])->toBe(3)
             ->and($compiled['maxLength'])->toBe(10);
@@ -27,7 +27,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('between', ['3', '10'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minimum'])->toBe(3)
             ->and($compiled['maximum'])->toBe(10);
@@ -39,7 +39,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('between', ['1', '100'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minimum'])->toBe(1)
             ->and($compiled['maximum'])->toBe(100);
@@ -51,7 +51,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('between', ['2', '5'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minItems'])->toBe(2)
             ->and($compiled['maxItems'])->toBe(5);
@@ -63,7 +63,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('size', ['5'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minLength'])->toBe(5)
             ->and($compiled['maxLength'])->toBe(5);
@@ -75,7 +75,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('size', ['42'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minimum'])->toBe(42)
             ->and($compiled['maximum'])->toBe(42);
@@ -87,7 +87,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('size', ['3'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minItems'])->toBe(3)
             ->and($compiled['maxItems'])->toBe(3);
@@ -99,7 +99,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('between', ['3', '10'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minLength'])->toBe(3)
             ->and($compiled['maxLength'])->toBe(10);
@@ -111,7 +111,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('minLength')
             ->and($compiled)->not->toHaveKey('maxLength')

@@ -8,6 +8,7 @@ use MohammadAlavi\LaravelRulesToSchema\Contracts\HasJsonSchema;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
 use MohammadAlavi\LaravelRulesToSchema\CustomRuleSchemaMapping;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final readonly class CustomRuleSchemaParser implements RuleParser
@@ -23,19 +24,19 @@ final readonly class CustomRuleSchemaParser implements RuleParser
         LooseFluentDescriptor $schema,
         array $validationRules,
         NestedRuleset $nestedRuleset,
-    ): array|LooseFluentDescriptor|null {
+    ): ParseResult {
         foreach ($validationRules as $validationRule) {
             if ($validationRule->rule instanceof HasJsonSchema) {
-                return $validationRule->rule->toJsonSchema($attribute);
+                return ParseResult::single($validationRule->rule->toJsonSchema($attribute));
             }
 
             $ruleName = $validationRule->name();
 
             if (array_key_exists($ruleName, $this->customRuleSchemas)) {
-                return $this->customRuleSchemas[$ruleName]->apply($attribute, $schema);
+                return ParseResult::single($this->customRuleSchemas[$ruleName]->apply($attribute, $schema));
             }
         }
 
-        return $schema;
+        return ParseResult::single($schema);
     }
 }

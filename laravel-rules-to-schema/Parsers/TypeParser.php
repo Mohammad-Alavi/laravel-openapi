@@ -9,6 +9,7 @@ use Illuminate\Validation\Rules\In as InRule;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
 use MohammadAlavi\LaravelRulesToSchema\LaravelRuleType;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 use ReflectionClass;
@@ -20,7 +21,7 @@ final class TypeParser implements RuleParser
         LooseFluentDescriptor $schema,
         array $validationRules,
         NestedRuleset $nestedRuleset,
-    ): array|LooseFluentDescriptor|null {
+    ): ParseResult {
         $types = [];
 
         foreach ($validationRules as $validationRule) {
@@ -53,7 +54,7 @@ final class TypeParser implements RuleParser
             $schema = $schema->type(...$types);
         }
 
-        return $schema;
+        return ParseResult::single($schema);
     }
 
     /** @return list<Type> */

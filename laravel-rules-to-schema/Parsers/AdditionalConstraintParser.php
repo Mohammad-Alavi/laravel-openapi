@@ -6,6 +6,7 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
@@ -16,7 +17,7 @@ final readonly class AdditionalConstraintParser implements RuleParser
         LooseFluentDescriptor $schema,
         array $validationRules,
         NestedRuleset $nestedRuleset,
-    ): array|LooseFluentDescriptor|null {
+    ): ParseResult {
         foreach ($validationRules as $validationRule) {
             if (!$validationRule->isString()) {
                 continue;
@@ -32,7 +33,7 @@ final readonly class AdditionalConstraintParser implements RuleParser
             };
         }
 
-        return $schema;
+        return ParseResult::single($schema);
     }
 
     private function applyFilled(LooseFluentDescriptor $schema): LooseFluentDescriptor

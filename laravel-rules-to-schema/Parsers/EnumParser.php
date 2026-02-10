@@ -7,6 +7,7 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 use Illuminate\Validation\Rules\Enum as EnumRule;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 use ReflectionClass;
 
@@ -17,7 +18,7 @@ final readonly class EnumParser implements RuleParser
         LooseFluentDescriptor $schema,
         array $validationRules,
         NestedRuleset $nestedRuleset,
-    ): array|LooseFluentDescriptor|null {
+    ): ParseResult {
         foreach ($validationRules as $validationRule) {
             if ($validationRule->rule instanceof EnumRule) {
                 $enumType = invade($validationRule->rule)->type; /** @phpstan-ignore property.protected */
@@ -34,6 +35,6 @@ final readonly class EnumParser implements RuleParser
             }
         }
 
-        return $schema;
+        return ParseResult::single($schema);
     }
 }

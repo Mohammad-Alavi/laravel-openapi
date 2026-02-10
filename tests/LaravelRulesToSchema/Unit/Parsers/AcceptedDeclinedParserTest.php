@@ -14,7 +14,7 @@ describe(class_basename(AcceptedDeclinedParser::class), function (): void {
 
         $result = $parser('terms', $schema, [new ValidationRule('accepted')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['type'])->toBe('boolean');
     });
@@ -25,7 +25,7 @@ describe(class_basename(AcceptedDeclinedParser::class), function (): void {
 
         $result = $parser('opt_out', $schema, [new ValidationRule('declined')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['type'])->toBe('boolean');
     });
@@ -36,7 +36,7 @@ describe(class_basename(AcceptedDeclinedParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('type');
     });

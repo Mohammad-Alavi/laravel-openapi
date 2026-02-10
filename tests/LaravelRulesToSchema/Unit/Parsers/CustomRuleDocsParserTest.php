@@ -18,9 +18,9 @@ describe(class_basename(CustomRuleDocsParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule($rule)], new NestedRuleset());
 
-        expect($result)->toBeInstanceOf(LooseFluentDescriptor::class);
+        expect($result->schema())->toBeInstanceOf(LooseFluentDescriptor::class);
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['type'])->toBe('string')
             ->and($compiled['format'])->toBe('date-time')
@@ -34,9 +34,9 @@ describe(class_basename(CustomRuleDocsParser::class), function (): void {
 
         $result = $parser('status', $schema, [new ValidationRule($rule)], new NestedRuleset());
 
-        expect($result)->toBeInstanceOf(LooseFluentDescriptor::class);
+        expect($result->schema())->toBeInstanceOf(LooseFluentDescriptor::class);
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['type'])->toBe('string')
             ->and($compiled['enum'])->toBe(['active', 'inactive', 'pending']);
@@ -49,9 +49,9 @@ describe(class_basename(CustomRuleDocsParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule($rule)], new NestedRuleset());
 
-        expect($result)->toBeInstanceOf(LooseFluentDescriptor::class);
+        expect($result->schema())->toBeInstanceOf(LooseFluentDescriptor::class);
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toBe([]);
     });
@@ -62,9 +62,9 @@ describe(class_basename(CustomRuleDocsParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('required')], new NestedRuleset());
 
-        expect($result)->toBeInstanceOf(LooseFluentDescriptor::class);
+        expect($result->schema())->toBeInstanceOf(LooseFluentDescriptor::class);
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toBe([]);
     });

@@ -7,6 +7,7 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 use Illuminate\Validation\Rules\NotIn;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final readonly class NotInParser implements RuleParser
@@ -16,7 +17,7 @@ final readonly class NotInParser implements RuleParser
         LooseFluentDescriptor $schema,
         array $validationRules,
         NestedRuleset $nestedRuleset,
-    ): array|LooseFluentDescriptor|null {
+    ): ParseResult {
         foreach ($validationRules as $validationRule) {
             $values = $this->extractValues($validationRule->rule, $validationRule->args);
 
@@ -24,10 +25,10 @@ final readonly class NotInParser implements RuleParser
                 continue;
             }
 
-            return $schema->not(LooseFluentDescriptor::withoutSchema()->enum(...$values));
+            return ParseResult::single($schema->not(LooseFluentDescriptor::withoutSchema()->enum(...$values)));
         }
 
-        return $schema;
+        return ParseResult::single($schema);
     }
 
     private function extractValues(mixed $rule, array $args): array|null

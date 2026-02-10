@@ -7,6 +7,7 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 use MohammadAlavi\LaravelRulesToSchema\Concerns\TracksParserContext;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\ContextAwareRuleParser;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\StrictFluentDescriptor;
@@ -29,9 +30,9 @@ final class ConditionalRequiredParser implements ContextAwareRuleParser
         LooseFluentDescriptor $schema,
         array $validationRules,
         NestedRuleset $nestedRuleset,
-    ): array|LooseFluentDescriptor|null {
+    ): ParseResult {
         if (null === $this->baseSchema || null === $this->allRules) {
-            return $schema;
+            return ParseResult::single($schema);
         }
 
         foreach ($validationRules as $validationRule) {
@@ -42,7 +43,7 @@ final class ConditionalRequiredParser implements ContextAwareRuleParser
             $schema = $this->applyConditional($schema, $attribute, $validationRule->rule, $validationRule->args);
         }
 
-        return $schema;
+        return ParseResult::single($schema);
     }
 
     private function applyConditional(LooseFluentDescriptor $schema, string $attribute, string $rule, array $args): LooseFluentDescriptor

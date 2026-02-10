@@ -6,6 +6,7 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
@@ -27,7 +28,7 @@ final readonly class StringPatternParser implements RuleParser
         LooseFluentDescriptor $schema,
         array $validationRules,
         NestedRuleset $nestedRuleset,
-    ): array|LooseFluentDescriptor|null {
+    ): ParseResult {
         foreach ($validationRules as $validationRule) {
             if (!$validationRule->isString() || !in_array($validationRule->rule, self::PATTERN_RULES, true)) {
                 continue;
@@ -40,7 +41,7 @@ final readonly class StringPatternParser implements RuleParser
             }
         }
 
-        return $schema;
+        return ParseResult::single($schema);
     }
 
     private function buildPattern(string $rule, array $args): string|null

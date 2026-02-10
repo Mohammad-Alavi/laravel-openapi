@@ -7,6 +7,7 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 use MohammadAlavi\LaravelRulesToSchema\Concerns\TracksParserContext;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\ContextAwareRuleParser;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final class RequiredWithParser implements ContextAwareRuleParser
@@ -18,9 +19,9 @@ final class RequiredWithParser implements ContextAwareRuleParser
         LooseFluentDescriptor $schema,
         array $validationRules,
         NestedRuleset $nestedRuleset,
-    ): array|LooseFluentDescriptor|null {
+    ): ParseResult {
         if (null === $this->baseSchema || null === $this->allRules) {
-            return $schema;
+            return ParseResult::single($schema);
         }
 
         $hasRequiredWith = [];
@@ -33,7 +34,7 @@ final class RequiredWithParser implements ContextAwareRuleParser
         }
 
         if ([] === $hasRequiredWith) {
-            return $schema;
+            return ParseResult::single($schema);
         }
 
         if (array_key_last($this->allRules) === $attribute) {
@@ -59,6 +60,6 @@ final class RequiredWithParser implements ContextAwareRuleParser
             $this->modifiedBase = $this->baseSchema->allOf(...[...$this->baseSchema->getAllOf() ?? [], ...$conditions]);
         }
 
-        return $schema;
+        return ParseResult::single($schema);
     }
 }

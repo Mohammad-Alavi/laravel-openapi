@@ -7,6 +7,7 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\HasDocs;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final readonly class CustomRuleDocsParser implements RuleParser
@@ -16,7 +17,7 @@ final readonly class CustomRuleDocsParser implements RuleParser
         LooseFluentDescriptor $schema,
         array $validationRules,
         NestedRuleset $nestedRuleset,
-    ): array|LooseFluentDescriptor|null {
+    ): ParseResult {
         foreach ($validationRules as $validationRule) {
             if (!$validationRule->rule instanceof HasDocs) {
                 continue;
@@ -41,6 +42,6 @@ final readonly class CustomRuleDocsParser implements RuleParser
             }
         }
 
-        return $schema;
+        return ParseResult::single($schema);
     }
 }

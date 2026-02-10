@@ -20,7 +20,7 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
 
         $result = $contextual('reason', $schema, [new ValidationRule('exclude_if', ['type', 'free'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['type'])->toBe(['const' => 'free'])
@@ -39,7 +39,7 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
 
         $result = $contextual('reason', $schema, [new ValidationRule('exclude_unless', ['type', 'premium'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['type'])->toBe(['const' => 'premium'])
@@ -58,7 +58,7 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
 
         $result = $contextual('nickname', $schema, [new ValidationRule('exclude_with', ['username'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if'])->toBe(['required' => ['username']])
@@ -77,7 +77,7 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
 
         $result = $contextual('nickname', $schema, [new ValidationRule('exclude_without', ['username'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['then'])->toHaveKey('not');
@@ -95,7 +95,7 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
 
         $result = $contextual('field', $schema, [new ValidationRule('missing_if', ['status', 'inactive'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['status'])->toBe(['const' => 'inactive']);
@@ -113,7 +113,7 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
 
         $result = $contextual('field', $schema, [new ValidationRule('missing_unless', ['status', 'active'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['else'])->toHaveKey('not');
@@ -131,7 +131,7 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
 
         $result = $contextual('field', $schema, [new ValidationRule('missing_with', ['other'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if'])->toBe(['required' => ['other']]);
@@ -149,7 +149,7 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
 
         $result = $contextual('field', $schema, [new ValidationRule('missing_with_all', ['a', 'b'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if'])->toBe(['required' => ['a', 'b']]);
@@ -161,7 +161,7 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('exclude_if', ['type', 'free'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('if');
     });
@@ -178,7 +178,7 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
 
         $result = $contextual('name', $schema, [new ValidationRule('required')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('if');
     });

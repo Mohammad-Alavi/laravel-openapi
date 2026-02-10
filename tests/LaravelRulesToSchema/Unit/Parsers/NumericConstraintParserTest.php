@@ -14,7 +14,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('multiple_of', ['3'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['multipleOf'])->toBe(3);
     });
@@ -25,7 +25,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('max_digits', ['5'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['maximum'])->toBe(99999);
     });
@@ -36,7 +36,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('min_digits', ['3'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minimum'])->toBe(100);
     });
@@ -47,7 +47,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('min_digits', ['1'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minimum'])->toBe(0);
     });
@@ -58,7 +58,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('max_digits', ['1'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['maximum'])->toBe(9);
     });
@@ -69,7 +69,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('multipleOf')
             ->and($compiled)->not->toHaveKey('minimum')
@@ -86,7 +86,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
             new ValidationRule('multiple_of', ['5']),
         ], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['minimum'])->toBe(10)
             ->and($compiled['maximum'])->toBe(9999)

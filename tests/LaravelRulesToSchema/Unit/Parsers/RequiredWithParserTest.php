@@ -188,6 +188,6 @@ describe(class_basename(RequiredWithParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('required_with', ['other'])], new NestedRuleset());
 
-        expect($result)->toBe($schema);
+        expect($result->schema())->toBe($schema);
     });
 })->covers(RequiredWithParser::class);

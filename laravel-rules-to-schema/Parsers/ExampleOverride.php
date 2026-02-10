@@ -8,6 +8,7 @@ use MohammadAlavi\LaravelRulesToSchema\Concerns\TracksParserContext;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\ContextAwareRuleParser;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\ExampleProvider;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final class ExampleOverride implements ContextAwareRuleParser
@@ -24,9 +25,9 @@ final class ExampleOverride implements ContextAwareRuleParser
         LooseFluentDescriptor $schema,
         array $validationRules,
         NestedRuleset $nestedRuleset,
-    ): array|LooseFluentDescriptor|null {
+    ): ParseResult {
         if (null === $this->baseSchema || null === $this->allRules || null === $this->exampleProvider) {
-            return $schema;
+            return ParseResult::single($schema);
         }
 
         foreach ($validationRules as $validationRule) {
@@ -39,6 +40,6 @@ final class ExampleOverride implements ContextAwareRuleParser
             }
         }
 
-        return $schema;
+        return ParseResult::single($schema);
     }
 }

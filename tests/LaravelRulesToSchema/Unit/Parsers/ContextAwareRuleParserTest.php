@@ -5,6 +5,7 @@ declare(strict_types=1);
 use MohammadAlavi\LaravelRulesToSchema\Contracts\ContextAwareRuleParser;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
@@ -41,8 +42,8 @@ describe(class_basename(ContextAwareRuleParser::class), function (): void {
                 LooseFluentDescriptor $schema,
                 array $validationRules,
                 NestedRuleset $nestedRuleset,
-            ): array|LooseFluentDescriptor|null {
-                return $schema;
+            ): ParseResult {
+                return ParseResult::single($schema);
             }
         };
 
@@ -78,8 +79,8 @@ describe(class_basename(ContextAwareRuleParser::class), function (): void {
                 LooseFluentDescriptor $schema,
                 array $validationRules,
                 NestedRuleset $nestedRuleset,
-            ): array|LooseFluentDescriptor|null {
-                return $schema;
+            ): ParseResult {
+                return ParseResult::single($schema);
             }
         };
 

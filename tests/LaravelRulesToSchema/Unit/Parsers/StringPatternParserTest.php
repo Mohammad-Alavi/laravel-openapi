@@ -14,7 +14,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('starts_with', ['foo', 'bar'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['pattern'])->toBe('^(foo|bar)');
     });
@@ -25,7 +25,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('ends_with', ['foo', 'bar'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['pattern'])->toBe('(foo|bar)$');
     });
@@ -36,7 +36,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('doesnt_start_with', ['foo', 'bar'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['pattern'])->toBe('^(?!(foo|bar))');
     });
@@ -47,7 +47,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('doesnt_end_with', ['foo', 'bar'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['pattern'])->toBe('(?!.*(foo|bar)$)');
     });
@@ -58,7 +58,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('lowercase')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['pattern'])->toBe('^[^A-Z]*$');
     });
@@ -69,7 +69,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('uppercase')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['pattern'])->toBe('^[^a-z]*$');
     });
@@ -80,7 +80,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('ascii')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['pattern'])->toBe('^[\x20-\x7E]*$');
     });
@@ -91,7 +91,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('hex_color')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['pattern'])->toBe('^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$');
     });
@@ -102,7 +102,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('starts_with', ['foo.bar', 'baz+qux'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['pattern'])->toBe('^(foo\.bar|baz\+qux)');
     });
@@ -113,7 +113,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('pattern');
     });
@@ -124,7 +124,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('lowercase')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['type'])->toBe('string');
     });
@@ -135,7 +135,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('starts_with', ['prefix'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['pattern'])->toBe('^(prefix)');
     });

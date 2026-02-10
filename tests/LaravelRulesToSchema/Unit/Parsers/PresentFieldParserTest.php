@@ -20,7 +20,7 @@ describe(class_basename(PresentFieldParser::class), function (): void {
 
         $result = $contextual('token', $schema, [new ValidationRule('present')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled['required'])->toBe(['token']);
     });
@@ -37,7 +37,7 @@ describe(class_basename(PresentFieldParser::class), function (): void {
 
         $result = $contextual('token', $schema, [new ValidationRule('present_if', ['type', 'api'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['type'])->toBe(['const' => 'api'])
@@ -56,7 +56,7 @@ describe(class_basename(PresentFieldParser::class), function (): void {
 
         $result = $contextual('token', $schema, [new ValidationRule('present_unless', ['type', 'guest'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['type'])->toBe(['const' => 'guest'])
@@ -75,7 +75,7 @@ describe(class_basename(PresentFieldParser::class), function (): void {
 
         $result = $contextual('city', $schema, [new ValidationRule('present_with', ['address'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if'])->toBe(['required' => ['address']])
@@ -94,7 +94,7 @@ describe(class_basename(PresentFieldParser::class), function (): void {
 
         $result = $contextual('city', $schema, [new ValidationRule('present_with_all', ['street', 'zip'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if'])->toBe(['required' => ['street', 'zip']])
@@ -107,7 +107,7 @@ describe(class_basename(PresentFieldParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('present')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('required');
     });
@@ -124,7 +124,7 @@ describe(class_basename(PresentFieldParser::class), function (): void {
 
         $result = $contextual('name', $schema, [new ValidationRule('string')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('required')
             ->and($compiled)->not->toHaveKey('if');

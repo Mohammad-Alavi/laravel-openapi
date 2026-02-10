@@ -6,16 +6,17 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final class NestedObjectParser implements RuleParser
 {
-    /** @var callable(string, NestedRuleset): (LooseFluentDescriptor|array|null) */
+    /** @var callable(string, NestedRuleset): ParseResult */
     private $parseRuleset;
 
-    /** @param callable(string, NestedRuleset): (LooseFluentDescriptor|array|null) $parseRuleset */
+    /** @param callable(string, NestedRuleset): ParseResult $parseRuleset */
     public function withParseRuleset(callable $parseRuleset): static
     {
         $clone = clone $this;
@@ -29,28 +30,28 @@ final class NestedObjectParser implements RuleParser
         LooseFluentDescriptor $schema,
         array $validationRules,
         NestedRuleset $nestedRuleset,
-    ): array|LooseFluentDescriptor|null {
+    ): ParseResult {
         if (!$nestedRuleset->hasChildren()) {
-            return $schema;
+            return ParseResult::single($schema);
         }
 
         if (null === $this->parseRuleset) {
-            return $schema;
+            return ParseResult::single($schema);
         }
 
         if ($nestedRuleset->hasWildcardChild()) {
-            $objSchema = ($this->parseRuleset)("{$attribute}.*", $nestedRuleset->children['*']);
+            $result = ($this->parseRuleset)("{$attribute}.*", $nestedRuleset->children['*']);
 
-            if ($objSchema instanceof LooseFluentDescriptor) {
-                $schema = $schema->type(Type::array())->items($objSchema);
+            if ($result->isSchema()) {
+                $schema = $schema->type(Type::array())->items($result->schema());
             }
         } else {
             $properties = [];
             foreach ($nestedRuleset->children as $propName => $childRuleset) {
-                $propSchema = ($this->parseRuleset)($propName, $childRuleset);
+                $result = ($this->parseRuleset)($propName, $childRuleset);
 
-                if ($propSchema instanceof LooseFluentDescriptor) {
-                    $properties[] = Property::create($propName, $propSchema);
+                if ($result->isSchema()) {
+                    $properties[] = Property::create($propName, $result->schema());
                 }
             }
 
@@ -59,6 +60,6 @@ final class NestedObjectParser implements RuleParser
             }
         }
 
-        return $schema;
+        return ParseResult::single($schema);
     }
 }

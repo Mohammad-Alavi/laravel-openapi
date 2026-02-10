@@ -20,7 +20,7 @@ describe(class_basename(ConditionalAcceptedParser::class), function (): void {
 
         $result = $contextual('terms', $schema, [new ValidationRule('accepted_if', ['role', 'admin'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['role'])->toBe(['const' => 'admin'])
@@ -40,7 +40,7 @@ describe(class_basename(ConditionalAcceptedParser::class), function (): void {
 
         $result = $contextual('marketing', $schema, [new ValidationRule('declined_if', ['privacy', 'strict'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['privacy'])->toBe(['const' => 'strict'])
@@ -54,7 +54,7 @@ describe(class_basename(ConditionalAcceptedParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('accepted_if', ['role', 'admin'])], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('if');
     });
@@ -71,7 +71,7 @@ describe(class_basename(ConditionalAcceptedParser::class), function (): void {
 
         $result = $contextual('name', $schema, [new ValidationRule('required')], new NestedRuleset());
 
-        $compiled = $result->compile();
+        $compiled = $result->schema()->compile();
 
         expect($compiled)->not->toHaveKey('if');
     });

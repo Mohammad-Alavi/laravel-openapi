@@ -6,6 +6,7 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ParseResult;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final readonly class ConfirmedParser implements RuleParser
@@ -15,16 +16,16 @@ final readonly class ConfirmedParser implements RuleParser
         LooseFluentDescriptor $schema,
         array $validationRules,
         NestedRuleset $nestedRuleset,
-    ): array|LooseFluentDescriptor|null {
+    ): ParseResult {
         foreach ($validationRules as $validationRule) {
             if ('confirmed' === $validationRule->rule) {
-                return [
+                return ParseResult::expanded([
                     $attribute => $schema,
                     "{$attribute}_confirmed" => clone $schema,
-                ];
+                ]);
             }
         }
 
-        return $schema;
+        return ParseResult::single($schema);
     }
 }

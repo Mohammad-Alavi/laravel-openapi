@@ -191,6 +191,6 @@ describe(class_basename(RequiredWithoutParser::class), function (): void {
 
         $result = $parser('field', $schema, [new ValidationRule('required_without', ['other'])], new NestedRuleset());
 
-        expect($result)->toBe($schema);
+        expect($result->schema())->toBe($schema);
     });
 })->covers(RequiredWithoutParser::class);
