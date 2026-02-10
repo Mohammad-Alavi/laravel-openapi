@@ -301,6 +301,29 @@ return app(RuleToSchema::class)->transform($ruleSets, $request);
 
 ---
 
+## D28: ParseResult Value Object Over Untyped Union Return
+
+**Decision**: Replace the `array|LooseFluentDescriptor|null` return type on `RuleParser::__invoke()` with a typed `ParseResult` discriminated union value object.
+
+**Before**: Parsers returned `null` (excluded), `array<string, LooseFluentDescriptor>` (expanded, e.g. confirmed fields), or `LooseFluentDescriptor` (single schema). The orchestrator (`RuleToSchema`) used `null ===`, `is_array()`, and `instanceof` checks to discriminate.
+
+**After**: `ParseResult` has three named constructors:
+- `ParseResult::single($schema)` — one schema for the field
+- `ParseResult::expanded(['field' => $schema, ...])` — multiple keyed schemas (e.g. confirmed)
+- `ParseResult::excluded()` — field should be omitted from output
+
+Typed accessors: `isSchema()`, `isExpanded()`, `isExcluded()`, `schema()`, `schemas()`. Getters throw `LogicException` when called on the wrong variant.
+
+**Rationale**:
+- Eliminates `null`/`is_array`/`instanceof` branching in the orchestrator
+- Parser return semantics are explicit and self-documenting
+- Type-safe — impossible to access `schema()` on an excluded result
+- Consistent with D25 (NestedRuleset) and D26 (CustomRuleSchemaMapping) — replacing unstructured data with typed value objects
+
+**Scope**: `RuleParser` interface, all 26 parsers, `RuleToSchema` orchestrator, `NestedObjectParser` callable PHPDoc. Also flows through `RuleToSchema::parseRuleset()` which now returns `ParseResult` instead of `LooseFluentDescriptor|array|null`.
+
+---
+
 ## Open Questions
 
 - **Livewire/Inertia responses**: Skip for MVP, not traditional JSON APIs.

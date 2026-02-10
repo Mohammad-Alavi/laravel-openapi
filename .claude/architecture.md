@@ -96,6 +96,21 @@ Parser categories:
 - **Schema-expressible** — map directly to JSON Schema keywords (pattern, min/max, enum, etc.)
 - **Conditional** — use `if/then/else` for cross-field dependencies (required_if, exclude_if, etc.)
 
+### Parser Return Type: ParseResult
+
+All parsers return `ParseResult`, a discriminated union value object with three variants:
+
+- `ParseResult::single($schema)` — the common case; one `LooseFluentDescriptor` for the field
+- `ParseResult::expanded([...])` — multiple keyed schemas (only `ConfirmedParser` uses this, producing `field` + `field_confirmed`)
+- `ParseResult::excluded()` — field should be omitted (only `ExcludedParser` uses this)
+
+The orchestrator (`RuleToSchema::parseRuleset()`) accumulates schemas across parsers, then returns its own `ParseResult`:
+- Empty `$schemas` after all parsers → `ParseResult::excluded()`
+- Exactly 1 schema → `ParseResult::single()`
+- Multiple schemas → `ParseResult::expanded()`
+
+`NestedObjectParser` receives `parseRuleset` as a callable and uses `$result->isSchema()` / `$result->schema()` to extract child schemas for nested objects and arrays.
+
 ### Data Flow: NestedRuleset
 
 `ValidationRuleNormalizer` converts raw Laravel validation rules into `NestedRuleset` trees:
