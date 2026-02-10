@@ -2,11 +2,12 @@
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\PatternProperties\PatternProperty;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(PatternProperty::class), function (): void {
     it('can be created with pattern and schema', function (): void {
-        $schema = LooseFluentDescriptor::withoutSchema()->type('string');
+        $schema = LooseFluentDescriptor::withoutSchema()->type(Type::string());
         $patternProperty = PatternProperty::create('^S_', $schema);
 
         expect($patternProperty->pattern())->toBe('^S_');
@@ -14,14 +15,14 @@ describe(class_basename(PatternProperty::class), function (): void {
     });
 
     it('returns the schema via schema()', function (): void {
-        $schema = LooseFluentDescriptor::withoutSchema()->type('integer');
+        $schema = LooseFluentDescriptor::withoutSchema()->type(Type::integer());
         $patternProperty = PatternProperty::create('^I_', $schema);
 
         expect($patternProperty->schema())->toBe($schema);
     });
 
     it('schema serializes correctly', function (): void {
-        $schema = LooseFluentDescriptor::withoutSchema()->type('boolean');
+        $schema = LooseFluentDescriptor::withoutSchema()->type(Type::boolean());
         $patternProperty = PatternProperty::create('^B_', $schema);
 
         $serialized = json_decode(json_encode($patternProperty->schema()), true);
@@ -30,7 +31,7 @@ describe(class_basename(PatternProperty::class), function (): void {
     });
 
     it('can hold complex regex patterns', function (): void {
-        $schema = LooseFluentDescriptor::withoutSchema()->type('string');
+        $schema = LooseFluentDescriptor::withoutSchema()->type(Type::string());
         $patternProperty = PatternProperty::create('^[a-zA-Z][a-zA-Z0-9_]*$', $schema);
 
         expect($patternProperty->pattern())->toBe('^[a-zA-Z][a-zA-Z0-9_]*$');
@@ -38,11 +39,11 @@ describe(class_basename(PatternProperty::class), function (): void {
 
     it('can hold complex schemas', function (): void {
         $schema = LooseFluentDescriptor::withoutSchema()
-            ->type('object')
+            ->type(Type::object())
             ->properties(
                 Property::create(
                     'value',
-                    LooseFluentDescriptor::withoutSchema()->type('number'),
+                    LooseFluentDescriptor::withoutSchema()->type(Type::number()),
                 ),
             );
 

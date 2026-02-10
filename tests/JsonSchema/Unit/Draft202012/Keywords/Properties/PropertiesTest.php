@@ -2,6 +2,7 @@
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Properties;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(Properties::class), function (): void {
@@ -12,7 +13,7 @@ describe(class_basename(Properties::class), function (): void {
     });
 
     it('can create properties with a single property', function (): void {
-        $descriptor = LooseFluentDescriptor::withoutSchema()->type('string');
+        $descriptor = LooseFluentDescriptor::withoutSchema()->type(Type::string());
         $property = Property::create('name', $descriptor);
         $properties = Properties::create($property);
 
@@ -24,8 +25,8 @@ describe(class_basename(Properties::class), function (): void {
     });
 
     it('can create properties with multiple properties', function (): void {
-        $nameDescriptor = LooseFluentDescriptor::withoutSchema()->type('string');
-        $ageDescriptor = LooseFluentDescriptor::withoutSchema()->type('integer');
+        $nameDescriptor = LooseFluentDescriptor::withoutSchema()->type(Type::string());
+        $ageDescriptor = LooseFluentDescriptor::withoutSchema()->type(Type::integer());
 
         $nameProperty = Property::create('name', $nameDescriptor);
         $ageProperty = Property::create('age', $ageDescriptor);

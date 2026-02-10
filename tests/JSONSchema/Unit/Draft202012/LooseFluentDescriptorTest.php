@@ -23,7 +23,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
     });
 
     it('can set type', function (): void {
-        $descriptor = LooseFluentDescriptor::withoutSchema()->type('string');
+        $descriptor = LooseFluentDescriptor::withoutSchema()->type(Type::string());
 
         expect($descriptor->compile())->toBe(
             [
@@ -44,7 +44,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
 
     it('can set format', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('string')
+            ->type(Type::string())
             ->format(StringFormat::DATE);
 
         expect($descriptor->compile())->toBe(
@@ -57,7 +57,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
 
     it('can set minimum and maximum', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('number')
+            ->type(Type::number())
             ->minimum(0)
             ->maximum(100);
 
@@ -72,7 +72,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
 
     it('can set exclusive minimum and maximum', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('number')
+            ->type(Type::number())
             ->exclusiveMinimum(0)
             ->exclusiveMaximum(100);
 
@@ -87,7 +87,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
 
     it('can set minLength and maxLength', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('string')
+            ->type(Type::string())
             ->minLength(5)
             ->maxLength(10);
 
@@ -102,7 +102,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
 
     it('can set pattern', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('string')
+            ->type(Type::string())
             ->pattern('^[a-zA-Z0-9]*$');
 
         expect($descriptor->compile())->toBe(
@@ -115,10 +115,10 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
 
     it('can set properties for object type', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('object')
+            ->type(Type::object())
             ->properties(
-                Property::create('name', LooseFluentDescriptor::withoutSchema()->type('string')),
-                Property::create('age', LooseFluentDescriptor::withoutSchema()->type('integer')),
+                Property::create('name', LooseFluentDescriptor::withoutSchema()->type(Type::string())),
+                Property::create('age', LooseFluentDescriptor::withoutSchema()->type(Type::integer())),
             );
 
         expect($descriptor->compile())->toBe(
@@ -138,10 +138,10 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
 
     it('can set required properties', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('object')
+            ->type(Type::object())
             ->properties(
-                Property::create('name', LooseFluentDescriptor::withoutSchema()->type('string')),
-                Property::create('age', LooseFluentDescriptor::withoutSchema()->type('integer')),
+                Property::create('name', LooseFluentDescriptor::withoutSchema()->type(Type::string())),
+                Property::create('age', LooseFluentDescriptor::withoutSchema()->type(Type::integer())),
             )->required('name', 'age');
 
         expect($descriptor->compile())->toBe(
@@ -180,7 +180,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
 
     it('can set enum values', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('string')
+            ->type(Type::string())
             ->enum('red', 'green', 'blue');
 
         expect($descriptor->compile())->toBe(
@@ -209,7 +209,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
 
     it('can set title, description and examples', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('string')
+            ->type(Type::string())
             ->title('Color')
             ->description('A color name')
             ->examples('red', 'green', 'blue');
@@ -226,7 +226,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
 
     it('can set default value', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('string')
+            ->type(Type::string())
             ->default('default-value');
 
         expect($descriptor->compile())->toBe(
@@ -239,7 +239,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
 
     it('can set readOnly and writeOnly', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('string')
+            ->type(Type::string())
             ->readOnly()
             ->writeOnly();
 
@@ -254,7 +254,7 @@ describe(class_basename(LooseFluentDescriptor::class), function (): void {
 
     it('can set deprecated', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('string')
+            ->type(Type::string())
             ->deprecated();
 
         expect($descriptor->compile())->toBe(

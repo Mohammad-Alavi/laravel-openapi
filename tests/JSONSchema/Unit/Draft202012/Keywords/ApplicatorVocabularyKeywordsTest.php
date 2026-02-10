@@ -10,6 +10,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Items;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Not;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\OneOf;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Then;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(AdditionalProperties::class), function (): void {
@@ -38,7 +39,7 @@ describe(class_basename(AdditionalProperties::class), function (): void {
     });
 
     it('can be set to a schema', function (): void {
-        $schema = LooseFluentDescriptor::withoutSchema()->type('string');
+        $schema = LooseFluentDescriptor::withoutSchema()->type(Type::string());
         $keyword = AdditionalProperties::create($schema);
 
         $serialized = json_decode(json_encode($keyword), true);
@@ -50,7 +51,7 @@ describe(class_basename(AdditionalProperties::class), function (): void {
 describe(class_basename(Items::class), function (): void {
     it('implements Keyword interface', function (): void {
         $keyword = Items::create(
-            LooseFluentDescriptor::withoutSchema()->type('string'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::string()),
         );
 
         expect($keyword)->toBeInstanceOf(Keyword::class);
@@ -61,7 +62,7 @@ describe(class_basename(Items::class), function (): void {
     });
 
     it('returns value correctly', function (): void {
-        $schema = LooseFluentDescriptor::withoutSchema()->type('integer');
+        $schema = LooseFluentDescriptor::withoutSchema()->type(Type::integer());
         $keyword = Items::create($schema);
 
         expect($keyword->value())->toBe($schema);
@@ -69,7 +70,7 @@ describe(class_basename(Items::class), function (): void {
 
     it('serializes as schema', function (): void {
         $keyword = Items::create(
-            LooseFluentDescriptor::withoutSchema()->type('number')->minimum(0),
+            LooseFluentDescriptor::withoutSchema()->type(Type::number())->minimum(0),
         );
 
         $serialized = json_decode(json_encode($keyword), true);
@@ -82,7 +83,7 @@ describe(class_basename(Items::class), function (): void {
 describe(class_basename(AllOf::class), function (): void {
     it('implements Keyword interface', function (): void {
         $keyword = AllOf::create(
-            LooseFluentDescriptor::withoutSchema()->type('object'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::object()),
         );
 
         expect($keyword)->toBeInstanceOf(Keyword::class);
@@ -94,7 +95,7 @@ describe(class_basename(AllOf::class), function (): void {
 
     it('serializes as array of schemas', function (): void {
         $keyword = AllOf::create(
-            LooseFluentDescriptor::withoutSchema()->type('object'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::object()),
             LooseFluentDescriptor::withoutSchema()->required('name'),
             LooseFluentDescriptor::withoutSchema()->required('email'),
         );
@@ -111,7 +112,7 @@ describe(class_basename(AllOf::class), function (): void {
 describe(class_basename(AnyOf::class), function (): void {
     it('implements Keyword interface', function (): void {
         $keyword = AnyOf::create(
-            LooseFluentDescriptor::withoutSchema()->type('string'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::string()),
         );
 
         expect($keyword)->toBeInstanceOf(Keyword::class);
@@ -123,9 +124,9 @@ describe(class_basename(AnyOf::class), function (): void {
 
     it('serializes as array of schemas', function (): void {
         $keyword = AnyOf::create(
-            LooseFluentDescriptor::withoutSchema()->type('string'),
-            LooseFluentDescriptor::withoutSchema()->type('number'),
-            LooseFluentDescriptor::withoutSchema()->type('null'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::string()),
+            LooseFluentDescriptor::withoutSchema()->type(Type::number()),
+            LooseFluentDescriptor::withoutSchema()->type(Type::null()),
         );
 
         $serialized = json_decode(json_encode($keyword), true);
@@ -140,7 +141,7 @@ describe(class_basename(AnyOf::class), function (): void {
 describe(class_basename(OneOf::class), function (): void {
     it('implements Keyword interface', function (): void {
         $keyword = OneOf::create(
-            LooseFluentDescriptor::withoutSchema()->type('string'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::string()),
         );
 
         expect($keyword)->toBeInstanceOf(Keyword::class);
@@ -152,8 +153,8 @@ describe(class_basename(OneOf::class), function (): void {
 
     it('serializes as array of schemas', function (): void {
         $keyword = OneOf::create(
-            LooseFluentDescriptor::withoutSchema()->type('integer')->multipleOf(5),
-            LooseFluentDescriptor::withoutSchema()->type('integer')->multipleOf(3),
+            LooseFluentDescriptor::withoutSchema()->type(Type::integer())->multipleOf(5),
+            LooseFluentDescriptor::withoutSchema()->type(Type::integer())->multipleOf(3),
         );
 
         $serialized = json_decode(json_encode($keyword), true);
@@ -168,7 +169,7 @@ describe(class_basename(OneOf::class), function (): void {
 describe(class_basename(Not::class), function (): void {
     it('implements Keyword interface', function (): void {
         $keyword = Not::create(
-            LooseFluentDescriptor::withoutSchema()->type('string'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::string()),
         );
 
         expect($keyword)->toBeInstanceOf(Keyword::class);
@@ -180,7 +181,7 @@ describe(class_basename(Not::class), function (): void {
 
     it('serializes as schema', function (): void {
         $keyword = Not::create(
-            LooseFluentDescriptor::withoutSchema()->type('null'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::null()),
         );
 
         $serialized = json_decode(json_encode($keyword), true);
@@ -192,7 +193,7 @@ describe(class_basename(Not::class), function (): void {
 describe(class_basename(IfKeyword::class), function (): void {
     it('implements Keyword interface', function (): void {
         $keyword = IfKeyword::create(
-            LooseFluentDescriptor::withoutSchema()->type('object'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::object()),
         );
 
         expect($keyword)->toBeInstanceOf(Keyword::class);

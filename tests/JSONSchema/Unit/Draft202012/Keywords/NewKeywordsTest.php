@@ -11,13 +11,14 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\PatternPropertie
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\PatternProperties\PatternProperty;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\PrefixItems;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\PropertyNames;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe('PrefixItems keyword', function (): void {
     it('implements Keyword interface', function (): void {
         $keyword = PrefixItems::create(
-            LooseFluentDescriptor::withoutSchema()->type('string'),
-            LooseFluentDescriptor::withoutSchema()->type('number'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::string()),
+            LooseFluentDescriptor::withoutSchema()->type(Type::number()),
         );
 
         expect($keyword)->toBeInstanceOf(Keyword::class);
@@ -29,8 +30,8 @@ describe('PrefixItems keyword', function (): void {
 
     it('serializes as array of schemas', function (): void {
         $keyword = PrefixItems::create(
-            LooseFluentDescriptor::withoutSchema()->type('string'),
-            LooseFluentDescriptor::withoutSchema()->type('number'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::string()),
+            LooseFluentDescriptor::withoutSchema()->type(Type::number()),
         );
 
         $serialized = json_decode(json_encode($keyword), true);
@@ -45,7 +46,7 @@ describe('PrefixItems keyword', function (): void {
 describe('Contains keyword', function (): void {
     it('implements Keyword interface', function (): void {
         $keyword = Contains::create(
-            LooseFluentDescriptor::withoutSchema()->type('string'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::string()),
         );
 
         expect($keyword)->toBeInstanceOf(Keyword::class);
@@ -57,7 +58,7 @@ describe('Contains keyword', function (): void {
 
     it('serializes as schema', function (): void {
         $keyword = Contains::create(
-            LooseFluentDescriptor::withoutSchema()->type('string'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::string()),
         );
 
         $serialized = json_decode(json_encode($keyword), true);
@@ -69,7 +70,7 @@ describe('Contains keyword', function (): void {
 describe('PatternProperties keyword', function (): void {
     it('implements Keyword interface', function (): void {
         $keyword = PatternProperties::create(
-            PatternProperty::create('^S_', LooseFluentDescriptor::withoutSchema()->type('string')),
+            PatternProperty::create('^S_', LooseFluentDescriptor::withoutSchema()->type(Type::string())),
         );
 
         expect($keyword)->toBeInstanceOf(Keyword::class);
@@ -81,8 +82,8 @@ describe('PatternProperties keyword', function (): void {
 
     it('serializes as object with pattern keys', function (): void {
         $keyword = PatternProperties::create(
-            PatternProperty::create('^S_', LooseFluentDescriptor::withoutSchema()->type('string')),
-            PatternProperty::create('^I_', LooseFluentDescriptor::withoutSchema()->type('integer')),
+            PatternProperty::create('^S_', LooseFluentDescriptor::withoutSchema()->type(Type::string())),
+            PatternProperty::create('^I_', LooseFluentDescriptor::withoutSchema()->type(Type::integer())),
         );
 
         $serialized = json_decode(json_encode($keyword), true);
@@ -202,7 +203,7 @@ describe('ContentMediaType keyword', function (): void {
 describe('ContentSchema keyword', function (): void {
     it('implements Keyword interface', function (): void {
         $keyword = ContentSchema::create(
-            LooseFluentDescriptor::withoutSchema()->type('object'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::object()),
         );
 
         expect($keyword)->toBeInstanceOf(Keyword::class);
@@ -214,7 +215,7 @@ describe('ContentSchema keyword', function (): void {
 
     it('serializes as schema', function (): void {
         $keyword = ContentSchema::create(
-            LooseFluentDescriptor::withoutSchema()->type('object'),
+            LooseFluentDescriptor::withoutSchema()->type(Type::object()),
         );
 
         $serialized = json_decode(json_encode($keyword), true);

@@ -1,6 +1,7 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Contracts\Keyword;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\StrictFluentDescriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Extensions\OpenAPI\Keywords\Discriminator;
@@ -38,7 +39,7 @@ final readonly class XCustomTest implements Keyword
 describe('Custom Keywords', function (): void {
     it('allows setting custom keywords via set()', function (): void {
         $schema = LooseFluentDescriptor::withoutSchema()
-            ->type('object')
+            ->type(Type::object())
             ->set(XCustomTest::create('test-value'));
 
         $compiled = $schema->compile();
@@ -87,7 +88,7 @@ describe('Custom Keywords', function (): void {
 
     it('custom keywords merge with standard keywords', function (): void {
         $schema = LooseFluentDescriptor::withoutSchema()
-            ->type('object')
+            ->type(Type::object())
             ->maxProperties(10)
             ->set(XCustomTest::create('test-value'));
 
@@ -110,7 +111,7 @@ describe('Custom Keywords', function (): void {
 
     it('can set OpenAPI discriminator keyword', function (): void {
         $schema = LooseFluentDescriptor::withoutSchema()
-            ->type('object')
+            ->type(Type::object())
             ->set(Discriminator::create('petType', [
                 'cat' => '#/components/schemas/Cat',
                 'dog' => '#/components/schemas/Dog',
@@ -128,7 +129,7 @@ describe('Custom Keywords', function (): void {
 
     it('can set OpenAPI externalDocs keyword', function (): void {
         $schema = LooseFluentDescriptor::withoutSchema()
-            ->type('object')
+            ->type(Type::object())
             ->set(ExternalDocs::create('https://example.com/docs', 'API Documentation'));
 
         $compiled = $schema->compile();

@@ -2,6 +2,7 @@
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\CustomFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\StrictFluentDescriptor;
 
@@ -9,7 +10,7 @@ describe('FluentDescriptor format methods', function (): void {
     describe('LooseFluentDescriptor', function (): void {
         it('can set format with StringFormat enum', function (): void {
             $schema = LooseFluentDescriptor::withoutSchema()
-                ->type('string')
+                ->type(Type::string())
                 ->format(StringFormat::EMAIL);
 
             $compiled = $schema->compile();
@@ -19,7 +20,7 @@ describe('FluentDescriptor format methods', function (): void {
 
         it('can set format with raw string', function (): void {
             $schema = LooseFluentDescriptor::withoutSchema()
-                ->type('string')
+                ->type(Type::string())
                 ->format('phone-number');
 
             $compiled = $schema->compile();
@@ -29,7 +30,7 @@ describe('FluentDescriptor format methods', function (): void {
 
         it('can set format with CustomFormat', function (): void {
             $schema = LooseFluentDescriptor::withoutSchema()
-                ->type('string')
+                ->type(Type::string())
                 ->format(CustomFormat::create('credit-card'));
 
             $compiled = $schema->compile();

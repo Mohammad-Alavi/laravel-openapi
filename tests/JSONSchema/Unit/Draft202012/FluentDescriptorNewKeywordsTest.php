@@ -2,6 +2,7 @@
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentSchemas\DependentSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\PatternProperties\PatternProperty;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\StrictFluentDescriptor;
 
@@ -9,8 +10,8 @@ describe('LooseFluentDescriptor new keyword methods', function (): void {
     it('can set prefixItems', function (): void {
         $schema = LooseFluentDescriptor::withoutSchema()
             ->prefixItems(
-                LooseFluentDescriptor::withoutSchema()->type('string'),
-                LooseFluentDescriptor::withoutSchema()->type('number'),
+                LooseFluentDescriptor::withoutSchema()->type(Type::string()),
+                LooseFluentDescriptor::withoutSchema()->type(Type::number()),
             );
 
         $compiled = $schema->compile();
@@ -24,7 +25,7 @@ describe('LooseFluentDescriptor new keyword methods', function (): void {
     it('can set contains', function (): void {
         $schema = LooseFluentDescriptor::withoutSchema()
             ->contains(
-                LooseFluentDescriptor::withoutSchema()->type('number')->minimum(5),
+                LooseFluentDescriptor::withoutSchema()->type(Type::number())->minimum(5),
             );
 
         $compiled = $schema->compile();
@@ -37,8 +38,8 @@ describe('LooseFluentDescriptor new keyword methods', function (): void {
     it('can set patternProperties', function (): void {
         $schema = LooseFluentDescriptor::withoutSchema()
             ->patternProperties(
-                PatternProperty::create('^S_', LooseFluentDescriptor::withoutSchema()->type('string')),
-                PatternProperty::create('^I_', LooseFluentDescriptor::withoutSchema()->type('integer')),
+                PatternProperty::create('^S_', LooseFluentDescriptor::withoutSchema()->type(Type::string())),
+                PatternProperty::create('^I_', LooseFluentDescriptor::withoutSchema()->type(Type::integer())),
             );
 
         $compiled = $schema->compile();
@@ -98,7 +99,7 @@ describe('LooseFluentDescriptor new keyword methods', function (): void {
     it('can set contentSchema', function (): void {
         $schema = LooseFluentDescriptor::withoutSchema()
             ->contentSchema(
-                LooseFluentDescriptor::withoutSchema()->type('object'),
+                LooseFluentDescriptor::withoutSchema()->type(Type::object()),
             );
 
         $compiled = $schema->compile();
@@ -109,11 +110,11 @@ describe('LooseFluentDescriptor new keyword methods', function (): void {
 
     it('can combine multiple content keywords', function (): void {
         $schema = LooseFluentDescriptor::withoutSchema()
-            ->type('string')
+            ->type(Type::string())
             ->contentEncoding('base64')
             ->contentMediaType('application/json')
             ->contentSchema(
-                LooseFluentDescriptor::withoutSchema()->type('object'),
+                LooseFluentDescriptor::withoutSchema()->type(Type::object()),
             );
 
         $compiled = $schema->compile();
@@ -126,13 +127,13 @@ describe('LooseFluentDescriptor new keyword methods', function (): void {
 
     it('can build tuple schema with prefixItems and items', function (): void {
         $schema = LooseFluentDescriptor::withoutSchema()
-            ->type('array')
+            ->type(Type::array())
             ->prefixItems(
-                LooseFluentDescriptor::withoutSchema()->type('string'),
-                LooseFluentDescriptor::withoutSchema()->type('number'),
+                LooseFluentDescriptor::withoutSchema()->type(Type::string()),
+                LooseFluentDescriptor::withoutSchema()->type(Type::number()),
             )
             ->items(
-                LooseFluentDescriptor::withoutSchema()->type('boolean'),
+                LooseFluentDescriptor::withoutSchema()->type(Type::boolean()),
             );
 
         $compiled = $schema->compile();

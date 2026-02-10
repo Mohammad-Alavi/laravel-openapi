@@ -2,6 +2,7 @@
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\DependentSchemas\DependentSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(DependentSchema::class), function (): void {
@@ -32,8 +33,8 @@ describe(class_basename(DependentSchema::class), function (): void {
     it('can hold complex schemas', function (): void {
         $schema = LooseFluentDescriptor::withoutSchema()
             ->properties(
-                Property::create('billing_address', LooseFluentDescriptor::withoutSchema()->type('string')),
-                Property::create('cvv', LooseFluentDescriptor::withoutSchema()->type('string')->pattern('^\d{3,4}$')),
+                Property::create('billing_address', LooseFluentDescriptor::withoutSchema()->type(Type::string())),
+                Property::create('cvv', LooseFluentDescriptor::withoutSchema()->type(Type::string())->pattern('^\d{3,4}$')),
             )
             ->required('billing_address', 'cvv');
 

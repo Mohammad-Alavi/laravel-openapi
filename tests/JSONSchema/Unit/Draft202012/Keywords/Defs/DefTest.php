@@ -1,11 +1,12 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Defs\Def;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(Def::class), function (): void {
     it('can be created with name and schema', function (): void {
-        $schema = LooseFluentDescriptor::withoutSchema()->type('string');
+        $schema = LooseFluentDescriptor::withoutSchema()->type(Type::string());
         $def = Def::create('address', $schema);
 
         expect($def->name())->toBe('address');
@@ -13,14 +14,14 @@ describe(class_basename(Def::class), function (): void {
     });
 
     it('returns the schema', function (): void {
-        $schema = LooseFluentDescriptor::withoutSchema()->type('object');
+        $schema = LooseFluentDescriptor::withoutSchema()->type(Type::object());
         $def = Def::create('person', $schema);
 
         expect($def->schema())->toBe($schema);
     });
 
     it('schema serializes correctly', function (): void {
-        $schema = LooseFluentDescriptor::withoutSchema()->type('integer')->minimum(0);
+        $schema = LooseFluentDescriptor::withoutSchema()->type(Type::integer())->minimum(0);
         $def = Def::create('positiveInt', $schema);
 
         $serialized = json_decode(json_encode($def->schema()), true);
@@ -31,15 +32,15 @@ describe(class_basename(Def::class), function (): void {
 
     it('can hold complex schemas', function (): void {
         $schema = LooseFluentDescriptor::withoutSchema()
-            ->type('object')
+            ->type(Type::object())
             ->properties(
                 MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property::create(
                     'street',
-                    LooseFluentDescriptor::withoutSchema()->type('string'),
+                    LooseFluentDescriptor::withoutSchema()->type(Type::string()),
                 ),
                 MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property::create(
                     'city',
-                    LooseFluentDescriptor::withoutSchema()->type('string'),
+                    LooseFluentDescriptor::withoutSchema()->type(Type::string()),
                 ),
             )
             ->required('street', 'city');

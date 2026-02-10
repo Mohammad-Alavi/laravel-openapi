@@ -2,25 +2,26 @@
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Concerns\HasGetters;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(HasGetters::class), function (): void {
     it('can get required property names', function (): void {
         $descriptor = LooseFluentDescriptor::withoutSchema()
-            ->type('object')
+            ->type(Type::object())
             ->required('name', 'email');
 
         expect($descriptor->getRequired())->toBe(['name', 'email']);
     });
 
     it('returns null when required is not set', function (): void {
-        $descriptor = LooseFluentDescriptor::withoutSchema()->type('object');
+        $descriptor = LooseFluentDescriptor::withoutSchema()->type(Type::object());
 
         expect($descriptor->getRequired())->toBeNull();
     });
 
     it('can get not schema', function (): void {
-        $notSchema = LooseFluentDescriptor::withoutSchema()->type('string');
+        $notSchema = LooseFluentDescriptor::withoutSchema()->type(Type::string());
         $descriptor = LooseFluentDescriptor::withoutSchema()->not($notSchema);
 
         expect($descriptor->getNot())->toBeInstanceOf(JSONSchema::class);

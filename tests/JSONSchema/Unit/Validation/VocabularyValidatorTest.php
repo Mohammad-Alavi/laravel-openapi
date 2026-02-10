@@ -1,6 +1,7 @@
 <?php
 
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Draft202012Dialect;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Formats\StringFormat;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\StrictFluentDescriptor;
 use MohammadAlavi\ObjectOrientedJSONSchema\KeywordRegistry;
 use MohammadAlavi\ObjectOrientedJSONSchema\Validation\VocabularyValidationError;
@@ -53,7 +54,7 @@ describe(class_basename(VocabularyValidator::class), function (): void {
         $schema = StrictFluentDescriptor::string()
             ->minLength(1)
             ->maxLength(100)
-            ->format('email')
+            ->format(StringFormat::EMAIL)
             ->compile();
 
         $result = $validator->validate($schema);
