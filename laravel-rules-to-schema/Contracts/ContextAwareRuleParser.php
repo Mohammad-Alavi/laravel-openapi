@@ -9,7 +9,7 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 interface ContextAwareRuleParser extends RuleParser
 {
     /**
-     * @param array<string, mixed> $allRules
+     * @param array<string, \MohammadAlavi\LaravelRulesToSchema\NestedRuleset> $allRules
      */
     public function withContext(LooseFluentDescriptor $baseSchema, array $allRules, string|null $request): static;
 

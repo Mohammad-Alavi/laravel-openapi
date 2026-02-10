@@ -10,7 +10,7 @@ trait TracksParserContext
 {
     protected LooseFluentDescriptor|null $baseSchema = null;
 
-    /** @var array<string, mixed>|null */
+    /** @var array<string, \MohammadAlavi\LaravelRulesToSchema\NestedRuleset>|null */
     protected array|null $allRules = null;
 
     protected string|null $request = null;

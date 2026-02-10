@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MohammadAlavi\LaravelRulesToSchema\Contracts;
 
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 interface RuleParser
@@ -17,6 +18,6 @@ interface RuleParser
         string $attribute,
         LooseFluentDescriptor $schema,
         array $validationRules,
-        array $nestedRuleset,
+        NestedRuleset $nestedRuleset,
     ): array|LooseFluentDescriptor|null;
 }

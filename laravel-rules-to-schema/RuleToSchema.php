@@ -20,6 +20,7 @@ final class RuleToSchema
     ) {
     }
 
+    /** @param array<string, NestedRuleset> $normalizedRuleSets */
     public function transform(array $normalizedRuleSets, string|null $request = null): LooseFluentDescriptor
     {
         $baseSchema = LooseFluentDescriptor::withoutSchema()->type(Type::object());
@@ -36,7 +37,7 @@ final class RuleToSchema
             }
 
             // Track required fields
-            $validationRules = $rawRules[ValidationRuleNormalizer::RULES_KEY] ?? [];
+            $validationRules = $rawRules->validationRules;
             if ($this->isRequired($validationRules)) {
                 $requiredFields[] = $propertyName;
             }
@@ -77,9 +78,9 @@ final class RuleToSchema
         return $baseSchema;
     }
 
-    private function parseRuleset(string $name, array $nestedRuleset): LooseFluentDescriptor|array|null
+    private function parseRuleset(string $name, NestedRuleset $nestedRuleset): LooseFluentDescriptor|array|null
     {
-        $validationRules = $nestedRuleset[ValidationRuleNormalizer::RULES_KEY] ?? [];
+        $validationRules = $nestedRuleset->validationRules;
 
         $schemas = [$name => LooseFluentDescriptor::withoutSchema()];
 
@@ -125,12 +126,12 @@ final class RuleToSchema
 
     private function parseContextAwareRules(
         string $name,
-        array $nestedRuleset,
+        NestedRuleset $nestedRuleset,
         LooseFluentDescriptor $baseSchema,
         array $allRuleSets,
         string|null $request,
     ): LooseFluentDescriptor {
-        $validationRules = $nestedRuleset[ValidationRuleNormalizer::RULES_KEY] ?? [];
+        $validationRules = $nestedRuleset->validationRules;
 
         foreach ($this->parsers as $parserClass) {
             $instance = $this->resolveParser($parserClass);
