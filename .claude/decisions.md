@@ -239,12 +239,13 @@ return app(RuleToSchema::class)->transform($ruleSets, $request);
 - Self-documenting: `Type::object()` is clearer intent than `'object'`
 - Consistent with D5 (Type-System Enforcement Over Runtime Checks)
 
-**Applied to**: `laravel-rules-to-schema/` package (source + tests) — completed.
+**Applied to**:
+- `laravel-rules-to-schema/` package (source + tests) — completed.
+- `tests/JSONSchema/` — 92 replacements across 14 test files — completed.
 
-**Remaining work**:
-- `tests/JSONSchema/` — ~90 instances of `->type('...')` and `->format('...')` with string literals. These are in the JSONSchema package's own tests and should use `Type::*()` and `StringFormat::*` where applicable.
-- Custom/dynamic values from external config or user-defined rules (`CustomRuleDocsParser`, `CustomRuleSchemaParser`) stay as strings since the values aren't known at compile time.
-- Non-standard format strings (`'binary'`, `'timezone'`) stay as strings since they have no `StringFormat` enum case.
+**Exceptions** (intentionally kept as strings):
+- Custom/dynamic values from external config or user-defined rules (`CustomRuleDocsParser`, `CustomRuleSchemaParser`) — values aren't known at compile time.
+- Non-standard format strings (`'phone-number'`, `'social-security-number'`, `'binary'`, `'timezone'`) — no `StringFormat` enum case.
 
 ---
 
