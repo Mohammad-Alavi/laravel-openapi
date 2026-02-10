@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\Parsers\AdditionalConstraintParser;
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
@@ -12,7 +13,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
         $parser = new AdditionalConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('website', $schema, [new ValidationRule('active_url')], []);
+        $result = $parser('website', $schema, [new ValidationRule('active_url')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -23,7 +24,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
         $parser = new AdditionalConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('tz', $schema, [new ValidationRule('timezone')], []);
+        $result = $parser('tz', $schema, [new ValidationRule('timezone')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -34,7 +35,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
         $parser = new AdditionalConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema()->type(Type::string());
 
-        $result = $parser('name', $schema, [new ValidationRule('filled')], []);
+        $result = $parser('name', $schema, [new ValidationRule('filled')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -45,7 +46,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
         $parser = new AdditionalConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema()->type(Type::array());
 
-        $result = $parser('tags', $schema, [new ValidationRule('filled')], []);
+        $result = $parser('tags', $schema, [new ValidationRule('filled')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -56,7 +57,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
         $parser = new AdditionalConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('filled')], []);
+        $result = $parser('field', $schema, [new ValidationRule('filled')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -67,7 +68,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
         $parser = new AdditionalConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('items', $schema, [new ValidationRule('distinct')], []);
+        $result = $parser('items', $schema, [new ValidationRule('distinct')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -78,7 +79,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
         $parser = new AdditionalConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('file', $schema, [new ValidationRule('extensions', ['jpg', 'png', 'gif'])], []);
+        $result = $parser('file', $schema, [new ValidationRule('extensions', ['jpg', 'png', 'gif'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -89,7 +90,7 @@ describe(class_basename(AdditionalConstraintParser::class), function (): void {
         $parser = new AdditionalConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], []);
+        $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], new NestedRuleset());
 
         $compiled = $result->compile();
 

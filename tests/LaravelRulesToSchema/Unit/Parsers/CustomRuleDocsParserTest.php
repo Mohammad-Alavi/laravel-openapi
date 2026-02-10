@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\Parsers\CustomRuleDocsParser;
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
@@ -15,7 +16,7 @@ describe(class_basename(CustomRuleDocsParser::class), function (): void {
         $schema = LooseFluentDescriptor::withoutSchema();
         $rule = new DocumentedRule();
 
-        $result = $parser('field', $schema, [new ValidationRule($rule)], []);
+        $result = $parser('field', $schema, [new ValidationRule($rule)], new NestedRuleset());
 
         expect($result)->toBeInstanceOf(LooseFluentDescriptor::class);
 
@@ -31,7 +32,7 @@ describe(class_basename(CustomRuleDocsParser::class), function (): void {
         $schema = LooseFluentDescriptor::withoutSchema();
         $rule = new EnumDocumentedRule();
 
-        $result = $parser('status', $schema, [new ValidationRule($rule)], []);
+        $result = $parser('status', $schema, [new ValidationRule($rule)], new NestedRuleset());
 
         expect($result)->toBeInstanceOf(LooseFluentDescriptor::class);
 
@@ -46,7 +47,7 @@ describe(class_basename(CustomRuleDocsParser::class), function (): void {
         $schema = LooseFluentDescriptor::withoutSchema();
         $rule = new UndocumentedRule();
 
-        $result = $parser('field', $schema, [new ValidationRule($rule)], []);
+        $result = $parser('field', $schema, [new ValidationRule($rule)], new NestedRuleset());
 
         expect($result)->toBeInstanceOf(LooseFluentDescriptor::class);
 
@@ -59,7 +60,7 @@ describe(class_basename(CustomRuleDocsParser::class), function (): void {
         $parser = new CustomRuleDocsParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('required')], []);
+        $result = $parser('field', $schema, [new ValidationRule('required')], new NestedRuleset());
 
         expect($result)->toBeInstanceOf(LooseFluentDescriptor::class);
 

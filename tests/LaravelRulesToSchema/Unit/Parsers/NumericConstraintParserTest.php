@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\Parsers\NumericConstraintParser;
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
@@ -11,7 +12,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
         $parser = new NumericConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('multiple_of', ['3'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('multiple_of', ['3'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -22,7 +23,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
         $parser = new NumericConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('max_digits', ['5'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('max_digits', ['5'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -33,7 +34,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
         $parser = new NumericConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('min_digits', ['3'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('min_digits', ['3'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -44,7 +45,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
         $parser = new NumericConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('min_digits', ['1'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('min_digits', ['1'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -55,7 +56,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
         $parser = new NumericConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('max_digits', ['1'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('max_digits', ['1'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -66,7 +67,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
         $parser = new NumericConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], []);
+        $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -83,7 +84,7 @@ describe(class_basename(NumericConstraintParser::class), function (): void {
             new ValidationRule('min_digits', ['2']),
             new ValidationRule('max_digits', ['4']),
             new ValidationRule('multiple_of', ['5']),
-        ], []);
+        ], new NestedRuleset());
 
         $compiled = $result->compile();
 

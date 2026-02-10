@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\Parsers\FileUploadParser;
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
@@ -11,7 +12,7 @@ describe(class_basename(FileUploadParser::class), function (): void {
         $parser = new FileUploadParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('avatar', $schema, [new ValidationRule('file')], []);
+        $result = $parser('avatar', $schema, [new ValidationRule('file')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -23,7 +24,7 @@ describe(class_basename(FileUploadParser::class), function (): void {
         $parser = new FileUploadParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('photo', $schema, [new ValidationRule('image')], []);
+        $result = $parser('photo', $schema, [new ValidationRule('image')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -35,7 +36,7 @@ describe(class_basename(FileUploadParser::class), function (): void {
         $parser = new FileUploadParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('document', $schema, [new ValidationRule('mimes', ['pdf', 'doc'])], []);
+        $result = $parser('document', $schema, [new ValidationRule('mimes', ['pdf', 'doc'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -47,7 +48,7 @@ describe(class_basename(FileUploadParser::class), function (): void {
         $parser = new FileUploadParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('upload', $schema, [new ValidationRule('mimetypes', ['application/pdf'])], []);
+        $result = $parser('upload', $schema, [new ValidationRule('mimetypes', ['application/pdf'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -59,7 +60,7 @@ describe(class_basename(FileUploadParser::class), function (): void {
         $parser = new FileUploadParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('name', $schema, [new ValidationRule('string'), new ValidationRule('required')], []);
+        $result = $parser('name', $schema, [new ValidationRule('string'), new ValidationRule('required')], new NestedRuleset());
 
         $compiled = $result->compile();
 

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Validation\Rules\NotIn;
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\Parsers\NotInParser;
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
@@ -12,7 +13,7 @@ describe(class_basename(NotInParser::class), function (): void {
         $parser = new NotInParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('not_in', ['foo', 'bar', 'baz'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('not_in', ['foo', 'bar', 'baz'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -24,7 +25,7 @@ describe(class_basename(NotInParser::class), function (): void {
         $schema = LooseFluentDescriptor::withoutSchema();
         $rule = new NotIn(['alpha', 'beta']);
 
-        $result = $parser('field', $schema, [new ValidationRule($rule)], []);
+        $result = $parser('field', $schema, [new ValidationRule($rule)], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -35,7 +36,7 @@ describe(class_basename(NotInParser::class), function (): void {
         $parser = new NotInParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], []);
+        $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -46,7 +47,7 @@ describe(class_basename(NotInParser::class), function (): void {
         $parser = new NotInParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('not_in', ['only'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('not_in', ['only'])], new NestedRuleset());
 
         $compiled = $result->compile();
 

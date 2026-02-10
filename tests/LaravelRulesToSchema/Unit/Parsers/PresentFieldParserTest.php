@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\Parsers\PresentFieldParser;
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
-use MohammadAlavi\LaravelRulesToSchema\ValidationRuleNormalizer;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(PresentFieldParser::class), function (): void {
@@ -12,13 +12,13 @@ describe(class_basename(PresentFieldParser::class), function (): void {
         $parser = new PresentFieldParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'token' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('present')]],
+            'token' => new NestedRuleset([new ValidationRule('present')]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('token', $schema, [new ValidationRule('present')], []);
+        $result = $contextual('token', $schema, [new ValidationRule('present')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -29,13 +29,13 @@ describe(class_basename(PresentFieldParser::class), function (): void {
         $parser = new PresentFieldParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'token' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('present_if', ['type', 'api'])]],
+            'token' => new NestedRuleset([new ValidationRule('present_if', ['type', 'api'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('token', $schema, [new ValidationRule('present_if', ['type', 'api'])], []);
+        $result = $contextual('token', $schema, [new ValidationRule('present_if', ['type', 'api'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -48,13 +48,13 @@ describe(class_basename(PresentFieldParser::class), function (): void {
         $parser = new PresentFieldParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'token' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('present_unless', ['type', 'guest'])]],
+            'token' => new NestedRuleset([new ValidationRule('present_unless', ['type', 'guest'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('token', $schema, [new ValidationRule('present_unless', ['type', 'guest'])], []);
+        $result = $contextual('token', $schema, [new ValidationRule('present_unless', ['type', 'guest'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -67,13 +67,13 @@ describe(class_basename(PresentFieldParser::class), function (): void {
         $parser = new PresentFieldParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'city' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('present_with', ['address'])]],
+            'city' => new NestedRuleset([new ValidationRule('present_with', ['address'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('city', $schema, [new ValidationRule('present_with', ['address'])], []);
+        $result = $contextual('city', $schema, [new ValidationRule('present_with', ['address'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -86,13 +86,13 @@ describe(class_basename(PresentFieldParser::class), function (): void {
         $parser = new PresentFieldParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'city' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('present_with_all', ['street', 'zip'])]],
+            'city' => new NestedRuleset([new ValidationRule('present_with_all', ['street', 'zip'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('city', $schema, [new ValidationRule('present_with_all', ['street', 'zip'])], []);
+        $result = $contextual('city', $schema, [new ValidationRule('present_with_all', ['street', 'zip'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -105,7 +105,7 @@ describe(class_basename(PresentFieldParser::class), function (): void {
         $parser = new PresentFieldParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('present')], []);
+        $result = $parser('field', $schema, [new ValidationRule('present')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -116,13 +116,13 @@ describe(class_basename(PresentFieldParser::class), function (): void {
         $parser = new PresentFieldParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'name' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('string')]],
+            'name' => new NestedRuleset([new ValidationRule('string')]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('name', $schema, [new ValidationRule('string')], []);
+        $result = $contextual('name', $schema, [new ValidationRule('string')], new NestedRuleset());
 
         $compiled = $result->compile();
 

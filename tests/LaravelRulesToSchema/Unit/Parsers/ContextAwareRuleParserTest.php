@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use MohammadAlavi\LaravelRulesToSchema\Contracts\ContextAwareRuleParser;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
+use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(ContextAwareRuleParser::class), function (): void {
@@ -38,14 +40,14 @@ describe(class_basename(ContextAwareRuleParser::class), function (): void {
                 string $attribute,
                 LooseFluentDescriptor $schema,
                 array $validationRules,
-                array $nestedRuleset,
+                NestedRuleset $nestedRuleset,
             ): array|LooseFluentDescriptor|null {
                 return $schema;
             }
         };
 
         $baseSchema = LooseFluentDescriptor::withoutSchema();
-        $allRules = ['name' => ['string']];
+        $allRules = ['name' => new NestedRuleset([new ValidationRule('string')])];
 
         $contextual = $parser->withContext($baseSchema, $allRules, 'MyFormRequest');
 
@@ -75,7 +77,7 @@ describe(class_basename(ContextAwareRuleParser::class), function (): void {
                 string $attribute,
                 LooseFluentDescriptor $schema,
                 array $validationRules,
-                array $nestedRuleset,
+                NestedRuleset $nestedRuleset,
             ): array|LooseFluentDescriptor|null {
                 return $schema;
             }

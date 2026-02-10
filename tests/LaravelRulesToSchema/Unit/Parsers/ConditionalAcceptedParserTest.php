@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\Parsers\ConditionalAcceptedParser;
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
-use MohammadAlavi\LaravelRulesToSchema\ValidationRuleNormalizer;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(ConditionalAcceptedParser::class), function (): void {
@@ -12,13 +12,13 @@ describe(class_basename(ConditionalAcceptedParser::class), function (): void {
         $parser = new ConditionalAcceptedParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'terms' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('accepted_if', ['role', 'admin'])]],
+            'terms' => new NestedRuleset([new ValidationRule('accepted_if', ['role', 'admin'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('terms', $schema, [new ValidationRule('accepted_if', ['role', 'admin'])], []);
+        $result = $contextual('terms', $schema, [new ValidationRule('accepted_if', ['role', 'admin'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -32,13 +32,13 @@ describe(class_basename(ConditionalAcceptedParser::class), function (): void {
         $parser = new ConditionalAcceptedParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'marketing' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('declined_if', ['privacy', 'strict'])]],
+            'marketing' => new NestedRuleset([new ValidationRule('declined_if', ['privacy', 'strict'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('marketing', $schema, [new ValidationRule('declined_if', ['privacy', 'strict'])], []);
+        $result = $contextual('marketing', $schema, [new ValidationRule('declined_if', ['privacy', 'strict'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -52,7 +52,7 @@ describe(class_basename(ConditionalAcceptedParser::class), function (): void {
         $parser = new ConditionalAcceptedParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('accepted_if', ['role', 'admin'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('accepted_if', ['role', 'admin'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -63,13 +63,13 @@ describe(class_basename(ConditionalAcceptedParser::class), function (): void {
         $parser = new ConditionalAcceptedParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'name' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('required')]],
+            'name' => new NestedRuleset([new ValidationRule('required')]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('name', $schema, [new ValidationRule('required')], []);
+        $result = $contextual('name', $schema, [new ValidationRule('required')], new NestedRuleset());
 
         $compiled = $result->compile();
 

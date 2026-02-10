@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\Parsers\StringPatternParser;
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
@@ -11,7 +12,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
         $parser = new StringPatternParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('starts_with', ['foo', 'bar'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('starts_with', ['foo', 'bar'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -22,7 +23,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
         $parser = new StringPatternParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('ends_with', ['foo', 'bar'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('ends_with', ['foo', 'bar'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -33,7 +34,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
         $parser = new StringPatternParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('doesnt_start_with', ['foo', 'bar'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('doesnt_start_with', ['foo', 'bar'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -44,7 +45,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
         $parser = new StringPatternParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('doesnt_end_with', ['foo', 'bar'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('doesnt_end_with', ['foo', 'bar'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -55,7 +56,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
         $parser = new StringPatternParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('lowercase')], []);
+        $result = $parser('field', $schema, [new ValidationRule('lowercase')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -66,7 +67,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
         $parser = new StringPatternParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('uppercase')], []);
+        $result = $parser('field', $schema, [new ValidationRule('uppercase')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -77,7 +78,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
         $parser = new StringPatternParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('ascii')], []);
+        $result = $parser('field', $schema, [new ValidationRule('ascii')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -88,7 +89,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
         $parser = new StringPatternParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('hex_color')], []);
+        $result = $parser('field', $schema, [new ValidationRule('hex_color')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -99,7 +100,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
         $parser = new StringPatternParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('starts_with', ['foo.bar', 'baz+qux'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('starts_with', ['foo.bar', 'baz+qux'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -110,7 +111,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
         $parser = new StringPatternParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], []);
+        $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -121,7 +122,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
         $parser = new StringPatternParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('lowercase')], []);
+        $result = $parser('field', $schema, [new ValidationRule('lowercase')], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -132,7 +133,7 @@ describe(class_basename(StringPatternParser::class), function (): void {
         $parser = new StringPatternParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('starts_with', ['prefix'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('starts_with', ['prefix'])], new NestedRuleset());
 
         $compiled = $result->compile();
 

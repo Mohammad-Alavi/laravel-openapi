@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\Parsers\ComparisonConstraintParser;
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
@@ -12,7 +13,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
         $parser = new ComparisonConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema()->type(Type::string());
 
-        $result = $parser('field', $schema, [new ValidationRule('between', ['3', '10'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('between', ['3', '10'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -24,7 +25,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
         $parser = new ComparisonConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema()->type(Type::number());
 
-        $result = $parser('field', $schema, [new ValidationRule('between', ['3', '10'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('between', ['3', '10'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -36,7 +37,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
         $parser = new ComparisonConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema()->type(Type::integer());
 
-        $result = $parser('field', $schema, [new ValidationRule('between', ['1', '100'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('between', ['1', '100'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -48,7 +49,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
         $parser = new ComparisonConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema()->type(Type::array());
 
-        $result = $parser('field', $schema, [new ValidationRule('between', ['2', '5'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('between', ['2', '5'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -60,7 +61,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
         $parser = new ComparisonConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema()->type(Type::string());
 
-        $result = $parser('field', $schema, [new ValidationRule('size', ['5'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('size', ['5'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -72,7 +73,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
         $parser = new ComparisonConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema()->type(Type::number());
 
-        $result = $parser('field', $schema, [new ValidationRule('size', ['42'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('size', ['42'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -84,7 +85,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
         $parser = new ComparisonConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema()->type(Type::array());
 
-        $result = $parser('field', $schema, [new ValidationRule('size', ['3'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('size', ['3'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -96,7 +97,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
         $parser = new ComparisonConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('between', ['3', '10'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('between', ['3', '10'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -108,7 +109,7 @@ describe(class_basename(ComparisonConstraintParser::class), function (): void {
         $parser = new ComparisonConstraintParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], []);
+        $result = $parser('field', $schema, [new ValidationRule('required'), new ValidationRule('string')], new NestedRuleset());
 
         $compiled = $result->compile();
 

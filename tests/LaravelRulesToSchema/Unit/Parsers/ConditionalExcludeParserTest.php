@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\Parsers\ConditionalExcludeParser;
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
-use MohammadAlavi\LaravelRulesToSchema\ValidationRuleNormalizer;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 describe(class_basename(ConditionalExcludeParser::class), function (): void {
@@ -12,13 +12,13 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
         $parser = new ConditionalExcludeParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'reason' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('exclude_if', ['type', 'free'])]],
+            'reason' => new NestedRuleset([new ValidationRule('exclude_if', ['type', 'free'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('reason', $schema, [new ValidationRule('exclude_if', ['type', 'free'])], []);
+        $result = $contextual('reason', $schema, [new ValidationRule('exclude_if', ['type', 'free'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -31,13 +31,13 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
         $parser = new ConditionalExcludeParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'reason' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('exclude_unless', ['type', 'premium'])]],
+            'reason' => new NestedRuleset([new ValidationRule('exclude_unless', ['type', 'premium'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('reason', $schema, [new ValidationRule('exclude_unless', ['type', 'premium'])], []);
+        $result = $contextual('reason', $schema, [new ValidationRule('exclude_unless', ['type', 'premium'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -50,13 +50,13 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
         $parser = new ConditionalExcludeParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'nickname' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('exclude_with', ['username'])]],
+            'nickname' => new NestedRuleset([new ValidationRule('exclude_with', ['username'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('nickname', $schema, [new ValidationRule('exclude_with', ['username'])], []);
+        $result = $contextual('nickname', $schema, [new ValidationRule('exclude_with', ['username'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -69,13 +69,13 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
         $parser = new ConditionalExcludeParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'nickname' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('exclude_without', ['username'])]],
+            'nickname' => new NestedRuleset([new ValidationRule('exclude_without', ['username'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('nickname', $schema, [new ValidationRule('exclude_without', ['username'])], []);
+        $result = $contextual('nickname', $schema, [new ValidationRule('exclude_without', ['username'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -87,13 +87,13 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
         $parser = new ConditionalExcludeParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'field' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('missing_if', ['status', 'inactive'])]],
+            'field' => new NestedRuleset([new ValidationRule('missing_if', ['status', 'inactive'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('field', $schema, [new ValidationRule('missing_if', ['status', 'inactive'])], []);
+        $result = $contextual('field', $schema, [new ValidationRule('missing_if', ['status', 'inactive'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -105,13 +105,13 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
         $parser = new ConditionalExcludeParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'field' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('missing_unless', ['status', 'active'])]],
+            'field' => new NestedRuleset([new ValidationRule('missing_unless', ['status', 'active'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('field', $schema, [new ValidationRule('missing_unless', ['status', 'active'])], []);
+        $result = $contextual('field', $schema, [new ValidationRule('missing_unless', ['status', 'active'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -123,13 +123,13 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
         $parser = new ConditionalExcludeParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'field' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('missing_with', ['other'])]],
+            'field' => new NestedRuleset([new ValidationRule('missing_with', ['other'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('field', $schema, [new ValidationRule('missing_with', ['other'])], []);
+        $result = $contextual('field', $schema, [new ValidationRule('missing_with', ['other'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -141,13 +141,13 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
         $parser = new ConditionalExcludeParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'field' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('missing_with_all', ['a', 'b'])]],
+            'field' => new NestedRuleset([new ValidationRule('missing_with_all', ['a', 'b'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('field', $schema, [new ValidationRule('missing_with_all', ['a', 'b'])], []);
+        $result = $contextual('field', $schema, [new ValidationRule('missing_with_all', ['a', 'b'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -159,7 +159,7 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
         $parser = new ConditionalExcludeParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('exclude_if', ['type', 'free'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('exclude_if', ['type', 'free'])], new NestedRuleset());
 
         $compiled = $result->compile();
 
@@ -170,13 +170,13 @@ describe(class_basename(ConditionalExcludeParser::class), function (): void {
         $parser = new ConditionalExcludeParser();
         $baseSchema = LooseFluentDescriptor::withoutSchema();
         $allRules = [
-            'name' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('required')]],
+            'name' => new NestedRuleset([new ValidationRule('required')]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $contextual('name', $schema, [new ValidationRule('required')], []);
+        $result = $contextual('name', $schema, [new ValidationRule('required')], new NestedRuleset());
 
         $compiled = $result->compile();
 

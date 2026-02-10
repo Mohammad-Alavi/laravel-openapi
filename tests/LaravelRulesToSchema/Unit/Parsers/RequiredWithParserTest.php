@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\Parsers\RequiredWithParser;
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
-use MohammadAlavi\LaravelRulesToSchema\ValidationRuleNormalizer;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
@@ -20,16 +20,16 @@ describe(class_basename(RequiredWithParser::class), function (): void {
             );
 
         $allRules = [
-            'name' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('string'), new ValidationRule('required_with', ['email'])]],
-            'email' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('string'), new ValidationRule('required_with', ['name'])]],
+            'name' => new NestedRuleset([new ValidationRule('string'), new ValidationRule('required_with', ['email'])]),
+            'email' => new NestedRuleset([new ValidationRule('string'), new ValidationRule('required_with', ['name'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
         $nameSchema = LooseFluentDescriptor::withoutSchema()->type(Type::string());
         $emailSchema = LooseFluentDescriptor::withoutSchema()->type(Type::string());
 
-        $contextual('name', $nameSchema, [new ValidationRule('string'), new ValidationRule('required_with', ['email'])], []);
-        $contextual('email', $emailSchema, [new ValidationRule('string'), new ValidationRule('required_with', ['name'])], []);
+        $contextual('name', $nameSchema, [new ValidationRule('string'), new ValidationRule('required_with', ['email'])], new NestedRuleset());
+        $contextual('email', $emailSchema, [new ValidationRule('string'), new ValidationRule('required_with', ['name'])], new NestedRuleset());
 
         $modified = $contextual->modifiedBaseSchema();
         expect($modified)->not->toBeNull();
@@ -66,16 +66,16 @@ describe(class_basename(RequiredWithParser::class), function (): void {
             );
 
         $allRules = [
-            'name' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('string')]],
-            'email' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('string')]],
-            'age' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('integer'), new ValidationRule('required_with', ['name', 'email'])]],
+            'name' => new NestedRuleset([new ValidationRule('string')]),
+            'email' => new NestedRuleset([new ValidationRule('string')]),
+            'age' => new NestedRuleset([new ValidationRule('integer'), new ValidationRule('required_with', ['name', 'email'])]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
 
-        $contextual('name', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string')], []);
-        $contextual('email', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string')], []);
-        $contextual('age', LooseFluentDescriptor::withoutSchema()->type(Type::integer()), [new ValidationRule('integer'), new ValidationRule('required_with', ['name', 'email'])], []);
+        $contextual('name', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string')], new NestedRuleset());
+        $contextual('email', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string')], new NestedRuleset());
+        $contextual('age', LooseFluentDescriptor::withoutSchema()->type(Type::integer()), [new ValidationRule('integer'), new ValidationRule('required_with', ['name', 'email'])], new NestedRuleset());
 
         $modified = $contextual->modifiedBaseSchema();
         expect($modified)->not->toBeNull();
@@ -105,16 +105,16 @@ describe(class_basename(RequiredWithParser::class), function (): void {
             );
 
         $allRules = [
-            'name' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('string'), new ValidationRule('required_with', ['email'])]],
-            'email' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('string'), new ValidationRule('required_with', ['name'])]],
-            'age' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('integer')]],
+            'name' => new NestedRuleset([new ValidationRule('string'), new ValidationRule('required_with', ['email'])]),
+            'email' => new NestedRuleset([new ValidationRule('string'), new ValidationRule('required_with', ['name'])]),
+            'age' => new NestedRuleset([new ValidationRule('integer')]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
 
-        $contextual('name', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string'), new ValidationRule('required_with', ['email'])], []);
-        $contextual('email', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string'), new ValidationRule('required_with', ['name'])], []);
-        $contextual('age', LooseFluentDescriptor::withoutSchema()->type(Type::integer()), [new ValidationRule('integer')], []);
+        $contextual('name', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string'), new ValidationRule('required_with', ['email'])], new NestedRuleset());
+        $contextual('email', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string'), new ValidationRule('required_with', ['name'])], new NestedRuleset());
+        $contextual('age', LooseFluentDescriptor::withoutSchema()->type(Type::integer()), [new ValidationRule('integer')], new NestedRuleset());
 
         $modified = $contextual->modifiedBaseSchema();
         expect($modified)->not->toBeNull();
@@ -138,12 +138,12 @@ describe(class_basename(RequiredWithParser::class), function (): void {
             );
 
         $allRules = [
-            'name' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('string'), new ValidationRule('required')]],
+            'name' => new NestedRuleset([new ValidationRule('string'), new ValidationRule('required')]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
 
-        $contextual('name', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string'), new ValidationRule('required')], []);
+        $contextual('name', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string'), new ValidationRule('required')], new NestedRuleset());
 
         $modified = $contextual->modifiedBaseSchema();
         expect($modified)->toBeNull();
@@ -160,16 +160,16 @@ describe(class_basename(RequiredWithParser::class), function (): void {
             );
 
         $allRules = [
-            'name' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('string'), new ValidationRule('required_with', ['email'])]],
-            'email' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('string'), new ValidationRule('required_with', ['name'])]],
-            'age' => [ValidationRuleNormalizer::RULES_KEY => [new ValidationRule('nullable'), new ValidationRule('integer')]],
+            'name' => new NestedRuleset([new ValidationRule('string'), new ValidationRule('required_with', ['email'])]),
+            'email' => new NestedRuleset([new ValidationRule('string'), new ValidationRule('required_with', ['name'])]),
+            'age' => new NestedRuleset([new ValidationRule('nullable'), new ValidationRule('integer')]),
         ];
 
         $contextual = $parser->withContext($baseSchema, $allRules, null);
 
-        $contextual('name', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string'), new ValidationRule('required_with', ['email'])], []);
-        $contextual('email', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string'), new ValidationRule('required_with', ['name'])], []);
-        $contextual('age', LooseFluentDescriptor::withoutSchema()->type(Type::integer(), Type::null()), [new ValidationRule('nullable'), new ValidationRule('integer')], []);
+        $contextual('name', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string'), new ValidationRule('required_with', ['email'])], new NestedRuleset());
+        $contextual('email', LooseFluentDescriptor::withoutSchema()->type(Type::string()), [new ValidationRule('string'), new ValidationRule('required_with', ['name'])], new NestedRuleset());
+        $contextual('age', LooseFluentDescriptor::withoutSchema()->type(Type::integer(), Type::null()), [new ValidationRule('nullable'), new ValidationRule('integer')], new NestedRuleset());
 
         $modified = $contextual->modifiedBaseSchema();
         expect($modified)->not->toBeNull();
@@ -186,7 +186,7 @@ describe(class_basename(RequiredWithParser::class), function (): void {
         $parser = new RequiredWithParser();
         $schema = LooseFluentDescriptor::withoutSchema();
 
-        $result = $parser('field', $schema, [new ValidationRule('required_with', ['other'])], []);
+        $result = $parser('field', $schema, [new ValidationRule('required_with', ['other'])], new NestedRuleset());
 
         expect($result)->toBe($schema);
     });
