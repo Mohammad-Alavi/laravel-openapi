@@ -4,8 +4,34 @@ declare(strict_types=1);
 
 namespace MohammadAlavi\LaravelRulesToSchema;
 
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
+
 final class LaravelRuleType
 {
+    public static function resolve(string $ruleName): Type|null
+    {
+        if (in_array($ruleName, self::string(), true)) {
+            return Type::string();
+        }
+        if (in_array($ruleName, self::integer(), true)) {
+            return Type::integer();
+        }
+        if (in_array($ruleName, self::number(), true)) {
+            return Type::number();
+        }
+        if (in_array($ruleName, self::boolean(), true)) {
+            return Type::boolean();
+        }
+        if (in_array($ruleName, self::array(), true)) {
+            return Type::array();
+        }
+        if (in_array($ruleName, self::nullable(), true)) {
+            return Type::null();
+        }
+
+        return null;
+    }
+
     /** @return string[] */
     public static function string(): array
     {
