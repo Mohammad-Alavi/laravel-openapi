@@ -152,4 +152,4 @@ Context-aware parsers (`RequiredWithParser`, `RequiredWithoutParser`) access `->
 
 Configuration: `config/laragen.php` and `config/rules-to-schema.php`
 
-See `.claude/architecture/` for future plans: FluentSchema replacement, fork strategy, multi-framework support.
+See `.claude/architecture/` for future plans: fork strategy, multi-framework support.
