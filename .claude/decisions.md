@@ -130,9 +130,9 @@ public static function header(string $name, Content|HeaderParameter $serializati
 
 ## D14: Leverage Open-Source, Maintain Clear Boundaries
 
-**Decision**: Depend on open-source tools (Scribe, laravel-rules-to-schema, nikic/php-parser) but wrap external dependencies behind our own interfaces.
+**Decision**: Depend on open-source tools (nikic/php-parser, etc.) but wrap external dependencies behind our own interfaces. Code originally from `riley19280/laravel-rules-to-schema` has been absorbed into the local `laravel-rules-to-schema/` directory.
 
-**Boundaries**: No direct Scribe/external types in our public API. Internal code depends on our interfaces.
+**Boundaries**: No direct external types in our public API. Internal code depends on our interfaces.
 
 ---
 
@@ -169,7 +169,7 @@ Both `RequiredWithParser` and `RequiredWithoutParser` use the `if/then` approach
 
 ### LD5: Strategy Chain for Response Detection
 
-**Decision**: Pluggable `ResponseStrategy` chain (detector + builder pairs) tried in order. Enables adding new strategies (Spatie Data, raw arrays) without modifying existing code. Current order: JsonResource -> FractalTransformer (conditional) -> EloquentModel.
+**Decision**: Pluggable `ResponseStrategy` chain (detector + builder pairs) tried in order. Enables adding new strategies without modifying existing code. Current order: Annotation → ResourceCollection → JsonResource → SpatieData (conditional) → FractalTransformer (conditional) → EloquentModel.
 
 ---
 

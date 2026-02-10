@@ -2,28 +2,15 @@
 
 See `architecture.md` for package structure and directory layout.
 
-## Laragen Feature Details
-
-### F6: Authentication Detection
-
-Detects auth middleware on routes and generates SecurityScheme components + per-operation security.
-
-**Config**: `autogen.security` flag
-
-| Middleware | SecurityScheme |
-|-----------|---------------|
-| `auth:sanctum` | Bearer token |
-| `auth:api` (Passport) | Bearer token |
-| `auth.basic` | HTTP Basic |
-| `auth:*` (generic) | Bearer token with guard name |
-
----
+## Laragen Features (All Implemented)
 
 ### F1: Route Discovery (Auto)
 
 Discovers API routes by URI patterns without requiring `#[Collection]` attributes.
 
 **Config**: `route_discovery.mode` (`auto` | `attribute` | `combined`), `include`/`exclude` patterns
+
+**Implementation**: `laragen/RouteDiscovery/` — `AutoRouteCollector`, `PatternMatcher`
 
 ---
 
@@ -42,11 +29,13 @@ Detects path parameter types from route constraints and generates typed `Paramet
 | `whereUlid()` | `string` + ULID pattern |
 | `whereIn()` | `enum` with extracted values |
 
+**Implementation**: `laragen/PathParameters/PathParameterAnalyzer.php`
+
 ---
 
 ### F3: FormRequest Extraction
 
-Converts Laravel FormRequest validation rules to OpenAPI request body schemas. Uses Scribe's `RuleExtractor` and `riley19280/laravel-rules-to-schema`.
+Converts Laravel FormRequest validation rules to OpenAPI request body schemas via the `laravel-rules-to-schema/` package (26 parsers).
 
 | Laravel Rule | JSON Schema |
 |--------------|-------------|
@@ -104,6 +93,26 @@ Converts Laravel FormRequest validation rules to OpenAPI request body schemas. U
 | `accepted_if:field,value` | `if/then` conditional `type: boolean, const: true` |
 | `declined_if:field,value` | `if/then` conditional `type: boolean, const: false` |
 
+**Implementation**: `laragen/RequestSchema/` + `laravel-rules-to-schema/Parsers/`
+
+---
+
+### F4: Response Schema Detection (Multi-Strategy)
+
+Pluggable `ResponseStrategy` chain analyzes controller return types to auto-generate response schemas.
+
+**Strategy chain** (tried in order, first match wins):
+1. **Annotation** -- detects `@response` docblock tags, infers schema from JSON example
+2. **ResourceCollection** -- detects `ResourceCollection` return type, resolves inner resource
+3. **JsonResource** -- detects `JsonResource` return type, analyzes `toArray()` AST
+4. **SpatieData** -- conditional on `spatie/laravel-data`, analyzes constructor params
+5. **FractalTransformer** -- conditional on `league/fractal`, detects transformer references in controller AST
+6. **EloquentModel** -- detects `Model` return type, delegates to `ModelSchemaInferrer`
+
+Each strategy has a detector + builder pair. `ResponseSchemaResolver` iterates the chain. Generic AST analysis lives in `ArraySchemaAnalyzer` (reusable across strategies).
+
+**Implementation**: `laragen/ResponseSchema/`
+
 ---
 
 ### F5: Model Schema Inference
@@ -122,21 +131,24 @@ Generates JSON Schema from Eloquent model `$casts`, excludes `$hidden`, includes
 | `decimal:N` | `string` |
 | Backed enum | `enum` with case values |
 
+**Implementation**: `laragen/ModelSchema/` — `ModelSchemaInferrer`, `CastAnalyzer`
+
 ---
 
-### F4: Response Schema Detection (Multi-Strategy)
+### F6: Authentication Detection
 
-Pluggable `ResponseStrategy` chain analyzes controller return types to auto-generate response schemas.
+Detects auth middleware on routes and generates SecurityScheme components + per-operation security.
 
-**Strategy chain** (tried in order, first match wins):
-1. **Annotation** -- detects `@response` docblock tags, infers schema from JSON example
-2. **ResourceCollection** -- detects `ResourceCollection` return type, resolves inner resource
-3. **JsonResource** -- detects `JsonResource` return type, analyzes `toArray()` AST
-4. **SpatieData** -- conditional on `spatie/laravel-data`, analyzes constructor params
-5. **FractalTransformer** -- conditional on `league/fractal`, detects transformer references in controller AST
-6. **EloquentModel** -- detects `Model` return type, delegates to `ModelSchemaInferrer`
+**Config**: `autogen.security` flag
 
-Each strategy has a detector + builder pair. `ResponseSchemaResolver` iterates the chain. Generic AST analysis lives in `ArraySchemaAnalyzer` (reusable across strategies).
+| Middleware | SecurityScheme |
+|-----------|---------------|
+| `auth:sanctum` | Bearer token |
+| `auth:api` (Passport) | Bearer token |
+| `auth.basic` | HTTP Basic |
+| `auth:*` (generic) | Bearer token with guard name |
+
+**Implementation**: `laragen/Auth/` — `AuthDetector`, `AuthScheme`, `SecuritySchemeRegistry`
 
 ---
 
@@ -152,6 +164,8 @@ Pluggable `RequestStrategy` chain detects request schema from various sources.
 
 Each strategy has a detector + builder pair. `RequestSchemaResolver` iterates the chain.
 
+**Implementation**: `laragen/RequestSchema/`
+
 ---
 
 ### F8: Docblock Annotation Support
@@ -164,6 +178,8 @@ Scribe-compatible docblock annotations that override automatic code analysis.
 - `@queryParam {name} {type?} {description?}`
 
 Annotations are checked first in the strategy chain, so they always override automatic detection.
+
+**Implementation**: `laragen/Annotations/` — `DocBlockTagParser`, `DetectedResponseAnnotation`, `DetectedBodyParam`, `DetectedQueryParam`
 
 ---
 
