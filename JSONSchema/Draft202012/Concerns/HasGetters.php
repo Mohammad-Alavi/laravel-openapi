@@ -2,6 +2,7 @@
 
 namespace MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Concerns;
 
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Constant;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
@@ -93,5 +94,41 @@ trait HasGetters
     public function getOneOf(): array|null
     {
         return $this->oneOf?->value();
+    }
+
+    /** @return string[]|null */
+    public function getRequired(): array|null
+    {
+        return $this->required?->value();
+    }
+
+    public function getNot(): JSONSchema|null
+    {
+        return $this->not?->value();
+    }
+
+    public function getIf(): JSONSchema|null
+    {
+        return $this->if?->value();
+    }
+
+    public function getThen(): JSONSchema|null
+    {
+        return $this->then?->value();
+    }
+
+    public function getElse(): JSONSchema|null
+    {
+        return $this->else?->value();
+    }
+
+    public function getDescription(): string|null
+    {
+        return $this->description?->value();
+    }
+
+    public function getPattern(): string|null
+    {
+        return $this->pattern?->value();
     }
 }
