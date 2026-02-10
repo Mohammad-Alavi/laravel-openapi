@@ -6,7 +6,7 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 
 use MohammadAlavi\LaravelRulesToSchema\Concerns\TracksParserContext;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\ContextAwareRuleParser;
-use MohammadAlavi\LaravelRulesToSchema\ValidationRuleNormalizer;
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final class RequiredWithParser implements ContextAwareRuleParser
@@ -17,7 +17,7 @@ final class RequiredWithParser implements ContextAwareRuleParser
         string $attribute,
         LooseFluentDescriptor $schema,
         array $validationRules,
-        array $nestedRuleset,
+        NestedRuleset $nestedRuleset,
     ): array|LooseFluentDescriptor|null {
         if (null === $this->baseSchema || null === $this->allRules) {
             return $schema;
@@ -25,7 +25,7 @@ final class RequiredWithParser implements ContextAwareRuleParser
 
         $hasRequiredWith = [];
         foreach ($this->allRules as $attr => $ruleSet) {
-            foreach ($ruleSet[ValidationRuleNormalizer::RULES_KEY] as $validationRule) {
+            foreach ($ruleSet->validationRules as $validationRule) {
                 if ('required_with' === $validationRule->rule) {
                     $hasRequiredWith[$attr] = $validationRule->args;
                 }

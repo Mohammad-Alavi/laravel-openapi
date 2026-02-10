@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
-use MohammadAlavi\LaravelRulesToSchema\ValidationRuleNormalizer;
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final class NestedObjectParser implements RuleParser
 {
-    /** @var callable(string, array): (LooseFluentDescriptor|array|null) */
+    /** @var callable(string, NestedRuleset): (LooseFluentDescriptor|array|null) */
     private $parseRuleset;
 
-    /** @param callable(string, array): (LooseFluentDescriptor|array|null) $parseRuleset */
+    /** @param callable(string, NestedRuleset): (LooseFluentDescriptor|array|null) $parseRuleset */
     public function withParseRuleset(callable $parseRuleset): static
     {
         $clone = clone $this;
@@ -28,15 +28,9 @@ final class NestedObjectParser implements RuleParser
         string $attribute,
         LooseFluentDescriptor $schema,
         array $validationRules,
-        array $nestedRuleset,
+        NestedRuleset $nestedRuleset,
     ): array|LooseFluentDescriptor|null {
-        $nestedObjects = array_filter(
-            $nestedRuleset,
-            static fn ($x) => ValidationRuleNormalizer::RULES_KEY !== $x,
-            ARRAY_FILTER_USE_KEY,
-        );
-
-        if (0 === count($nestedObjects)) {
+        if (!$nestedRuleset->hasChildren()) {
             return $schema;
         }
 
@@ -44,18 +38,16 @@ final class NestedObjectParser implements RuleParser
             return $schema;
         }
 
-        $isArray = array_key_exists('*', $nestedObjects);
-
-        if ($isArray) {
-            $objSchema = ($this->parseRuleset)("{$attribute}.*", $nestedObjects['*']);
+        if ($nestedRuleset->hasWildcardChild()) {
+            $objSchema = ($this->parseRuleset)("{$attribute}.*", $nestedRuleset->children['*']);
 
             if ($objSchema instanceof LooseFluentDescriptor) {
                 $schema = $schema->type(Type::array())->items($objSchema);
             }
         } else {
             $properties = [];
-            foreach ($nestedObjects as $propName => $objValidationRules) {
-                $propSchema = ($this->parseRuleset)($propName, $objValidationRules);
+            foreach ($nestedRuleset->children as $propName => $childRuleset) {
+                $propSchema = ($this->parseRuleset)($propName, $childRuleset);
 
                 if ($propSchema instanceof LooseFluentDescriptor) {
                     $properties[] = Property::create($propName, $propSchema);

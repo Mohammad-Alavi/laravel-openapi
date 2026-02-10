@@ -6,6 +6,7 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 
 use MohammadAlavi\LaravelRulesToSchema\Concerns\TracksParserContext;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\ContextAwareRuleParser;
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\BooleanSchema;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
@@ -33,7 +34,7 @@ final class ConditionalExcludeParser implements ContextAwareRuleParser
         string $attribute,
         LooseFluentDescriptor $schema,
         array $validationRules,
-        array $nestedRuleset,
+        NestedRuleset $nestedRuleset,
     ): array|LooseFluentDescriptor|null {
         if (null === $this->baseSchema || null === $this->allRules) {
             return $schema;

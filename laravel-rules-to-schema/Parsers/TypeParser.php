@@ -8,7 +8,7 @@ use Illuminate\Validation\Rules\Enum as EnumRule;
 use Illuminate\Validation\Rules\In as InRule;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
 use MohammadAlavi\LaravelRulesToSchema\LaravelRuleType;
-use MohammadAlavi\LaravelRulesToSchema\ValidationRuleNormalizer;
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 use ReflectionClass;
@@ -19,7 +19,7 @@ final class TypeParser implements RuleParser
         string $attribute,
         LooseFluentDescriptor $schema,
         array $validationRules,
-        array $nestedRuleset,
+        NestedRuleset $nestedRuleset,
     ): array|LooseFluentDescriptor|null {
         $types = [];
 
@@ -39,7 +39,7 @@ final class TypeParser implements RuleParser
                 $types[] = Type::boolean();
             }
             if (in_array($ruleName, LaravelRuleType::array(), true)) {
-                if (0 === count(array_diff_key($nestedRuleset, array_flip([ValidationRuleNormalizer::RULES_KEY])))) {
+                if (!$nestedRuleset->hasChildren()) {
                     $types[] = Type::array();
                 }
             }

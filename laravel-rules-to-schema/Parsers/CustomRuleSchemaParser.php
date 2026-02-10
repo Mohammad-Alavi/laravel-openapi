@@ -6,6 +6,7 @@ namespace MohammadAlavi\LaravelRulesToSchema\Parsers;
 
 use MohammadAlavi\LaravelRulesToSchema\Contracts\HasJsonSchema;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
+use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final readonly class CustomRuleSchemaParser implements RuleParser
@@ -20,7 +21,7 @@ final readonly class CustomRuleSchemaParser implements RuleParser
         string $attribute,
         LooseFluentDescriptor $schema,
         array $validationRules,
-        array $nestedRuleset,
+        NestedRuleset $nestedRuleset,
     ): array|LooseFluentDescriptor|null {
         foreach ($validationRules as $validationRule) {
             $ruleName = $validationRule->name();
