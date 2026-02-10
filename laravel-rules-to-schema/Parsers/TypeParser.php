@@ -24,27 +24,14 @@ final class TypeParser implements RuleParser
         $types = [];
 
         foreach ($validationRules as $validationRule) {
-            $ruleName = $validationRule->name();
+            $resolved = LaravelRuleType::resolve($validationRule->name());
 
-            if (in_array($ruleName, LaravelRuleType::string(), true)) {
-                $types[] = Type::string();
-            }
-            if (in_array($ruleName, LaravelRuleType::integer(), true)) {
-                $types[] = Type::integer();
-            }
-            if (in_array($ruleName, LaravelRuleType::number(), true)) {
-                $types[] = Type::number();
-            }
-            if (in_array($ruleName, LaravelRuleType::boolean(), true)) {
-                $types[] = Type::boolean();
-            }
-            if (in_array($ruleName, LaravelRuleType::array(), true)) {
-                if (!$nestedRuleset->hasChildren()) {
-                    $types[] = Type::array();
+            if (null !== $resolved) {
+                if ('array' === $resolved->value() && $nestedRuleset->hasChildren()) {
+                    // Skip array type when nested schema handles it
+                } else {
+                    $types[] = $resolved;
                 }
-            }
-            if (in_array($ruleName, LaravelRuleType::nullable(), true)) {
-                $types[] = Type::null();
             }
 
             if ($validationRule->rule instanceof EnumRule) {
