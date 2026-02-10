@@ -226,8 +226,6 @@ return app(RuleToSchema::class)->transform($ruleSets, $request);
 
 **Applied to**: `laravel-rules-to-schema/` and `laragen/RequestSchema/` — completed.
 
-**Remaining work**: Audit `src/`, `oooapi/`, `JSONSchema/`, and remaining `laragen/` directories.
-
 ---
 
 ## D23: Strict Keyword Objects Over Loose Strings
