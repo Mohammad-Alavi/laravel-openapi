@@ -6,6 +6,7 @@ namespace MohammadAlavi\LaravelRulesToSchema;
 
 use MohammadAlavi\LaravelRulesToSchema\Contracts\ContextAwareRuleParser;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\RuleParser;
+use MohammadAlavi\LaravelRulesToSchema\Parsers\CustomRuleSchemaParser;
 use MohammadAlavi\LaravelRulesToSchema\Parsers\NestedObjectParser;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;
@@ -13,7 +14,10 @@ use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final class RuleToSchema
 {
-    /** @param list<class-string<RuleParser>> $parsers */
+    /**
+     * @param list<class-string<RuleParser>> $parsers
+     * @param array<string, CustomRuleSchemaMapping> $customRuleSchemas
+     */
     public function __construct(
         private readonly array $parsers,
         private readonly array $customRuleSchemas = [],
@@ -195,8 +199,8 @@ final class RuleToSchema
 
     private function resolveParser(string $parserClass): RuleParser
     {
-        if (Parsers\CustomRuleSchemaParser::class === $parserClass) {
-            return new Parsers\CustomRuleSchemaParser($this->customRuleSchemas);
+        if (CustomRuleSchemaParser::class === $parserClass) {
+            return new CustomRuleSchemaParser($this->customRuleSchemas);
         }
 
         return app($parserClass);

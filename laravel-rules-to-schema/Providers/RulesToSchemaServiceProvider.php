@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MohammadAlavi\LaravelRulesToSchema\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use MohammadAlavi\LaravelRulesToSchema\CustomRuleSchemaMapping;
 use MohammadAlavi\LaravelRulesToSchema\RuleToSchema;
 
 final class RulesToSchemaServiceProvider extends ServiceProvider
@@ -17,9 +18,17 @@ final class RulesToSchemaServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(RuleToSchema::class, static function (): RuleToSchema {
+            $rawMappings = config('rules-to-schema.custom_rule_schemas', []);
+            $mappings = array_map(
+                static fn (mixed $value): CustomRuleSchemaMapping => $value instanceof CustomRuleSchemaMapping
+                    ? $value
+                    : CustomRuleSchemaMapping::from($value),
+                $rawMappings,
+            );
+
             return new RuleToSchema(
                 config('rules-to-schema.parsers', []),
-                config('rules-to-schema.custom_rule_schemas', []),
+                $mappings,
             );
         });
     }
