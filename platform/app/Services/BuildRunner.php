@@ -56,13 +56,33 @@ final class BuildRunner
     {
         $repoDir = "{$workspace}/repo";
         $outputDir = "{$workspace}/output";
+        $containerName = "laragen-build-{$build->id}";
 
-        $result = Process::timeout(300)->run(
-            "docker run --rm --memory=512m --cpus=1 -v {$repoDir}:/workspace/repo -v {$outputDir}:/workspace/output laragen-build-runner"
+        $create = Process::run(
+            "docker create --name {$containerName} --memory=512m --cpus=1 laragen-build-runner"
         );
 
-        if ($result->failed()) {
-            throw new \RuntimeException($result->errorOutput());
+        if ($create->failed()) {
+            throw new \RuntimeException($create->errorOutput());
+        }
+
+        try {
+            $copy = Process::run("docker cp {$repoDir}/. {$containerName}:/workspace/repo/");
+
+            if ($copy->failed()) {
+                throw new \RuntimeException($copy->errorOutput());
+            }
+
+            $result = Process::timeout(300)->run("docker start -a {$containerName}");
+
+            @mkdir($outputDir, 0755, true);
+            Process::run("docker cp {$containerName}:/workspace/output/. {$outputDir}/");
+
+            if ($result->failed()) {
+                throw new \RuntimeException($result->errorOutput());
+            }
+        } finally {
+            Process::run("docker rm -f {$containerName}");
         }
     }
 

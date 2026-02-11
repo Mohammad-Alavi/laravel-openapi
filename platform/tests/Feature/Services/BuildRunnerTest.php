@@ -31,7 +31,7 @@ describe('BuildRunner', function (): void {
         });
     });
 
-    it('runs docker container with memory and cpu limits', function (): void {
+    it('creates docker container with memory and cpu limits', function (): void {
         Process::fake();
         Storage::fake();
 
@@ -42,10 +42,36 @@ describe('BuildRunner', function (): void {
         app(BuildRunner::class)->run($build);
 
         Process::assertRan(function (PendingProcess $process): bool {
-            return str_contains($process->command, 'docker run --rm')
+            return str_contains($process->command, 'docker create')
                 && str_contains($process->command, '--memory=512m')
                 && str_contains($process->command, '--cpus=1')
                 && str_contains($process->command, 'laragen-build-runner');
+        });
+    });
+
+    it('copies repo into container and starts it', function (): void {
+        Process::fake();
+        Storage::fake();
+
+        $user = User::factory()->create(['github_token' => 'test-token']);
+        $project = Project::factory()->for($user)->create();
+        $build = Build::factory()->for($project)->create();
+
+        app(BuildRunner::class)->run($build);
+
+        Process::assertRan(function (PendingProcess $process) use ($build): bool {
+            return str_contains($process->command, 'docker cp')
+                && str_contains($process->command, "laragen-build-{$build->id}:/workspace/repo/");
+        });
+
+        Process::assertRan(function (PendingProcess $process) use ($build): bool {
+            return str_contains($process->command, 'docker start -a')
+                && str_contains($process->command, "laragen-build-{$build->id}");
+        });
+
+        Process::assertRan(function (PendingProcess $process) use ($build): bool {
+            return str_contains($process->command, 'docker cp')
+                && str_contains($process->command, "laragen-build-{$build->id}:/workspace/output/.");
         });
     });
 
@@ -85,10 +111,13 @@ describe('BuildRunner', function (): void {
             ->and($build->completed_at)->not->toBeNull();
     });
 
-    it('marks build as failed when docker run fails', function (): void {
+    it('marks build as failed when docker start fails', function (): void {
         Process::fake([
             'git clone *' => Process::result(exitCode: 0),
-            'docker run *' => Process::result(exitCode: 137, errorOutput: 'OOM killed'),
+            'docker create *' => Process::result(exitCode: 0),
+            'docker cp *' => Process::result(exitCode: 0),
+            'docker start *' => Process::result(exitCode: 137, errorOutput: 'OOM killed'),
+            'docker rm *' => Process::result(exitCode: 0),
         ]);
         Storage::fake();
 
@@ -120,6 +149,28 @@ describe('BuildRunner', function (): void {
 
         Process::assertRan(function (PendingProcess $process): bool {
             return str_contains($process->command, 'rm -rf');
+        });
+    });
+
+    it('removes docker container after build regardless of outcome', function (): void {
+        Process::fake([
+            'git clone *' => Process::result(exitCode: 0),
+            'docker create *' => Process::result(exitCode: 0),
+            'docker cp *' => Process::result(exitCode: 0),
+            'docker start *' => Process::result(exitCode: 137, errorOutput: 'build failed'),
+            'docker rm *' => Process::result(exitCode: 0),
+        ]);
+        Storage::fake();
+
+        $user = User::factory()->create(['github_token' => 'test-token']);
+        $project = Project::factory()->for($user)->create();
+        $build = Build::factory()->for($project)->create();
+
+        app(BuildRunner::class)->run($build);
+
+        Process::assertRan(function (PendingProcess $process) use ($build): bool {
+            return str_contains($process->command, 'docker rm -f')
+                && str_contains($process->command, "laragen-build-{$build->id}");
         });
     });
 });
