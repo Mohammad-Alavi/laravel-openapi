@@ -128,6 +128,8 @@ function submit() {
                     item-value="full_name"
                     label="GitHub Repository"
                     placeholder="Search your repositories..."
+                    hint="Search by name across all repositories you have access to"
+                    persistent-hint
                     :error-messages="form.errors.github_repo_url"
                     no-filter
                     return-object
@@ -154,7 +156,7 @@ function submit() {
                             <v-list-item-title>No repositories found</v-list-item-title>
                         </v-list-item>
                         <v-list-item v-else>
-                            <v-list-item-title>Type at least 2 characters to search</v-list-item-title>
+                            <v-list-item-title class="text-medium-emphasis">Type at least 2 characters to search</v-list-item-title>
                         </v-list-item>
                     </template>
                 </v-autocomplete>
@@ -165,12 +167,14 @@ function submit() {
                     :loading="branchLoading"
                     :disabled="!selectedRepo"
                     label="Branch"
+                    hint="Builds will use the latest commit from this branch"
+                    persistent-hint
                     :error-messages="form.errors.github_branch"
                     class="mb-4"
                 >
                     <template #no-data>
                         <v-list-item>
-                            <v-list-item-title>
+                            <v-list-item-title class="text-medium-emphasis">
                                 {{ selectedRepo ? 'No branches found' : 'Select a repository first' }}
                             </v-list-item-title>
                         </v-list-item>
@@ -181,6 +185,8 @@ function submit() {
                     v-model="form.name"
                     label="Project Name"
                     :error-messages="form.errors.name"
+                    hint="A display name for this project in Laragen"
+                    persistent-hint
                     required
                     class="mb-4"
                 />
@@ -188,14 +194,16 @@ function submit() {
                     v-model="form.description"
                     label="Description"
                     :error-messages="form.errors.description"
+                    hint="Optional notes about this project"
                     rows="3"
-                    class="mb-4"
+                    class="mb-6"
                 />
                 <v-btn
                     type="submit"
                     color="primary"
                     :loading="form.processing"
                     :disabled="form.processing"
+                    size="large"
                 >
                     Create Project
                 </v-btn>

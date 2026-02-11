@@ -50,6 +50,13 @@ function formatTimeAgo(dateStr: string): string {
     return `${Math.floor(seconds / 86400)}d ago`;
 }
 
+function formatDate(dateStr: string): string {
+    const date = new Date(dateStr);
+    const relative = formatTimeAgo(dateStr);
+    const absolute = date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return `${relative} (${absolute})`;
+}
+
 function toggleErrorLog(buildId: string) {
     expandedBuild.value = expandedBuild.value === buildId ? null : buildId;
 }
@@ -77,17 +84,22 @@ function rebuild() {
             />
             <h1 class="text-h4 ml-2">{{ project.name }}</h1>
             <v-spacer />
-            <v-btn
-                color="primary"
-                prepend-icon="mdi-refresh"
-                variant="outlined"
-                class="mr-2"
-                :disabled="project.status === 'building'"
-                :loading="rebuildLoading"
-                @click="rebuild"
-            >
-                Rebuild
-            </v-btn>
+            <v-tooltip text="Regenerate API docs from the latest commit on the configured branch" location="bottom">
+                <template #activator="{ props: tp }">
+                    <v-btn
+                        v-bind="tp"
+                        color="primary"
+                        prepend-icon="mdi-refresh"
+                        variant="outlined"
+                        class="mr-2"
+                        :disabled="project.status === 'building'"
+                        :loading="rebuildLoading"
+                        @click="rebuild"
+                    >
+                        Rebuild
+                    </v-btn>
+                </template>
+            </v-tooltip>
             <v-btn
                 color="primary"
                 variant="outlined"
@@ -140,7 +152,13 @@ function rebuild() {
                         <v-icon>mdi-source-branch</v-icon>
                     </template>
                     <v-list-item-title>Branch</v-list-item-title>
-                    <v-list-item-subtitle>{{ project.github_branch }}</v-list-item-subtitle>
+                    <v-list-item-subtitle>
+                        <v-tooltip text="Builds will use the latest commit from this branch" location="bottom">
+                            <template #activator="{ props: tp }">
+                                <span v-bind="tp">{{ project.github_branch }}</span>
+                            </template>
+                        </v-tooltip>
+                    </v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item v-if="project.description">
                     <template #prepend>
@@ -154,7 +172,7 @@ function rebuild() {
                         <v-icon>mdi-clock</v-icon>
                     </template>
                     <v-list-item-title>Last Built</v-list-item-title>
-                    <v-list-item-subtitle>{{ project.last_built_at }}</v-list-item-subtitle>
+                    <v-list-item-subtitle>{{ formatDate(project.last_built_at) }}</v-list-item-subtitle>
                 </v-list-item>
             </v-list>
         </v-card>
@@ -176,7 +194,16 @@ function rebuild() {
                 <thead>
                     <tr>
                         <th>Status</th>
-                        <th>Commit</th>
+                        <th>
+                            <v-tooltip text="The git commit from your repository used for this build" location="bottom">
+                                <template #activator="{ props: tp }">
+                                    <span v-bind="tp" class="d-inline-flex align-center" style="cursor: help;">
+                                        Source Commit
+                                        <v-icon size="x-small" class="ml-1">mdi-information-outline</v-icon>
+                                    </span>
+                                </template>
+                            </v-tooltip>
+                        </th>
                         <th>Duration</th>
                         <th>When</th>
                         <th></th>
@@ -195,20 +222,28 @@ function rebuild() {
                                 </v-chip>
                             </td>
                             <td>
-                                <code class="text-caption">{{ build.commit_sha.slice(0, 7) }}</code>
+                                <v-tooltip :text="`Full SHA: ${build.commit_sha}`" location="bottom">
+                                    <template #activator="{ props: tp }">
+                                        <code v-bind="tp" class="text-caption" style="cursor: help;">{{ build.commit_sha.slice(0, 7) }}</code>
+                                    </template>
+                                </v-tooltip>
                             </td>
                             <td class="text-caption">{{ formatDuration(build) }}</td>
                             <td class="text-caption">
                                 {{ build.completed_at ? formatTimeAgo(build.completed_at) : (build.started_at ? 'in progress' : 'queued') }}
                             </td>
                             <td>
-                                <v-btn
-                                    v-if="build.error_log"
-                                    variant="text"
-                                    size="small"
-                                    :icon="expandedBuild === build.id ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-                                    @click="toggleErrorLog(build.id)"
-                                />
+                                <v-tooltip v-if="build.error_log" text="View error log" location="bottom">
+                                    <template #activator="{ props: tp }">
+                                        <v-btn
+                                            v-bind="tp"
+                                            variant="text"
+                                            size="small"
+                                            :icon="expandedBuild === build.id ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+                                            @click="toggleErrorLog(build.id)"
+                                        />
+                                    </template>
+                                </v-tooltip>
                             </td>
                         </tr>
                         <tr v-if="expandedBuild === build.id && build.error_log">
@@ -228,17 +263,21 @@ function rebuild() {
             <div class="d-flex align-center mb-4">
                 <v-card-title class="text-h6 pa-0">API Documentation</v-card-title>
                 <v-spacer />
-                <v-btn
-                    v-if="project.has_builds"
-                    color="primary"
-                    variant="outlined"
-                    size="small"
-                    prepend-icon="mdi-open-in-new"
-                    :href="`/docs/${project.slug}`"
-                    target="_blank"
-                >
-                    View Docs
-                </v-btn>
+                <v-tooltip v-if="project.has_builds" text="Open the generated API documentation in a new tab" location="bottom">
+                    <template #activator="{ props: tp }">
+                        <v-btn
+                            v-bind="tp"
+                            color="primary"
+                            variant="outlined"
+                            size="small"
+                            prepend-icon="mdi-open-in-new"
+                            :href="`/docs/${project.slug}`"
+                            target="_blank"
+                        >
+                            View Docs
+                        </v-btn>
+                    </template>
+                </v-tooltip>
             </div>
 
             <v-alert
@@ -253,10 +292,26 @@ function rebuild() {
 
             <template v-else>
                 <v-tabs v-model="docsTab" class="mb-4">
-                    <v-tab value="settings">Settings</v-tab>
-                    <v-tab value="roles">Roles</v-tab>
-                    <v-tab value="rules">Endpoint Rules</v-tab>
-                    <v-tab value="links">Access Links</v-tab>
+                    <v-tooltip text="Control who can access your API documentation" location="bottom">
+                        <template #activator="{ props: tp }">
+                            <v-tab v-bind="tp" value="settings">Settings</v-tab>
+                        </template>
+                    </v-tooltip>
+                    <v-tooltip text="Define roles with different endpoint access levels" location="bottom">
+                        <template #activator="{ props: tp }">
+                            <v-tab v-bind="tp" value="roles">Roles</v-tab>
+                        </template>
+                    </v-tooltip>
+                    <v-tooltip text="Set visibility rules for specific endpoints or tags" location="bottom">
+                        <template #activator="{ props: tp }">
+                            <v-tab v-bind="tp" value="rules">Endpoint Rules</v-tab>
+                        </template>
+                    </v-tooltip>
+                    <v-tooltip text="Generate shareable links with role-based access" location="bottom">
+                        <template #activator="{ props: tp }">
+                            <v-tab v-bind="tp" value="links">Access Links</v-tab>
+                        </template>
+                    </v-tooltip>
                 </v-tabs>
 
                 <v-tabs-window v-model="docsTab">

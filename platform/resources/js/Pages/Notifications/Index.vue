@@ -34,7 +34,14 @@ function timeAgo(dateString: string): string {
 <template>
     <AuthenticatedLayout>
         <div class="d-flex justify-space-between align-center mb-6">
-            <h1 class="text-h4">Notifications</h1>
+            <div class="d-flex align-center">
+                <v-btn
+                    icon="mdi-arrow-left"
+                    variant="text"
+                    @click="router.visit('/projects')"
+                />
+                <h1 class="text-h4 ml-2">Notifications</h1>
+            </div>
             <v-btn
                 v-if="notifications.data.some(n => !n.read_at)"
                 variant="outlined"
@@ -73,21 +80,31 @@ function timeAgo(dateString: string): string {
                             size="x-small"
                             class="ml-2"
                         >
-                            {{ notification.data.status }}
+                            Build {{ notification.data.status }}
                         </v-chip>
                     </v-list-item-title>
                     <v-list-item-subtitle>
-                        Commit {{ notification.data.commit_sha.substring(0, 7) }}
+                        <v-tooltip text="The git commit from the repository used for this build" location="bottom">
+                            <template #activator="{ props: tp }">
+                                <span v-bind="tp" style="cursor: help;">
+                                    Source commit {{ notification.data.commit_sha.substring(0, 7) }}
+                                </span>
+                            </template>
+                        </v-tooltip>
                         &middot; {{ timeAgo(notification.created_at) }}
                     </v-list-item-subtitle>
                     <template #append>
-                        <v-btn
-                            v-if="!notification.read_at"
-                            icon="mdi-email-open"
-                            variant="text"
-                            size="small"
-                            @click.prevent="markAsRead(notification.id)"
-                        />
+                        <v-tooltip v-if="!notification.read_at" text="Mark as read" location="bottom">
+                            <template #activator="{ props: tp }">
+                                <v-btn
+                                    v-bind="tp"
+                                    icon="mdi-email-open"
+                                    variant="text"
+                                    size="small"
+                                    @click.prevent="markAsRead(notification.id)"
+                                />
+                            </template>
+                        </v-tooltip>
                     </template>
                 </v-list-item>
             </v-list>

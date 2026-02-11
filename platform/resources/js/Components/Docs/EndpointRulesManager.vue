@@ -11,12 +11,23 @@ const props = defineProps<{
 }>();
 
 const showCreateDialog = ref(false);
-const visibilityOptions = ['public', 'internal', 'restricted', 'hidden'];
+const visibilityOptions = [
+    { title: 'Public', value: 'public' },
+    { title: 'Internal', value: 'internal' },
+    { title: 'Restricted', value: 'restricted' },
+    { title: 'Hidden', value: 'hidden' },
+];
 const visibilityColors: Record<string, string> = {
     public: 'success',
     internal: 'info',
     restricted: 'warning',
     hidden: 'error',
+};
+const visibilityDescriptions: Record<string, string> = {
+    public: 'Visible to everyone',
+    internal: 'Visible to authenticated users only',
+    restricted: 'Visible only to roles with matching scopes',
+    hidden: 'Not visible in documentation',
 };
 
 const form = useForm({
@@ -60,7 +71,7 @@ function deleteRule(rule: DocVisibilityRule) {
 
 <template>
     <div>
-        <div class="d-flex align-center mb-4">
+        <div class="d-flex align-center mb-2">
             <h3 class="text-subtitle-1 font-weight-bold">Endpoint Visibility Rules</h3>
             <v-spacer />
             <v-btn
@@ -72,13 +83,34 @@ function deleteRule(rule: DocVisibilityRule) {
                 Add Rule
             </v-btn>
         </div>
+        <p class="text-body-2 text-medium-emphasis mb-4">
+            Override the default visibility of specific endpoints by tag or path. Rules are evaluated in order.
+        </p>
 
         <v-table v-if="rules.length > 0" density="compact">
             <thead>
                 <tr>
-                    <th>Type</th>
+                    <th>
+                        <v-tooltip text="Match endpoints by OpenAPI tag or URL path" location="bottom">
+                            <template #activator="{ props: tp }">
+                                <span v-bind="tp" class="d-inline-flex align-center" style="cursor: help;">
+                                    Type
+                                    <v-icon size="x-small" class="ml-1">mdi-information-outline</v-icon>
+                                </span>
+                            </template>
+                        </v-tooltip>
+                    </th>
                     <th>Identifier</th>
-                    <th>Visibility</th>
+                    <th>
+                        <v-tooltip text="Controls who can see matching endpoints in the documentation" location="bottom">
+                            <template #activator="{ props: tp }">
+                                <span v-bind="tp" class="d-inline-flex align-center" style="cursor: help;">
+                                    Visibility
+                                    <v-icon size="x-small" class="ml-1">mdi-information-outline</v-icon>
+                                </span>
+                            </template>
+                        </v-tooltip>
+                    </th>
                     <th class="text-right">Actions</th>
                 </tr>
             </thead>
@@ -102,21 +134,39 @@ function deleteRule(rule: DocVisibilityRule) {
                         >
                             <template #selection="{ item }">
                                 <v-chip :color="visibilityColors[item.value]" size="x-small">
-                                    {{ item.value }}
+                                    {{ item.title }}
                                 </v-chip>
                             </template>
                         </v-select>
                     </td>
                     <td class="text-right">
-                        <v-btn icon="mdi-delete" size="x-small" variant="text" color="error" @click="deleteRule(rule)" />
+                        <v-tooltip text="Delete rule" location="bottom">
+                            <template #activator="{ props: tp }">
+                                <v-btn v-bind="tp" icon="mdi-delete" size="x-small" variant="text" color="error" @click="deleteRule(rule)" />
+                            </template>
+                        </v-tooltip>
                     </td>
                 </tr>
             </tbody>
         </v-table>
 
         <v-alert v-else type="info" variant="tonal" density="compact">
-            No visibility rules. All endpoints default to public.
+            No visibility rules configured. All endpoints use their default visibility.
         </v-alert>
+
+        <!-- Visibility legend -->
+        <div class="mt-4">
+            <p class="text-caption font-weight-medium mb-1">Visibility levels:</p>
+            <div class="d-flex flex-wrap ga-2">
+                <v-tooltip v-for="(desc, level) in visibilityDescriptions" :key="level" :text="desc" location="bottom">
+                    <template #activator="{ props: tp }">
+                        <v-chip v-bind="tp" :color="visibilityColors[level]" size="x-small" style="cursor: help;">
+                            {{ level }}
+                        </v-chip>
+                    </template>
+                </v-tooltip>
+            </div>
+        </div>
 
         <v-dialog v-model="showCreateDialog" max-width="500">
             <v-card>
@@ -137,14 +187,24 @@ function deleteRule(rule: DocVisibilityRule) {
                         :items="identifierOptions"
                         :label="form.rule_type === 'tag' ? 'Tag name or pattern' : 'Path or pattern'"
                         hint="Supports wildcards: payments.*, /api/v2/*"
+                        persistent-hint
                         :error-messages="form.errors.identifier"
+                        class="mb-2"
                     />
                     <v-select
                         v-model="form.visibility"
                         :items="visibilityOptions"
                         label="Visibility"
                         :error-messages="form.errors.visibility"
-                    />
+                    >
+                        <template #item="{ props: itemProps, item }">
+                            <v-list-item v-bind="itemProps">
+                                <template #append>
+                                    <span class="text-caption text-medium-emphasis">{{ visibilityDescriptions[item.value] }}</span>
+                                </template>
+                            </v-list-item>
+                        </template>
+                    </v-select>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer />

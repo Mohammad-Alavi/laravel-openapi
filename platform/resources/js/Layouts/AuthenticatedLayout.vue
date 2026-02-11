@@ -43,20 +43,25 @@ function logout() {
             </v-app-bar-title>
 
             <template #append>
-                <v-btn
-                    icon
-                    variant="text"
-                    :href="'/notifications'"
-                >
-                    <v-badge
-                        v-if="page.props.unreadNotificationsCount > 0"
-                        :content="page.props.unreadNotificationsCount"
-                        color="error"
-                    >
-                        <v-icon>mdi-bell</v-icon>
-                    </v-badge>
-                    <v-icon v-else>mdi-bell-outline</v-icon>
-                </v-btn>
+                <v-tooltip text="Notifications" location="bottom">
+                    <template #activator="{ props: tp }">
+                        <v-btn
+                            v-bind="tp"
+                            icon
+                            variant="text"
+                            :href="'/notifications'"
+                        >
+                            <v-badge
+                                v-if="page.props.unreadNotificationsCount > 0"
+                                :content="page.props.unreadNotificationsCount"
+                                color="error"
+                            >
+                                <v-icon>mdi-bell</v-icon>
+                            </v-badge>
+                            <v-icon v-else>mdi-bell-outline</v-icon>
+                        </v-btn>
+                    </template>
+                </v-tooltip>
                 <v-menu>
                     <template #activator="{ props }">
                         <v-btn v-bind="props" variant="text">
@@ -68,10 +73,11 @@ function logout() {
                         </v-btn>
                     </template>
                     <v-list>
-                        <v-list-item :href="'/profile'">
+                        <v-list-item :href="'/profile'" prepend-icon="mdi-account-circle">
                             <v-list-item-title>Profile</v-list-item-title>
                         </v-list-item>
-                        <v-list-item @click="logout">
+                        <v-divider />
+                        <v-list-item @click="logout" prepend-icon="mdi-logout">
                             <v-list-item-title>Sign Out</v-list-item-title>
                         </v-list-item>
                     </v-list>

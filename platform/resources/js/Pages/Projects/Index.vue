@@ -42,7 +42,6 @@ function applyFilters(override: Record<string, string> = {}) {
         ...override,
     };
 
-    // Remove empty values
     Object.keys(params).forEach((key) => {
         if (!params[key]) delete params[key];
     });
@@ -64,6 +63,19 @@ function goToPage(page: number) {
         preserveState: true,
     });
 }
+
+function repoShortName(url: string): string {
+    const match = url.match(/github\.com\/(.+)$/);
+    return match ? match[1] : url;
+}
+
+function formatTimeAgo(dateStr: string): string {
+    const seconds = Math.round((Date.now() - new Date(dateStr).getTime()) / 1000);
+    if (seconds < 60) return 'just now';
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+    return `${Math.floor(seconds / 86400)}d ago`;
+}
 </script>
 
 <template>
@@ -82,48 +94,64 @@ function goToPage(page: number) {
         <!-- Stats cards -->
         <v-row class="mb-6">
             <v-col cols="6" md="3">
-                <v-card variant="tonal">
-                    <v-card-text class="d-flex align-center">
-                        <v-icon color="primary" class="mr-3">mdi-folder-multiple</v-icon>
-                        <div>
-                            <div class="text-h5">{{ stats.total }}</div>
-                            <div class="text-caption">Total</div>
-                        </div>
-                    </v-card-text>
-                </v-card>
+                <v-tooltip text="Total number of projects you've created" location="bottom">
+                    <template #activator="{ props: tp }">
+                        <v-card v-bind="tp" variant="tonal">
+                            <v-card-text class="d-flex align-center">
+                                <v-icon color="primary" class="mr-3">mdi-folder-multiple</v-icon>
+                                <div>
+                                    <div class="text-h5">{{ stats.total }}</div>
+                                    <div class="text-caption">Total</div>
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                    </template>
+                </v-tooltip>
             </v-col>
             <v-col cols="6" md="3">
-                <v-card variant="tonal" color="success">
-                    <v-card-text class="d-flex align-center">
-                        <v-icon class="mr-3">mdi-check-circle</v-icon>
-                        <div>
-                            <div class="text-h5">{{ stats.active }}</div>
-                            <div class="text-caption">Active</div>
-                        </div>
-                    </v-card-text>
-                </v-card>
+                <v-tooltip text="Projects ready to build and serve documentation" location="bottom">
+                    <template #activator="{ props: tp }">
+                        <v-card v-bind="tp" variant="tonal" color="success">
+                            <v-card-text class="d-flex align-center">
+                                <v-icon class="mr-3">mdi-check-circle</v-icon>
+                                <div>
+                                    <div class="text-h5">{{ stats.active }}</div>
+                                    <div class="text-caption">Active</div>
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                    </template>
+                </v-tooltip>
             </v-col>
             <v-col cols="6" md="3">
-                <v-card variant="tonal">
-                    <v-card-text class="d-flex align-center">
-                        <v-icon class="mr-3">mdi-pause-circle</v-icon>
-                        <div>
-                            <div class="text-h5">{{ stats.paused }}</div>
-                            <div class="text-caption">Paused</div>
-                        </div>
-                    </v-card-text>
-                </v-card>
+                <v-tooltip text="Projects that have been paused" location="bottom">
+                    <template #activator="{ props: tp }">
+                        <v-card v-bind="tp" variant="tonal">
+                            <v-card-text class="d-flex align-center">
+                                <v-icon class="mr-3">mdi-pause-circle</v-icon>
+                                <div>
+                                    <div class="text-h5">{{ stats.paused }}</div>
+                                    <div class="text-caption">Paused</div>
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                    </template>
+                </v-tooltip>
             </v-col>
             <v-col cols="6" md="3">
-                <v-card variant="tonal" color="warning">
-                    <v-card-text class="d-flex align-center">
-                        <v-icon class="mr-3">mdi-progress-wrench</v-icon>
-                        <div>
-                            <div class="text-h5">{{ stats.building }}</div>
-                            <div class="text-caption">Building</div>
-                        </div>
-                    </v-card-text>
-                </v-card>
+                <v-tooltip text="Projects currently generating API documentation" location="bottom">
+                    <template #activator="{ props: tp }">
+                        <v-card v-bind="tp" variant="tonal" color="warning">
+                            <v-card-text class="d-flex align-center">
+                                <v-icon class="mr-3">mdi-progress-wrench</v-icon>
+                                <div>
+                                    <div class="text-h5">{{ stats.building }}</div>
+                                    <div class="text-caption">Building</div>
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                    </template>
+                </v-tooltip>
             </v-col>
         </v-row>
 
@@ -178,27 +206,40 @@ function goToPage(page: number) {
             <v-row>
                 <v-col v-for="project in projects.data" :key="project.id" cols="12" md="6" lg="4">
                     <v-card
-                        class="h-100"
+                        class="h-100 d-flex flex-column"
                         @click="router.visit(show.url(project.slug))"
                         hover
                     >
-                        <v-card-title>{{ project.name }}</v-card-title>
-                        <v-card-subtitle>{{ project.github_repo_url }}</v-card-subtitle>
-                        <v-card-text v-if="project.description">
-                            {{ project.description }}
-                        </v-card-text>
-                        <v-card-actions>
+                        <v-card-title class="d-flex align-center">
+                            {{ project.name }}
+                            <v-spacer />
                             <v-chip
                                 :color="useProjectStatus(project.status).color"
                                 :prepend-icon="useProjectStatus(project.status).icon"
-                                size="small"
+                                size="x-small"
                             >
                                 {{ useProjectStatus(project.status).label }}
                             </v-chip>
-                            <v-spacer />
-                            <v-chip size="small" variant="outlined">
+                        </v-card-title>
+                        <v-card-subtitle class="d-flex align-center">
+                            <v-icon size="x-small" class="mr-1">mdi-github</v-icon>
+                            {{ repoShortName(project.github_repo_url) }}
+                        </v-card-subtitle>
+                        <v-card-text v-if="project.description" class="flex-grow-1 text-body-2">
+                            {{ project.description }}
+                        </v-card-text>
+                        <v-spacer v-else />
+                        <v-card-actions class="px-4 pb-3">
+                            <v-chip size="x-small" variant="outlined" prepend-icon="mdi-source-branch">
                                 {{ project.github_branch }}
                             </v-chip>
+                            <v-spacer />
+                            <span v-if="project.last_built_at" class="text-caption text-medium-emphasis">
+                                Built {{ formatTimeAgo(project.last_built_at) }}
+                            </span>
+                            <span v-else class="text-caption text-medium-emphasis">
+                                Never built
+                            </span>
                         </v-card-actions>
                     </v-card>
                 </v-col>

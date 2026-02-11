@@ -25,23 +25,36 @@ function toggle() {
 </script>
 
 <template>
-    <div class="d-flex align-center">
-        <v-switch
-            :model-value="visibility === 'public'"
-            :loading="loading"
-            color="primary"
-            hide-details
-            @update:model-value="toggle"
-        >
-            <template #label>
-                <v-chip
-                    :color="visibility === 'public' ? 'success' : 'grey'"
-                    size="small"
-                    class="ml-2"
-                >
-                    {{ visibility === 'public' ? 'Public' : 'Private' }}
-                </v-chip>
-            </template>
-        </v-switch>
+    <div>
+        <p class="text-body-2 text-medium-emphasis mb-4">
+            Control whether your API documentation is accessible without authentication.
+            Private documentation requires an access link with a valid token.
+        </p>
+        <div class="d-flex align-center">
+            <v-switch
+                :model-value="visibility === 'public'"
+                :loading="loading"
+                color="primary"
+                hide-details
+                @update:model-value="toggle"
+            >
+                <template #label>
+                    <v-chip
+                        :color="visibility === 'public' ? 'success' : 'grey'"
+                        :prepend-icon="visibility === 'public' ? 'mdi-earth' : 'mdi-lock'"
+                        size="small"
+                        class="ml-2"
+                    >
+                        {{ visibility === 'public' ? 'Public' : 'Private' }}
+                    </v-chip>
+                </template>
+            </v-switch>
+        </div>
+        <p class="text-caption text-medium-emphasis mt-2">
+            {{ visibility === 'public'
+                ? 'Anyone with the URL can view your documentation.'
+                : 'Only users with a valid access link token can view your documentation.'
+            }}
+        </p>
     </div>
 </template>

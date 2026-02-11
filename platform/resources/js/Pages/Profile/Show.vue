@@ -29,7 +29,12 @@ function deleteAccount() {
 <template>
     <AuthenticatedLayout>
         <div class="d-flex align-center mb-6">
-            <h1 class="text-h4">Profile & Settings</h1>
+            <v-btn
+                icon="mdi-arrow-left"
+                variant="text"
+                @click="router.visit('/projects')"
+            />
+            <h1 class="text-h4 ml-2">Profile & Settings</h1>
         </div>
 
         <!-- GitHub Account -->
@@ -45,21 +50,32 @@ function deleteAccount() {
                     </v-avatar>
                     <div>
                         <div class="text-h6">{{ user.name }}</div>
-                        <div class="text-body-2 text-grey">{{ user.email }}</div>
-                        <div class="text-caption text-grey">GitHub ID: {{ user.github_id }}</div>
+                        <div class="text-body-2 text-medium-emphasis">{{ user.email }}</div>
+                        <v-tooltip text="Your unique GitHub account identifier, used to link your Laragen account" location="bottom">
+                            <template #activator="{ props: tp }">
+                                <div v-bind="tp" class="text-caption text-medium-emphasis" style="cursor: help;">
+                                    GitHub ID: {{ user.github_id }}
+                                </div>
+                            </template>
+                        </v-tooltip>
                     </div>
                 </div>
             </v-card-text>
             <v-card-actions>
-                <v-btn
-                    color="primary"
-                    variant="outlined"
-                    prepend-icon="mdi-sync"
-                    :loading="syncing"
-                    @click="syncGitHub"
-                >
-                    Re-sync from GitHub
-                </v-btn>
+                <v-tooltip text="Refresh your profile name, email, and avatar from GitHub" location="bottom">
+                    <template #activator="{ props: tp }">
+                        <v-btn
+                            v-bind="tp"
+                            color="primary"
+                            variant="outlined"
+                            prepend-icon="mdi-sync"
+                            :loading="syncing"
+                            @click="syncGitHub"
+                        >
+                            Re-sync from GitHub
+                        </v-btn>
+                    </template>
+                </v-tooltip>
             </v-card-actions>
         </v-card>
 
@@ -69,11 +85,17 @@ function deleteAccount() {
             <v-card-text>
                 <v-switch
                     :model-value="isDark"
-                    label="Dark mode"
                     color="primary"
                     hide-details
                     @update:model-value="toggle"
-                />
+                >
+                    <template #label>
+                        <span class="d-flex align-center">
+                            <v-icon class="mr-2">{{ isDark ? 'mdi-weather-night' : 'mdi-weather-sunny' }}</v-icon>
+                            {{ isDark ? 'Dark mode' : 'Light mode' }}
+                        </span>
+                    </template>
+                </v-switch>
             </v-card-text>
         </v-card>
 
@@ -82,12 +104,13 @@ function deleteAccount() {
             <v-card-title class="text-error">Danger Zone</v-card-title>
             <v-card-text>
                 <p class="text-body-2 mb-4">
-                    Deleting your account will permanently remove all your data, including all projects.
+                    Deleting your account will permanently remove all your data, including all projects and their documentation.
                     This action cannot be undone.
                 </p>
                 <v-btn
                     color="error"
                     variant="flat"
+                    prepend-icon="mdi-alert"
                     @click="deleteDialog = true"
                 >
                     Delete Account
@@ -99,7 +122,7 @@ function deleteAccount() {
             <v-card>
                 <v-card-title>Delete Account</v-card-title>
                 <v-card-text>
-                    Are you sure you want to delete your account? All projects and data will be permanently removed.
+                    Are you sure you want to delete your account? All projects and documentation will be permanently removed.
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer />
