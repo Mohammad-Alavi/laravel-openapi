@@ -33,6 +33,8 @@ final class RebuildController extends Controller
             return redirect()->back()->with('error', 'Failed to fetch latest commit from GitHub.');
         }
 
+        $project->update(['status' => ProjectStatus::Building]);
+
         ProcessGitHubPushJob::dispatch($project, $response->json('sha'));
 
         return redirect()->back()->with('success', 'Build started successfully.');

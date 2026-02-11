@@ -107,6 +107,26 @@ describe('RebuildController', function (): void {
         Queue::assertNothingPushed();
     });
 
+    it('sets project status to building before dispatching job', function (): void {
+        Queue::fake();
+        Http::fake([
+            'api.github.com/repos/owner/repo/commits/main' => Http::response([
+                'sha' => 'abc123',
+            ]),
+        ]);
+
+        $user = User::factory()->create(['github_token' => 'test-token']);
+        $project = Project::factory()->for($user)->create([
+            'github_repo_url' => 'https://github.com/owner/repo',
+            'github_branch' => 'main',
+            'status' => ProjectStatus::Active,
+        ]);
+
+        $this->actingAs($user)->post("/projects/{$project->slug}/rebuild");
+
+        expect($project->fresh()->status)->toBe(ProjectStatus::Building);
+    });
+
     it('redirects back with success flash message', function (): void {
         Queue::fake();
         Http::fake([

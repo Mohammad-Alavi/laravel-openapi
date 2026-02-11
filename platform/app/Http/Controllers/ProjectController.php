@@ -8,6 +8,7 @@ use App\Application\Documentation\DTOs\DocAccessLinkData;
 use App\Application\Documentation\DTOs\DocRoleData;
 use App\Application\Documentation\DTOs\DocSettingData;
 use App\Application\Documentation\DTOs\DocVisibilityRuleData;
+use App\Application\DTOs\BuildData;
 use App\Application\DTOs\ProjectData;
 use App\Domain\Documentation\Access\Repositories\DocAccessLinkRepository;
 use App\Domain\Documentation\Access\Repositories\DocRoleRepository;
@@ -105,8 +106,15 @@ final class ProjectController extends Controller
             }
         }
 
+        $recentBuilds = $project->builds()
+            ->latest()
+            ->limit(5)
+            ->get()
+            ->map(fn ($build) => BuildData::fromModel($build));
+
         return Inertia::render('Projects/Show', [
             'project' => ProjectData::fromModel($project),
+            'recentBuilds' => $recentBuilds,
             'docSetting' => $docSetting ? DocSettingData::fromContract($docSetting) : null,
             'docRoles' => array_map(fn ($r) => DocRoleData::fromContract($r), $docRoles),
             'docRules' => array_map(fn ($r) => DocVisibilityRuleData::fromContract($r), $docRules),

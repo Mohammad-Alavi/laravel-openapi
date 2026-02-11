@@ -20,6 +20,15 @@ export interface Project {
     updated_at: string;
 }
 
+export interface Build {
+    id: string;
+    commit_sha: string;
+    status: 'pending' | 'building' | 'completed' | 'failed';
+    error_log: string | null;
+    started_at: string | null;
+    completed_at: string | null;
+}
+
 export interface DocSetting {
     visibility: 'public' | 'private';
 }
@@ -95,4 +104,5 @@ export interface PageProps {
         error?: string;
     };
     unreadNotificationsCount: number;
+    [key: string]: unknown;
 }
