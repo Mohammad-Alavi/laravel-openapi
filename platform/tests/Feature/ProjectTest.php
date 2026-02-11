@@ -20,7 +20,7 @@ describe('Project CRUD', function (): void {
                 ->assertInertia(fn ($page) => $page
                     ->component('Projects/Index')
                     ->has('projects.data', 1)
-                    ->where('projects.data.0.id', $ownProject->id)
+                    ->where('projects.data.0.id', $ownProject->ulid)
                 );
         });
 
@@ -164,7 +164,7 @@ describe('Project CRUD', function (): void {
             $response->assertOk()
                 ->assertInertia(fn ($page) => $page
                     ->component('Projects/Show')
-                    ->where('project.id', $project->id)
+                    ->where('project.id', $project->ulid)
                     ->where('project.name', $project->name)
                 );
         });
@@ -189,7 +189,7 @@ describe('Project CRUD', function (): void {
             $response->assertOk()
                 ->assertInertia(fn ($page) => $page
                     ->component('Projects/Edit')
-                    ->where('project.id', $project->id)
+                    ->where('project.id', $project->ulid)
                 );
         });
     });

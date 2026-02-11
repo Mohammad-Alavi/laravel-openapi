@@ -32,6 +32,12 @@ final class Project extends Model
     }
 
     /** @var list<string> */
+    protected $hidden = [
+        'github_webhook_id',
+        'github_webhook_secret',
+    ];
+
+    /** @var list<string> */
     protected $fillable = [
         'name',
         'slug',

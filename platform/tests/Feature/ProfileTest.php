@@ -15,7 +15,7 @@ describe('Profile', function (): void {
         $response->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Profile/Show')
-                ->where('user.id', $user->id)
+                ->where('user.id', $user->ulid)
                 ->where('user.name', $user->name)
                 ->where('user.email', $user->email)
             );

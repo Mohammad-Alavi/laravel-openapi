@@ -137,7 +137,7 @@ function rebuild() {
                 <v-card-title class="text-h6 pa-0">API Documentation</v-card-title>
                 <v-spacer />
                 <v-btn
-                    v-if="project.latest_build_id"
+                    v-if="project.has_builds"
                     color="primary"
                     variant="outlined"
                     size="small"
@@ -150,7 +150,7 @@ function rebuild() {
             </div>
 
             <v-alert
-                v-if="!project.latest_build_id"
+                v-if="!project.has_builds"
                 type="info"
                 variant="tonal"
                 density="compact"

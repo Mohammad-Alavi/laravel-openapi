@@ -8,6 +8,7 @@ use App\Application\Documentation\DTOs\DocAccessLinkData;
 use App\Application\Documentation\DTOs\DocRoleData;
 use App\Application\Documentation\DTOs\DocSettingData;
 use App\Application\Documentation\DTOs\DocVisibilityRuleData;
+use App\Application\DTOs\ProjectData;
 use App\Domain\Documentation\Access\Repositories\DocAccessLinkRepository;
 use App\Domain\Documentation\Access\Repositories\DocRoleRepository;
 use App\Domain\Documentation\Access\Repositories\DocSettingRepository;
@@ -59,7 +60,8 @@ final class ProjectController extends Controller
             $query->where('status', $request->string('status'));
         }
 
-        $projects = $query->paginate(12)->withQueryString();
+        $projects = $query->paginate(12)->withQueryString()
+            ->through(fn (Project $project) => ProjectData::fromModel($project));
 
         return Inertia::render('Projects/Index', [
             'projects' => $projects,
@@ -104,7 +106,7 @@ final class ProjectController extends Controller
         }
 
         return Inertia::render('Projects/Show', [
-            'project' => $project,
+            'project' => ProjectData::fromModel($project),
             'docSetting' => $docSetting ? DocSettingData::fromContract($docSetting) : null,
             'docRoles' => array_map(fn ($r) => DocRoleData::fromContract($r), $docRoles),
             'docRules' => array_map(fn ($r) => DocVisibilityRuleData::fromContract($r), $docRules),
@@ -119,7 +121,7 @@ final class ProjectController extends Controller
         $this->authorize('update', $project);
 
         return Inertia::render('Projects/Edit', [
-            'project' => $project,
+            'project' => ProjectData::fromModel($project),
         ]);
     }
 

@@ -1,27 +1,13 @@
 export interface User {
-    id: number;
+    id: string;
     name: string;
     email: string;
     github_id: string;
     github_avatar: string | null;
 }
 
-export interface Build {
-    id: number;
-    project_id: number;
-    commit_sha: string;
-    status: 'pending' | 'building' | 'completed' | 'failed';
-    output_path: string | null;
-    error_log: string | null;
-    started_at: string | null;
-    completed_at: string | null;
-    created_at: string;
-    updated_at: string;
-}
-
 export interface Project {
-    id: number;
-    user_id: number;
+    id: string;
     name: string;
     slug: string;
     description: string | null;
@@ -29,13 +15,12 @@ export interface Project {
     github_branch: string;
     status: 'active' | 'paused' | 'building';
     last_built_at: string | null;
-    latest_build_id: number | null;
+    has_builds: boolean;
     created_at: string;
     updated_at: string;
 }
 
 export interface DocSetting {
-    project_id: number;
     visibility: 'public' | 'private';
 }
 

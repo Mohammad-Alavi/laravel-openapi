@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Application\DTOs\UserData;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,7 @@ final class ProfileController extends Controller
     public function show(Request $request): Response
     {
         return Inertia::render('Profile/Show', [
-            'user' => $request->user()->only(['id', 'name', 'email', 'github_id', 'github_avatar']),
+            'user' => UserData::fromModel($request->user()),
         ]);
     }
 
