@@ -25,6 +25,7 @@ composer require mohammad-alavi/laragen:"*" --no-interaction --no-progress
 # Configure minimal environment for artisan
 export DB_CONNECTION=sqlite
 export DB_DATABASE=:memory:
+export LARAGEN_ROUTE_DISCOVERY_MODE=auto
 
 # Create .env if missing (key:generate needs it)
 if [ ! -f .env ]; then
