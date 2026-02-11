@@ -6,6 +6,7 @@ namespace App\Jobs;
 
 use App\Enums\BuildStatus;
 use App\Enums\ProjectStatus;
+use App\Events\BuildStatusChanged;
 use App\Models\Build;
 use App\Models\Project;
 use App\Notifications\BuildCompletedNotification;
@@ -30,11 +31,14 @@ final class ProcessGitHubPushJob implements ShouldQueue
 
     public function handle(BuildRunner $buildRunner): void
     {
+        $this->project->update(['status' => ProjectStatus::Building]);
+
         $build = $this->project->builds()->create([
             'commit_sha' => $this->commitSha,
         ]);
+        $build->refresh();
 
-        $this->project->update(['status' => ProjectStatus::Building]);
+        BuildStatusChanged::dispatch($build);
 
         try {
             $buildRunner->run($build);
@@ -51,6 +55,8 @@ final class ProcessGitHubPushJob implements ShouldQueue
             }
 
             $this->project->update($updateData);
+
+            BuildStatusChanged::dispatch($build);
 
             $this->project->user->notify(new BuildCompletedNotification($build));
         }

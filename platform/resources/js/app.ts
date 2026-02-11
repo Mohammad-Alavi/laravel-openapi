@@ -10,7 +10,7 @@ createInertiaApp({
         resolvePageComponent(
             `./Pages/${name}.vue`,
             import.meta.glob('./Pages/**/*.vue'),
-        ),
+        ) as any,
     setup({ el, App, props, plugin }) {
         const vuetify = createVuetify();
 
