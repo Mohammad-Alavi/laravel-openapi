@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { router, useForm } from '@inertiajs/vue3';
 import type { DocVisibilityRule, SpecTag, SpecPath } from '@/types/models';
 
@@ -36,14 +36,22 @@ const form = useForm({
     visibility: 'public' as string,
 });
 
-const identifierOptions = ref<string[]>([]);
+const hasSpecData = computed(() => props.specTags.length > 0 || props.specPaths.length > 0);
 
-function updateIdentifierOptions() {
-    identifierOptions.value = form.rule_type === 'tag'
-        ? props.specTags.map(t => t.name)
-        : props.specPaths.map(p => p.path);
-}
-updateIdentifierOptions();
+const identifierItems = computed(() => {
+    if (form.rule_type === 'tag') {
+        return props.specTags.map(t => ({
+            title: t.name,
+            value: t.name,
+            subtitle: t.description ?? undefined,
+        }));
+    }
+    return props.specPaths.map(p => ({
+        title: p.path,
+        value: p.path,
+        subtitle: p.methods.join(', '),
+    }));
+});
 
 function createRule() {
     form.post(`/projects/${props.projectSlug}/doc-rules`, {
@@ -51,7 +59,6 @@ function createRule() {
         onSuccess: () => {
             showCreateDialog.value = false;
             form.reset();
-            updateIdentifierOptions();
         },
     });
 }
@@ -87,6 +94,14 @@ function deleteRule(rule: DocVisibilityRule) {
             Override the default visibility of specific endpoints by tag or path. Rules are evaluated in order.
         </p>
 
+        <v-alert v-if="!hasSpecData" type="warning" variant="tonal" density="compact" class="mb-4">
+            No spec data available. Build the project first to enable tag and path autocompletion.
+            You can still create rules with manual entries.
+        </v-alert>
+        <v-alert v-else type="info" variant="tonal" density="compact" class="mb-4" icon="mdi-auto-fix">
+            {{ specTags.length }} tag{{ specTags.length !== 1 ? 's' : '' }} and {{ specPaths.length }} path{{ specPaths.length !== 1 ? 's' : '' }} detected from your latest build.
+        </v-alert>
+
         <v-table v-if="rules.length > 0" density="compact">
             <thead>
                 <tr>
@@ -117,7 +132,11 @@ function deleteRule(rule: DocVisibilityRule) {
             <tbody>
                 <tr v-for="rule in rules" :key="rule.id">
                     <td>
-                        <v-chip size="x-small" :color="rule.rule_type === 'tag' ? 'primary' : 'secondary'">
+                        <v-chip
+                            size="x-small"
+                            :color="rule.rule_type === 'tag' ? 'primary' : 'secondary'"
+                            :prepend-icon="rule.rule_type === 'tag' ? 'mdi-tag-outline' : 'mdi-api'"
+                        >
                             {{ rule.rule_type }}
                         </v-chip>
                     </td>
@@ -177,20 +196,34 @@ function deleteRule(rule: DocVisibilityRule) {
                         mandatory
                         color="primary"
                         class="mb-4"
-                        @update:model-value="updateIdentifierOptions"
                     >
-                        <v-btn value="tag">Tag</v-btn>
-                        <v-btn value="path">Path</v-btn>
+                        <v-btn value="tag" prepend-icon="mdi-tag-outline">Tag</v-btn>
+                        <v-btn value="path" prepend-icon="mdi-api">Path</v-btn>
                     </v-btn-toggle>
                     <v-combobox
                         v-model="form.identifier"
-                        :items="identifierOptions"
+                        :items="identifierItems"
+                        item-title="title"
+                        item-value="value"
                         :label="form.rule_type === 'tag' ? 'Tag name or pattern' : 'Path or pattern'"
-                        hint="Supports wildcards: payments.*, /api/v2/*"
+                        :hint="hasSpecData
+                            ? `Select from detected ${form.rule_type === 'tag' ? 'tags' : 'paths'}, or type a pattern (e.g., ${form.rule_type === 'tag' ? 'payments.*, users' : '/api/v2/*, /orders/{id}'})`
+                            : `No spec data yet. Type ${form.rule_type === 'tag' ? 'tag names' : 'paths'} manually (e.g., ${form.rule_type === 'tag' ? 'payments, users' : '/api/v1/orders, /api/v2/*'})`"
                         persistent-hint
                         :error-messages="form.errors.identifier"
                         class="mb-2"
-                    />
+                    >
+                        <template #item="{ props: itemProps, item }">
+                            <v-list-item v-bind="itemProps">
+                                <template #prepend>
+                                    <v-icon size="small">{{ form.rule_type === 'tag' ? 'mdi-tag-outline' : 'mdi-api' }}</v-icon>
+                                </template>
+                                <template v-if="item.raw.subtitle" #subtitle>
+                                    {{ item.raw.subtitle }}
+                                </template>
+                            </v-list-item>
+                        </template>
+                    </v-combobox>
                     <v-select
                         v-model="form.visibility"
                         :items="visibilityOptions"

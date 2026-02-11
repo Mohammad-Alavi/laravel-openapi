@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { router, useForm } from '@inertiajs/vue3';
 import type { DocRole, SpecTag, SpecPath } from '@/types/models';
 
@@ -25,10 +25,45 @@ const editForm = useForm({
     is_default: false,
 });
 
-const scopeOptions = [
-    ...props.specTags.map(t => t.name),
-    ...props.specPaths.map(p => p.path),
-];
+const hasSpecData = computed(() => props.specTags.length > 0 || props.specPaths.length > 0);
+
+const scopeItems = computed(() => {
+    const items: Array<{ title: string; value: string; props: { subtitle?: string; prependIcon?: string } }> = [];
+
+    if (props.specTags.length > 0) {
+        items.push({ title: 'Tags', value: '__header_tags__', props: { subtitle: 'Group endpoints by feature area' } });
+        for (const tag of props.specTags) {
+            items.push({
+                title: tag.name,
+                value: tag.name,
+                props: {
+                    subtitle: tag.description ?? undefined,
+                    prependIcon: 'mdi-tag-outline',
+                },
+            });
+        }
+    }
+
+    if (props.specPaths.length > 0) {
+        items.push({ title: 'Paths', value: '__header_paths__', props: { subtitle: 'Individual API endpoints' } });
+        for (const path of props.specPaths) {
+            items.push({
+                title: path.path,
+                value: path.path,
+                props: {
+                    subtitle: path.methods.join(', '),
+                    prependIcon: 'mdi-api',
+                },
+            });
+        }
+    }
+
+    return items;
+});
+
+function isHeader(value: string): boolean {
+    return value.startsWith('__header_');
+}
 
 function createRole() {
     form.post(`/projects/${props.projectSlug}/doc-roles`, {
@@ -60,6 +95,10 @@ function deleteRole(role: DocRole) {
         preserveScroll: true,
     });
 }
+
+function scopeIcon(scope: string): string {
+    return props.specPaths.some(p => p.path === scope) ? 'mdi-api' : 'mdi-tag-outline';
+}
 </script>
 
 <template>
@@ -79,6 +118,14 @@ function deleteRole(role: DocRole) {
         <p class="text-body-2 text-medium-emphasis mb-4">
             Roles define which API endpoints a user can see. Assign scopes (tags or paths) to control visibility per role.
         </p>
+
+        <v-alert v-if="!hasSpecData" type="warning" variant="tonal" density="compact" class="mb-4">
+            No spec data available. Build the project first to enable tag and path autocompletion for scopes.
+            You can still create roles with manual scope entries.
+        </v-alert>
+        <v-alert v-else type="info" variant="tonal" density="compact" class="mb-4" icon="mdi-auto-fix">
+            {{ specTags.length }} tag{{ specTags.length !== 1 ? 's' : '' }} and {{ specPaths.length }} path{{ specPaths.length !== 1 ? 's' : '' }} detected from your latest build.
+        </v-alert>
 
         <v-table v-if="roles.length > 0" density="compact">
             <thead>
@@ -114,6 +161,7 @@ function deleteRole(role: DocRole) {
                         <v-chip
                             v-for="scope in role.scopes"
                             :key="scope"
+                            :prepend-icon="scopeIcon(scope)"
                             size="x-small"
                             class="mr-1 mb-1"
                         >
@@ -159,16 +207,36 @@ function deleteRole(role: DocRole) {
                     />
                     <v-combobox
                         v-model="form.scopes"
-                        :items="scopeOptions"
+                        :items="scopeItems"
+                        item-title="title"
+                        item-value="value"
                         label="Scopes"
                         multiple
                         chips
                         closable-chips
-                        hint="Select tags or paths this role can access. Leave empty for full access."
+                        :hint="hasSpecData ? 'Select from detected tags/paths, or type custom values (e.g., payments.*, /api/v2/*)' : 'No spec data yet. Type scope values manually (e.g., users, /api/v1/orders)'"
                         persistent-hint
                         :error-messages="form.errors.scopes"
                         class="mb-2"
-                    />
+                    >
+                        <template #item="{ props: itemProps, item }">
+                            <v-list-subheader v-if="isHeader(item.value as string)">
+                                <v-icon size="small" class="mr-1">{{ item.value === '__header_tags__' ? 'mdi-tag-multiple' : 'mdi-api' }}</v-icon>
+                                {{ item.title }}
+                                <span class="text-caption text-medium-emphasis ml-2">{{ item.props?.subtitle }}</span>
+                            </v-list-subheader>
+                            <v-list-item v-else v-bind="itemProps">
+                                <template v-if="item.props?.subtitle" #subtitle>
+                                    {{ item.props.subtitle }}
+                                </template>
+                            </v-list-item>
+                        </template>
+                        <template #chip="{ props: chipProps, item }">
+                            <v-chip v-bind="chipProps" :prepend-icon="scopeIcon(item.value as string)" size="small">
+                                {{ item.title }}
+                            </v-chip>
+                        </template>
+                    </v-combobox>
                     <v-checkbox
                         v-model="form.is_default"
                         label="Default role (auto-assigned to new access links)"
@@ -196,16 +264,36 @@ function deleteRole(role: DocRole) {
                     />
                     <v-combobox
                         v-model="editForm.scopes"
-                        :items="scopeOptions"
+                        :items="scopeItems"
+                        item-title="title"
+                        item-value="value"
                         label="Scopes"
                         multiple
                         chips
                         closable-chips
-                        hint="Select tags or paths this role can access. Leave empty for full access."
+                        :hint="hasSpecData ? 'Select from detected tags/paths, or type custom values (e.g., payments.*, /api/v2/*)' : 'No spec data yet. Type scope values manually (e.g., users, /api/v1/orders)'"
                         persistent-hint
                         :error-messages="editForm.errors.scopes"
                         class="mb-2"
-                    />
+                    >
+                        <template #item="{ props: itemProps, item }">
+                            <v-list-subheader v-if="isHeader(item.value as string)">
+                                <v-icon size="small" class="mr-1">{{ item.value === '__header_tags__' ? 'mdi-tag-multiple' : 'mdi-api' }}</v-icon>
+                                {{ item.title }}
+                                <span class="text-caption text-medium-emphasis ml-2">{{ item.props?.subtitle }}</span>
+                            </v-list-subheader>
+                            <v-list-item v-else v-bind="itemProps">
+                                <template v-if="item.props?.subtitle" #subtitle>
+                                    {{ item.props.subtitle }}
+                                </template>
+                            </v-list-item>
+                        </template>
+                        <template #chip="{ props: chipProps, item }">
+                            <v-chip v-bind="chipProps" :prepend-icon="scopeIcon(item.value as string)" size="small">
+                                {{ item.title }}
+                            </v-chip>
+                        </template>
+                    </v-combobox>
                     <v-checkbox
                         v-model="editForm.is_default"
                         label="Default role"
