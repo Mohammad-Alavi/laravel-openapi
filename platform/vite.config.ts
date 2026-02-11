@@ -29,6 +29,15 @@ export default defineConfig({
         },
     },
     server: {
+        host: '0.0.0.0',
+        origin: 'https://laravel-openapi.ddev.site:5174',
+        cors: {
+            origin: 'https://laravel-openapi.ddev.site:8443',
+        },
+        hmr: {
+            host: 'laravel-openapi.ddev.site',
+            clientPort: 5174,
+        },
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },

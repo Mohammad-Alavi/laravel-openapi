@@ -17,6 +17,15 @@ composer_version: "2"
 web_environment: []
 nodejs_version: auto
 corepack_enable: false
+web_extra_exposed_ports:
+  - name: platform
+    container_port: 8000
+    http_port: 8080
+    https_port: 8443
+  - name: platform-vite
+    container_port: 5173
+    http_port: 5172
+    https_port: 5174
 
 # Key features of DDEV's config.yaml:
 
