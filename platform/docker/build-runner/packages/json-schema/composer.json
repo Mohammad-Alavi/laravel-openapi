@@ -1,0 +1,15 @@
+{
+    "name": "mohammad-alavi/object-oriented-json-schema",
+    "description": "PHP implementation of JSON Schema (Draft 2020-12)",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "webmozart/assert": "^1.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "MohammadAlavi\\ObjectOrientedJSONSchema\\": "src/"
+        }
+    }
+}

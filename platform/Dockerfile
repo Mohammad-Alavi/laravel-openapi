@@ -22,6 +22,7 @@ FROM php:8.2-fpm-alpine
 RUN apk add --no-cache \
     nginx \
     supervisor \
+    docker-cli \
     postgresql-dev \
     libzip-dev \
     icu-dev \
