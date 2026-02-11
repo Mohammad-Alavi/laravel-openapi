@@ -10,6 +10,11 @@ use App\Domain\Documentation\Access\Repositories\DocVisibilityRuleRepository;
 
 final class EloquentDocVisibilityRuleRepository implements DocVisibilityRuleRepository
 {
+    public function findById(int $id): ?DocVisibilityRule
+    {
+        return DocVisibilityRuleEntity::find($id);
+    }
+
     public function findByProjectId(int $projectId): array
     {
         return DocVisibilityRuleEntity::where('project_id', $projectId)

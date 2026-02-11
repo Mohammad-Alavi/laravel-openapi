@@ -8,6 +8,8 @@ use App\Domain\Documentation\Access\Contracts\DocVisibilityRule;
 
 interface DocVisibilityRuleRepository
 {
+    public function findById(int $id): ?DocVisibilityRule;
+
     /** @return list<DocVisibilityRule> */
     public function findByProjectId(int $projectId): array;
 
