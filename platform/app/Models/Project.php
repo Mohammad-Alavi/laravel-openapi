@@ -23,7 +23,10 @@ final class Project extends Model
         'description',
         'github_repo_url',
         'github_branch',
+        'github_webhook_id',
+        'github_webhook_secret',
         'status',
+        'last_built_at',
     ];
 
     /** @return array<string, string> */
@@ -32,6 +35,7 @@ final class Project extends Model
         return [
             'status' => ProjectStatus::class,
             'last_built_at' => 'datetime',
+            'github_webhook_secret' => 'encrypted',
         ];
     }
 

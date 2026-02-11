@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Enums\ProjectStatus;
 use App\Models\Project;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
 describe('Project CRUD', function (): void {
     describe('index', function (): void {
@@ -113,6 +114,7 @@ describe('Project CRUD', function (): void {
 
     describe('store', function (): void {
         it('creates a project and generates a slug', function (): void {
+            Http::fake(['api.github.com/*' => Http::response(['id' => 1], 201)]);
             $user = User::factory()->create();
 
             $response = $this->actingAs($user)->post('/projects', [
@@ -194,6 +196,7 @@ describe('Project CRUD', function (): void {
 
     describe('update', function (): void {
         it('updates the project', function (): void {
+            Http::fake(['api.github.com/*' => Http::response(['id' => 1], 201)]);
             $user = User::factory()->create();
             $project = Project::factory()->for($user)->create();
 
@@ -226,6 +229,7 @@ describe('Project CRUD', function (): void {
 
     describe('destroy', function (): void {
         it('deletes the project', function (): void {
+            Http::fake(['api.github.com/*' => Http::response(null, 204)]);
             $user = User::factory()->create();
             $project = Project::factory()->for($user)->create();
 
@@ -243,6 +247,118 @@ describe('Project CRUD', function (): void {
 
             $response->assertForbidden();
             $this->assertDatabaseHas('projects', ['id' => $otherProject->id]);
+        });
+    });
+
+    describe('webhook lifecycle', function (): void {
+        it('registers a GitHub webhook after creating a project', function (): void {
+            Http::fake([
+                'api.github.com/repos/user/repo/hooks' => Http::response(['id' => 42], 201),
+            ]);
+
+            $user = User::factory()->create();
+
+            $this->actingAs($user)->post('/projects', [
+                'name' => 'Webhook Project',
+                'github_repo_url' => 'https://github.com/user/repo',
+                'github_branch' => 'main',
+            ]);
+
+            $project = Project::where('name', 'Webhook Project')->first();
+
+            expect($project->github_webhook_id)->toBe(42)
+                ->and($project->github_webhook_secret)->not->toBeNull();
+
+            Http::assertSent(fn ($request) => str_contains($request->url(), 'api.github.com/repos/user/repo/hooks')
+                && $request->method() === 'POST');
+        });
+
+        it('still creates the project when webhook registration fails', function (): void {
+            Http::fake([
+                'api.github.com/*' => Http::response(['message' => 'Validation Failed'], 422),
+            ]);
+
+            $user = User::factory()->create();
+
+            $this->actingAs($user)->post('/projects', [
+                'name' => 'Failing Webhook Project',
+                'github_repo_url' => 'https://github.com/user/repo',
+                'github_branch' => 'main',
+            ]);
+
+            $project = Project::where('name', 'Failing Webhook Project')->first();
+
+            expect($project)->not->toBeNull()
+                ->and($project->github_webhook_id)->toBeNull();
+        });
+
+        it('re-registers webhook when github_repo_url changes', function (): void {
+            Http::fake([
+                'api.github.com/repos/user/old-repo/hooks/100' => Http::response(null, 204),
+                'api.github.com/repos/user/new-repo/hooks' => Http::response(['id' => 200], 201),
+            ]);
+
+            $user = User::factory()->create();
+            $project = Project::factory()->for($user)->create([
+                'github_repo_url' => 'https://github.com/user/old-repo',
+                'github_webhook_id' => 100,
+                'github_webhook_secret' => 'old-secret',
+            ]);
+
+            $this->actingAs($user)->put("/projects/{$project->id}", [
+                'name' => $project->name,
+                'github_repo_url' => 'https://github.com/user/new-repo',
+                'github_branch' => 'main',
+            ]);
+
+            $project->refresh();
+
+            expect($project->github_webhook_id)->toBe(200)
+                ->and($project->github_repo_url)->toBe('https://github.com/user/new-repo');
+
+            Http::assertSent(fn ($request) => str_contains($request->url(), 'old-repo/hooks/100')
+                && $request->method() === 'DELETE');
+            Http::assertSent(fn ($request) => str_contains($request->url(), 'new-repo/hooks')
+                && $request->method() === 'POST');
+        });
+
+        it('does not re-register webhook when repo URL stays the same', function (): void {
+            Http::fake();
+
+            $user = User::factory()->create();
+            $project = Project::factory()->for($user)->create([
+                'github_repo_url' => 'https://github.com/user/repo',
+                'github_webhook_id' => 100,
+                'github_webhook_secret' => 'secret',
+            ]);
+
+            $this->actingAs($user)->put("/projects/{$project->id}", [
+                'name' => 'Updated Name Only',
+                'github_repo_url' => 'https://github.com/user/repo',
+                'github_branch' => 'main',
+            ]);
+
+            Http::assertNothingSent();
+        });
+
+        it('deregisters webhook before deleting the project', function (): void {
+            Http::fake([
+                'api.github.com/repos/user/repo/hooks/100' => Http::response(null, 204),
+            ]);
+
+            $user = User::factory()->create();
+            $project = Project::factory()->for($user)->create([
+                'github_repo_url' => 'https://github.com/user/repo',
+                'github_webhook_id' => 100,
+                'github_webhook_secret' => 'secret',
+            ]);
+
+            $this->actingAs($user)->delete("/projects/{$project->id}");
+
+            Http::assertSent(fn ($request) => str_contains($request->url(), 'hooks/100')
+                && $request->method() === 'DELETE');
+
+            $this->assertDatabaseMissing('projects', ['id' => $project->id]);
         });
     });
 });

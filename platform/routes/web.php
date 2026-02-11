@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\GitHubValidationController;
 use App\Http\Controllers\Auth\GitHubController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\Webhooks\GitHubWebhookController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,6 +34,8 @@ Route::post('/logout', function () {
 
     return redirect('/');
 })->middleware('auth')->name('logout');
+
+Route::post('/webhooks/github', GitHubWebhookController::class)->name('webhooks.github');
 
 Route::middleware('auth')->group(function (): void {
     Route::get('/dashboard', fn () => redirect()->route('projects.index'))

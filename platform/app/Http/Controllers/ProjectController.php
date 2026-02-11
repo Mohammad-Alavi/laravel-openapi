@@ -8,6 +8,7 @@ use App\Enums\ProjectStatus;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
+use App\Services\GitHubWebhookService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,6 +18,10 @@ use Inertia\Response;
 final class ProjectController extends Controller
 {
     use AuthorizesRequests;
+
+    public function __construct(
+        private readonly GitHubWebhookService $webhookService,
+    ) {}
 
     public function index(Request $request): Response
     {
@@ -55,7 +60,9 @@ final class ProjectController extends Controller
 
     public function store(StoreProjectRequest $request): RedirectResponse
     {
-        $request->user()->projects()->create($request->validated());
+        $project = $request->user()->projects()->create($request->validated());
+
+        $this->webhookService->register($project);
 
         return redirect()->route('projects.index')
             ->with('success', 'Project created successfully.');
@@ -83,7 +90,18 @@ final class ProjectController extends Controller
     {
         $this->authorize('update', $project);
 
+        $repoChanged = $request->has('github_repo_url')
+            && $request->input('github_repo_url') !== $project->github_repo_url;
+
+        if ($repoChanged) {
+            $this->webhookService->deregister($project);
+        }
+
         $project->update($request->validated());
+
+        if ($repoChanged) {
+            $this->webhookService->register($project);
+        }
 
         return redirect()->route('projects.show', $project)
             ->with('success', 'Project updated successfully.');
@@ -92,6 +110,8 @@ final class ProjectController extends Controller
     public function destroy(Project $project): RedirectResponse
     {
         $this->authorize('delete', $project);
+
+        $this->webhookService->deregister($project);
 
         $project->delete();
 
