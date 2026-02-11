@@ -6,6 +6,7 @@ namespace App\Application\Documentation\DTOs;
 
 use App\Domain\Documentation\Access\Enums\EndpointVisibility;
 use App\Domain\Documentation\Access\Enums\RuleType;
+use Illuminate\Http\Request;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 
@@ -18,4 +19,9 @@ final class UpdateVisibilityRuleData extends Data
 
         public EndpointVisibility|Optional $visibility,
     ) {}
+
+    public static function authorize(Request $request): bool
+    {
+        return $request->user()?->can('update', $request->route('project')) ?? false;
+    }
 }

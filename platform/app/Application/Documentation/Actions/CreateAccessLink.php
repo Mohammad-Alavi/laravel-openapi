@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\Documentation\Actions;
 
-use App\Domain\Documentation\Access\Contracts\DocAccessLink;
 use App\Domain\Documentation\Access\Events\AccessLinkCreated;
 use App\Domain\Documentation\Access\Repositories\DocAccessLinkRepository;
 use App\Domain\Documentation\Access\Repositories\DocRoleRepository;
+use App\Domain\Documentation\Access\ValueObjects\CreateAccessLinkResult;
 use App\Domain\Documentation\Access\ValueObjects\PlainToken;
 
 final class CreateAccessLink
@@ -17,8 +17,7 @@ final class CreateAccessLink
         private readonly DocRoleRepository $roleRepository,
     ) {}
 
-    /** @return array{token: PlainToken, link: DocAccessLink} */
-    public function execute(int $projectId, int $roleId, string $name, ?string $expiresAt = null): array
+    public function execute(int $projectId, int $roleId, string $name, ?string $expiresAt = null): CreateAccessLinkResult
     {
         $token = PlainToken::generate();
         $role = $this->roleRepository->findById($roleId);
@@ -37,6 +36,6 @@ final class CreateAccessLink
             $expiresAt !== null,
         );
 
-        return ['token' => $token, 'link' => $link];
+        return new CreateAccessLinkResult($token, $link);
     }
 }

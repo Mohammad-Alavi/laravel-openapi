@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Documentation\DTOs;
 
+use Illuminate\Http\Request;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
@@ -19,4 +20,9 @@ final class UpdateDocRoleData extends Data
 
         public bool|Optional $is_default,
     ) {}
+
+    public static function authorize(Request $request): bool
+    {
+        return $request->user()?->can('update', $request->route('project')) ?? false;
+    }
 }
