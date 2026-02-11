@@ -4,56 +4,102 @@ import { useForm, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { index, store } from '@/routes/projects';
 
+interface GitHubRepo {
+    full_name: string;
+    name: string;
+    description: string | null;
+    url: string;
+    default_branch: string;
+    private: boolean;
+}
+
 const form = useForm({
     name: '',
     description: '',
     github_repo_url: '',
-    github_branch: 'main',
+    github_branch: '',
 });
 
-const repoValidation = ref<{ checking: boolean; valid: boolean | null; error: string | null; defaultBranch: string | null }>({
-    checking: false,
-    valid: null,
-    error: null,
-    defaultBranch: null,
-});
+const repoSearch = ref('');
+const repoItems = ref<GitHubRepo[]>([]);
+const repoLoading = ref(false);
+const selectedRepo = ref<GitHubRepo | null>(null);
+
+const branches = ref<string[]>([]);
+const branchLoading = ref(false);
 
 let debounceTimer: ReturnType<typeof setTimeout>;
 
-watch(() => form.github_repo_url, (url) => {
+watch(repoSearch, (query) => {
     clearTimeout(debounceTimer);
-    repoValidation.value = { checking: false, valid: null, error: null, defaultBranch: null };
-
-    if (!url || !url.match(/^https:\/\/github\.com\/[^/]+\/[^/]+$/)) {
+    if (!query || query.length < 2) {
+        repoItems.value = [];
         return;
     }
 
-    repoValidation.value.checking = true;
+    repoLoading.value = true;
     debounceTimer = setTimeout(async () => {
         try {
-            const response = await fetch('/github/validate-repo', {
-                method: 'POST',
+            const response = await fetch(`/github/repos?q=${encodeURIComponent(query)}`, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-XSRF-TOKEN': decodeURIComponent(document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] ?? ''),
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
                 },
-                body: JSON.stringify({
-                    github_repo_url: url,
-                    branch: form.github_branch || undefined,
-                }),
             });
-            const data = await response.json();
-            repoValidation.value = {
-                checking: false,
-                valid: data.valid,
-                error: data.error ?? null,
-                defaultBranch: data.default_branch ?? null,
-            };
+            if (response.ok) {
+                repoItems.value = await response.json();
+            }
         } catch {
-            repoValidation.value = { checking: false, valid: null, error: null, defaultBranch: null };
+            repoItems.value = [];
+        } finally {
+            repoLoading.value = false;
         }
-    }, 500);
+    }, 300);
 });
+
+function onRepoSelected(repo: GitHubRepo | null) {
+    if (!repo) {
+        selectedRepo.value = null;
+        form.github_repo_url = '';
+        form.github_branch = '';
+        branches.value = [];
+        return;
+    }
+
+    selectedRepo.value = repo;
+    form.github_repo_url = repo.url;
+    form.github_branch = repo.default_branch;
+
+    if (!form.name) {
+        form.name = repo.name;
+    }
+    if (!form.description && repo.description) {
+        form.description = repo.description;
+    }
+
+    loadBranches(repo.full_name);
+}
+
+async function loadBranches(repoFullName: string) {
+    branchLoading.value = true;
+    branches.value = [];
+
+    try {
+        const response = await fetch(`/github/branches?repo=${encodeURIComponent(repoFullName)}`, {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        });
+        if (response.ok) {
+            branches.value = await response.json();
+        }
+    } catch {
+        branches.value = [];
+    } finally {
+        branchLoading.value = false;
+    }
+}
 
 function submit() {
     form.post(store.url());
@@ -73,6 +119,64 @@ function submit() {
 
         <v-card max-width="600" class="pa-6">
             <v-form @submit.prevent="submit">
+                <v-autocomplete
+                    v-model="selectedRepo"
+                    v-model:search="repoSearch"
+                    :items="repoItems"
+                    :loading="repoLoading"
+                    item-title="full_name"
+                    item-value="full_name"
+                    label="GitHub Repository"
+                    placeholder="Search your repositories..."
+                    :error-messages="form.errors.github_repo_url"
+                    no-filter
+                    return-object
+                    clearable
+                    class="mb-4"
+                    @update:model-value="onRepoSelected"
+                >
+                    <template #item="{ props: itemProps, item }">
+                        <v-list-item v-bind="itemProps">
+                            <template #prepend>
+                                <v-icon
+                                    :icon="item.raw.private ? 'mdi-lock' : 'mdi-source-repository'"
+                                    size="small"
+                                    class="mr-2"
+                                />
+                            </template>
+                            <template #subtitle>
+                                {{ item.raw.description || 'No description' }}
+                            </template>
+                        </v-list-item>
+                    </template>
+                    <template #no-data>
+                        <v-list-item v-if="repoSearch && repoSearch.length >= 2">
+                            <v-list-item-title>No repositories found</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item v-else>
+                            <v-list-item-title>Type at least 2 characters to search</v-list-item-title>
+                        </v-list-item>
+                    </template>
+                </v-autocomplete>
+
+                <v-autocomplete
+                    v-model="form.github_branch"
+                    :items="branches"
+                    :loading="branchLoading"
+                    :disabled="!selectedRepo"
+                    label="Branch"
+                    :error-messages="form.errors.github_branch"
+                    class="mb-4"
+                >
+                    <template #no-data>
+                        <v-list-item>
+                            <v-list-item-title>
+                                {{ selectedRepo ? 'No branches found' : 'Select a repository first' }}
+                            </v-list-item-title>
+                        </v-list-item>
+                    </template>
+                </v-autocomplete>
+
                 <v-text-field
                     v-model="form.name"
                     label="Project Name"
@@ -85,29 +189,6 @@ function submit() {
                     label="Description"
                     :error-messages="form.errors.description"
                     rows="3"
-                    class="mb-4"
-                />
-                <v-text-field
-                    v-model="form.github_repo_url"
-                    label="GitHub Repository URL"
-                    placeholder="https://github.com/user/repo"
-                    :error-messages="form.errors.github_repo_url"
-                    required
-                    class="mb-1"
-                />
-                <div class="mb-4">
-                    <v-progress-linear v-if="repoValidation.checking" indeterminate height="2" />
-                    <v-alert v-else-if="repoValidation.valid === true" type="success" density="compact" variant="tonal" class="mt-1">
-                        Repository verified{{ repoValidation.defaultBranch ? ` (default branch: ${repoValidation.defaultBranch})` : '' }}
-                    </v-alert>
-                    <v-alert v-else-if="repoValidation.valid === false" type="warning" density="compact" variant="tonal" class="mt-1">
-                        {{ repoValidation.error }}
-                    </v-alert>
-                </div>
-                <v-text-field
-                    v-model="form.github_branch"
-                    label="Branch"
-                    :error-messages="form.errors.github_branch"
                     class="mb-4"
                 />
                 <v-btn

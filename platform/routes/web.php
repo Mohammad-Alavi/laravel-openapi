@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\GitHubRepoController;
 use App\Http\Controllers\Api\GitHubValidationController;
 use App\Http\Controllers\Api\ProjectStatusController;
 use App\Http\Controllers\Auth\GitHubController;
@@ -53,6 +54,9 @@ Route::middleware('auth')->group(function (): void {
 
     Route::post('/github/validate-repo', GitHubValidationController::class)
         ->name('github.validate-repo');
+
+    Route::get('/github/repos', [GitHubRepoController::class, 'repos'])->name('github.repos');
+    Route::get('/github/branches', [GitHubRepoController::class, 'branches'])->name('github.branches');
 
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::post('/profile/sync', [ProfileController::class, 'sync'])->name('profile.sync');
