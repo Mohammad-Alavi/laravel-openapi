@@ -30,6 +30,7 @@ final class Build extends Model
 
     /** @var list<string> */
     protected $fillable = [
+        'project_id',
         'commit_sha',
         'status',
         'output_path',

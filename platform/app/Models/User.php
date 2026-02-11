@@ -33,6 +33,16 @@ final class User extends Authenticatable
         'remember_token',
     ];
 
+    /** @var array<string, mixed> */
+    protected $attributes = [
+        'remember_token' => null,
+    ];
+
+    public function getAuthPassword(): string
+    {
+        return '';
+    }
+
     /** @return list<string> */
     public function uniqueIds(): array
     {

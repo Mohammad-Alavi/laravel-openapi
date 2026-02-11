@@ -6,6 +6,7 @@ use App\Enums\BuildStatus;
 use App\Models\Build;
 use App\Models\Project;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 
 describe('Build', function (): void {
     it('belongs to a project', function (): void {
@@ -36,8 +37,8 @@ describe('Build', function (): void {
 
         $build = $build->fresh();
 
-        expect($build->started_at)->toBeInstanceOf(\Illuminate\Support\Carbon::class)
-            ->and($build->completed_at)->toBeInstanceOf(\Illuminate\Support\Carbon::class);
+        expect($build->started_at)->toBeInstanceOf(CarbonImmutable::class)
+            ->and($build->completed_at)->toBeInstanceOf(CarbonImmutable::class);
     });
 
     it('is cascade deleted when project is deleted', function (): void {
