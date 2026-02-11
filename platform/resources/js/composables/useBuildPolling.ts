@@ -6,6 +6,7 @@ import type { Project } from '@/types/models';
 export function useBuildPolling(project: Ref<Project>) {
     let channelName: string | null = null;
     let intervalId: ReturnType<typeof setInterval> | null = null;
+    let catchUpId: ReturnType<typeof setTimeout> | null = null;
 
     function startPollingFallback() {
         if (intervalId !== null) return;
@@ -30,6 +31,12 @@ export function useBuildPolling(project: Ref<Project>) {
                 router.reload();
             });
 
+        // Catch events that fired before subscription was ready
+        catchUpId = setTimeout(() => {
+            router.reload();
+            catchUpId = null;
+        }, 2000);
+
         // Fall back to polling only if Reverb connection fails
         echo.connector.pusher.connection.bind('unavailable', startPollingFallback);
         echo.connector.pusher.connection.bind('failed', startPollingFallback);
@@ -37,6 +44,10 @@ export function useBuildPolling(project: Ref<Project>) {
     }
 
     function unsubscribe() {
+        if (catchUpId !== null) {
+            clearTimeout(catchUpId);
+            catchUpId = null;
+        }
         if (channelName) {
             echo.connector.pusher.connection.unbind('unavailable', startPollingFallback);
             echo.connector.pusher.connection.unbind('failed', startPollingFallback);
