@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Domain\Documentation\Access\Entities\DocSetting;
+use App\Domain\Documentation\Access\Enums\DocVisibility;
 use App\Enums\ProjectStatus;
 use App\Models\Project;
 use App\Models\User;
@@ -21,6 +23,11 @@ describe('Project CRUD', function (): void {
                     ->component('Projects/Index')
                     ->has('projects.data', 1)
                     ->where('projects.data.0.id', $ownProject->ulid)
+                    ->where('projects.data.0.has_builds', false)
+                    ->missing('projects.data.0.github_webhook_id')
+                    ->missing('projects.data.0.github_webhook_secret')
+                    ->missing('projects.data.0.user_id')
+                    ->missing('projects.data.0.latest_build_id')
                 );
         });
 
@@ -166,6 +173,32 @@ describe('Project CRUD', function (): void {
                     ->component('Projects/Show')
                     ->where('project.id', $project->ulid)
                     ->where('project.name', $project->name)
+                    ->where('project.has_builds', false)
+                    ->missing('project.github_webhook_id')
+                    ->missing('project.github_webhook_secret')
+                    ->missing('project.user_id')
+                    ->missing('project.latest_build_id')
+                );
+        });
+
+        it('does not include project_id in docSetting', function (): void {
+            $user = User::factory()->create();
+            $project = Project::factory()->for($user)->create();
+
+            $setting = new DocSetting();
+            $setting->forceFill([
+                'project_id' => $project->id,
+                'visibility' => DocVisibility::Public,
+            ]);
+            $setting->save();
+
+            $response = $this->actingAs($user)->get("/projects/{$project->slug}");
+
+            $response->assertOk()
+                ->assertInertia(fn ($page) => $page
+                    ->component('Projects/Show')
+                    ->where('docSetting.visibility', 'public')
+                    ->missing('docSetting.project_id')
                 );
         });
 
@@ -190,6 +223,10 @@ describe('Project CRUD', function (): void {
                 ->assertInertia(fn ($page) => $page
                     ->component('Projects/Edit')
                     ->where('project.id', $project->ulid)
+                    ->missing('project.github_webhook_id')
+                    ->missing('project.github_webhook_secret')
+                    ->missing('project.user_id')
+                    ->missing('project.latest_build_id')
                 );
         });
     });

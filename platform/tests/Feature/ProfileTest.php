@@ -18,6 +18,23 @@ describe('Profile', function (): void {
                 ->where('user.id', $user->ulid)
                 ->where('user.name', $user->name)
                 ->where('user.email', $user->email)
+                ->missing('user.github_token')
+                ->missing('user.remember_token')
+            );
+    });
+
+    it('shares auth.user as a DTO with ULID id and no sensitive fields', function (): void {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/profile');
+
+        $response->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->where('auth.user.id', $user->ulid)
+                ->where('auth.user.name', $user->name)
+                ->where('auth.user.email', $user->email)
+                ->missing('auth.user.github_token')
+                ->missing('auth.user.remember_token')
             );
     });
 
