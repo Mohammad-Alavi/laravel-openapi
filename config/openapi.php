@@ -1,6 +1,6 @@
 <?php
 
-use MohammadAlavi\LaravelOpenApi\Factories\ExampleFactory;
+use MohammadAlavi\LaravelOpenApi\Factories\DefaultFactory;
 
 return [
     /*
@@ -30,7 +30,7 @@ return [
     ],
     'collections' => [
         'default' => [
-            'openapi' => ExampleFactory::class,
+            'openapi' => DefaultFactory::class,
             // Route for exposing specification.
             // Leave uri null to disable.
             'route' => [
