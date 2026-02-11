@@ -7,6 +7,7 @@ namespace App\Jobs;
 use App\Enums\ProjectStatus;
 use App\Models\Build;
 use App\Models\Project;
+use App\Notifications\BuildCompletedNotification;
 use App\Services\BuildRunner;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -41,6 +42,9 @@ final class ProcessGitHubPushJob implements ShouldQueue
                 'status' => ProjectStatus::Active,
                 'last_built_at' => now(),
             ]);
+
+            $build->refresh();
+            $this->project->user->notify(new BuildCompletedNotification($build));
         }
     }
 }

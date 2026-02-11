@@ -40,6 +40,20 @@ export interface ProjectStats {
     building: number;
 }
 
+export interface AppNotification {
+    id: string;
+    type: string;
+    data: {
+        project_id: number;
+        project_name: string;
+        build_id: number;
+        status: string;
+        commit_sha: string;
+    };
+    read_at: string | null;
+    created_at: string;
+}
+
 export interface PaginatedResponse<T> {
     data: T[];
     current_page: number;
@@ -56,4 +70,5 @@ export interface PageProps {
         success?: string;
         error?: string;
     };
+    unreadNotificationsCount: number;
 }

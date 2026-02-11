@@ -43,6 +43,20 @@ function logout() {
             </v-app-bar-title>
 
             <template #append>
+                <v-btn
+                    icon
+                    variant="text"
+                    :href="'/notifications'"
+                >
+                    <v-badge
+                        v-if="page.props.unreadNotificationsCount > 0"
+                        :content="page.props.unreadNotificationsCount"
+                        color="error"
+                    >
+                        <v-icon>mdi-bell</v-icon>
+                    </v-badge>
+                    <v-icon v-else>mdi-bell-outline</v-icon>
+                </v-btn>
                 <v-menu>
                     <template #activator="{ props }">
                         <v-btn v-bind="props" variant="text">

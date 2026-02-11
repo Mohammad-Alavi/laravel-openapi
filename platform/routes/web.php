@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\GitHubValidationController;
 use App\Http\Controllers\Api\ProjectStatusController;
 use App\Http\Controllers\Auth\GitHubController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RebuildController;
@@ -54,4 +55,8 @@ Route::middleware('auth')->group(function (): void {
 
     Route::get('/projects/{project}/status', ProjectStatusController::class)->name('projects.status');
     Route::post('/projects/{project}/rebuild', RebuildController::class)->name('projects.rebuild');
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllRead');
 });
