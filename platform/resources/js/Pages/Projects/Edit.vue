@@ -9,18 +9,11 @@ const props = defineProps<{
     project: Project;
 }>();
 
-const statusOptions = [
-    { title: 'Active', value: 'active' },
-    { title: 'Paused', value: 'paused' },
-    { title: 'Building', value: 'building' },
-];
-
 const form = useForm({
     name: props.project.name,
     description: props.project.description ?? '',
     github_repo_url: props.project.github_repo_url,
     github_branch: props.project.github_branch,
-    status: props.project.status,
 });
 
 const repoValidation = ref<{ checking: boolean; valid: boolean | null; error: string | null; defaultBranch: string | null }>({
@@ -89,6 +82,8 @@ function submit() {
                     v-model="form.name"
                     label="Project Name"
                     :error-messages="form.errors.name"
+                    hint="A display name for this project in Laragen"
+                    persistent-hint
                     required
                     class="mb-4"
                 />
@@ -96,14 +91,17 @@ function submit() {
                     v-model="form.description"
                     label="Description"
                     :error-messages="form.errors.description"
+                    hint="Optional notes about this project"
                     rows="3"
                     class="mb-4"
                 />
                 <v-text-field
                     v-model="form.github_repo_url"
                     label="GitHub Repository URL"
-                    placeholder="https://github.com/user/repo"
+                    placeholder="https://github.com/owner/repo"
                     :error-messages="form.errors.github_repo_url"
+                    hint="The full URL of the GitHub repository containing your Laravel project"
+                    persistent-hint
                     required
                     class="mb-1"
                 />
@@ -120,14 +118,9 @@ function submit() {
                     v-model="form.github_branch"
                     label="Branch"
                     :error-messages="form.errors.github_branch"
-                    class="mb-4"
-                />
-                <v-select
-                    v-model="form.status"
-                    label="Status"
-                    :items="statusOptions"
-                    :error-messages="form.errors.status"
-                    class="mb-4"
+                    hint="Builds will use the latest commit from this branch"
+                    persistent-hint
+                    class="mb-6"
                 />
                 <v-btn
                     type="submit"

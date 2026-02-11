@@ -242,14 +242,13 @@ describe('Project CRUD', function (): void {
                 'description' => 'Updated description',
                 'github_repo_url' => 'https://github.com/user/updated-repo',
                 'github_branch' => 'develop',
-                'status' => ProjectStatus::Paused->value,
             ]);
 
             $response->assertRedirect("/projects/{$project->slug}");
 
             expect($project->fresh())
                 ->name->toBe('Updated Name')
-                ->and($project->fresh())->status->toBe(ProjectStatus::Paused);
+                ->and($project->fresh()->github_branch)->toBe('develop');
         });
 
         it('prevents updating another user\'s project', function (): void {
