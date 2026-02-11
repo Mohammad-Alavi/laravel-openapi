@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Enums\BuildStatus;
 use App\Enums\ProjectStatus;
 use App\Models\Build;
 use App\Models\Project;
@@ -38,12 +39,19 @@ final class ProcessGitHubPushJob implements ShouldQueue
         try {
             $buildRunner->run($build);
         } finally {
-            $this->project->update([
+            $build->refresh();
+
+            $updateData = [
                 'status' => ProjectStatus::Active,
                 'last_built_at' => now(),
-            ]);
+            ];
 
-            $build->refresh();
+            if ($build->status === BuildStatus::Completed) {
+                $updateData['latest_build_id'] = $build->id;
+            }
+
+            $this->project->update($updateData);
+
             $this->project->user->notify(new BuildCompletedNotification($build));
         }
     }

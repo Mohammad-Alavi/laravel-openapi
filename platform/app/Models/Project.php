@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 final class Project extends Model
@@ -28,6 +29,7 @@ final class Project extends Model
         'github_webhook_secret',
         'status',
         'last_built_at',
+        'latest_build_id',
     ];
 
     /** @return array<string, string> */
@@ -59,5 +61,11 @@ final class Project extends Model
     public function builds(): HasMany
     {
         return $this->hasMany(Build::class);
+    }
+
+    /** @return BelongsTo<Build, $this> */
+    public function latestBuild(): BelongsTo
+    {
+        return $this->belongsTo(Build::class, 'latest_build_id');
     }
 }
