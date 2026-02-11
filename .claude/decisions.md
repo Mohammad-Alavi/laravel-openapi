@@ -345,6 +345,31 @@ Both use `ReflectionProperty` directly. PHPStan `return.type` suppression lives 
 
 ---
 
+## D30: Polling Over WebSockets for Build Status
+
+**Decision**: Use HTTP polling (5s interval) for build status updates instead of WebSockets/Pusher.
+
+**Rationale**:
+- Builds are infrequent (minutes between events), polling latency is acceptable
+- No additional infrastructure (Pusher, Soketi, Redis pub/sub) required
+- Simpler to implement and debug
+- Polling only active on the show page when status is 'building' — stops automatically
+- Can upgrade to WebSockets later if real-time needs increase
+
+---
+
+## D31: Build Retention Union Policy
+
+**Decision**: Retention policy keeps the union of (last 10 per project) OR (builds < 30 days old), whichever keeps more.
+
+**Rationale**:
+- Union ensures both recency and count are respected — a project with 50 builds/day keeps 10 recent, while a project with 1 build/month keeps all within 30 days
+- Storage cleanup happens atomically with record deletion
+- Simple daily schedule via `builds:cleanup` artisan command
+- Per-project independence prevents one noisy project from affecting others
+
+---
+
 ## Open Questions
 
 - **Livewire/Inertia responses**: Skip for MVP, not traditional JSON APIs.

@@ -183,11 +183,25 @@ Annotations are checked first in the strategy chain, so they always override aut
 
 ---
 
-## Planned Platform Features (Future SaaS)
+## Platform Features (Implemented)
 
-- **GitHub OAuth** -- Connect repos to auto-generate docs
-- **Webhook Processing** -- Auto-rebuild on push events
-- **Containerized Analysis** -- Isolated Docker containers for user code
+### Phase 1: Core Pipeline (Implemented)
+
+- **GitHub OAuth** -- Connect repos via OAuth, token stored encrypted
+- **Project CRUD** -- Create/edit/delete projects with GitHub repo URL + branch
+- **Webhook Processing** -- Auto-rebuild on push events via GitHub webhooks
+- **Containerized Analysis** -- Isolated Docker containers for user code (512MB memory, 5min timeout)
+- **Build Pipeline** -- GitHub Push → Webhook → Queue → Docker → Storage
+
+### Phase 2: Polish Features (Implemented)
+
+- **Build Status Polling** -- Show page polls `/projects/{id}/status` every 5s when building, auto-reloads on completion. `ProjectStatusController` returns JSON with status, last_built_at, and latest build info.
+- **Manual Rebuild** -- "Rebuild" button on project show page fetches latest commit from GitHub API and dispatches `ProcessGitHubPushJob`. Disabled during active builds, returns 409 if already building.
+- **Build Retention/Cleanup** -- `builds:cleanup` artisan command runs daily. Retention: keep union of last 10 builds per project OR builds < 30 days old (whichever keeps more). Deletes associated storage files.
+- **Build Notifications** -- In-app (database) + email notifications on build completion. `BuildCompletedNotification` sent via mail and database channels. Notification bell with unread badge in app bar. Notifications page with mark-as-read per item and bulk.
+
+### Planned Platform Features (Future)
+
 - **Hosted Documentation** -- Interactive docs with Stoplight Elements
 - **Custom Domains** -- User's own domain for hosted docs
 - **Changelog Generation** -- Detect API changes between versions
