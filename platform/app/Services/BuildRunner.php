@@ -79,7 +79,8 @@ final class BuildRunner
             Process::run("docker cp {$containerName}:/workspace/output/. {$outputDir}/");
 
             if ($result->failed()) {
-                throw new \RuntimeException($result->errorOutput());
+                $error = trim($result->errorOutput() . "\n" . $result->output());
+                throw new \RuntimeException($error ?: 'Container exited with non-zero status');
             }
         } finally {
             Process::run("docker rm -f {$containerName}");
