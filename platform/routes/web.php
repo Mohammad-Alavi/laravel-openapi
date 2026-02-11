@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ProjectStatusController;
 use App\Http\Controllers\Auth\GitHubController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RebuildController;
 use App\Http\Controllers\Webhooks\GitHubWebhookController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -52,4 +53,5 @@ Route::middleware('auth')->group(function (): void {
     Route::resource('projects', ProjectController::class);
 
     Route::get('/projects/{project}/status', ProjectStatusController::class)->name('projects.status');
+    Route::post('/projects/{project}/rebuild', RebuildController::class)->name('projects.rebuild');
 });

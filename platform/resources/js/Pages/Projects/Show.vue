@@ -12,10 +12,19 @@ const props = defineProps<{
 }>();
 
 const deleteDialog = ref(false);
+const rebuildLoading = ref(false);
 const { polling } = useBuildPolling(toRef(props, 'project'));
 
 function deleteProject() {
     router.delete(destroy.url(props.project.id));
+}
+
+function rebuild() {
+    rebuildLoading.value = true;
+    router.post(`/projects/${props.project.id}/rebuild`, {}, {
+        preserveScroll: true,
+        onFinish: () => { rebuildLoading.value = false; },
+    });
 }
 </script>
 
@@ -29,6 +38,17 @@ function deleteProject() {
             />
             <h1 class="text-h4 ml-2">{{ project.name }}</h1>
             <v-spacer />
+            <v-btn
+                color="primary"
+                prepend-icon="mdi-refresh"
+                variant="outlined"
+                class="mr-2"
+                :disabled="project.status === 'building'"
+                :loading="rebuildLoading"
+                @click="rebuild"
+            >
+                Rebuild
+            </v-btn>
             <v-btn
                 color="primary"
                 variant="outlined"
