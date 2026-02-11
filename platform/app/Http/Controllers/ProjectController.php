@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\ProjectStatus;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
@@ -19,10 +20,31 @@ final class ProjectController extends Controller
 
     public function index(Request $request): Response
     {
-        $projects = $request->user()->projects()->latest()->get();
+        $allProjects = $request->user()->projects();
+
+        $stats = [
+            'total' => $allProjects->count(),
+            'active' => $allProjects->clone()->where('status', ProjectStatus::Active)->count(),
+            'paused' => $allProjects->clone()->where('status', ProjectStatus::Paused)->count(),
+            'building' => $allProjects->clone()->where('status', ProjectStatus::Building)->count(),
+        ];
+
+        $query = $request->user()->projects()->latest();
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->string('search') . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->string('status'));
+        }
+
+        $projects = $query->paginate(12)->withQueryString();
 
         return Inertia::render('Projects/Index', [
             'projects' => $projects,
+            'stats' => $stats,
+            'filters' => $request->only(['search', 'status']),
         ]);
     }
 

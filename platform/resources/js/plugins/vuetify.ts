@@ -19,6 +19,13 @@ export function createVuetify() {
                         secondary: '#5CBBF6',
                     },
                 },
+                dark: {
+                    dark: true,
+                    colors: {
+                        primary: '#2196F3',
+                        secondary: '#5CBBF6',
+                    },
+                },
             },
         },
     });

@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\GitHubValidationController;
 use App\Http\Controllers\Auth\GitHubController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +37,13 @@ Route::post('/logout', function () {
 Route::middleware('auth')->group(function (): void {
     Route::get('/dashboard', fn () => redirect()->route('projects.index'))
         ->name('dashboard');
+
+    Route::post('/github/validate-repo', GitHubValidationController::class)
+        ->name('github.validate-repo');
+
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::post('/profile/sync', [ProfileController::class, 'sync'])->name('profile.sync');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('projects', ProjectController::class);
 });

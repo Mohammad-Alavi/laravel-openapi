@@ -14,10 +14,17 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         const vuetify = createVuetify();
 
-        createApp({ render: () => h(App, props) })
+        const app = createApp({ render: () => h(App, props) })
             .use(plugin)
-            .use(vuetify)
-            .mount(el);
+            .use(vuetify);
+
+        app.mount(el);
+
+        // Restore saved theme preference
+        const savedTheme = localStorage.getItem('laragen-theme');
+        if (savedTheme === 'dark' || savedTheme === 'light') {
+            vuetify.theme.global.name.value = savedTheme;
+        }
     },
     progress: {
         color: '#4B5563',

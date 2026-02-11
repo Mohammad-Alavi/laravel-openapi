@@ -1,10 +1,32 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
 import type { PageProps } from '@/types/models';
 import { index as projectsIndex } from '@/routes/projects';
 import { logout as logoutRoute } from '@/routes';
 
 const page = usePage<PageProps>();
+
+const loading = ref(false);
+
+router.on('start', () => { loading.value = true; });
+router.on('finish', () => { loading.value = false; });
+
+const snackbar = ref(false);
+const snackbarMessage = ref('');
+const snackbarColor = ref('success');
+
+watch(() => page.props.flash, (flash) => {
+    if (flash.success) {
+        snackbarMessage.value = flash.success;
+        snackbarColor.value = 'success';
+        snackbar.value = true;
+    } else if (flash.error) {
+        snackbarMessage.value = flash.error;
+        snackbarColor.value = 'error';
+        snackbar.value = true;
+    }
+}, { immediate: true });
 
 function logout() {
     router.post(logoutRoute.url());
@@ -32,6 +54,9 @@ function logout() {
                         </v-btn>
                     </template>
                     <v-list>
+                        <v-list-item :href="'/profile'">
+                            <v-list-item-title>Profile</v-list-item-title>
+                        </v-list-item>
                         <v-list-item @click="logout">
                             <v-list-item-title>Sign Out</v-list-item-title>
                         </v-list-item>
@@ -40,26 +65,29 @@ function logout() {
             </template>
         </v-app-bar>
 
+        <v-progress-linear
+            :active="loading"
+            indeterminate
+            color="secondary"
+            height="3"
+        />
+
         <v-main>
             <v-container>
-                <v-alert
-                    v-if="page.props.flash.success"
-                    type="success"
-                    closable
-                    class="mb-4"
-                >
-                    {{ page.props.flash.success }}
-                </v-alert>
-                <v-alert
-                    v-if="page.props.flash.error"
-                    type="error"
-                    closable
-                    class="mb-4"
-                >
-                    {{ page.props.flash.error }}
-                </v-alert>
                 <slot />
             </v-container>
         </v-main>
+
+        <v-snackbar
+            v-model="snackbar"
+            :color="snackbarColor"
+            location="top right"
+            :timeout="4000"
+        >
+            {{ snackbarMessage }}
+            <template #actions>
+                <v-btn variant="text" @click="snackbar = false">Close</v-btn>
+            </template>
+        </v-snackbar>
     </v-app>
 </template>

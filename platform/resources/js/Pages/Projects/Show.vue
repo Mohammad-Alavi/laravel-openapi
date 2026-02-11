@@ -1,17 +1,19 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { useProjectStatus } from '@/composables/useProjectStatus';
 import type { Project } from '@/types/models';
 import { index, edit, destroy } from '@/routes/projects';
 
-defineProps<{
+const props = defineProps<{
     project: Project;
 }>();
 
-function deleteProject(id: number) {
-    if (confirm('Are you sure you want to delete this project?')) {
-        router.delete(destroy.url(id));
-    }
+const deleteDialog = ref(false);
+
+function deleteProject() {
+    router.delete(destroy.url(props.project.id));
 }
 </script>
 
@@ -36,7 +38,7 @@ function deleteProject(id: number) {
             <v-btn
                 color="error"
                 variant="outlined"
-                @click="deleteProject(project.id)"
+                @click="deleteDialog = true"
             >
                 Delete
             </v-btn>
@@ -51,10 +53,11 @@ function deleteProject(id: number) {
                     <v-list-item-title>Status</v-list-item-title>
                     <template #append>
                         <v-chip
-                            :color="project.status === 'active' ? 'success' : project.status === 'building' ? 'warning' : 'default'"
+                            :color="useProjectStatus(project.status).color"
+                            :prepend-icon="useProjectStatus(project.status).icon"
                             size="small"
                         >
-                            {{ project.status }}
+                            {{ useProjectStatus(project.status).label }}
                         </v-chip>
                     </template>
                 </v-list-item>
@@ -95,5 +98,19 @@ function deleteProject(id: number) {
                 OpenAPI documentation will appear here once the project has been built.
             </v-card-text>
         </v-card>
+
+        <v-dialog v-model="deleteDialog" max-width="440">
+            <v-card>
+                <v-card-title>Delete Project</v-card-title>
+                <v-card-text>
+                    Are you sure you want to delete <strong>{{ project.name }}</strong>? This action cannot be undone.
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer />
+                    <v-btn @click="deleteDialog = false">Cancel</v-btn>
+                    <v-btn color="error" variant="flat" @click="deleteProject">Delete</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </AuthenticatedLayout>
 </template>

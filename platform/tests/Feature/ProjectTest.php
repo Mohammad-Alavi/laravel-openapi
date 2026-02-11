@@ -18,8 +18,8 @@ describe('Project CRUD', function (): void {
             $response->assertOk()
                 ->assertInertia(fn ($page) => $page
                     ->component('Projects/Index')
-                    ->has('projects', 1)
-                    ->where('projects.0.id', $ownProject->id)
+                    ->has('projects.data', 1)
+                    ->where('projects.data.0.id', $ownProject->id)
                 );
         });
 
@@ -31,7 +31,69 @@ describe('Project CRUD', function (): void {
             $response->assertOk()
                 ->assertInertia(fn ($page) => $page
                     ->component('Projects/Index')
-                    ->has('projects', 0)
+                    ->has('projects.data', 0)
+                );
+        });
+
+        it('includes project status counts in the index response', function (): void {
+            $user = User::factory()->create();
+            Project::factory()->for($user)->count(2)->create(['status' => ProjectStatus::Active]);
+            Project::factory()->for($user)->count(2)->create(['status' => ProjectStatus::Paused]);
+            Project::factory()->for($user)->count(2)->create(['status' => ProjectStatus::Building]);
+
+            $response = $this->actingAs($user)->get('/projects');
+
+            $response->assertOk()
+                ->assertInertia(fn ($page) => $page
+                    ->component('Projects/Index')
+                    ->where('stats.total', 6)
+                    ->where('stats.active', 2)
+                    ->where('stats.paused', 2)
+                    ->where('stats.building', 2)
+                );
+        });
+
+        it('paginates the project list', function (): void {
+            $user = User::factory()->create();
+            Project::factory()->for($user)->count(15)->create();
+
+            $response = $this->actingAs($user)->get('/projects');
+
+            $response->assertOk()
+                ->assertInertia(fn ($page) => $page
+                    ->component('Projects/Index')
+                    ->has('projects.data', 12)
+                    ->where('projects.last_page', 2)
+                );
+        });
+
+        it('filters projects by name search', function (): void {
+            $user = User::factory()->create();
+            Project::factory()->for($user)->create(['name' => 'My API Project']);
+            Project::factory()->for($user)->create(['name' => 'Another App']);
+
+            $response = $this->actingAs($user)->get('/projects?search=API');
+
+            $response->assertOk()
+                ->assertInertia(fn ($page) => $page
+                    ->component('Projects/Index')
+                    ->has('projects.data', 1)
+                    ->where('projects.data.0.name', 'My API Project')
+                );
+        });
+
+        it('filters projects by status', function (): void {
+            $user = User::factory()->create();
+            Project::factory()->for($user)->create(['status' => ProjectStatus::Active]);
+            Project::factory()->for($user)->create(['status' => ProjectStatus::Paused]);
+
+            $response = $this->actingAs($user)->get('/projects?status=paused');
+
+            $response->assertOk()
+                ->assertInertia(fn ($page) => $page
+                    ->component('Projects/Index')
+                    ->has('projects.data', 1)
+                    ->where('projects.data.0.status', 'paused')
                 );
         });
     });
