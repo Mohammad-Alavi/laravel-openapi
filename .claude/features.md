@@ -212,6 +212,7 @@ Annotations are checked first in the strategy chain, so they always override aut
 - **Custom Branding** -- Allow users to customize branding (logo, colors, fonts) of generated documentation
 - **Access Management Autocompletion** -- When a doc has been generated, use the latest spec to provide tag/path autocompletion in role scopes and endpoint rules, with examples so users know what's possible
 - **Sync Edit Page with Create Page** -- The create and edit project pages have diverged; update Edit.vue to match the Create.vue layout (repo search, branch autocomplete, etc.)
+- **Persistent User Configuration** -- Allow users to configure and persist settings per project (and per any scope that makes sense): auto-generation preferences, build triggers, route discovery mode, default visibility, notification preferences, etc. Store as project-level and user-level config with sensible defaults and override hierarchy.
 
 ## Competitive Context
 
