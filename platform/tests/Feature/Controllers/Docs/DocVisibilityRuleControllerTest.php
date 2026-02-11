@@ -20,7 +20,7 @@ describe(class_basename(DocVisibilityRuleController::class), function (): void {
         $project = Project::factory()->for($user)->create();
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/doc-rules", [
+            ->post("/projects/{$project->slug}/doc-rules", [
                 'rule_type' => 'tag',
                 'identifier' => 'payments',
                 'visibility' => 'restricted',
@@ -46,7 +46,7 @@ describe(class_basename(DocVisibilityRuleController::class), function (): void {
         ]);
 
         $this->actingAs($user)
-            ->put("/projects/{$project->id}/doc-rules/{$rule->id}", [
+            ->put("/projects/{$project->slug}/doc-rules/{$rule->ulid}", [
                 'visibility' => 'hidden',
             ])
             ->assertRedirect()
@@ -68,7 +68,7 @@ describe(class_basename(DocVisibilityRuleController::class), function (): void {
         ]);
 
         $this->actingAs($user)
-            ->delete("/projects/{$project->id}/doc-rules/{$rule->id}")
+            ->delete("/projects/{$project->slug}/doc-rules/{$rule->ulid}")
             ->assertRedirect()
             ->assertSessionHas('success', 'Visibility rule deleted.');
 
@@ -78,7 +78,7 @@ describe(class_basename(DocVisibilityRuleController::class), function (): void {
     it('requires authentication for store', function (): void {
         $project = Project::factory()->create();
 
-        $this->post("/projects/{$project->id}/doc-rules", [
+        $this->post("/projects/{$project->slug}/doc-rules", [
             'rule_type' => 'tag',
             'identifier' => 'payments',
             'visibility' => 'restricted',
@@ -90,7 +90,7 @@ describe(class_basename(DocVisibilityRuleController::class), function (): void {
         $otherProject = Project::factory()->create();
 
         $this->actingAs($user)
-            ->post("/projects/{$otherProject->id}/doc-rules", [
+            ->post("/projects/{$otherProject->slug}/doc-rules", [
                 'rule_type' => 'tag',
                 'identifier' => 'payments',
                 'visibility' => 'restricted',
@@ -103,7 +103,7 @@ describe(class_basename(DocVisibilityRuleController::class), function (): void {
         $project = Project::factory()->for($user)->create();
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/doc-rules", [
+            ->post("/projects/{$project->slug}/doc-rules", [
                 'identifier' => 'payments',
                 'visibility' => 'restricted',
             ])
@@ -115,7 +115,7 @@ describe(class_basename(DocVisibilityRuleController::class), function (): void {
         $project = Project::factory()->for($user)->create();
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/doc-rules", [
+            ->post("/projects/{$project->slug}/doc-rules", [
                 'rule_type' => 'tag',
                 'visibility' => 'restricted',
             ])
@@ -127,7 +127,7 @@ describe(class_basename(DocVisibilityRuleController::class), function (): void {
         $project = Project::factory()->for($user)->create();
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/doc-rules", [
+            ->post("/projects/{$project->slug}/doc-rules", [
                 'rule_type' => 'tag',
                 'identifier' => 'payments',
             ])

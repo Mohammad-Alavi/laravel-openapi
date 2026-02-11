@@ -41,16 +41,16 @@ final class BuildCompletedNotification extends Notification
             $message->line("Error log excerpt:")->line("```\n{$excerpt}\n```");
         }
 
-        return $message->action('View Project', url("/projects/{$project->id}"));
+        return $message->action('View Project', url("/projects/{$project->slug}"));
     }
 
     /** @return array<string, mixed> */
     public function toArray(object $notifiable): array
     {
         return [
-            'project_id' => $this->build->project_id,
+            'project_slug' => $this->build->project->slug,
             'project_name' => $this->build->project->name,
-            'build_id' => $this->build->id,
+            'build_ulid' => $this->build->ulid,
             'status' => $this->build->status->value,
             'commit_sha' => $this->build->commit_sha,
         ];

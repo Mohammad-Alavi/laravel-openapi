@@ -14,11 +14,11 @@ final class RevokeAccessLink
         private readonly DocAccessLinkRepository $repository,
     ) {}
 
-    public function execute(int $linkId): void
+    public function execute(string $linkUlid): void
     {
-        $link = DocAccessLink::findOrFail($linkId);
+        $link = DocAccessLink::where('ulid', $linkUlid)->firstOrFail();
 
-        $this->repository->delete($linkId);
+        $this->repository->delete($linkUlid);
 
         AccessLinkRevoked::dispatch(
             $link->getProjectId(),

@@ -4,7 +4,7 @@ import { router, useForm } from '@inertiajs/vue3';
 import type { DocVisibilityRule, SpecTag, SpecPath } from '@/types/models';
 
 const props = defineProps<{
-    projectId: number;
+    projectSlug: string;
     rules: DocVisibilityRule[];
     specTags: SpecTag[];
     specPaths: SpecPath[];
@@ -35,7 +35,7 @@ function updateIdentifierOptions() {
 updateIdentifierOptions();
 
 function createRule() {
-    form.post(`/projects/${props.projectId}/doc-rules`, {
+    form.post(`/projects/${props.projectSlug}/doc-rules`, {
         preserveScroll: true,
         onSuccess: () => {
             showCreateDialog.value = false;
@@ -46,13 +46,13 @@ function createRule() {
 }
 
 function updateVisibility(rule: DocVisibilityRule, newVisibility: string) {
-    router.put(`/projects/${props.projectId}/doc-rules/${rule.id}`, {
+    router.put(`/projects/${props.projectSlug}/doc-rules/${rule.id}`, {
         visibility: newVisibility,
     }, { preserveScroll: true });
 }
 
 function deleteRule(rule: DocVisibilityRule) {
-    router.delete(`/projects/${props.projectId}/doc-rules/${rule.id}`, {
+    router.delete(`/projects/${props.projectSlug}/doc-rules/${rule.id}`, {
         preserveScroll: true,
     });
 }

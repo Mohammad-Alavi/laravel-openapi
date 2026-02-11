@@ -12,6 +12,7 @@ return new class extends Migration
     {
         Schema::create('doc_access_links', function (Blueprint $table): void {
             $table->id();
+            $table->ulid('ulid')->unique();
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->foreignId('doc_role_id')->constrained('doc_roles')->cascadeOnDelete();
             $table->string('name');

@@ -4,7 +4,7 @@ import { router } from '@inertiajs/vue3';
 import type { DocSetting } from '@/types/models';
 
 const props = defineProps<{
-    projectId: number;
+    projectSlug: string;
     setting: DocSetting | null;
 }>();
 
@@ -14,7 +14,7 @@ const visibility = ref(props.setting?.visibility ?? 'private');
 function toggle() {
     const newVisibility = visibility.value === 'public' ? 'private' : 'public';
     loading.value = true;
-    router.put(`/projects/${props.projectId}/doc-settings`, {
+    router.put(`/projects/${props.projectSlug}/doc-settings`, {
         visibility: newVisibility,
     }, {
         preserveScroll: true,

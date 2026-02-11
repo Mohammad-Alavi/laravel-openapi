@@ -7,11 +7,14 @@ namespace App\Domain\Documentation\Access\Entities;
 use App\Domain\Documentation\Access\Contracts\DocRole as DocRoleContract;
 use App\Domain\Documentation\Access\Enums\RuleType;
 use App\Domain\Documentation\Access\ValueObjects\ScopeCollection;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class DocRole extends Model implements DocRoleContract
 {
+    use HasUlids;
+
     protected $table = 'doc_roles';
 
     /** @var list<string> */
@@ -20,6 +23,7 @@ final class DocRole extends Model implements DocRoleContract
         'name',
         'scopes',
         'is_default',
+        'ulid',
     ];
 
     /** @return array<string, string> */
@@ -31,6 +35,17 @@ final class DocRole extends Model implements DocRoleContract
         ];
     }
 
+    /** @return list<string> */
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'ulid';
+    }
+
     /** @return BelongsTo<\App\Models\Project, $this> */
     public function project(): BelongsTo
     {
@@ -40,6 +55,11 @@ final class DocRole extends Model implements DocRoleContract
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getUlid(): string
+    {
+        return $this->ulid;
     }
 
     public function getProjectId(): int

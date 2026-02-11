@@ -12,7 +12,7 @@ export function useBuildPolling(project: Ref<Project>) {
 
         intervalId = setInterval(async () => {
             try {
-                const response = await fetch(`/projects/${project.value.id}/status`, {
+                const response = await fetch(`/projects/${project.value.slug}/status`, {
                     headers: {
                         'Accept': 'application/json',
                         'X-Requested-With': 'XMLHttpRequest',

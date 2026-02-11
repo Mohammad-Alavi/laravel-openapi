@@ -15,12 +15,12 @@ final class UpdateVisibilityRule
     ) {}
 
     /** @param array{rule_type?: string, identifier?: string, visibility?: string} $data */
-    public function execute(int $ruleId, array $data): DocVisibilityRule
+    public function execute(string $ruleUlid, array $data): DocVisibilityRule
     {
-        $existing = $this->repository->findById($ruleId);
+        $existing = $this->repository->findByUlid($ruleUlid);
         $oldVisibility = $existing->getVisibility()->value;
 
-        $rule = $this->repository->update($ruleId, $data);
+        $rule = $this->repository->update($ruleUlid, $data);
 
         VisibilityRuleUpdated::dispatch(
             $rule->getProjectId(),

@@ -84,8 +84,8 @@ final class DocsController extends Controller
             $link = $this->linkRepository->findByToken($hashedToken->toString());
 
             if ($link !== null && $link->getProjectId() === $project->id && $link->isValid()) {
-                $this->linkRepository->touchLastUsed($link->getId());
-                $role = DocRole::find($link->getDocRoleId());
+                $this->linkRepository->touchLastUsed($link->getUlid());
+                $role = DocRole::where('ulid', $link->getDocRoleUlid())->first();
 
                 if ($role !== null) {
                     return ViewerContext::withRole($role);

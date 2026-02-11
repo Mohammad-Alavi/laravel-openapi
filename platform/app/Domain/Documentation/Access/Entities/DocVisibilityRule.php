@@ -7,11 +7,14 @@ namespace App\Domain\Documentation\Access\Entities;
 use App\Domain\Documentation\Access\Contracts\DocVisibilityRule as DocVisibilityRuleContract;
 use App\Domain\Documentation\Access\Enums\EndpointVisibility;
 use App\Domain\Documentation\Access\Enums\RuleType;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class DocVisibilityRule extends Model implements DocVisibilityRuleContract
 {
+    use HasUlids;
+
     protected $table = 'doc_visibility_rules';
 
     /** @var list<string> */
@@ -20,6 +23,7 @@ final class DocVisibilityRule extends Model implements DocVisibilityRuleContract
         'rule_type',
         'identifier',
         'visibility',
+        'ulid',
     ];
 
     /** @return array<string, string> */
@@ -31,6 +35,17 @@ final class DocVisibilityRule extends Model implements DocVisibilityRuleContract
         ];
     }
 
+    /** @return list<string> */
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'ulid';
+    }
+
     /** @return BelongsTo<\App\Models\Project, $this> */
     public function project(): BelongsTo
     {
@@ -40,6 +55,11 @@ final class DocVisibilityRule extends Model implements DocVisibilityRuleContract
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getUlid(): string
+    {
+        return $this->ulid;
     }
 
     public function getProjectId(): int

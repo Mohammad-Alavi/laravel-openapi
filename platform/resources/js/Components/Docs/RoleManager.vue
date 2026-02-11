@@ -4,7 +4,7 @@ import { router, useForm } from '@inertiajs/vue3';
 import type { DocRole, SpecTag, SpecPath } from '@/types/models';
 
 const props = defineProps<{
-    projectId: number;
+    projectSlug: string;
     roles: DocRole[];
     specTags: SpecTag[];
     specPaths: SpecPath[];
@@ -31,7 +31,7 @@ const scopeOptions = [
 ];
 
 function createRole() {
-    form.post(`/projects/${props.projectId}/doc-roles`, {
+    form.post(`/projects/${props.projectSlug}/doc-roles`, {
         preserveScroll: true,
         onSuccess: () => {
             showCreateDialog.value = false;
@@ -49,14 +49,14 @@ function startEdit(role: DocRole) {
 
 function updateRole() {
     if (!editingRole.value) return;
-    editForm.put(`/projects/${props.projectId}/doc-roles/${editingRole.value.id}`, {
+    editForm.put(`/projects/${props.projectSlug}/doc-roles/${editingRole.value.id}`, {
         preserveScroll: true,
         onSuccess: () => { editingRole.value = null; },
     });
 }
 
 function deleteRole(role: DocRole) {
-    router.delete(`/projects/${props.projectId}/doc-roles/${role.id}`, {
+    router.delete(`/projects/${props.projectSlug}/doc-roles/${role.id}`, {
         preserveScroll: true,
     });
 }

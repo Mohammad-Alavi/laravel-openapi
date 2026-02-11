@@ -7,11 +7,14 @@ namespace App\Domain\Documentation\Access\Entities;
 use App\Domain\Documentation\Access\Contracts\DocAccessLink as DocAccessLinkContract;
 use App\Domain\Documentation\Access\ValueObjects\HashedToken;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class DocAccessLink extends Model implements DocAccessLinkContract
 {
+    use HasUlids;
+
     protected $table = 'doc_access_links';
 
     /** @var list<string> */
@@ -22,6 +25,7 @@ final class DocAccessLink extends Model implements DocAccessLinkContract
         'token',
         'expires_at',
         'last_used_at',
+        'ulid',
     ];
 
     /** @return array<string, string> */
@@ -31,6 +35,17 @@ final class DocAccessLink extends Model implements DocAccessLinkContract
             'expires_at' => 'datetime',
             'last_used_at' => 'datetime',
         ];
+    }
+
+    /** @return list<string> */
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'ulid';
     }
 
     /** @return BelongsTo<\App\Models\Project, $this> */
@@ -48,6 +63,18 @@ final class DocAccessLink extends Model implements DocAccessLinkContract
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getUlid(): string
+    {
+        return $this->ulid;
+    }
+
+    public function getDocRoleUlid(): string
+    {
+        $this->loadMissing('docRole');
+
+        return $this->docRole->ulid;
     }
 
     public function getProjectId(): int

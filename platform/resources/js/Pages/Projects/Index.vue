@@ -179,7 +179,7 @@ function goToPage(page: number) {
                 <v-col v-for="project in projects.data" :key="project.id" cols="12" md="6" lg="4">
                     <v-card
                         class="h-100"
-                        @click="router.visit(show.url(project.id))"
+                        @click="router.visit(show.url(project.slug))"
                         hover
                     >
                         <v-card-title>{{ project.name }}</v-card-title>

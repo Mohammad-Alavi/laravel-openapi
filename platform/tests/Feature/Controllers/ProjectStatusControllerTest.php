@@ -17,7 +17,7 @@ describe('ProjectStatusController', function (): void {
         ]);
 
         $this->actingAs($user)
-            ->getJson("/projects/{$project->id}/status")
+            ->getJson("/projects/{$project->slug}/status")
             ->assertOk()
             ->assertJson([
                 'status' => 'active',
@@ -28,7 +28,7 @@ describe('ProjectStatusController', function (): void {
     it('requires authentication', function (): void {
         $project = Project::factory()->create();
 
-        $this->getJson("/projects/{$project->id}/status")
+        $this->getJson("/projects/{$project->slug}/status")
             ->assertUnauthorized();
     });
 
@@ -37,7 +37,7 @@ describe('ProjectStatusController', function (): void {
         $otherProject = Project::factory()->create();
 
         $this->actingAs($user)
-            ->getJson("/projects/{$otherProject->id}/status")
+            ->getJson("/projects/{$otherProject->slug}/status")
             ->assertForbidden();
     });
 
@@ -48,7 +48,7 @@ describe('ProjectStatusController', function (): void {
         ]);
 
         $this->actingAs($user)
-            ->getJson("/projects/{$project->id}/status")
+            ->getJson("/projects/{$project->slug}/status")
             ->assertOk()
             ->assertJson([
                 'status' => 'building',
@@ -66,7 +66,7 @@ describe('ProjectStatusController', function (): void {
         ]);
 
         $this->actingAs($user)
-            ->getJson("/projects/{$project->id}/status")
+            ->getJson("/projects/{$project->slug}/status")
             ->assertOk()
             ->assertJson([
                 'status' => 'building',

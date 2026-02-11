@@ -22,7 +22,7 @@ describe(class_basename(DeleteDocRole::class), function (): void {
         ]);
 
         $action = app(DeleteDocRole::class);
-        $action->execute($role->id);
+        $action->execute($role->ulid);
 
         expect(DocRole::find($role->id))->toBeNull();
 

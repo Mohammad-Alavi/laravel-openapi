@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Docs;
 use App\Application\Documentation\Actions\CreateAccessLink;
 use App\Application\Documentation\Actions\RevokeAccessLink;
 use App\Application\Documentation\DTOs\CreateAccessLinkData;
+use App\Domain\Documentation\Access\Entities\DocAccessLink;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
@@ -28,9 +29,9 @@ final class DocAccessLinkController extends Controller
         ]);
     }
 
-    public function destroy(Project $project, int $docLink): RedirectResponse
+    public function destroy(Project $project, DocAccessLink $docLink): RedirectResponse
     {
-        app(RevokeAccessLink::class)->execute($docLink);
+        app(RevokeAccessLink::class)->execute($docLink->getUlid());
 
         return back()->with('success', 'Access link revoked.');
     }

@@ -31,13 +31,13 @@ final class EloquentDocAccessLinkRepository implements DocAccessLinkRepository
         return DocAccessLinkEntity::create($data);
     }
 
-    public function delete(int $id): void
+    public function delete(string $ulid): void
     {
-        DocAccessLinkEntity::findOrFail($id)->delete();
+        DocAccessLinkEntity::where('ulid', $ulid)->firstOrFail()->delete();
     }
 
-    public function touchLastUsed(int $id): void
+    public function touchLastUsed(string $ulid): void
     {
-        DocAccessLinkEntity::where('id', $id)->update(['last_used_at' => now()]);
+        DocAccessLinkEntity::where('ulid', $ulid)->update(['last_used_at' => now()]);
     }
 }

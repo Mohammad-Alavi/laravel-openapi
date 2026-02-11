@@ -12,6 +12,7 @@ return new class extends Migration
     {
         Schema::create('doc_roles', function (Blueprint $table): void {
             $table->id();
+            $table->ulid('ulid')->unique();
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->json('scopes');

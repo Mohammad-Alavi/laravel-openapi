@@ -10,9 +10,9 @@ use App\Domain\Documentation\Access\Repositories\DocVisibilityRuleRepository;
 
 final class EloquentDocVisibilityRuleRepository implements DocVisibilityRuleRepository
 {
-    public function findById(int $id): ?DocVisibilityRule
+    public function findByUlid(string $ulid): ?DocVisibilityRule
     {
-        return DocVisibilityRuleEntity::find($id);
+        return DocVisibilityRuleEntity::where('ulid', $ulid)->first();
     }
 
     public function findByProjectId(int $projectId): array
@@ -29,16 +29,16 @@ final class EloquentDocVisibilityRuleRepository implements DocVisibilityRuleRepo
         return DocVisibilityRuleEntity::create($data);
     }
 
-    public function update(int $id, array $data): DocVisibilityRule
+    public function update(string $ulid, array $data): DocVisibilityRule
     {
-        $rule = DocVisibilityRuleEntity::findOrFail($id);
+        $rule = DocVisibilityRuleEntity::where('ulid', $ulid)->firstOrFail();
         $rule->update($data);
 
         return $rule->refresh();
     }
 
-    public function delete(int $id): void
+    public function delete(string $ulid): void
     {
-        DocVisibilityRuleEntity::findOrFail($id)->delete();
+        DocVisibilityRuleEntity::where('ulid', $ulid)->firstOrFail()->delete();
     }
 }

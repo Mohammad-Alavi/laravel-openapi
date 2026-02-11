@@ -17,14 +17,14 @@ final class CreateAccessLink
         private readonly DocRoleRepository $roleRepository,
     ) {}
 
-    public function execute(int $projectId, int $roleId, string $name, ?string $expiresAt = null): CreateAccessLinkResult
+    public function execute(int $projectId, string $roleUlid, string $name, ?string $expiresAt = null): CreateAccessLinkResult
     {
         $token = PlainToken::generate();
-        $role = $this->roleRepository->findById($roleId);
+        $role = $this->roleRepository->findByUlid($roleUlid);
 
         $link = $this->linkRepository->create([
             'project_id' => $projectId,
-            'doc_role_id' => $roleId,
+            'doc_role_id' => $role->getId(),
             'name' => $name,
             'token' => $token->hashed()->toString(),
             'expires_at' => $expiresAt,

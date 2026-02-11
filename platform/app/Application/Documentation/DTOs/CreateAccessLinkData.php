@@ -13,7 +13,7 @@ final class CreateAccessLinkData extends Data
 {
     public function __construct(
         #[Required]
-        public int $doc_role_id,
+        public string $doc_role_id,
 
         #[Required, Max(255)]
         public string $name,

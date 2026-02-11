@@ -25,7 +25,7 @@ describe(class_basename(CreateAccessLink::class), function (): void {
         ]);
 
         $action = app(CreateAccessLink::class);
-        $result = $action->execute($project->id, $role->id, 'Partner Link');
+        $result = $action->execute($project->id, $role->ulid, 'Partner Link');
 
         expect($result)->toBeInstanceOf(CreateAccessLinkResult::class)
             ->and($result->token)->toBeInstanceOf(PlainToken::class)
@@ -57,7 +57,7 @@ describe(class_basename(CreateAccessLink::class), function (): void {
 
         $action = app(CreateAccessLink::class);
         $expiresAt = now()->addDays(7)->toDateTimeString();
-        $result = $action->execute($project->id, $role->id, 'Temp Link', $expiresAt);
+        $result = $action->execute($project->id, $role->ulid, 'Temp Link', $expiresAt);
 
         expect($result->link->getExpiresAt())->not->toBeNull();
 

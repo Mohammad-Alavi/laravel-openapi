@@ -68,7 +68,7 @@ watch(() => form.github_repo_url, (url) => {
 });
 
 function submit() {
-    form.put(update.url(props.project.id));
+    form.put(update.url(props.project.slug));
 }
 </script>
 
@@ -78,7 +78,7 @@ function submit() {
             <v-btn
                 icon="mdi-arrow-left"
                 variant="text"
-                @click="router.visit(show.url(project.id))"
+                @click="router.visit(show.url(project.slug))"
             />
             <h1 class="text-h4 ml-2">Edit Project</h1>
         </div>

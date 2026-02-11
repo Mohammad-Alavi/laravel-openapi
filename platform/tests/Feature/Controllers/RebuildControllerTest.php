@@ -26,7 +26,7 @@ describe('RebuildController', function (): void {
         ]);
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/rebuild")
+            ->post("/projects/{$project->slug}/rebuild")
             ->assertRedirect();
 
         Queue::assertPushed(ProcessGitHubPushJob::class, function ($job) use ($project) {
@@ -43,7 +43,7 @@ describe('RebuildController', function (): void {
         ]);
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/rebuild")
+            ->post("/projects/{$project->slug}/rebuild")
             ->assertRedirect()
             ->assertSessionHas('error');
 
@@ -53,7 +53,7 @@ describe('RebuildController', function (): void {
     it('requires authentication', function (): void {
         $project = Project::factory()->create();
 
-        $this->post("/projects/{$project->id}/rebuild")
+        $this->post("/projects/{$project->slug}/rebuild")
             ->assertRedirect('/login');
     });
 
@@ -62,7 +62,7 @@ describe('RebuildController', function (): void {
         $otherProject = Project::factory()->create();
 
         $this->actingAs($user)
-            ->post("/projects/{$otherProject->id}/rebuild")
+            ->post("/projects/{$otherProject->slug}/rebuild")
             ->assertForbidden();
     });
 
@@ -81,7 +81,7 @@ describe('RebuildController', function (): void {
             'status' => ProjectStatus::Active,
         ]);
 
-        $this->actingAs($user)->post("/projects/{$project->id}/rebuild");
+        $this->actingAs($user)->post("/projects/{$project->slug}/rebuild");
 
         Http::assertSent(fn ($request) => str_contains($request->url(), 'api.github.com/repos/owner/repo/commits/develop'));
     });
@@ -100,7 +100,7 @@ describe('RebuildController', function (): void {
         ]);
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/rebuild")
+            ->post("/projects/{$project->slug}/rebuild")
             ->assertRedirect()
             ->assertSessionHas('error');
 
@@ -123,7 +123,7 @@ describe('RebuildController', function (): void {
         ]);
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/rebuild")
+            ->post("/projects/{$project->slug}/rebuild")
             ->assertRedirect()
             ->assertSessionHas('success');
     });

@@ -11,6 +11,8 @@ interface DocVisibilityRule
 {
     public function getId(): int;
 
+    public function getUlid(): string;
+
     public function getProjectId(): int;
 
     public function getRuleType(): RuleType;

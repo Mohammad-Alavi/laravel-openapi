@@ -11,6 +11,8 @@ interface DocRole
 {
     public function getId(): int;
 
+    public function getUlid(): string;
+
     public function getProjectId(): int;
 
     public function getName(): string;

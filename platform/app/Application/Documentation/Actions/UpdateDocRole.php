@@ -15,12 +15,12 @@ final class UpdateDocRole
     ) {}
 
     /** @param array{name?: string, scopes?: list<string>, is_default?: bool} $data */
-    public function execute(int $roleId, array $data): DocRole
+    public function execute(string $roleUlid, array $data): DocRole
     {
-        $existing = $this->repository->findById($roleId);
+        $existing = $this->repository->findByUlid($roleUlid);
         $scopesChanged = isset($data['scopes']) && $data['scopes'] !== $existing->getScopes()->toArray();
 
-        $role = $this->repository->update($roleId, $data);
+        $role = $this->repository->update($roleUlid, $data);
 
         DocRoleUpdated::dispatch(
             $role->getProjectId(),

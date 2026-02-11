@@ -8,7 +8,7 @@ use App\Domain\Documentation\Access\Contracts\DocRole;
 
 interface DocRoleRepository
 {
-    public function findById(int $id): ?DocRole;
+    public function findByUlid(string $ulid): ?DocRole;
 
     /** @return list<DocRole> */
     public function findByProjectId(int $projectId): array;
@@ -17,7 +17,7 @@ interface DocRoleRepository
     public function create(array $data): DocRole;
 
     /** @param array{name?: string, scopes?: list<string>, is_default?: bool} $data */
-    public function update(int $id, array $data): DocRole;
+    public function update(string $ulid, array $data): DocRole;
 
-    public function delete(int $id): void;
+    public function delete(string $ulid): void;
 }

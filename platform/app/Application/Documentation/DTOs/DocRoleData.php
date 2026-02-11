@@ -10,7 +10,7 @@ use Spatie\LaravelData\Data;
 final class DocRoleData extends Data
 {
     public function __construct(
-        public int $id,
+        public string $id,
         public string $name,
         /** @var list<string> */
         public array $scopes,
@@ -20,7 +20,7 @@ final class DocRoleData extends Data
     public static function fromContract(DocRole $role): self
     {
         return new self(
-            id: $role->getId(),
+            id: $role->getUlid(),
             name: $role->getName(),
             scopes: $role->getScopes()->toArray(),
             is_default: $role->isDefault(),

@@ -30,7 +30,7 @@ describe(class_basename(RevokeAccessLink::class), function (): void {
         ]);
 
         $action = app(RevokeAccessLink::class);
-        $action->execute($link->id);
+        $action->execute($link->ulid);
 
         expect(DocAccessLink::find($link->id))->toBeNull();
 

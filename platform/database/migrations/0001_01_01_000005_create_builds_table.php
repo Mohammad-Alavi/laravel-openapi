@@ -12,6 +12,7 @@ return new class extends Migration
     {
         Schema::create('builds', function (Blueprint $table): void {
             $table->id();
+            $table->ulid('ulid')->unique();
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->string('commit_sha', 40);
             $table->string('status')->default('pending');

@@ -92,9 +92,9 @@ describe('BuildCompletedNotification', function (): void {
         $data = $notification->toArray($user);
 
         expect($data)->toBe([
-            'project_id' => $project->id,
+            'project_slug' => $project->slug,
             'project_name' => 'Test Project',
-            'build_id' => $build->id,
+            'build_ulid' => $build->ulid,
             'status' => 'completed',
             'commit_sha' => 'abc123def456',
         ]);
@@ -134,9 +134,9 @@ describe('BuildCompletedNotification', function (): void {
         $dbNotification = $user->notifications()->first();
 
         expect($dbNotification->data)->toBe([
-            'project_id' => $project->id,
+            'project_slug' => $project->slug,
             'project_name' => 'DB Test',
-            'build_id' => $build->id,
+            'build_ulid' => $build->ulid,
             'status' => 'completed',
             'commit_sha' => 'deadbeef1234',
         ]);

@@ -159,7 +159,7 @@ describe('Project CRUD', function (): void {
             $user = User::factory()->create();
             $project = Project::factory()->for($user)->create();
 
-            $response = $this->actingAs($user)->get("/projects/{$project->id}");
+            $response = $this->actingAs($user)->get("/projects/{$project->slug}");
 
             $response->assertOk()
                 ->assertInertia(fn ($page) => $page
@@ -173,7 +173,7 @@ describe('Project CRUD', function (): void {
             $user = User::factory()->create();
             $otherProject = Project::factory()->create();
 
-            $response = $this->actingAs($user)->get("/projects/{$otherProject->id}");
+            $response = $this->actingAs($user)->get("/projects/{$otherProject->slug}");
 
             $response->assertForbidden();
         });
@@ -184,7 +184,7 @@ describe('Project CRUD', function (): void {
             $user = User::factory()->create();
             $project = Project::factory()->for($user)->create();
 
-            $response = $this->actingAs($user)->get("/projects/{$project->id}/edit");
+            $response = $this->actingAs($user)->get("/projects/{$project->slug}/edit");
 
             $response->assertOk()
                 ->assertInertia(fn ($page) => $page
@@ -200,7 +200,7 @@ describe('Project CRUD', function (): void {
             $user = User::factory()->create();
             $project = Project::factory()->for($user)->create();
 
-            $response = $this->actingAs($user)->put("/projects/{$project->id}", [
+            $response = $this->actingAs($user)->put("/projects/{$project->slug}", [
                 'name' => 'Updated Name',
                 'description' => 'Updated description',
                 'github_repo_url' => 'https://github.com/user/updated-repo',
@@ -208,7 +208,7 @@ describe('Project CRUD', function (): void {
                 'status' => ProjectStatus::Paused->value,
             ]);
 
-            $response->assertRedirect("/projects/{$project->id}");
+            $response->assertRedirect("/projects/{$project->slug}");
 
             expect($project->fresh())
                 ->name->toBe('Updated Name')
@@ -219,7 +219,7 @@ describe('Project CRUD', function (): void {
             $user = User::factory()->create();
             $otherProject = Project::factory()->create();
 
-            $response = $this->actingAs($user)->put("/projects/{$otherProject->id}", [
+            $response = $this->actingAs($user)->put("/projects/{$otherProject->slug}", [
                 'name' => 'Hacked',
             ]);
 
@@ -233,7 +233,7 @@ describe('Project CRUD', function (): void {
             $user = User::factory()->create();
             $project = Project::factory()->for($user)->create();
 
-            $response = $this->actingAs($user)->delete("/projects/{$project->id}");
+            $response = $this->actingAs($user)->delete("/projects/{$project->slug}");
 
             $response->assertRedirect('/projects');
             $this->assertDatabaseMissing('projects', ['id' => $project->id]);
@@ -243,7 +243,7 @@ describe('Project CRUD', function (): void {
             $user = User::factory()->create();
             $otherProject = Project::factory()->create();
 
-            $response = $this->actingAs($user)->delete("/projects/{$otherProject->id}");
+            $response = $this->actingAs($user)->delete("/projects/{$otherProject->slug}");
 
             $response->assertForbidden();
             $this->assertDatabaseHas('projects', ['id' => $otherProject->id]);
@@ -305,7 +305,7 @@ describe('Project CRUD', function (): void {
                 'github_webhook_secret' => 'old-secret',
             ]);
 
-            $this->actingAs($user)->put("/projects/{$project->id}", [
+            $this->actingAs($user)->put("/projects/{$project->slug}", [
                 'name' => $project->name,
                 'github_repo_url' => 'https://github.com/user/new-repo',
                 'github_branch' => 'main',
@@ -332,7 +332,7 @@ describe('Project CRUD', function (): void {
                 'github_webhook_secret' => 'secret',
             ]);
 
-            $this->actingAs($user)->put("/projects/{$project->id}", [
+            $this->actingAs($user)->put("/projects/{$project->slug}", [
                 'name' => 'Updated Name Only',
                 'github_repo_url' => 'https://github.com/user/repo',
                 'github_branch' => 'main',
@@ -353,7 +353,7 @@ describe('Project CRUD', function (): void {
                 'github_webhook_secret' => 'secret',
             ]);
 
-            $this->actingAs($user)->delete("/projects/{$project->id}");
+            $this->actingAs($user)->delete("/projects/{$project->slug}");
 
             Http::assertSent(fn ($request) => str_contains($request->url(), 'hooks/100')
                 && $request->method() === 'DELETE');

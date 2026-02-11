@@ -24,8 +24,8 @@ describe(class_basename(DocAccessLinkController::class), function (): void {
         ]);
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/doc-links", [
-                'doc_role_id' => $role->id,
+            ->post("/projects/{$project->slug}/doc-links", [
+                'doc_role_id' => $role->ulid,
                 'name' => 'Partner Link',
             ])
             ->assertRedirect()
@@ -50,8 +50,8 @@ describe(class_basename(DocAccessLinkController::class), function (): void {
 
         $expiresAt = now()->addDays(7)->toDateTimeString();
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/doc-links", [
-                'doc_role_id' => $role->id,
+            ->post("/projects/{$project->slug}/doc-links", [
+                'doc_role_id' => $role->ulid,
                 'name' => 'Temp Link',
                 'expires_at' => $expiresAt,
             ])
@@ -80,7 +80,7 @@ describe(class_basename(DocAccessLinkController::class), function (): void {
         ]);
 
         $this->actingAs($user)
-            ->delete("/projects/{$project->id}/doc-links/{$link->id}")
+            ->delete("/projects/{$project->slug}/doc-links/{$link->ulid}")
             ->assertRedirect()
             ->assertSessionHas('success', 'Access link revoked.');
 
@@ -90,8 +90,8 @@ describe(class_basename(DocAccessLinkController::class), function (): void {
     it('requires authentication for store', function (): void {
         $project = Project::factory()->create();
 
-        $this->post("/projects/{$project->id}/doc-links", [
-            'doc_role_id' => 1,
+        $this->post("/projects/{$project->slug}/doc-links", [
+            'doc_role_id' => 'fake-ulid',
             'name' => 'Test',
         ])->assertRedirect('/login');
     });
@@ -101,8 +101,8 @@ describe(class_basename(DocAccessLinkController::class), function (): void {
         $otherProject = Project::factory()->create();
 
         $this->actingAs($user)
-            ->post("/projects/{$otherProject->id}/doc-links", [
-                'doc_role_id' => 1,
+            ->post("/projects/{$otherProject->slug}/doc-links", [
+                'doc_role_id' => 'fake-ulid',
                 'name' => 'Test',
             ])
             ->assertForbidden();
@@ -126,7 +126,7 @@ describe(class_basename(DocAccessLinkController::class), function (): void {
         ]);
 
         $this->actingAs($user)
-            ->delete("/projects/{$otherProject->id}/doc-links/{$link->id}")
+            ->delete("/projects/{$otherProject->slug}/doc-links/{$link->ulid}")
             ->assertForbidden();
     });
 
@@ -135,7 +135,7 @@ describe(class_basename(DocAccessLinkController::class), function (): void {
         $project = Project::factory()->for($user)->create();
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/doc-links", [
+            ->post("/projects/{$project->slug}/doc-links", [
                 'name' => 'Test',
             ])
             ->assertSessionHasErrors('doc_role_id');
@@ -146,8 +146,8 @@ describe(class_basename(DocAccessLinkController::class), function (): void {
         $project = Project::factory()->for($user)->create();
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/doc-links", [
-                'doc_role_id' => 1,
+            ->post("/projects/{$project->slug}/doc-links", [
+                'doc_role_id' => 'fake-ulid',
             ])
             ->assertSessionHasErrors('name');
     });

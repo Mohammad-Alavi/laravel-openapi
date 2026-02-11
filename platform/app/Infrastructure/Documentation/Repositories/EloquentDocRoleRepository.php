@@ -10,9 +10,9 @@ use App\Domain\Documentation\Access\Repositories\DocRoleRepository;
 
 final class EloquentDocRoleRepository implements DocRoleRepository
 {
-    public function findById(int $id): ?DocRole
+    public function findByUlid(string $ulid): ?DocRole
     {
-        return DocRoleEntity::find($id);
+        return DocRoleEntity::where('ulid', $ulid)->first();
     }
 
     public function findByProjectId(int $projectId): array
@@ -28,16 +28,16 @@ final class EloquentDocRoleRepository implements DocRoleRepository
         return DocRoleEntity::create($data);
     }
 
-    public function update(int $id, array $data): DocRole
+    public function update(string $ulid, array $data): DocRole
     {
-        $role = DocRoleEntity::findOrFail($id);
+        $role = DocRoleEntity::where('ulid', $ulid)->firstOrFail();
         $role->update($data);
 
         return $role->refresh();
     }
 
-    public function delete(int $id): void
+    public function delete(string $ulid): void
     {
-        DocRoleEntity::findOrFail($id)->delete();
+        DocRoleEntity::where('ulid', $ulid)->firstOrFail()->delete();
     }
 }

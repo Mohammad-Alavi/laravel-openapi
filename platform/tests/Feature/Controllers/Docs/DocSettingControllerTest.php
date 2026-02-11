@@ -17,7 +17,7 @@ describe(class_basename(DocSettingController::class), function (): void {
         $project = Project::factory()->for($user)->create();
 
         $this->actingAs($user)
-            ->put("/projects/{$project->id}/doc-settings", [
+            ->put("/projects/{$project->slug}/doc-settings", [
                 'visibility' => 'public',
             ])
             ->assertRedirect()
@@ -30,7 +30,7 @@ describe(class_basename(DocSettingController::class), function (): void {
     it('requires authentication', function (): void {
         $project = Project::factory()->create();
 
-        $this->put("/projects/{$project->id}/doc-settings", [
+        $this->put("/projects/{$project->slug}/doc-settings", [
             'visibility' => 'public',
         ])->assertRedirect('/login');
     });
@@ -40,7 +40,7 @@ describe(class_basename(DocSettingController::class), function (): void {
         $otherProject = Project::factory()->create();
 
         $this->actingAs($user)
-            ->put("/projects/{$otherProject->id}/doc-settings", [
+            ->put("/projects/{$otherProject->slug}/doc-settings", [
                 'visibility' => 'public',
             ])
             ->assertForbidden();
@@ -51,7 +51,7 @@ describe(class_basename(DocSettingController::class), function (): void {
         $project = Project::factory()->for($user)->create();
 
         $this->actingAs($user)
-            ->put("/projects/{$project->id}/doc-settings", [
+            ->put("/projects/{$project->slug}/doc-settings", [
                 'visibility' => 'invalid',
             ])
             ->assertSessionHasErrors('visibility');

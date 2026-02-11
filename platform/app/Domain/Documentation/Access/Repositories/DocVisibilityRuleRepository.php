@@ -8,7 +8,7 @@ use App\Domain\Documentation\Access\Contracts\DocVisibilityRule;
 
 interface DocVisibilityRuleRepository
 {
-    public function findById(int $id): ?DocVisibilityRule;
+    public function findByUlid(string $ulid): ?DocVisibilityRule;
 
     /** @return list<DocVisibilityRule> */
     public function findByProjectId(int $projectId): array;
@@ -17,7 +17,7 @@ interface DocVisibilityRuleRepository
     public function create(array $data): DocVisibilityRule;
 
     /** @param array{rule_type?: string, identifier?: string, visibility?: string} $data */
-    public function update(int $id, array $data): DocVisibilityRule;
+    public function update(string $ulid, array $data): DocVisibilityRule;
 
-    public function delete(int $id): void;
+    public function delete(string $ulid): void;
 }

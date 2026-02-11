@@ -27,12 +27,12 @@ const docsTab = ref('settings');
 const { polling } = useBuildPolling(toRef(props, 'project'));
 
 function deleteProject() {
-    router.delete(destroy.url(props.project.id));
+    router.delete(destroy.url(props.project.slug));
 }
 
 function rebuild() {
     rebuildLoading.value = true;
-    router.post(`/projects/${props.project.id}/rebuild`, {}, {
+    router.post(`/projects/${props.project.slug}/rebuild`, {}, {
         preserveScroll: true,
         onFinish: () => { rebuildLoading.value = false; },
     });
@@ -64,7 +64,7 @@ function rebuild() {
                 color="primary"
                 variant="outlined"
                 class="mr-2"
-                @click="router.visit(edit.url(project.id))"
+                @click="router.visit(edit.url(project.slug))"
             >
                 Edit
             </v-btn>
@@ -170,14 +170,14 @@ function rebuild() {
                 <v-tabs-window v-model="docsTab">
                     <v-tabs-window-item value="settings">
                         <VisibilityToggle
-                            :project-id="project.id"
+                            :project-slug="project.slug"
                             :setting="docSetting"
                         />
                     </v-tabs-window-item>
 
                     <v-tabs-window-item value="roles">
                         <RoleManager
-                            :project-id="project.id"
+                            :project-slug="project.slug"
                             :roles="docRoles"
                             :spec-tags="specTags"
                             :spec-paths="specPaths"
@@ -186,7 +186,7 @@ function rebuild() {
 
                     <v-tabs-window-item value="rules">
                         <EndpointRulesManager
-                            :project-id="project.id"
+                            :project-slug="project.slug"
                             :rules="docRules"
                             :spec-tags="specTags"
                             :spec-paths="specPaths"
@@ -195,7 +195,6 @@ function rebuild() {
 
                     <v-tabs-window-item value="links">
                         <AccessLinkManager
-                            :project-id="project.id"
                             :project-slug="project.slug"
                             :links="docLinks"
                             :roles="docRoles"

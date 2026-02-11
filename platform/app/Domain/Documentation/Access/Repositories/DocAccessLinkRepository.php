@@ -16,7 +16,7 @@ interface DocAccessLinkRepository
     /** @param array{project_id: int, doc_role_id: int, name: string, token: string, expires_at?: string|null} $data */
     public function create(array $data): DocAccessLink;
 
-    public function delete(int $id): void;
+    public function delete(string $ulid): void;
 
-    public function touchLastUsed(int $id): void;
+    public function touchLastUsed(string $ulid): void;
 }

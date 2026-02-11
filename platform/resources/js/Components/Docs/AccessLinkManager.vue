@@ -4,7 +4,6 @@ import { router, useForm, usePage } from '@inertiajs/vue3';
 import type { DocAccessLink, DocRole, PageProps } from '@/types/models';
 
 const props = defineProps<{
-    projectId: number;
     projectSlug: string;
     links: DocAccessLink[];
     roles: DocRole[];
@@ -16,7 +15,7 @@ const createdToken = ref<string | null>(null);
 const copied = ref(false);
 
 const form = useForm({
-    doc_role_id: null as number | null,
+    doc_role_id: null as string | null,
     name: '',
     expires_at: '',
 });
@@ -24,7 +23,7 @@ const form = useForm({
 const plainToken = computed(() => page.props.flash as Record<string, string>);
 
 function createLink() {
-    form.post(`/projects/${props.projectId}/doc-links`, {
+    form.post(`/projects/${props.projectSlug}/doc-links`, {
         preserveScroll: true,
         onSuccess: () => {
             showCreateDialog.value = false;
@@ -38,7 +37,7 @@ function createLink() {
 }
 
 function revokeLink(link: DocAccessLink) {
-    router.delete(`/projects/${props.projectId}/doc-links/${link.id}`, {
+    router.delete(`/projects/${props.projectSlug}/doc-links/${link.id}`, {
         preserveScroll: true,
     });
 }
@@ -53,7 +52,7 @@ async function copyToClipboard(text: string) {
     setTimeout(() => { copied.value = false; }, 2000);
 }
 
-function roleName(roleId: number): string {
+function roleName(roleId: string): string {
     return props.roles.find(r => r.id === roleId)?.name ?? 'Unknown';
 }
 </script>

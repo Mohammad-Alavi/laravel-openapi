@@ -40,22 +40,22 @@ export interface DocSetting {
 }
 
 export interface DocRole {
-    id: number;
+    id: string;
     name: string;
     scopes: string[];
     is_default: boolean;
 }
 
 export interface DocVisibilityRule {
-    id: number;
+    id: string;
     rule_type: 'tag' | 'path';
     identifier: string;
     visibility: 'public' | 'internal' | 'restricted' | 'hidden';
 }
 
 export interface DocAccessLink {
-    id: number;
-    doc_role_id: number;
+    id: string;
+    doc_role_id: string;
     name: string;
     expires_at: string | null;
     last_used_at: string | null;
@@ -83,9 +83,9 @@ export interface AppNotification {
     id: string;
     type: string;
     data: {
-        project_id: number;
+        project_slug: string;
         project_name: string;
-        build_id: number;
+        build_ulid: string;
         status: string;
         commit_sha: string;
     };

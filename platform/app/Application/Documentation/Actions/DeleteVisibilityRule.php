@@ -13,11 +13,11 @@ final class DeleteVisibilityRule
         private readonly DocVisibilityRuleRepository $repository,
     ) {}
 
-    public function execute(int $ruleId): void
+    public function execute(string $ruleUlid): void
     {
-        $rule = $this->repository->findById($ruleId);
+        $rule = $this->repository->findByUlid($ruleUlid);
 
-        $this->repository->delete($ruleId);
+        $this->repository->delete($ruleUlid);
 
         VisibilityRuleDeleted::dispatch(
             $rule->getProjectId(),

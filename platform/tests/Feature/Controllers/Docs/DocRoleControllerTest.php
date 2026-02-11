@@ -18,7 +18,7 @@ describe(class_basename(DocRoleController::class), function (): void {
         $project = Project::factory()->for($user)->create();
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/doc-roles", [
+            ->post("/projects/{$project->slug}/doc-roles", [
                 'name' => 'Partner',
                 'scopes' => ['payments', 'webhooks'],
                 'is_default' => false,
@@ -44,7 +44,7 @@ describe(class_basename(DocRoleController::class), function (): void {
         ]);
 
         $this->actingAs($user)
-            ->put("/projects/{$project->id}/doc-roles/{$role->id}", [
+            ->put("/projects/{$project->slug}/doc-roles/{$role->ulid}", [
                 'name' => 'Updated Partner',
                 'scopes' => ['payments', 'users'],
             ])
@@ -68,7 +68,7 @@ describe(class_basename(DocRoleController::class), function (): void {
         ]);
 
         $this->actingAs($user)
-            ->delete("/projects/{$project->id}/doc-roles/{$role->id}")
+            ->delete("/projects/{$project->slug}/doc-roles/{$role->ulid}")
             ->assertRedirect()
             ->assertSessionHas('success', 'Role deleted.');
 
@@ -78,7 +78,7 @@ describe(class_basename(DocRoleController::class), function (): void {
     it('requires authentication for store', function (): void {
         $project = Project::factory()->create();
 
-        $this->post("/projects/{$project->id}/doc-roles", [
+        $this->post("/projects/{$project->slug}/doc-roles", [
             'name' => 'Test',
             'scopes' => ['*'],
         ])->assertRedirect('/login');
@@ -89,7 +89,7 @@ describe(class_basename(DocRoleController::class), function (): void {
         $otherProject = Project::factory()->create();
 
         $this->actingAs($user)
-            ->post("/projects/{$otherProject->id}/doc-roles", [
+            ->post("/projects/{$otherProject->slug}/doc-roles", [
                 'name' => 'Test',
                 'scopes' => ['*'],
             ])
@@ -108,7 +108,7 @@ describe(class_basename(DocRoleController::class), function (): void {
         ]);
 
         $this->actingAs($user)
-            ->delete("/projects/{$otherProject->id}/doc-roles/{$role->id}")
+            ->delete("/projects/{$otherProject->slug}/doc-roles/{$role->ulid}")
             ->assertForbidden();
     });
 
@@ -117,7 +117,7 @@ describe(class_basename(DocRoleController::class), function (): void {
         $project = Project::factory()->for($user)->create();
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/doc-roles", [
+            ->post("/projects/{$project->slug}/doc-roles", [
                 'scopes' => ['*'],
             ])
             ->assertSessionHasErrors('name');
@@ -128,7 +128,7 @@ describe(class_basename(DocRoleController::class), function (): void {
         $project = Project::factory()->for($user)->create();
 
         $this->actingAs($user)
-            ->post("/projects/{$project->id}/doc-roles", [
+            ->post("/projects/{$project->slug}/doc-roles", [
                 'name' => 'Test',
             ])
             ->assertSessionHasErrors('scopes');

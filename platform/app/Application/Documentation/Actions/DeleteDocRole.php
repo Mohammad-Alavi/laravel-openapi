@@ -13,11 +13,11 @@ final class DeleteDocRole
         private readonly DocRoleRepository $repository,
     ) {}
 
-    public function execute(int $roleId): void
+    public function execute(string $roleUlid): void
     {
-        $role = $this->repository->findById($roleId);
+        $role = $this->repository->findByUlid($roleUlid);
 
-        $this->repository->delete($roleId);
+        $this->repository->delete($roleUlid);
 
         DocRoleDeleted::dispatch(
             $role->getProjectId(),

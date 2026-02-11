@@ -59,7 +59,7 @@ function timeAgo(dateString: string): string {
                     :key="notification.id"
                     :class="{ 'bg-blue-lighten-5': !notification.read_at }"
                     class="mb-1 rounded"
-                    :href="`/projects/${notification.data.project_id}`"
+                    :href="`/projects/${notification.data.project_slug}`"
                 >
                     <template #prepend>
                         <v-icon :color="statusColor(notification.data.status)">

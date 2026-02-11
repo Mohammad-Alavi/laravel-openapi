@@ -12,6 +12,7 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table): void {
             $table->id();
+            $table->ulid('ulid')->unique();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('slug')->unique();

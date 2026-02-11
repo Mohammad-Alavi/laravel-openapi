@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\BuildStatus;
 use Database\Factories\BuildFactory;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +15,18 @@ final class Build extends Model
 {
     /** @use HasFactory<BuildFactory> */
     use HasFactory;
+    use HasUlids;
+
+    /** @return list<string> */
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'ulid';
+    }
 
     /** @var list<string> */
     protected $fillable = [

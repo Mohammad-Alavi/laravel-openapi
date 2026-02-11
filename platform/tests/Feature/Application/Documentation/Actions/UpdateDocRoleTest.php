@@ -22,7 +22,7 @@ describe(class_basename(UpdateDocRole::class), function (): void {
         ]);
 
         $action = app(UpdateDocRole::class);
-        $updated = $action->execute($role->id, ['name' => 'Premium Partner', 'scopes' => ['payments', 'webhooks']]);
+        $updated = $action->execute($role->ulid, ['name' => 'Premium Partner', 'scopes' => ['payments', 'webhooks']]);
 
         expect($updated->getName())->toBe('Premium Partner')
             ->and($updated->getScopes()->toArray())->toBe(['payments', 'webhooks']);
@@ -46,7 +46,7 @@ describe(class_basename(UpdateDocRole::class), function (): void {
         ]);
 
         $action = app(UpdateDocRole::class);
-        $action->execute($role->id, ['name' => 'New Name']);
+        $action->execute($role->ulid, ['name' => 'New Name']);
 
         Event::assertDispatched(DocRoleUpdated::class, function (DocRoleUpdated $event): bool {
             return $event->scopesChanged === false;
