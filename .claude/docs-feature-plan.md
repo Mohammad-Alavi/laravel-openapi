@@ -61,6 +61,26 @@ Benefits:
 - Domain behavior exposed through clean interface
 - Repositories type-hint against contract (interface), not concrete model
 
+### 3. Authorization in Data Classes (not Controllers or Middleware)
+
+Authorization for doc management routes lives in spatie/laravel-data's `authorize()` method on input DTOs. This ensures authorization travels with the request data and is reusable across different controllers (web + API).
+
+```php
+final class CreateDocRoleData extends Data
+{
+    public static function authorize(Request $request): bool
+    {
+        return $request->user()?->can('update', $request->route('project')) ?? false;
+    }
+}
+```
+
+Destroy routes (no Data class) use `can:update,project` middleware on routes.
+
+### 4. CreateAccessLinkResult Value Object
+
+The `CreateAccessLink` action returns a `CreateAccessLinkResult` value object instead of a raw array — enforces typed return for the token + link pair.
+
 ### Revised Directory Structure
 
 ```
@@ -83,7 +103,8 @@ platform/app/
 │       │   │   ├── Scope.php
 │       │   │   ├── ScopeCollection.php
 │       │   │   ├── HashedToken.php
-│       │   │   └── PlainToken.php
+│       │   │   ├── PlainToken.php
+│       │   │   └── CreateAccessLinkResult.php
 │       │   ├── Enums/
 │       │   │   ├── DocVisibility.php
 │       │   │   ├── EndpointVisibility.php
@@ -167,7 +188,7 @@ platform/app/
 
 ```
 HTTP Request
-  → Controller (thin adapter, validates via Data input DTO)
+  → Controller (thin adapter, validates via Data input DTO with authorize())
     → Action (receives DTO, calls Repository, dispatches Event)
       → Repository interface (domain layer, type-hinted as Contract)
         → Eloquent implementation (queries Entity which IS the Model)
@@ -178,29 +199,29 @@ HTTP Request
   → Controller maps to Output DTO → Inertia / JSON response
 ```
 
-## Implementation Phases
+## Implementation Progress
 
-See original plan for full details. Key changes:
-- No separate Eloquent models in Infrastructure (eliminated)
-- Actions moved to Application layer
-- DTOs moved to Application layer
-- PostHog moved to Infrastructure/Analytics
-- Repositories in Infrastructure are thinner (no entity mapping)
-
-## Phase 1 Scope (Current Implementation)
+### Phase 1 Scope (Current Implementation)
 
 1. Domain enums + latest_build_id migration ✅
 2. Value Objects (Scope, ScopeCollection, HashedToken, PlainToken) ✅
 3. Contracts (interfaces) + Entities (Model + Contract) + ViewerContext ✅
 4. Repository interfaces + DTOs + Eloquent implementations + migrations ✅
-5. SpecFilter + SpecParser domain services
-6. Domain events
-7. PostHog analytics
-8. Actions (command handlers)
-9. DocsController + Blade view (Scalar)
-10. Management controllers + routes
-11. ProjectController.show updates
-12. Vue management UI components
+5. SpecFilter + SpecParser domain services ✅
+6. Domain events ✅
+7. Actions (command handlers) ✅
+8. DocsController + Blade view (Scalar) + management controllers ✅
+9. Authorization via Data class authorize() + route middleware for destroy ✅
+10. CreateAccessLinkResult value object ✅
+11. ProjectController.show updates (passes docs data to Inertia) ✅
+12. Vue management UI components (VisibilityToggle, RoleManager, EndpointRulesManager, AccessLinkManager) ✅
+13. TypeScript types for docs data ✅
+14. HTTP tests for all controllers (42 tests) ✅
+
+### Remaining for Phase 1
+
+- PostHog analytics (PostHogService, SendToPostHog listener) — deferred
+- spatie/laravel-typescript-transformer auto-generation — deferred (manual types in models.d.ts work for now)
 
 ## Future Performance Improvements
 
@@ -242,3 +263,4 @@ Implementation: `CachingDocRoleRepository` wraps the Eloquent implementation, us
 - Password protection on `doc_settings`
 - View analytics dashboard
 - Repository caching decorator implementation
+- spatie/laravel-typescript-transformer auto-generation setup
