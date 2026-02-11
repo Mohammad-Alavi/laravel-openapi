@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\GitHubValidationController;
+use App\Http\Controllers\Api\ProjectStatusController;
 use App\Http\Controllers\Auth\GitHubController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
@@ -49,4 +50,6 @@ Route::middleware('auth')->group(function (): void {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('projects', ProjectController::class);
+
+    Route::get('/projects/{project}/status', ProjectStatusController::class)->name('projects.status');
 });

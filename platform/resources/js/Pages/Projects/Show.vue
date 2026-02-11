@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, toRef } from 'vue';
 import { router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { useProjectStatus } from '@/composables/useProjectStatus';
+import { useBuildPolling } from '@/composables/useBuildPolling';
 import type { Project } from '@/types/models';
 import { index, edit, destroy } from '@/routes/projects';
 
@@ -11,6 +12,7 @@ const props = defineProps<{
 }>();
 
 const deleteDialog = ref(false);
+const { polling } = useBuildPolling(toRef(props, 'project'));
 
 function deleteProject() {
     router.delete(destroy.url(props.project.id));
@@ -61,6 +63,12 @@ function deleteProject() {
                         </v-chip>
                     </template>
                 </v-list-item>
+                <v-progress-linear
+                    v-if="polling"
+                    indeterminate
+                    color="warning"
+                    height="3"
+                />
                 <v-list-item>
                     <template #prepend>
                         <v-icon>mdi-github</v-icon>

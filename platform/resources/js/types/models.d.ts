@@ -20,6 +20,19 @@ export interface Project {
     updated_at: string;
 }
 
+export interface Build {
+    id: number;
+    project_id: number;
+    commit_sha: string;
+    status: 'pending' | 'building' | 'completed' | 'failed';
+    output_path: string | null;
+    error_log: string | null;
+    started_at: string | null;
+    completed_at: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface ProjectStats {
     total: number;
     active: number;
