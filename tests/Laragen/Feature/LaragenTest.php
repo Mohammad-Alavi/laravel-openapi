@@ -86,11 +86,20 @@ describe(class_basename(Laragen::class), function () {
         ],
     ];
 
-    $ifEmailThenName = ['if' => ['required' => ['email']], 'then' => ['required' => ['name']]];
-    $ifNameThenEmail = ['if' => ['required' => ['name']], 'then' => ['required' => ['email']]];
+    $ifEmailThenName = [
+        'if' => ['properties' => ['email' => []], 'required' => ['email']],
+        'then' => ['properties' => ['name' => []], 'required' => ['name']],
+    ];
+    $ifNameThenEmail = [
+        'if' => ['properties' => ['name' => []], 'required' => ['name']],
+        'then' => ['properties' => ['email' => []], 'required' => ['email']],
+    ];
     $ifNameOrEmailThenAge = [
-        'if' => ['anyOf' => [['required' => ['name']], ['required' => ['email']]]],
-        'then' => ['required' => ['age']],
+        'if' => ['anyOf' => [
+            ['properties' => ['name' => []], 'required' => ['name']],
+            ['properties' => ['email' => []], 'required' => ['email']],
+        ]],
+        'then' => ['properties' => ['age' => []], 'required' => ['age']],
     ];
 
     it(

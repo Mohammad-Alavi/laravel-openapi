@@ -8,6 +8,7 @@ use MohammadAlavi\LaravelRulesToSchema\Concerns\TracksParserContext;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\ContextAwareRuleParser;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\ParseResult;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final class RequiredWithoutParser implements ContextAwareRuleParser
@@ -40,9 +41,16 @@ final class RequiredWithoutParser implements ContextAwareRuleParser
         if (array_key_last($this->allRules) === $attribute) {
             $conditions = [];
             foreach ($hasRequiredWithout as $attr => $args) {
-                $notSchema = LooseFluentDescriptor::withoutSchema()->required(...$args);
+                $notSchema = LooseFluentDescriptor::withoutSchema()
+                    ->properties(...array_map(
+                        static fn (string $name): Property => Property::create($name, LooseFluentDescriptor::withoutSchema()),
+                        $args,
+                    ))
+                    ->required(...$args);
                 $ifSchema = LooseFluentDescriptor::withoutSchema()->not($notSchema);
-                $thenSchema = LooseFluentDescriptor::withoutSchema()->required($attr);
+                $thenSchema = LooseFluentDescriptor::withoutSchema()
+                    ->properties(Property::create($attr, LooseFluentDescriptor::withoutSchema()))
+                    ->required($attr);
 
                 $conditions[] = LooseFluentDescriptor::withoutSchema()
                     ->if($ifSchema)

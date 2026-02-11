@@ -8,6 +8,7 @@ use MohammadAlavi\LaravelRulesToSchema\Concerns\TracksParserContext;
 use MohammadAlavi\LaravelRulesToSchema\Contracts\ContextAwareRuleParser;
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\ParseResult;
+use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Properties\Property;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\LooseFluentDescriptor;
 
 final class RequiredWithParser implements ContextAwareRuleParser
@@ -41,16 +42,25 @@ final class RequiredWithParser implements ContextAwareRuleParser
             $conditions = [];
             foreach ($hasRequiredWith as $attr => $args) {
                 if (1 === count($args)) {
-                    $ifSchema = LooseFluentDescriptor::withoutSchema()->required(...$args);
+                    $ifSchema = LooseFluentDescriptor::withoutSchema()
+                        ->properties(...array_map(
+                            static fn (string $name): Property => Property::create($name, LooseFluentDescriptor::withoutSchema()),
+                            $args,
+                        ))
+                        ->required(...$args);
                 } else {
                     $anyOfConditions = [];
                     foreach ($args as $arg) {
-                        $anyOfConditions[] = LooseFluentDescriptor::withoutSchema()->required($arg);
+                        $anyOfConditions[] = LooseFluentDescriptor::withoutSchema()
+                            ->properties(Property::create($arg, LooseFluentDescriptor::withoutSchema()))
+                            ->required($arg);
                     }
                     $ifSchema = LooseFluentDescriptor::withoutSchema()->anyOf(...$anyOfConditions);
                 }
 
-                $thenSchema = LooseFluentDescriptor::withoutSchema()->required($attr);
+                $thenSchema = LooseFluentDescriptor::withoutSchema()
+                    ->properties(Property::create($attr, LooseFluentDescriptor::withoutSchema()))
+                    ->required($attr);
 
                 $conditions[] = LooseFluentDescriptor::withoutSchema()
                     ->if($ifSchema)

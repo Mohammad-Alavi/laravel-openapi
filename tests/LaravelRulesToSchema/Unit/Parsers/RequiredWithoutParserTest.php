@@ -47,15 +47,15 @@ describe(class_basename(RequiredWithoutParser::class), function (): void {
         $firstCondition = $compiled['allOf'][0];
         expect($firstCondition)->toHaveKey('if')
             ->and($firstCondition['if'])->toHaveKey('not')
-            ->and($firstCondition['if']['not'])->toBe(['required' => ['email']])
-            ->and($firstCondition['then'])->toBe(['required' => ['name']]);
+            ->and($firstCondition['if']['not'])->toBe(['properties' => ['email' => []], 'required' => ['email']])
+            ->and($firstCondition['then'])->toBe(['properties' => ['name' => []], 'required' => ['name']]);
 
         // Second condition: if name is absent, email is required
         $secondCondition = $compiled['allOf'][1];
         expect($secondCondition)->toHaveKey('if')
             ->and($secondCondition['if'])->toHaveKey('not')
-            ->and($secondCondition['if']['not'])->toBe(['required' => ['name']])
-            ->and($secondCondition['then'])->toBe(['required' => ['email']]);
+            ->and($secondCondition['if']['not'])->toBe(['properties' => ['name' => []], 'required' => ['name']])
+            ->and($secondCondition['then'])->toBe(['properties' => ['email' => []], 'required' => ['email']]);
     });
 
     it('handles required_without with multiple arguments', function (): void {
@@ -93,8 +93,8 @@ describe(class_basename(RequiredWithoutParser::class), function (): void {
             ->and($compiled['allOf'])->toHaveCount(1);
 
         $condition = $compiled['allOf'][0];
-        expect($condition['if']['not'])->toBe(['required' => ['email', 'fax']])
-            ->and($condition['then'])->toBe(['required' => ['phone']]);
+        expect($condition['if']['not'])->toBe(['properties' => ['email' => [], 'fax' => []], 'required' => ['email', 'fax']])
+            ->and($condition['then'])->toBe(['properties' => ['phone' => []], 'required' => ['phone']]);
     });
 
     it('preserves properties for mixed fields with and without required_without', function (): void {

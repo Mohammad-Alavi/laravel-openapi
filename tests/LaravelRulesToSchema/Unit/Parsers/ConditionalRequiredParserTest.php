@@ -24,7 +24,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['role'])->toBe(['const' => 'admin'])
-            ->and($compiled['then'])->toBe(['required' => ['name']]);
+            ->and($compiled['then'])->toBe(['properties' => ['name' => []], 'required' => ['name']]);
     });
 
     it('generates if/then for required_unless rule', function (): void {
@@ -43,7 +43,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['role'])->toBe(['const' => 'guest'])
-            ->and($compiled['else'])->toBe(['required' => ['name']]);
+            ->and($compiled['else'])->toBe(['properties' => ['name' => []], 'required' => ['name']]);
     });
 
     it('generates if/then for required_with_all rule', function (): void {
@@ -61,8 +61,8 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
         $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
-            ->and($compiled['if'])->toBe(['required' => ['street', 'zip']])
-            ->and($compiled['then'])->toBe(['required' => ['city']]);
+            ->and($compiled['if'])->toBe(['properties' => ['street' => [], 'zip' => []], 'required' => ['street', 'zip']])
+            ->and($compiled['then'])->toBe(['properties' => ['city' => []], 'required' => ['city']]);
     });
 
     it('generates if/then for required_without_all rule', function (): void {
@@ -80,7 +80,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
         $compiled = $result->schema()->compile();
 
         expect($compiled)->toHaveKey('if')
-            ->and($compiled['then'])->toBe(['required' => ['email']]);
+            ->and($compiled['then'])->toBe(['properties' => ['email' => []], 'required' => ['email']]);
     });
 
     it('generates if/then for required_if_accepted rule', function (): void {
@@ -99,7 +99,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['terms'])->toBe(['const' => true])
-            ->and($compiled['then'])->toBe(['required' => ['reason']]);
+            ->and($compiled['then'])->toBe(['properties' => ['reason' => []], 'required' => ['reason']]);
     });
 
     it('generates if/then for required_if_declined rule', function (): void {
@@ -118,7 +118,7 @@ describe(class_basename(ConditionalRequiredParser::class), function (): void {
 
         expect($compiled)->toHaveKey('if')
             ->and($compiled['if']['properties']['agree'])->toBe(['const' => false])
-            ->and($compiled['then'])->toBe(['required' => ['reason']]);
+            ->and($compiled['then'])->toBe(['properties' => ['reason' => []], 'required' => ['reason']]);
     });
 
     it('does not modify schema when no conditional required rules exist', function (): void {

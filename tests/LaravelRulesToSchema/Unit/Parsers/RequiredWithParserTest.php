@@ -45,14 +45,14 @@ describe(class_basename(RequiredWithParser::class), function (): void {
         // First condition: if email is present, name is required
         $firstCondition = $compiled['allOf'][0];
         expect($firstCondition)->toHaveKey('if')
-            ->and($firstCondition['if'])->toBe(['required' => ['email']])
-            ->and($firstCondition['then'])->toBe(['required' => ['name']]);
+            ->and($firstCondition['if'])->toBe(['properties' => ['email' => []], 'required' => ['email']])
+            ->and($firstCondition['then'])->toBe(['properties' => ['name' => []], 'required' => ['name']]);
 
         // Second condition: if name is present, email is required
         $secondCondition = $compiled['allOf'][1];
         expect($secondCondition)->toHaveKey('if')
-            ->and($secondCondition['if'])->toBe(['required' => ['name']])
-            ->and($secondCondition['then'])->toBe(['required' => ['email']]);
+            ->and($secondCondition['if'])->toBe(['properties' => ['name' => []], 'required' => ['name']])
+            ->and($secondCondition['then'])->toBe(['properties' => ['email' => []], 'required' => ['email']]);
     });
 
     it('handles required_with with multiple arguments using anyOf in if', function (): void {
@@ -90,8 +90,11 @@ describe(class_basename(RequiredWithParser::class), function (): void {
             ->and($compiled['allOf'])->toHaveCount(1);
 
         $condition = $compiled['allOf'][0];
-        expect($condition['if'])->toBe(['anyOf' => [['required' => ['name']], ['required' => ['email']]]])
-            ->and($condition['then'])->toBe(['required' => ['age']]);
+        expect($condition['if'])->toBe(['anyOf' => [
+            ['properties' => ['name' => []], 'required' => ['name']],
+            ['properties' => ['email' => []], 'required' => ['email']],
+        ]])
+            ->and($condition['then'])->toBe(['properties' => ['age' => []], 'required' => ['age']]);
     });
 
     it('preserves properties for mixed fields with and without required_with', function (): void {

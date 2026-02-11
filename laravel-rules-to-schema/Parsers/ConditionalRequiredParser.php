@@ -48,7 +48,9 @@ final class ConditionalRequiredParser implements ContextAwareRuleParser
 
     private function applyConditional(LooseFluentDescriptor $schema, string $attribute, string $rule, array $args): LooseFluentDescriptor
     {
-        $thenSchema = LooseFluentDescriptor::withoutSchema()->required($attribute);
+        $thenSchema = LooseFluentDescriptor::withoutSchema()
+            ->properties(Property::create($attribute, LooseFluentDescriptor::withoutSchema()))
+            ->required($attribute);
 
         return match ($rule) {
             'required_if' => $this->applyRequiredIf($schema, $thenSchema, $args),
@@ -79,14 +81,24 @@ final class ConditionalRequiredParser implements ContextAwareRuleParser
 
     private function applyRequiredWithAll(LooseFluentDescriptor $schema, LooseFluentDescriptor $thenSchema, array $args): LooseFluentDescriptor
     {
-        $ifSchema = LooseFluentDescriptor::withoutSchema()->required(...$args);
+        $ifSchema = LooseFluentDescriptor::withoutSchema()
+            ->properties(...array_map(
+                static fn (string $name): Property => Property::create($name, LooseFluentDescriptor::withoutSchema()),
+                $args,
+            ))
+            ->required(...$args);
 
         return $schema->if($ifSchema)->then($thenSchema);
     }
 
     private function applyRequiredWithoutAll(LooseFluentDescriptor $schema, LooseFluentDescriptor $thenSchema, array $args): LooseFluentDescriptor
     {
-        $notSchema = LooseFluentDescriptor::withoutSchema()->required(...$args);
+        $notSchema = LooseFluentDescriptor::withoutSchema()
+            ->properties(...array_map(
+                static fn (string $name): Property => Property::create($name, LooseFluentDescriptor::withoutSchema()),
+                $args,
+            ))
+            ->required(...$args);
         $ifSchema = LooseFluentDescriptor::withoutSchema()->not($notSchema);
 
         return $schema->if($ifSchema)->then($thenSchema);
