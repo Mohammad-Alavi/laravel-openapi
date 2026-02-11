@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Application\Documentation\DTOs\DocAccessLinkData;
+use App\Application\Documentation\DTOs\DocRoleData;
+use App\Application\Documentation\DTOs\DocSettingData;
+use App\Application\Documentation\DTOs\DocVisibilityRuleData;
+use App\Domain\Documentation\Access\Repositories\DocAccessLinkRepository;
+use App\Domain\Documentation\Access\Repositories\DocRoleRepository;
+use App\Domain\Documentation\Access\Repositories\DocSettingRepository;
+use App\Domain\Documentation\Access\Repositories\DocVisibilityRuleRepository;
+use App\Domain\Documentation\Rendering\Services\SpecParser;
 use App\Enums\ProjectStatus;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
@@ -12,6 +21,7 @@ use App\Services\GitHubWebhookService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -21,6 +31,11 @@ final class ProjectController extends Controller
 
     public function __construct(
         private readonly GitHubWebhookService $webhookService,
+        private readonly DocSettingRepository $docSettingRepository,
+        private readonly DocRoleRepository $docRoleRepository,
+        private readonly DocVisibilityRuleRepository $docVisibilityRuleRepository,
+        private readonly DocAccessLinkRepository $docAccessLinkRepository,
+        private readonly SpecParser $specParser,
     ) {}
 
     public function index(Request $request): Response
@@ -72,8 +87,30 @@ final class ProjectController extends Controller
     {
         $this->authorize('view', $project);
 
+        $docSetting = $this->docSettingRepository->findByProjectId($project->id);
+        $docRoles = $this->docRoleRepository->findByProjectId($project->id);
+        $docRules = $this->docVisibilityRuleRepository->findByProjectId($project->id);
+        $docLinks = $this->docAccessLinkRepository->findByProjectId($project->id);
+
+        $specTags = [];
+        $specPaths = [];
+        if ($project->latest_build_id !== null) {
+            $specPath = "builds/{$project->id}/{$project->latest_build_id}/openapi.json";
+            if (Storage::exists($specPath)) {
+                $spec = json_decode(Storage::get($specPath), true);
+                $specTags = $this->specParser->extractTags($spec);
+                $specPaths = $this->specParser->extractPaths($spec);
+            }
+        }
+
         return Inertia::render('Projects/Show', [
             'project' => $project,
+            'docSetting' => $docSetting ? DocSettingData::fromContract($docSetting) : null,
+            'docRoles' => array_map(fn ($r) => DocRoleData::fromContract($r), $docRoles),
+            'docRules' => array_map(fn ($r) => DocVisibilityRuleData::fromContract($r), $docRules),
+            'docLinks' => array_map(fn ($l) => DocAccessLinkData::fromContract($l), $docLinks),
+            'specTags' => $specTags,
+            'specPaths' => $specPaths,
         ]);
     }
 

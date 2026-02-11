@@ -6,20 +6,6 @@ export interface User {
     github_avatar: string | null;
 }
 
-export interface Project {
-    id: number;
-    user_id: number;
-    name: string;
-    slug: string;
-    description: string | null;
-    github_repo_url: string;
-    github_branch: string;
-    status: 'active' | 'paused' | 'building';
-    last_built_at: string | null;
-    created_at: string;
-    updated_at: string;
-}
-
 export interface Build {
     id: number;
     project_id: number;
@@ -31,6 +17,59 @@ export interface Build {
     completed_at: string | null;
     created_at: string;
     updated_at: string;
+}
+
+export interface Project {
+    id: number;
+    user_id: number;
+    name: string;
+    slug: string;
+    description: string | null;
+    github_repo_url: string;
+    github_branch: string;
+    status: 'active' | 'paused' | 'building';
+    last_built_at: string | null;
+    latest_build_id: number | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface DocSetting {
+    project_id: number;
+    visibility: 'public' | 'private';
+}
+
+export interface DocRole {
+    id: number;
+    name: string;
+    scopes: string[];
+    is_default: boolean;
+}
+
+export interface DocVisibilityRule {
+    id: number;
+    rule_type: 'tag' | 'path';
+    identifier: string;
+    visibility: 'public' | 'internal' | 'restricted' | 'hidden';
+}
+
+export interface DocAccessLink {
+    id: number;
+    doc_role_id: number;
+    name: string;
+    expires_at: string | null;
+    last_used_at: string | null;
+    is_expired: boolean;
+}
+
+export interface SpecTag {
+    name: string;
+    description: string | null;
+}
+
+export interface SpecPath {
+    path: string;
+    methods: string[];
 }
 
 export interface ProjectStats {
