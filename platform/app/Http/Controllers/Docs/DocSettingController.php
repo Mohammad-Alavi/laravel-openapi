@@ -12,9 +12,9 @@ use Illuminate\Http\RedirectResponse;
 
 final class DocSettingController extends Controller
 {
-    public function update(UpdateDocSettingData $data, Project $project): RedirectResponse
+    public function update(UpdateDocSettingData $data, Project $project, UpdateDocSetting $action): RedirectResponse
     {
-        app(UpdateDocSetting::class)->execute($project->id, $data->visibility);
+        $action->execute($project->id, $data->visibility);
 
         return back()->with('success', 'Documentation visibility updated.');
     }

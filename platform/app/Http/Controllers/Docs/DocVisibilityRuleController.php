@@ -16,9 +16,9 @@ use Illuminate\Http\RedirectResponse;
 
 final class DocVisibilityRuleController extends Controller
 {
-    public function store(CreateVisibilityRuleData $data, Project $project): RedirectResponse
+    public function store(CreateVisibilityRuleData $data, Project $project, CreateVisibilityRule $action): RedirectResponse
     {
-        app(CreateVisibilityRule::class)->execute([
+        $action->execute([
             'project_id' => $project->id,
             'rule_type' => $data->rule_type->value,
             'identifier' => $data->identifier,
@@ -28,21 +28,21 @@ final class DocVisibilityRuleController extends Controller
         return back()->with('success', 'Visibility rule created.');
     }
 
-    public function update(UpdateVisibilityRuleData $data, Project $project, DocVisibilityRule $docRule): RedirectResponse
+    public function update(UpdateVisibilityRuleData $data, Project $project, DocVisibilityRule $docRule, UpdateVisibilityRule $action): RedirectResponse
     {
         $updateData = collect($data->toArray())
             ->filter(fn ($v) => $v !== null)
             ->map(fn ($v) => $v instanceof \BackedEnum ? $v->value : $v)
             ->all();
 
-        app(UpdateVisibilityRule::class)->execute($docRule->getUlid(), $updateData);
+        $action->execute($docRule->getUlid(), $updateData);
 
         return back()->with('success', 'Visibility rule updated.');
     }
 
-    public function destroy(Project $project, DocVisibilityRule $docRule): RedirectResponse
+    public function destroy(Project $project, DocVisibilityRule $docRule, DeleteVisibilityRule $action): RedirectResponse
     {
-        app(DeleteVisibilityRule::class)->execute($docRule->getUlid());
+        $action->execute($docRule->getUlid());
 
         return back()->with('success', 'Visibility rule deleted.');
     }

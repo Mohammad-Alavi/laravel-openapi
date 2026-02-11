@@ -16,9 +16,9 @@ use Illuminate\Http\RedirectResponse;
 
 final class DocRoleController extends Controller
 {
-    public function store(CreateDocRoleData $data, Project $project): RedirectResponse
+    public function store(CreateDocRoleData $data, Project $project, CreateDocRole $action): RedirectResponse
     {
-        app(CreateDocRole::class)->execute($project->id, [
+        $action->execute($project->id, [
             'name' => $data->name,
             'scopes' => $data->scopes,
             'is_default' => $data->is_default,
@@ -27,17 +27,17 @@ final class DocRoleController extends Controller
         return back()->with('success', 'Role created.');
     }
 
-    public function update(UpdateDocRoleData $data, Project $project, DocRole $docRole): RedirectResponse
+    public function update(UpdateDocRoleData $data, Project $project, DocRole $docRole, UpdateDocRole $action): RedirectResponse
     {
         $updateData = array_filter($data->toArray(), fn ($v) => $v !== null);
-        app(UpdateDocRole::class)->execute($docRole->getUlid(), $updateData);
+        $action->execute($docRole->getUlid(), $updateData);
 
         return back()->with('success', 'Role updated.');
     }
 
-    public function destroy(Project $project, DocRole $docRole): RedirectResponse
+    public function destroy(Project $project, DocRole $docRole, DeleteDocRole $action): RedirectResponse
     {
-        app(DeleteDocRole::class)->execute($docRole->getUlid());
+        $action->execute($docRole->getUlid());
 
         return back()->with('success', 'Role deleted.');
     }

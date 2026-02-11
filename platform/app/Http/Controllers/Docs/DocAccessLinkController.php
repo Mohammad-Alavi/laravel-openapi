@@ -14,9 +14,9 @@ use Illuminate\Http\RedirectResponse;
 
 final class DocAccessLinkController extends Controller
 {
-    public function store(CreateAccessLinkData $data, Project $project): RedirectResponse
+    public function store(CreateAccessLinkData $data, Project $project, CreateAccessLink $action): RedirectResponse
     {
-        $result = app(CreateAccessLink::class)->execute(
+        $result = $action->execute(
             $project->id,
             $data->doc_role_id,
             $data->name,
@@ -29,9 +29,9 @@ final class DocAccessLinkController extends Controller
         ]);
     }
 
-    public function destroy(Project $project, DocAccessLink $docLink): RedirectResponse
+    public function destroy(Project $project, DocAccessLink $docLink, RevokeAccessLink $action): RedirectResponse
     {
-        app(RevokeAccessLink::class)->execute($docLink->getUlid());
+        $action->execute($docLink->getUlid());
 
         return back()->with('success', 'Access link revoked.');
     }
