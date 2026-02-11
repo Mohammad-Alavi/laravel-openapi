@@ -208,6 +208,10 @@ Annotations are checked first in the strategy chain, so they always override aut
 - **Breaking Change Detection** -- Alert on breaking API changes
 - **Team Collaboration** -- Org-based role access
 - **Billing** -- Stripe subscriptions
+- **Frontend Tests with Pest visit()** -- Add browser-level tests using Pest's `visit()` method targeting 100% coverage for both backend and frontend
+- **Custom Branding** -- Allow users to customize branding (logo, colors, fonts) of generated documentation
+- **Access Management Autocompletion** -- When a doc has been generated, use the latest spec to provide tag/path autocompletion in role scopes and endpoint rules, with examples so users know what's possible
+- **Sync Edit Page with Create Page** -- The create and edit project pages have diverged; update Edit.vue to match the Create.vue layout (repo search, branch autocomplete, etc.)
 
 ## Competitive Context
 
