@@ -2,10 +2,13 @@
 
 use App\Domain\Documentation\Access\Entities\DocSetting;
 use App\Domain\Documentation\Access\Enums\DocVisibility;
+use App\Enums\BuildStatus;
 use App\Enums\ProjectStatus;
+use App\Models\Build;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 describe('Project CRUD', function (): void {
     describe('index', function (): void {
@@ -197,6 +200,109 @@ describe('Project CRUD', function (): void {
                     ->component('Projects/Show')
                     ->where('docSetting.visibility', 'public')
                     ->missing('docSetting.project_id')
+                );
+        });
+
+        it('includes recent builds in show response', function (): void {
+            $user = User::factory()->create();
+            $project = Project::factory()->for($user)->create();
+            $build = Build::factory()->for($project)->create([
+                'status' => BuildStatus::Completed,
+                'commit_sha' => 'abc123def',
+                'started_at' => now()->subMinutes(5),
+                'completed_at' => now(),
+            ]);
+
+            $response = $this->actingAs($user)->get("/projects/{$project->slug}");
+
+            $response->assertOk()
+                ->assertInertia(fn ($page) => $page
+                    ->component('Projects/Show')
+                    ->has('recentBuilds', 1)
+                    ->where('recentBuilds.0.id', $build->ulid)
+                    ->where('recentBuilds.0.status', 'completed')
+                    ->where('recentBuilds.0.commit_sha', 'abc123def')
+                    ->has('recentBuilds.0.started_at')
+                    ->has('recentBuilds.0.completed_at')
+                    ->missing('recentBuilds.0.project_id')
+                    ->missing('recentBuilds.0.output_path')
+                );
+        });
+
+        it('includes spec tags and paths when build exists', function (): void {
+            Storage::fake();
+
+            $user = User::factory()->create();
+            $project = Project::factory()->for($user)->create();
+            $build = Build::factory()->for($project)->create([
+                'status' => BuildStatus::Completed,
+            ]);
+            $project->update(['latest_build_id' => $build->id]);
+
+            Storage::put("builds/{$project->id}/{$build->id}/openapi.json", json_encode([
+                'openapi' => '3.1.0',
+                'info' => ['title' => 'Test', 'version' => '1.0'],
+                'tags' => [
+                    ['name' => 'Users', 'description' => 'User management'],
+                ],
+                'paths' => [
+                    '/api/users' => [
+                        'get' => ['tags' => ['Users'], 'responses' => []],
+                        'post' => ['tags' => ['Users'], 'responses' => []],
+                    ],
+                ],
+            ]));
+
+            $response = $this->actingAs($user)->get("/projects/{$project->slug}");
+
+            $response->assertOk()
+                ->assertInertia(fn ($page) => $page
+                    ->has('specTags', 1)
+                    ->where('specTags.0.name', 'Users')
+                    ->where('specTags.0.description', 'User management')
+                    ->has('specPaths', 1)
+                    ->where('specPaths.0.path', '/api/users')
+                    ->where('specPaths.0.methods', ['GET', 'POST'])
+                );
+        });
+
+        it('returns empty spec data when no builds exist', function (): void {
+            $user = User::factory()->create();
+            $project = Project::factory()->for($user)->create();
+
+            $response = $this->actingAs($user)->get("/projects/{$project->slug}");
+
+            $response->assertOk()
+                ->assertInertia(fn ($page) => $page
+                    ->has('specTags', 0)
+                    ->has('specPaths', 0)
+                );
+        });
+
+        it('includes all doc management data in show response', function (): void {
+            $user = User::factory()->create();
+            $project = Project::factory()->for($user)->create();
+
+            $response = $this->actingAs($user)->get("/projects/{$project->slug}");
+
+            $response->assertOk()
+                ->assertInertia(fn ($page) => $page
+                    ->has('docRoles')
+                    ->has('docRules')
+                    ->has('docLinks')
+                );
+        });
+
+        it('limits recent builds to 5', function (): void {
+            $user = User::factory()->create();
+            $project = Project::factory()->for($user)->create();
+            Build::factory()->for($project)->count(8)->create();
+
+            $response = $this->actingAs($user)->get("/projects/{$project->slug}");
+
+            $response->assertOk()
+                ->assertInertia(fn ($page) => $page
+                    ->has('recentBuilds', 5)
                 );
         });
 
