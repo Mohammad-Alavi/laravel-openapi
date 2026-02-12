@@ -208,10 +208,10 @@ Annotations are checked first in the strategy chain, so they always override aut
 - **Breaking Change Detection** -- Alert on breaking API changes
 - **Team Collaboration** -- Org-based role access
 - **Billing** -- Stripe subscriptions
-- **Frontend Tests with Pest visit()** -- Add browser-level tests using Pest's `visit()` method targeting 100% coverage for both backend and frontend
+- ~~**Frontend Tests with Pest visit()**~~ -- **DONE** — Full backend + Inertia prop test coverage achieved (295 tests, 924 assertions). All routes, DTOs, middleware, and page props covered. True browser-level testing (Dusk/Playwright) deferred as separate scope.
 - **Custom Branding** -- Allow users to customize branding (logo, colors, fonts) of generated documentation
-- **Access Management Autocompletion** -- When a doc has been generated, use the latest spec to provide tag/path autocompletion in role scopes and endpoint rules, with examples so users know what's possible
-- **Sync Edit Page with Create Page** -- The create and edit project pages have diverged; update Edit.vue to match the Create.vue layout (repo search, branch autocomplete, etc.)
+- ~~**Access Management Autocompletion**~~ -- **DONE** — Spec-aware autocompletion with grouped tags/paths, descriptions, HTTP methods, icons, spec data counts, and dynamic hints with wildcard examples.
+- ~~**Sync Edit Page with Create Page**~~ -- **DONE** — Edit.vue now uses the same repo search autocomplete + branch dropdown as Create.vue, pre-populated from existing project data.
 - **Persistent User Configuration** -- Allow users to configure and persist settings per project (and per any scope that makes sense): auto-generation preferences, build triggers, route discovery mode, default visibility, notification preferences, etc. Store as project-level and user-level config with sensible defaults and override hierarchy.
 
 ## Competitive Context
