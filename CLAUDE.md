@@ -28,21 +28,29 @@ Each package can only depend on packages to its left in the chain.
 ## Common Commands
 
 ```bash
-# Testing
+# Testing (root packages)
 composer test                    # Run full test suite
 ./vendor/bin/pest --parallel     # Run tests in parallel
 ./vendor/bin/pest --filter="test name"  # Run specific test
 
-# Code Quality
+# Code Quality (root packages)
 composer lint                    # PHPStan static analysis
 composer fixer                   # PHP CS Fixer formatting
 composer cs                      # PHP CodeSniffer fixes
 composer rector                  # Rector code transformations
 ./vendor/bin/psalm               # Psalm type checking
 
-# Development
+# Development (root packages)
 composer serve                   # Build and serve workbench app
 composer build                   # Build testbench workbench
+
+# Platform (DDEV)
+composer serve-platform          # Start platform dev server (artisan serve + queue + pail + vite)
+ddev exec "cd platform && composer test"         # Run platform tests
+ddev exec "cd platform && composer build-runner"  # Build Docker image (from inside DDEV)
+ddev exec "cd platform && composer rebuild-image" # Full rebuild: kill stale builds, prune, build --no-cache
+ddev exec "cd platform && npx vue-tsc --noEmit"  # Type-check frontend
+ddev exec "cd platform && npm run build"         # Production frontend build
 ```
 
 ## Architecture
