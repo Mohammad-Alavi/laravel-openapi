@@ -24,6 +24,7 @@ final class ComponentCollector
         }
 
         $classes = collect(array_keys($generator->getClassMap()->getMap()))
+            ->sort()
             ->filter(function (string $class) use ($collection): bool {
                 $reflectionClass = new \ReflectionClass($class);
                 $attributes = $reflectionClass->getAttributes(CollectionAttribute::class);
