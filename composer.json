@@ -136,6 +136,16 @@
         "test": [
             "@clear",
             "@php vendor/bin/pest"
+        ],
+        "serve-platform": [
+            "ddev exec cd platform && composer dev"
+        ],
+        "dev": [
+            "@fixer",
+            "@cs",
+            "@rector",
+            "@lint",
+            "@test"
         ]
     }
 }
