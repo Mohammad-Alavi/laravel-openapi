@@ -43,14 +43,6 @@ composer rector                  # Rector code transformations
 # Development (root packages)
 composer serve                   # Build and serve workbench app
 composer build                   # Build testbench workbench
-
-# Platform (DDEV)
-composer serve-platform          # Start platform dev server (artisan serve + queue + pail + vite)
-ddev exec "cd platform && composer test"         # Run platform tests
-ddev exec "cd platform && composer build-runner"  # Build Docker image (from inside DDEV)
-ddev exec "cd platform && composer rebuild-image" # Full rebuild: kill stale builds, prune, build --no-cache
-ddev exec "cd platform && npx vue-tsc --noEmit"  # Type-check frontend
-ddev exec "cd platform && npm run build"         # Production frontend build
 ```
 
 ## Architecture
