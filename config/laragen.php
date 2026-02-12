@@ -5,7 +5,7 @@ return [
     'docs_path' => '.laragen/openapi.json',
     'route_discovery' => [
         'mode' => env('LARAGEN_ROUTE_DISCOVERY_MODE', 'attribute'), // 'auto' | 'attribute' | 'combined'
-        'include' => ['api/*'],
+        'include' => ['*'],
         'exclude' => ['api/admin/*', 'api/telescope/*', 'api/horizon/*'],
     ],
     'autogen' => [
