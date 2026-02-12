@@ -86,7 +86,7 @@ final readonly class Laragen
     private static function collectAutoRoutes(): Collection
     {
         /** @var string[] $include */
-        $include = config('laragen.route_discovery.include', ['api/*']);
+        $include = config('laragen.route_discovery.include', ['*']);
         /** @var string[] $exclude */
         $exclude = config('laragen.route_discovery.exclude', []);
 
