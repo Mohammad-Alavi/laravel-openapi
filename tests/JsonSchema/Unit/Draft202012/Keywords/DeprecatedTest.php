@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Deprecated;
 
 describe(class_basename(Deprecated::class), function (): void {

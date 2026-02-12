@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Domain\Documentation\Rendering\DTOs\SpecPathData;
 use App\Domain\Documentation\Rendering\DTOs\SpecTagData;
 use App\Domain\Documentation\Rendering\Services\SpecParser;

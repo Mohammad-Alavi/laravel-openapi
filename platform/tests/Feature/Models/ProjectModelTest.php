@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Models\Project;
 
 describe(class_basename(Project::class), function (): void {

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Domain\Documentation\Access\Enums\RuleType;
 
 describe(class_basename(RuleType::class), function (): void {

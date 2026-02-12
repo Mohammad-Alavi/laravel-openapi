@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Domain\Documentation\Access\Entities\DocAccessLink;
 use App\Domain\Documentation\Access\Entities\DocRole;
 use App\Domain\Documentation\Access\Entities\DocSetting;

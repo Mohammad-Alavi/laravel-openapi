@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Domain\Documentation\Access\ValueObjects\Scope;
 
 describe(class_basename(Scope::class), function (): void {

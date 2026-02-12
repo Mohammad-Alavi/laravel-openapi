@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\Auth\AuthScheme;
 use MohammadAlavi\Laragen\Auth\BasicSecuritySchemeFactory;
 use MohammadAlavi\Laragen\Auth\BearerSecuritySchemeFactory;

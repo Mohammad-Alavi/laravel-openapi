@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\ResponseSchema\JsonResource\JsonResourceModelDetector;
 use Tests\Laragen\Support\Doubles\Models\BasicModel;
 use Tests\Laragen\Support\Doubles\Resources\ResourceWithMixin;

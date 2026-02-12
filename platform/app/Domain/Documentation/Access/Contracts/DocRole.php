@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Domain\Documentation\Access\Contracts;
 
 use App\Domain\Documentation\Access\Enums\RuleType;

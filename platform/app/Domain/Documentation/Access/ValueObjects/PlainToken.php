@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Domain\Documentation\Access\ValueObjects;
 
 use Illuminate\Support\Str;

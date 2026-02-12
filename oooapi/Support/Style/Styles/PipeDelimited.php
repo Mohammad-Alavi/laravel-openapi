@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Styles;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Support\Style\Explodable;

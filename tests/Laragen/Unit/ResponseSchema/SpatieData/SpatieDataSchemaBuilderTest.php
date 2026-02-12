@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\ResponseSchema\SpatieData\SpatieDataSchemaBuilder;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;
 use Tests\Laragen\Support\Doubles\DataObjects\AddressData;

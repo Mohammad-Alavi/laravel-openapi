@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\ModelSchema\ModelSchemaInferrer;
 use MohammadAlavi\Laragen\ResponseSchema\ArraySchema\ArraySchemaAnalyzer;
 use MohammadAlavi\Laragen\ResponseSchema\FractalTransformer\FractalTransformerModelDetector;

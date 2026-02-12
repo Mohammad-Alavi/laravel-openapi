@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Support\Facades\Route as RouteFacade;
 use MohammadAlavi\Laragen\RequestSchema\ContentEncoding;
 use MohammadAlavi\Laragen\RequestSchema\RequestSchemaResolver;

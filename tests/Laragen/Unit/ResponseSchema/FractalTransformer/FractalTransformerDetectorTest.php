@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\ResponseSchema\FractalTransformer\FractalTransformerDetector;
 use Tests\Laragen\Support\Doubles\FractalController;
 use Tests\Laragen\Support\Doubles\ResourceController;

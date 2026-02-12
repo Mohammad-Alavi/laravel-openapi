@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Application\Documentation\Actions\UpdateDocSetting;
 use App\Domain\Documentation\Access\Enums\DocVisibility;
 use App\Domain\Documentation\Access\Events\DocSettingUpdated;

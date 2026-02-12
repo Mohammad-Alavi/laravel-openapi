@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\LaravelRulesToSchema\NestedRuleset;
 use MohammadAlavi\LaravelRulesToSchema\Parsers\StringPatternParser;
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;

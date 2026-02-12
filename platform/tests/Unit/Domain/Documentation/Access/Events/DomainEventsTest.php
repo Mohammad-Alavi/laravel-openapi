@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Domain\Documentation\Access\Events\AccessLinkCreated;
 use App\Domain\Documentation\Access\Events\AccessLinkRevoked;
 use App\Domain\Documentation\Access\Events\DocRoleCreated;

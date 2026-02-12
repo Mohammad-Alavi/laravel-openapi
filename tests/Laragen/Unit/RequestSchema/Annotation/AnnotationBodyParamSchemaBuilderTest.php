@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Routing\Route;
 use MohammadAlavi\Laragen\Annotations\DetectedBodyParam;
 use MohammadAlavi\Laragen\RequestSchema\Annotation\AnnotationBodyParamSchemaBuilder;

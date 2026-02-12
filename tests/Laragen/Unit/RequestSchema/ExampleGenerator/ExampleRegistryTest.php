@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\RequestSchema\ExampleGenerator\Date;
 use MohammadAlavi\Laragen\RequestSchema\ExampleGenerator\Email;
 use MohammadAlavi\Laragen\RequestSchema\ExampleGenerator\ExampleRegistry;

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace MohammadAlavi\Laragen\Auth;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Security\SecurityScheme\Schemes\Http;

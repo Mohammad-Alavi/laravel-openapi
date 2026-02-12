@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace MohammadAlavi\Laragen\ResponseSchema\Annotation;
 
 use MohammadAlavi\Laragen\Annotations\DetectedResponseAnnotation;

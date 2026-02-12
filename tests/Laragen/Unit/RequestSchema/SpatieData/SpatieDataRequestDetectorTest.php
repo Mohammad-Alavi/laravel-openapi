@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Routing\Route;
 use MohammadAlavi\Laragen\RequestSchema\SpatieData\SpatieDataRequestDetector;
 use Tests\Laragen\Support\Doubles\DataObjects\UserData;

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace MohammadAlavi\Laragen\ResponseSchema\ArraySchema;
 
 final readonly class ArrayField

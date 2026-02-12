@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace MohammadAlavi\LaravelOpenApi\Factories;
 
 use MohammadAlavi\ObjectOrientedOpenAPI\Schema\Objects\Info\Info;

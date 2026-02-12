@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\ResponseSchema\ResponseDetector;
 use MohammadAlavi\Laragen\ResponseSchema\ResponseSchemaBuilder;
 use MohammadAlavi\Laragen\ResponseSchema\ResponseSchemaResolver;

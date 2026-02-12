@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Domain\Documentation\Rendering\Events\DocViewed;
 
 describe(class_basename(DocViewed::class), function (): void {

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Http\Controllers\Api\GitHubRepoController;
 use App\Http\Controllers\Api\GitHubValidationController;
 use App\Http\Controllers\Api\ProjectStatusController;

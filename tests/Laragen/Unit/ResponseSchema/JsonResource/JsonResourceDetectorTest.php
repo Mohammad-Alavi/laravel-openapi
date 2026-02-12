@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\ResponseSchema\JsonResource\JsonResourceDetector;
 use Tests\Laragen\Support\Doubles\ResourceController;
 use Tests\Laragen\Support\Doubles\Resources\PostResource;

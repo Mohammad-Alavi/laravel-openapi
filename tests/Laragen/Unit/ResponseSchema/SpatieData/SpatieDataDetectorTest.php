@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\ResponseSchema\SpatieData\SpatieDataDetector;
 use Tests\Laragen\Support\Doubles\DataObjects\UserData;
 use Tests\Laragen\Support\Doubles\ResourceController;

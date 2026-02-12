@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace MohammadAlavi\LaravelRulesToSchema\Providers;
 
 use Illuminate\Support\ServiceProvider;

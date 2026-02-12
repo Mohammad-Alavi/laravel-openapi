@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Application\Documentation\Actions\CreateDocRole;
 use App\Domain\Documentation\Access\Contracts\DocRole;
 use App\Domain\Documentation\Access\Events\DocRoleCreated;

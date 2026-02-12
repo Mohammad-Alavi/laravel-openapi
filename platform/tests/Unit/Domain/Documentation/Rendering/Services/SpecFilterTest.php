@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Domain\Documentation\Access\Contracts\DocRole;
 use App\Domain\Documentation\Access\Contracts\DocVisibilityRule;
 use App\Domain\Documentation\Access\Enums\EndpointVisibility;

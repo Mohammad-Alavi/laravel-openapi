@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers\Docs;
 
 use App\Domain\Documentation\Access\Entities\DocAccessLink;

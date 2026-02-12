@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Infrastructure\Documentation\Providers;
 
 use App\Domain\Documentation\Access\Repositories\DocAccessLinkRepository;

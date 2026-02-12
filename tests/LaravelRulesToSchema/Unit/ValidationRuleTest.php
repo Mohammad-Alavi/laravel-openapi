@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\LaravelRulesToSchema\ValidationRule;
 
 describe(class_basename(ValidationRule::class), function (): void {

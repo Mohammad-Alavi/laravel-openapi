@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\Annotations\DetectedBodyParam;
 use MohammadAlavi\Laragen\Annotations\DetectedQueryParam;
 use MohammadAlavi\Laragen\Annotations\DetectedResponseAnnotation;

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tests\Laragen\Support\Doubles\Transformers;
 
 use League\Fractal\TransformerAbstract;

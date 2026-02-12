@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace MohammadAlavi\Laragen\RequestSchema\ValidationRules;
 
 use Illuminate\Routing\Route;

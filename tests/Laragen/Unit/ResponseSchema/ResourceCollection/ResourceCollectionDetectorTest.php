@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\ResponseSchema\ResourceCollection\ResourceCollectionDetector;
 use Tests\Laragen\Support\Doubles\Collections\UserCollection;
 use Tests\Laragen\Support\Doubles\ResourceCollectionController;

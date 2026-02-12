@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\RouteDiscovery\PatternMatcher;
 
 describe(class_basename(PatternMatcher::class), function (): void {

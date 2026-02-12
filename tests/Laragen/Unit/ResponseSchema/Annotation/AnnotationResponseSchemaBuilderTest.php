@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\Annotations\DetectedResponseAnnotation;
 use MohammadAlavi\Laragen\ResponseSchema\Annotation\AnnotationResponseSchemaBuilder;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\Compilable;

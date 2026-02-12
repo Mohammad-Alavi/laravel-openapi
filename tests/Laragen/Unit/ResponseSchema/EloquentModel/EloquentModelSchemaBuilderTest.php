@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\ModelSchema\ModelSchemaInferrer;
 use MohammadAlavi\Laragen\ResponseSchema\EloquentModel\EloquentModelSchemaBuilder;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Contracts\JSONSchema;

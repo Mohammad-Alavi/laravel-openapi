@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Domain\Documentation\Access\Entities\DocRole;
 use App\Domain\Documentation\Access\Events\DocRoleCreated;
 use App\Domain\Documentation\Access\Events\DocRoleDeleted;

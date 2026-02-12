@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\ResponseSchema\EloquentModel\EloquentModelDetector;
 use Tests\Laragen\Support\Doubles\EloquentController;
 use Tests\Laragen\Support\Doubles\Models\BasicModel;

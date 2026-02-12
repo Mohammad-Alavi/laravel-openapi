@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\Laragen\ResponseSchema\ArraySchema\ArrayField;
 use MohammadAlavi\Laragen\ResponseSchema\ArraySchema\ArraySchemaAnalyzer;
 use Tests\Laragen\Support\Doubles\Resources\PostResource;

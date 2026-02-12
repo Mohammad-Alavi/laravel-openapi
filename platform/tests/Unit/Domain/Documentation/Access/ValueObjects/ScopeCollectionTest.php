@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Domain\Documentation\Access\ValueObjects\Scope;
 use App\Domain\Documentation\Access\ValueObjects\ScopeCollection;
 

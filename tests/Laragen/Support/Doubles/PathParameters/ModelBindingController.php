@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tests\Laragen\Support\Doubles\PathParameters;
 
 use Tests\Laragen\Support\Doubles\Models\BasicModel;

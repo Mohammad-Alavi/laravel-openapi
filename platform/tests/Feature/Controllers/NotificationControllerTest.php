@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Enums\BuildStatus;
 use App\Models\Build;
 use App\Models\Project;

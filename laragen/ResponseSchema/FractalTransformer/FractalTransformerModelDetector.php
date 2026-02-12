@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace MohammadAlavi\Laragen\ResponseSchema\FractalTransformer;
 
 use Illuminate\Database\Eloquent\Model;

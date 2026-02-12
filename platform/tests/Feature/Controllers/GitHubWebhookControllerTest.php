@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Enums\ProjectStatus;
 use App\Jobs\ProcessGitHubPushJob;
 use App\Models\Project;

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\LaravelRulesToSchema\Contracts\HasJsonSchema;
 use MohammadAlavi\LaravelRulesToSchema\CustomRuleSchemaMapping;
 use MohammadAlavi\ObjectOrientedJSONSchema\Draft202012\Keywords\Type;

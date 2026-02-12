@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Validation\Rules\Enum as EnumRule;
 use Illuminate\Validation\Rules\In as InRule;
 use MohammadAlavi\LaravelRulesToSchema\LaravelRuleInternals;

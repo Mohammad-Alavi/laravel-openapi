@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Domain\Documentation\Access\ValueObjects\HashedToken;
 use App\Domain\Documentation\Access\ValueObjects\PlainToken;
 

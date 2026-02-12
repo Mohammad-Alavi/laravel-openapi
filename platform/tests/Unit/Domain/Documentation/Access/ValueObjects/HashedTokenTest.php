@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Domain\Documentation\Access\ValueObjects\HashedToken;
 
 describe(class_basename(HashedToken::class), function (): void {

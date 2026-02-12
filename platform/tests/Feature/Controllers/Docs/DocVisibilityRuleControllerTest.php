@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Domain\Documentation\Access\Entities\DocVisibilityRule;
 use App\Domain\Documentation\Access\Enums\EndpointVisibility;
 use App\Domain\Documentation\Access\Enums\RuleType;

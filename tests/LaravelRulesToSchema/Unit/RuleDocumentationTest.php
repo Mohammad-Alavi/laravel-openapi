@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use MohammadAlavi\LaravelRulesToSchema\RuleDocumentation;
 
 describe(class_basename(RuleDocumentation::class), function (): void {

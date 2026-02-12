@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tests\Laragen\Support\Doubles\E2E;
 
 use Illuminate\Http\Request;

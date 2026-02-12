@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace MohammadAlavi\Laragen\PathParameters;
 
 use Illuminate\Routing\Route;

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tests\Laragen\Support\Doubles\Resources;
 
 use Illuminate\Http\Request;

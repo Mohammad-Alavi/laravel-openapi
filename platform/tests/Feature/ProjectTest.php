@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Domain\Documentation\Access\Entities\DocSetting;
 use App\Domain\Documentation\Access\Enums\DocVisibility;
 use App\Enums\ProjectStatus;

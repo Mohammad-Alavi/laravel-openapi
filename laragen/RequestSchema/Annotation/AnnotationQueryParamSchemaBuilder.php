@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace MohammadAlavi\Laragen\RequestSchema\Annotation;
 
 use Illuminate\Routing\Route;

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Application\DTOs\ProjectData;
 use App\Enums\ProjectStatus;
 use App\Models\Build;
