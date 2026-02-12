@@ -9,17 +9,3 @@ docs/.vitepress/cache
 docs/.vitepress/dist
 .DS_Store
 *.log
-
-# Platform
-platform/vendor/
-platform/node_modules/
-platform/.env
-platform/.env.*
-!platform/.env.example
-platform/public/build/
-platform/public/hot
-platform/database/database.sqlite
-platform/resources/js/actions/
-platform/resources/js/routes/
-platform/resources/js/wayfinder.d.ts
-platform/resources/js/wayfinder.ts

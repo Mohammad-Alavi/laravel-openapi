@@ -96,11 +96,11 @@ public static function header(string $name, Content|HeaderParameter $serializati
 
 ---
 
-## D10: MIT License for Package, Proprietary for Platform
+## D10: MIT License
 
-**Decision**: Open-source the analysis engine (MIT), keep SaaS platform proprietary.
+**Decision**: Open-source the analysis engine under MIT license.
 
-**Rationale**: Community trust, contributions improve core. Hosted features (webhooks, containers, collaboration) are hard to replicate.
+**Rationale**: Community trust, contributions improve core.
 
 ---
 
@@ -172,36 +172,6 @@ Both `RequiredWithParser` and `RequiredWithoutParser` use the `if/then` approach
 **Decision**: Pluggable `ResponseStrategy` chain (detector + builder pairs) tried in order. Enables adding new strategies without modifying existing code. Current order: Annotation → ResourceCollection → JsonResource → SpatieData (conditional) → FractalTransformer (conditional) → EloquentModel.
 
 ---
-
-## Future Platform Decisions
-
-### D15: Stoplight Elements for Documentation UI
-
-Use Stoplight Elements (React) instead of Swagger UI. Modern design, MIT licensed, "Try It Out" built-in.
-
-### D16: Containerized Analysis for Security
-
-Run user code analysis in isolated Docker containers. Read-only filesystem, no network, 512MB memory limit, 5-minute timeout.
-
-### D17: PostgreSQL Over MySQL
-
-Native JSONB support for storing OpenAPI specs, better performance for complex queries.
-
-### D18: Webhook-First Architecture
-
-`GitHub Push -> Webhook -> Queue Job -> Container -> Build -> Update Docs`
-
-### D19: Subdomain-Based Project Routing
-
-Each project gets `{project-slug}.laragen.com`. Cleaner URLs, easier custom domain support.
-
-### D20: Inertia.js Over Livewire
-
-Inertia.js with React for the dashboard. Consistent with Stoplight Elements (React), better TypeScript support.
-
-### D21: Stripe via Laravel Cashier
-
-Stripe for payments. Solo: $19/mo (3 projects), Team: $49/mo (10), Agency: $99/mo (25), Enterprise: $249/mo (unlimited).
 
 ---
 
@@ -345,34 +315,7 @@ Both use `ReflectionProperty` directly. PHPStan `return.type` suppression lives 
 
 ---
 
-## D30: Polling Over WebSockets for Build Status
-
-**Decision**: Use HTTP polling (5s interval) for build status updates instead of WebSockets/Pusher.
-
-**Rationale**:
-- Builds are infrequent (minutes between events), polling latency is acceptable
-- No additional infrastructure (Pusher, Soketi, Redis pub/sub) required
-- Simpler to implement and debug
-- Polling only active on the show page when status is 'building' — stops automatically
-- Can upgrade to WebSockets later if real-time needs increase
-
----
-
-## D31: Build Retention Union Policy
-
-**Decision**: Retention policy keeps the union of (last 10 per project) OR (builds < 30 days old), whichever keeps more.
-
-**Rationale**:
-- Union ensures both recency and count are respected — a project with 50 builds/day keeps 10 recent, while a project with 1 build/month keeps all within 30 days
-- Storage cleanup happens atomically with record deletion
-- Simple daily schedule via `builds:cleanup` artisan command
-- Per-project independence prevents one noisy project from affecting others
-
----
-
 ## Open Questions
 
 - **Livewire/Inertia responses**: Skip for MVP, not traditional JSON APIs.
 - **API versioning**: Support path-based (`/v1/`) in MVP, headers later.
-- **"Try It Out" auth**: Client-side only token storage with clear warnings.
-- **Free tier limits**: 3 projects, 50 builds/month.

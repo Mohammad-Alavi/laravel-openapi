@@ -21,7 +21,7 @@ JSONSchema → oooapi → src (LaravelOpenApi) → laragen
 | **JSONSchema** | `JSONSchema/` | PHP implementation of JSON Schema (Draft 2020-12) |
 | **oooapi** | `oooapi/` | Object-oriented OpenAPI implementation - fluent API hiding OpenAPI spec complexity |
 | **LaravelOpenApi** | `src/` | Laravel integration layer for oooapi - the "Laravel way" of generating OpenAPI |
-| **Laragen** | `laragen/` | SAAS product - 1-click OpenAPI generation from Laravel repositories with minimal config |
+| **Laragen** | `laragen/` | Zero-config OpenAPI generation - auto-detects routes, requests, responses, auth |
 
 Each package can only depend on packages to its left in the chain.
 
